@@ -24,7 +24,7 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 				{
 					type: 'replace',
 					remove: [ [ 'b', [ annHash( 'b' ) ] ], [ 'a', [ annHash( 'b' ) ] ], [ 'r', [ annHash( 'b' ) ] ] ],
-					insert: [ 'b', 'a', 'r' ]
+					insert: [ ...'bar' ]
 				},
 				{ type: 'retain', length: 7 }
 			]
@@ -53,7 +53,7 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 				{ type: 'retain', length: 5 },
 				{
 					type: 'replace',
-					remove: [ 'b', 'a', 'r' ],
+					remove: [ ...'bar' ],
 					insert: [ [ 'b', [ boldHash ] ], [ 'a', [ boldHash ] ], [ 'r', [ boldHash ] ] ]
 				},
 				{ type: 'retain', length: 7 }
@@ -114,7 +114,7 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 				{ type: 'retain', length: 5 },
 				{
 					type: 'replace',
-					remove: [ 'b', 'a', 'r' ],
+					remove: [ ...'bar' ],
 					insert: [
 						[ 'b', [ annHash( 'u' ), boldHash ] ],
 						[ 'a', [ annHash( 'u' ), boldHash ] ],
@@ -263,7 +263,7 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 				{ type: 'retain', length: 9 },
 				{
 					type: 'replace',
-					remove: [ 'b', 'a', 'z' ],
+					remove: [ ...'baz' ],
 					// TODO: Reuse bold instead of creating a new bold?
 					// (Some annotation types may need specific rules as to
 					// when this can be done)
@@ -310,11 +310,11 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 						[ 'b', [ annHash( 'i' ) ] ],
 						[ 'a', [ annHash( 'i' ) ] ],
 						[ 'r', [ annHash( 'i' ) ] ],
-						' ', 'b', 'a', 'z'
+						...' baz'
 					],
 					// The first insertion get
 					insert: [
-						'b', 'a', 'r', ' ',
+						...'bar ',
 						[ 'b', [ annHash( 'b' ) ] ],
 						[ 'a', [ annHash( 'b' ) ] ],
 						[ 'z', [ annHash( 'b' ) ] ]

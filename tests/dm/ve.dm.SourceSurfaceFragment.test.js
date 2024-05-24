@@ -26,7 +26,7 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 			insert: 'foo',
 			expected: [
 				{ type: 'paragraph' },
-				'f', 'o', 'o',
+				...'foo',
 				{ type: '/paragraph' }
 			]
 		},
@@ -35,10 +35,10 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 			insert: 'foo\nbar',
 			expected: [
 				{ type: 'paragraph' },
-				'f', 'o', 'o',
+				...'foo',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
-				'b', 'a', 'r',
+				...'bar',
 				{ type: '/paragraph' }
 			]
 		},
@@ -46,10 +46,10 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 			msg: 'Multiline into string',
 			data: [
 				{ type: 'paragraph' },
-				'f', 'o', 'o',
+				...'foo',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
-				'b', 'a', 'r',
+				...'bar',
 				{ type: '/paragraph' },
 				{ type: 'internalList' },
 				{ type: '/internalList' }
@@ -58,10 +58,10 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 			insert: 'foo\nbar',
 			expected: [
 				{ type: 'paragraph' },
-				'f', 'o', 'f', 'o', 'o',
+				...'fofoo',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
-				'b', 'a', 'r', 'a', 'r',
+				...'barar',
 				{ type: '/paragraph' }
 			]
 		},

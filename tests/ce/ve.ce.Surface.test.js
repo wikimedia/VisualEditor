@@ -580,7 +580,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', ( assert ) => {
 					}
 				},
 				isPaste: true,
-				expectedData: 'image.jpg'.split( '' )
+				expectedData: [ ...'image.jpg' ]
 			},
 			{
 				msg: 'Image only (no items API)',
@@ -591,7 +591,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', ( assert ) => {
 					}
 				},
 				isPaste: true,
-				expectedData: 'image.jpg'.split( '' )
+				expectedData: [ ...'image.jpg' ]
 			},
 			{
 				msg: 'Image with HTML fallbacks',
@@ -603,7 +603,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', ( assert ) => {
 					}
 				},
 				isPaste: true,
-				expectedData: 'image.jpg'.split( '' )
+				expectedData: [ ...'image.jpg' ]
 			},
 			{
 				msg: 'Image ignored when HTML contains content',
@@ -776,9 +776,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 1 },
 						{
 							type: 'replace',
-							insert: [
-								'F', 'o', 'o'
-							],
+							insert: [ ...'Foo' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 1 }
@@ -795,7 +793,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ 'B', 'a', 'r' ],
+							insert: [ ...'Bar' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
@@ -821,7 +819,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ 'B', 'a', 'r' ],
+							insert: [ ...'Bar' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 5 }
@@ -909,7 +907,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								'F', 'o', 'o'
+								...'Foo'
 							],
 							remove: []
 						},
@@ -955,7 +953,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								'F', 'o', 'o'
+								...'Foo'
 							],
 							remove: []
 						},
@@ -1009,7 +1007,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								'B', 'a', 'r'
+								...'Bar'
 							],
 							remove: []
 						},
@@ -1104,7 +1102,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ 'F', 'o', 'o', 'b', 'a', 'r' ],
+							insert: [ ...'Foobar' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
@@ -1145,7 +1143,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ 'B', 'a', 'r' ],
+							insert: [ ...'Bar' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
@@ -1164,7 +1162,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 11 },
 						{
 							type: 'replace',
-							insert: [ 'B', 'a', 'r' ],
+							insert: [ ...'Bar' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 11 }
@@ -1181,7 +1179,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ 'B', 'a', 'r' ],
+							insert: [ ...'Bar' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
@@ -1198,7 +1196,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 6 },
 						{
 							type: 'replace',
-							insert: [ 'B', 'a', 'r' ],
+							insert: [ ...'Bar' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 6 }
@@ -1215,7 +1213,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 3 },
 						{
 							type: 'replace',
-							insert: [ 'B', 'a', 'r' ],
+							insert: [ ...'Bar' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 3 }
@@ -1232,7 +1230,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 11 },
 						{
 							type: 'replace',
-							insert: [ 'Q', 'u', 'u', 'x' ],
+							insert: [ ...'Quux' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 11 }
@@ -1249,7 +1247,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 17 },
 						{
 							type: 'replace',
-							insert: [ 'F', 'o', 'o' ],
+							insert: [ ...'Foo' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 17 }
@@ -1266,7 +1264,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ '☀', 'f', 'o', 'o', '☂' ],
+							insert: [ ...'☀foo☂' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
@@ -1283,7 +1281,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ '☀', 'f', 'o', 'o', '☂' ],
+							insert: [ ...'☀foo☂' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
@@ -1300,7 +1298,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ 'f', 'o', 'o' ],
+							insert: [ ...'foo' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
@@ -1318,7 +1316,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ 'f', 'o', 'o' ],
+							insert: [ ...'foo' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
@@ -1364,7 +1362,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								{ type: 'list', attributes: { style: 'bullet' } },
 								{ type: 'listItem' },
 								{ type: 'paragraph', internal: { generated: 'wrapper' } },
-								'F', 'o', 'o',
+								...'Foo',
 								{ type: '/paragraph' },
 								{ type: '/listItem' },
 								{ type: '/list' }
@@ -1390,14 +1388,14 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								{ type: 'table' },
 								{ type: 'tableCaption' },
 								{ type: 'paragraph', internal: { generated: 'wrapper' } },
-								'F', 'o', 'o',
+								...'Foo',
 								{ type: '/paragraph' },
 								{ type: '/tableCaption' },
 								{ type: 'tableSection', attributes: { style: 'body' } },
 								{ type: 'tableRow' },
 								{ type: 'tableCell', attributes: { style: 'data' } },
 								{ type: 'paragraph', internal: { generated: 'wrapper' } },
-								'B', 'a', 'r',
+								...'Bar',
 								{ type: '/paragraph' },
 								{ type: '/tableCell' },
 								{ type: '/tableRow' },
@@ -1593,7 +1591,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								'F', 'o', 'o',
+								...'Foo',
 								[ 'B', [ { type: 'link', attributes: { href: '#safe' } } ] ],
 								[ 'a', [ { type: 'link', attributes: { href: '#safe' } } ] ],
 								[ 'r', [ { type: 'link', attributes: { href: '#safe' } } ] ]
@@ -1616,7 +1614,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							type: 'replace',
 							insert: [
 								{ type: 'paragraph', internal: { generated: 'wrapper' } },
-								'B', 'a', 'r',
+								...'Bar',
 								{ type: '/paragraph' }
 							],
 							remove: []
@@ -1645,7 +1643,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								'F', 'o', 'o'
+								...'Foo'
 							],
 							remove: []
 						},
@@ -2009,7 +2007,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							type: 'replace',
 							insert: [
 								{ type: 'paragraph' },
-								'F', 'o', 'o',
+								...'Foo',
 								{ type: '/paragraph' },
 								{ type: 'table' },
 								{
@@ -2033,7 +2031,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								{ type: '/tableSection' },
 								{ type: '/table' },
 								{ type: 'paragraph' },
-								'B', 'a', 'r',
+								...'Bar',
 								{ type: '/paragraph' }
 							],
 							remove: []
@@ -2320,7 +2318,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						},
 						{
 							type: 'replace',
-							insert: 'image/gif:26'.split( '' ),
+							insert: [ ...'image/gif:26' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 1 }
@@ -2346,7 +2344,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								'F', 'o', 'o'
+								...'Foo'
 							],
 							remove: []
 						},
@@ -2365,9 +2363,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 1 },
 						{
 							type: 'replace',
-							insert: [
-								'<', 'b', '>', 'F', 'o', 'o', '<', '/', 'b', '>'
-							],
+							insert: [ ...'<b>Foo</b>' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 1 }
@@ -2386,7 +2382,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 1 },
 						{
 							type: 'replace',
-							insert: [ 'F', 'o', 'o' ],
+							insert: [ ...'Foo' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 1 }
@@ -2404,7 +2400,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 1 },
 						{
 							type: 'replace',
-							insert: [ '1', '2', '3' ],
+							insert: [ ...'123' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 1 }
@@ -2638,29 +2634,25 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 	const cases = [
 		{
 			msg: 'Block images around paragraph',
-			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [].concat(
-				ve.dm.example.blockImage.data,
-				{ type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' },
-				ve.dm.example.blockImage.data,
-				[
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				]
-			), null, ve.dm.example.baseUri ),
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [
+				...ve.dm.example.blockImage.data,
+				{ type: 'paragraph' }, ...'Foo', { type: '/paragraph' },
+				...ve.dm.example.blockImage.data,
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			], null, ve.dm.example.baseUri ),
 			firstRange: new ve.Range( 14 ),
 			lastRange: new ve.Range( 17 )
 		},
 		{
 			msg: 'Tables around paragraph',
-			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [].concat(
-				ve.dm.example.complexTable.slice( 0, -2 ),
-				{ type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' },
-				ve.dm.example.complexTable.slice( 0, -2 ),
-				[
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				]
-			), null, ve.dm.example.baseUri ),
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [
+				...ve.dm.example.complexTable.slice( 0, -2 ),
+				{ type: 'paragraph' }, ...'Foo', { type: '/paragraph' },
+				...ve.dm.example.complexTable.slice( 0, -2 ),
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			], null, ve.dm.example.baseUri ),
 			firstRange: new ve.Range( 52 ),
 			lastRange: new ve.Range( 55 )
 		},
@@ -2715,7 +2707,7 @@ QUnit.test( 'getViewportRange', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocumentFromData( [].concat(
 		{ type: 'paragraph' },
 		// 1
-		'F', 'o', 'o',
+		...'Foo',
 		// 4
 		{ type: '/paragraph' },
 		{ type: 'alienBlock', originalDomElements: $.parseHTML( '<div style="width: 100px; height: 1000px;">' ) },
@@ -2723,7 +2715,7 @@ QUnit.test( 'getViewportRange', ( assert ) => {
 		{ type: '/alienBlock' },
 		{ type: 'paragraph' },
 		// 8
-		'B', 'a', 'r',
+		...'Bar',
 		// 11
 		{ type: '/paragraph' },
 		{ type: 'alienBlock', originalDomElements: $.parseHTML( '<div style="width: 100px; height: 1000px;">' ) },
@@ -2731,12 +2723,12 @@ QUnit.test( 'getViewportRange', ( assert ) => {
 		{ type: '/alienBlock' },
 		{ type: 'paragraph' },
 		// 15
-		'B', 'a', 'z',
+		...'Baz',
 		// 18
 		{ type: '/paragraph' },
 		{ type: 'paragraph', originalDomElements: $.parseHTML( '<p style="display: none;">' ) },
 		// 20
-		'Q', 'u', 'x',
+		...'Qux',
 		// 23
 		{ type: '/paragraph' },
 		{ type: 'internalList' },
@@ -2839,7 +2831,7 @@ QUnit.skip( 'afterMutations', ( assert ) => {
 			html: '<p>Foo</p><p>Bar</p><p>Baz</p>',
 			domRemovalPaths: [ [ 0 ] ],
 			testRange: [ 0, 5 ],
-			expectedData: [ { type: 'paragraph' }, 'B', 'a', 'r', { type: '/paragraph' } ],
+			expectedData: [ { type: 'paragraph' }, ...'Bar', { type: '/paragraph' } ],
 			msg: 'DOM paragraph removal'
 		},
 		{
@@ -2850,9 +2842,7 @@ QUnit.skip( 'afterMutations', ( assert ) => {
 				{ type: 'list' },
 				{ type: 'listItem' },
 				{ type: 'paragraph' },
-				't',
-				'w',
-				'o',
+				...'two',
 				{ type: '/paragraph' },
 				{ type: '/listItem' },
 				{ type: '/list' }
@@ -2865,14 +2855,10 @@ QUnit.skip( 'afterMutations', ( assert ) => {
 			testRange: [ 0, 10 ],
 			expectedData: [
 				{ type: 'paragraph' },
-				'F',
-				'o',
-				'o',
+				...'Foo',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
-				'B',
-				'a',
-				'r',
+				...'Bar',
 				{ type: '/paragraph' }
 			],
 			msg: 'DOM div removal'

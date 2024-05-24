@@ -67,27 +67,14 @@ QUnit.test( 'treeDiff', ( assert ) => {
 	const origData = [
 		{ type: 'div' },
 		{ type: 'paragraph' },
-		'f',
-		'o',
-		'o',
-		'b',
-		'a',
-		'r',
-		'b',
-		'a',
-		'z',
+		...'foobarbaz',
 		{ type: '/paragraph' },
 		{ type: 'paragraph' },
-		'q',
-		'u',
-		'x',
+		...'qux',
 		{ type: '/paragraph' },
 		{ type: '/div' },
 		{ type: 'paragraph' },
-		'q',
-		'u',
-		'u',
-		'x',
+		...'quux',
 		{ type: '/paragraph' }
 	];
 	const tx = new ve.dm.Transaction( [
@@ -95,11 +82,11 @@ QUnit.test( 'treeDiff', ( assert ) => {
 		{ type: 'retain', length: 4 },
 		{ type: 'replace', remove: [], insert: [ { type: '/paragraph' }, { type: 'paragraph' } ] },
 		{ type: 'retain', length: 3 },
-		{ type: 'replace', remove: [ 'b', 'a', 'z' ], insert: [ 'B', 'A', 'Z' ] },
+		{ type: 'replace', remove: [ ...'baz' ], insert: [ ...'baz' ] },
 		{ type: 'retain', length: 6 },
 		{ type: 'replace', remove: [ { type: '/div' } ], insert: [ { type: '/listItem' }, { type: '/list' } ] },
 		{ type: 'retain', length: 2 },
-		{ type: 'replace', remove: [ 'u', 'u' ], insert: [ 'U', 'U' ] },
+		{ type: 'replace', remove: [ ...'uu' ], insert: [ ...'UU' ] },
 		{ type: 'retain', length: 2 },
 		{ type: 'replace', remove: [], insert: [
 			{ type: 'paragraph' },
@@ -133,9 +120,9 @@ QUnit.test( 'treeDiff', ( assert ) => {
 		],
 		// {-baz-|+BAZ+}
 		[
-			{ type: 'removeText', isContent: true, at: [ 1, 0, 0 ], data: [ 'b', 'a', 'z' ] },
+			{ type: 'removeText', isContent: true, at: [ 1, 0, 0 ], data: [ ...'baz' ] },
 			// { 0: { diff: 1 }, 1: { 0: { 0: { diff: -9 } } } }
-			{ type: 'insertText', isContent: true, at: [ 0, 0, 1, 3 ], data: [ 'B', 'A', 'Z' ] }
+			{ type: 'insertText', isContent: true, at: [ 0, 0, 1, 3 ], data: [ ...'baz' ] }
 		],
 		// Retain 6
 		[
@@ -153,10 +140,10 @@ QUnit.test( 'treeDiff', ( assert ) => {
 		[],
 		// {-uu-|+UU+}
 		[
-			{ type: 'removeText', isContent: true, at: [ 1, 1 ], data: [ 'u', 'u' ] },
+			{ type: 'removeText', isContent: true, at: [ 1, 1 ], data: [ ...'uu' ] },
 			// NOT THIS: { 0: { diff: 1 }, 1: { diff: -1 }, 2: { 1: { diff: -2 } } }
 			// { 0: { diff: 1 }, 1: { 1: { diff: -2 }, diff: -1 } }
-			{ type: 'insertText', isContent: true, at: [ 1, 1 ], data: [ 'U', 'U' ] }
+			{ type: 'insertText', isContent: true, at: [ 1, 1 ], data: [ ...'UU' ] }
 			// { 0: { diff: 1 }, 1: { diff: -1 }, 2: { 1: { diff: 0 } } }
 		],
 		// Retain 2
@@ -202,20 +189,13 @@ QUnit.test( 'modify', ( assert ) => {
 
 	const origData = [
 		{ type: 'paragraph' },
-		'a',
-		'b',
-		'c',
-		'd',
+		...'abcd',
 		{ type: '/paragraph' },
 		{ type: 'paragraph' },
-		'e',
-		'f',
-		'g',
+		...'efg',
 		{ type: '/paragraph' },
 		{ type: 'paragraph' },
-		'h',
-		'i',
-		'j',
+		...'hij',
 		{ type: '/paragraph' },
 		{ type: 'internalList' },
 		{ type: '/internalList' }
@@ -230,7 +210,7 @@ QUnit.test( 'modify', ( assert ) => {
 		{
 			type: 'replace',
 			remove: [ 'b' ],
-			insert: [ 'X', 'Y' ],
+			insert: [ ...'xy' ],
 			insertedDataOffset: 0,
 			insertedDataLength: 2
 		},
@@ -316,7 +296,7 @@ QUnit.test( 'modify', ( assert ) => {
 } );
 
 QUnit.test( 'bare content', ( assert ) => {
-	const data = [ { type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' } ];
+	const data = [ { type: 'paragraph' }, ...'Foo', { type: '/paragraph' } ];
 	const doc = ve.dm.example.createExampleDocumentFromData( data );
 	const tx = new ve.dm.Transaction( [
 		{ type: 'replace', remove: [ { type: 'paragraph' } ], insert: [] },
@@ -344,8 +324,7 @@ QUnit.test( 'unbalanced insertion', ( assert ) => {
 QUnit.test( 'applyTreeOperation: ensureNotText', ( assert ) => {
 	const data = [
 		{ type: 'paragraph' },
-		'f',
-		'o',
+		...'fo',
 		{ type: 'inlineImage' },
 		{ type: '/inlineImage' },
 		'o',
@@ -436,9 +415,7 @@ QUnit.test( 'checkEqualData', ( assert ) => {
 			originalDomElementsHash: 'h1111111111111111',
 			internal: { changesSinceLoad: 1 }
 		},
-		'f',
-		'o',
-		'o',
+		...'foo',
 		{
 			type: 'mwReference',
 			attributes: {
@@ -470,9 +447,7 @@ QUnit.test( 'checkEqualData', ( assert ) => {
 QUnit.test( 'TreeCursor#crossIgnoredNodes', ( assert ) => {
 	const data = [
 		{ type: 'paragraph' },
-		'f',
-		'o',
-		'o',
+		...'foo',
 		{ type: 'comment', attributes: { text: 'de' } },
 		{ type: '/comment' },
 		{ type: '/paragraph' }
@@ -523,15 +498,13 @@ QUnit.test( 'TreeCursor#crossIgnoredNodes', ( assert ) => {
 QUnit.test( 'TreeCursor#normalizeCursor', ( assert ) => {
 	const data = [
 		{ type: 'heading', attributes: { level: 1 } },
-		'a',
-		'b',
+		...'ab',
 		{ type: 'comment', attributes: { text: 'foo' } },
 		{ type: '/comment' },
 		'd',
 		{ type: '/heading' },
 		{ type: 'paragraph' },
-		'e',
-		'f',
+		...'ef',
 		{ type: '/paragraph' }
 	];
 	const doc = ve.dm.example.createExampleDocumentFromData( data );

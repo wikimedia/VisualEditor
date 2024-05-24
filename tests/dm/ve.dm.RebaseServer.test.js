@@ -115,7 +115,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 			name: 'Conflicting deletions',
 			initialData: [
 				{ type: 'paragraph' },
-				'a', 'b', 'c', 'A', 'B', 'd', 'e', 'f', 'C', 'D', 'g', 'h', 'i',
+				...'abcABdefCDghi',
 				{ type: '/paragraph' },
 				{ type: 'internalList' },
 				{ type: '/internalList' }

@@ -45,10 +45,10 @@ QUnit.test( 'commit', ( assert ) => {
 			'inserting text': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplacement', 1, 0, [ 'F', 'O', 'O' ] ]
+					[ 'pushReplacement', 1, 0, [ ...'Foo' ] ]
 				],
 				expected: function ( data ) {
-					data.splice( 1, 0, 'F', 'O', 'O' );
+					data.splice( 1, 0, ...'Foo' );
 				}
 			},
 			'removing text': {
@@ -63,10 +63,10 @@ QUnit.test( 'commit', ( assert ) => {
 			'replacing text': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplacement', 1, 1, [ 'F', 'O', 'O' ] ]
+					[ 'pushReplacement', 1, 1, [ ...'Foo' ] ]
 				],
 				expected: function ( data ) {
-					data.splice( 1, 1, 'F', 'O', 'O' );
+					data.splice( 1, 1, ...'Foo' );
 				}
 			},
 			'emptying text': {
@@ -81,10 +81,10 @@ QUnit.test( 'commit', ( assert ) => {
 			'inserting mixed content': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplacement', 1, 1, [ 'F', 'O', 'O', { type: 'inlineImage' }, { type: '/inlineImage' }, 'B', 'A', 'R' ] ]
+					[ 'pushReplacement', 1, 1, [ ...'Foo', { type: 'inlineImage' }, { type: '/inlineImage' }, ...'Bar' ] ]
 				],
 				expected: function ( data ) {
-					data.splice( 1, 1, 'F', 'O', 'O', { type: 'inlineImage' }, { type: '/inlineImage' }, 'B', 'A', 'R' );
+					data.splice( 1, 1, ...'Foo', { type: 'inlineImage' }, { type: '/inlineImage' }, ...'Bar' );
 				}
 			},
 			'inserting unbalanced data': {
@@ -96,7 +96,7 @@ QUnit.test( 'commit', ( assert ) => {
 			'inserting unclosed inline node': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplacement', 1, 1, [ 'F', { type: 'inlineImage' }, 'O', 'O' ] ]
+					[ 'pushReplacement', 1, 1, [ 'F', { type: 'inlineImage' }, ...'OO' ] ]
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
@@ -367,7 +367,7 @@ QUnit.test( 'commit', ( assert ) => {
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
-					'o', 'o',
+					...'oo',
 					{ type: '/paragraph' }
 				],
 				calls: [
@@ -395,7 +395,7 @@ QUnit.test( 'commit', ( assert ) => {
 						}
 					},
 					{ type: '/alienMeta' },
-					'o', 'o',
+					...'oo',
 					{ type: '/paragraph' }
 				],
 				calls: [
@@ -424,7 +424,7 @@ QUnit.test( 'commit', ( assert ) => {
 						}
 					},
 					{ type: '/alienMeta' },
-					'o', 'o',
+					...'oo',
 					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
@@ -432,7 +432,7 @@ QUnit.test( 'commit', ( assert ) => {
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' }
 				],
 				calls: [
@@ -462,7 +462,7 @@ QUnit.test( 'commit', ( assert ) => {
 						}
 					},
 					{ type: '/alienMeta' },
-					'o', 'o',
+					...'oo',
 					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
@@ -470,7 +470,7 @@ QUnit.test( 'commit', ( assert ) => {
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' }
 				],
 				calls: [

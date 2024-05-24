@@ -56,7 +56,7 @@ QUnit.test( 'onNodeAttached/onNodeDetached', ( assert ) => {
 				// delta: 0
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplacement', doc, 5, 0, [ 'Q', 'u', 'u', 'x' ] ],
+					[ 'pushReplacement', doc, 5, 0, [ ...'Quux' ] ],
 					[ 'pushRetain', 3 ],
 					[ 'pushReplacement', doc, 8, 7, [ '!' ] ]
 				],

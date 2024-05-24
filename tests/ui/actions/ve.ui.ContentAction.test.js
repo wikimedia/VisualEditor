@@ -16,7 +16,7 @@ QUnit.test( 'insert/remove/select/selectAll', ( assert ) => {
 			args: [ 'Foo' ],
 			expectedData: function ( data ) {
 				data.splice( 3, 1,
-					'F', 'o', 'o'
+					...'Foo'
 				);
 			},
 			expectedRangeOrSelection: new ve.Range( 3, 6 ),
@@ -44,7 +44,7 @@ QUnit.test( 'insert/remove/select/selectAll', ( assert ) => {
 			args: [ 'Foo', false, true ],
 			expectedData: function ( data ) {
 				data.splice( 3, 1,
-					'F', 'o', 'o'
+					...'Foo'
 				);
 			},
 			expectedRangeOrSelection: new ve.Range( 6 ),

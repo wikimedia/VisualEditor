@@ -32,7 +32,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
-					data.splice( 7, 3, 'b', 'a', 'z' );
+					data.splice( 7, 3, ...'baz' );
 				},
 				msg: 'toggle bold on strong text'
 			},
@@ -42,7 +42,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
-					data.splice( 4, 6, 'b', 'a', 'r', 'b', 'a', 'z' );
+					data.splice( 4, 6, ...'barbaz' );
 				},
 				msg: 'toggle bold on bold then strong text'
 			},
@@ -95,8 +95,8 @@ QUnit.test( 'toggle', ( assert ) => {
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
-					data.splice( 5, 3, 'F', 'o', 'o' );
-					data.splice( 12, 3, 'B', 'a', 'r' );
+					data.splice( 5, 3, ...'Foo' );
+					data.splice( 12, 3, ...'Bar' );
 				},
 				msg: 'toggle bold on comparable bold annotations spanning multiple table cells'
 			},

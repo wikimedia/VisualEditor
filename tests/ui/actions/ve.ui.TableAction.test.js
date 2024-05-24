@@ -612,7 +612,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 							}
 						},
 						{ type: 'paragraph', internal: { generated: 'wrapper' } },
-						'1', '6',
+						...'16',
 						{ type: '/paragraph' },
 						{ type: '/tableCell' }
 					);

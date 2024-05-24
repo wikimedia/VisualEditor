@@ -194,7 +194,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: function ( data ) {
 					data.splice(
 						5, 3,
-						'b', 'a', 'r'
+						...'bar'
 					);
 				}
 			},

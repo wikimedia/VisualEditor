@@ -170,7 +170,7 @@ QUnit.test( 'collapseToStart/End', ( assert ) => {
 QUnit.test( 'expandLinearSelection (annotation)', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'paragraph' },
-			'F', 'o', 'o',
+			...'Foo',
 			[ 'b', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'r', [ ve.dm.example.bold ] ],
@@ -481,10 +481,10 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 	);
 
 	fragment = surface.getLinearFragment( new ve.Range( 1, 4 ) );
-	fragment.insertContent( [ '1', '2', '3' ] );
+	fragment.insertContent( [ ...'123' ] );
 	assert.deepEqual(
 		doc.getData( new ve.Range( 1, 4 ) ),
-		[ '1', '2', '3' ],
+		[ ...'123' ],
 		'inserting content replaces selection with new content'
 	);
 	assert.equalRange(
@@ -515,10 +515,10 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 		doc.getData( new ve.Range( 0, 10 ) ),
 		[
 			{ type: 'paragraph' },
-			'f', 'o', 'o',
+			...'foo',
 			{ type: '/paragraph' },
 			{ type: 'paragraph' },
-			'b', 'a', 'r',
+			...'bar',
 			{ type: '/paragraph' }
 		],
 		'newlines converted to paragraphs'

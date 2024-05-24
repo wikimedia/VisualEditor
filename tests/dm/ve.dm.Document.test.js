@@ -63,7 +63,7 @@ QUnit.test( 'constructor', ( assert ) => {
 		'unclosed open tag causes exception'
 	);
 
-	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ] );
+	doc = new ve.dm.Document( [ ...'abcd' ] );
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
 		new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ),
@@ -73,7 +73,7 @@ QUnit.test( 'constructor', ( assert ) => {
 	assert.strictEqual( doc.getHtmlDocument().body.innerHTML, '', 'Empty HTML document is created' );
 
 	const htmlDoc = ve.createDocumentFromHtml( 'abcd' );
-	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ], htmlDoc );
+	doc = new ve.dm.Document( [ ...'abcd' ], htmlDoc );
 	assert.strictEqual( doc.getHtmlDocument(), htmlDoc, 'Provided HTML document is used' );
 
 	const data = new ve.dm.ElementLinearData(
@@ -848,7 +848,7 @@ QUnit.test( 'shallowCloneFromRange', ( assert ) => {
 				{ type: 'paragraph', internal: { generated: 'wrapper' } },
 				ve.dm.example.image.data,
 				{ type: '/inlineImage' },
-				'F', 'o',
+				...'Fo',
 				{ type: '/paragraph' }
 			],
 			originalRange: new ve.Range( 1, 5 ),
@@ -860,7 +860,7 @@ QUnit.test( 'shallowCloneFromRange', ( assert ) => {
 			range: new ve.Range( 4, 8 ),
 			expected: [
 				{ type: 'paragraph', internal: { generated: 'wrapper' } },
-				'o', 'o',
+				...'oo',
 				{ type: 'alienInline', originalDomElements: $.parseHTML( '<foobar />' ) },
 				{ type: '/alienInline' },
 				{ type: '/paragraph' }
@@ -902,7 +902,7 @@ QUnit.test( 'protection against double application of transactions', ( assert ) 
 	const testDocument = ve.dm.example.createExampleDocument(),
 		txBuilder = new ve.dm.TransactionBuilder();
 	txBuilder.pushRetain( 1 );
-	txBuilder.pushReplacement( testDocument, 1, 0, [ 'H', 'e', 'l', 'l', 'o' ] );
+	txBuilder.pushReplacement( testDocument, 1, 0, [ ...'Hello' ] );
 	testDocument.commit( txBuilder.getTransaction() );
 	assert.throws(
 		() => {
@@ -1348,8 +1348,7 @@ QUnit.test( 'fixupInsertion', ( assert ) => {
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph' },
-			'a',
-			'b',
+			...'ab',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },

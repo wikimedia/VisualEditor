@@ -294,7 +294,7 @@ ve.dm.example.blockImage = {
 		},
 		{ type: 'imageCaption' },
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },
-		'f', 'o', 'o', ' ',
+		...'foo ',
 		[ 'r', [ ve.dm.example.boldWithStyle ] ],
 		[ 'e', [ ve.dm.example.boldWithStyle ] ],
 		[ 'd', [ ve.dm.example.boldWithStyle ] ],
@@ -623,7 +623,7 @@ ve.dm.example.alienWithEmptyData = [
 ve.dm.example.internalData = [
 	// 0
 	{ type: 'paragraph' },
-	'F', 'o', 'o',
+	...'Foo',
 	{ type: '/paragraph' },
 	// 5
 	{ type: 'internalList' },
@@ -631,7 +631,7 @@ ve.dm.example.internalData = [
 	{ type: 'internalItem' },
 	// 7
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'B', 'a', 'r',
+	...'Bar',
 	{ type: '/paragraph' },
 	// 12
 	{ type: '/internalItem' },
@@ -639,7 +639,7 @@ ve.dm.example.internalData = [
 	{ type: 'internalItem' },
 	// 14
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'B', 'a', 'z',
+	...'Baz',
 	{ type: '/paragraph' },
 	// 19
 	{ type: '/internalItem' },
@@ -647,7 +647,7 @@ ve.dm.example.internalData = [
 	{ type: '/internalList' },
 	// 21
 	{ type: 'paragraph' },
-	'Q', 'u', 'u', 'x',
+	...'Quux',
 	{ type: '/paragraph' }
 	// 27
 ];
@@ -671,9 +671,7 @@ ve.dm.example.withMeta = [
 	{ type: '/alienMeta' },
 	{ type: 'paragraph' },
 	// 5
-	'F',
-	'o',
-	'o',
+	...'Foo',
 	{ type: '/paragraph' },
 	{
 		type: 'alienMeta',
@@ -682,9 +680,7 @@ ve.dm.example.withMeta = [
 	// 10
 	{ type: '/alienMeta' },
 	{ type: 'paragraph' },
-	'B',
-	'a',
-	'r',
+	...'Bar',
 	// 15
 	{ type: '/paragraph' },
 	{
@@ -693,10 +689,8 @@ ve.dm.example.withMeta = [
 	},
 	{ type: '/alienMeta' },
 	{ type: 'paragraph' },
-	'B',
-	// 20
-	'a',
-	'z',
+	// 19
+	...'Baz',
 	{ type: '/paragraph' },
 	{
 		type: 'removableAlienMeta',
@@ -924,36 +918,36 @@ ve.dm.example.mergedCells = [
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '0',
+	...'10',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
 	{ type: 'tableRow' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '1',
+	...'11',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '2',
+	...'12',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '3',
+	...'13',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '4',
+	...'14',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
 	{ type: 'tableRow' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '5',
+	...'15',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{
@@ -967,31 +961,31 @@ ve.dm.example.mergedCells = [
 		}
 	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '6',
+	...'16',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '7',
-	{ type: '/paragraph' },
-	{ type: '/tableCell' },
-	{ type: '/tableRow' },
-	{ type: 'tableRow' },
-	{ type: 'tableCell', attributes: { style: 'data' } },
-	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '8',
-	{ type: '/paragraph' },
-	{ type: '/tableCell' },
-	{ type: 'tableCell', attributes: { style: 'data' } },
-	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'1', '9',
+	...'17',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
 	{ type: 'tableRow' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'2', '0',
+	...'18',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	...'19',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: '/tableRow' },
+	{ type: 'tableRow' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	...'20',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{
@@ -1003,39 +997,39 @@ ve.dm.example.mergedCells = [
 		}
 	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'2', '1',
+	...'21',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
 	{ type: 'tableRow' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'2', '2',
+	...'22',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'2', '3',
+	...'23',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'2', '4',
+	...'24',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'2', '5',
+	...'25',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'2', '6',
+	...'26',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'2', '7',
+	...'27',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
@@ -1058,9 +1052,7 @@ ve.dm.example.complexTable = [
 	{ type: 'table' },
 	{ type: 'tableCaption' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'F',
-	'o',
-	'o',
+	...'Foo',
 	{ type: '/paragraph' },
 	{ type: '/tableCaption' },
 	{ type: 'tableSection', attributes: { style: 'header' } },
@@ -1073,9 +1065,7 @@ ve.dm.example.complexTable = [
 		}
 	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'B',
-	'a',
-	'r',
+	...'Bar',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
@@ -1091,9 +1081,7 @@ ve.dm.example.complexTable = [
 		}
 	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'B',
-	'a',
-	'z',
+	...'Baz',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
@@ -1109,10 +1097,7 @@ ve.dm.example.complexTable = [
 		}
 	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'Q',
-	'u',
-	'u',
-	'x',
+	...'Quux',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{
@@ -1123,10 +1108,7 @@ ve.dm.example.complexTable = [
 		}
 	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'W',
-	'h',
-	'e',
-	'e',
+	...'Whee',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
@@ -1144,7 +1126,7 @@ ve.dm.example.inlineAtEdges = [
 	// 2
 	{ type: '/inlineImage' },
 	// 3
-	'F', 'o', 'o',
+	...'Foo',
 	// 6
 	{ type: 'alienInline', originalDomElements: $.parseHTML( '<foobar />' ) },
 	// 7
@@ -1396,9 +1378,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p>abc</p>',
 		data: [
 			{ type: 'paragraph' },
-			'a',
-			'b',
-			'c',
+			...'abc',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1663,12 +1643,12 @@ ve.dm.example.domToDataCases = {
 			{ type: 'checkList' },
 			{ type: 'checkListItem', attributes: { checked: true } },
 			{ type: 'paragraph' },
-			'f', 'o', 'o',
+			...'foo',
 			{ type: '/paragraph' },
 			{ type: '/checkListItem' },
 			{ type: 'checkListItem', attributes: { checked: false } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'b', 'a', 'r',
+			...'bar',
 			{ type: '/paragraph' },
 			{ type: '/checkListItem' },
 			{ type: '/checkList' },
@@ -1703,16 +1683,16 @@ ve.dm.example.domToDataCases = {
 		// T53462/T142132
 		data: [
 			{ type: 'paragraph' },
-			' ', 'f', 'o', 'o',
+			...' foo',
 			{ type: '/paragraph' },
 			{ type: 'paragraph' },
-			' ', '\t', ' ', '\t', 'b', 'a', 'r',
+			...' \t \tbar',
 			{ type: '/paragraph' },
 			{ type: 'heading', attributes: { level: 2 } },
-			' ', ' ', 'b', 'a', 'z',
+			...'  baz',
 			{ type: '/heading' },
 			{ type: 'preformatted' },
-			' ', '\t', 'q', 'u', 'u', 'x',
+			...' \tquux',
 			{ type: '/preformatted' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1816,16 +1796,12 @@ ve.dm.example.domToDataCases = {
 		body: '<p>abc</p><div rel="ve:Alien">abc</div><p>def</p>',
 		data: [
 			{ type: 'paragraph' },
-			'a',
-			'b',
-			'c',
+			...'abc',
 			{ type: '/paragraph' },
 			{ type: 'alienBlock', originalDomElements: $.parseHTML( '<div rel="ve:Alien">abc</div>' ) },
 			{ type: '/alienBlock' },
 			{ type: 'paragraph' },
-			'd',
-			'e',
-			'f',
+			...'def',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2088,9 +2064,7 @@ ve.dm.example.domToDataCases = {
 		body: 'Foo<meta /><b>Baz</b>',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{
 				type: 'alienMeta',
 				originalDomElements: $.parseHTML( '<meta />' )
@@ -2105,9 +2079,7 @@ ve.dm.example.domToDataCases = {
 		],
 		realData: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			[ 'B', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'z', [ ve.dm.example.bold ] ],
@@ -2125,9 +2097,7 @@ ve.dm.example.domToDataCases = {
 		body: 'abc',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'a',
-			'b',
-			'c',
+			...'abc',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2152,8 +2122,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			ve.dm.example.image.data,
 			{ type: '/inlineImage' },
-			'1',
-			'2',
+			...'12',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2202,9 +2171,7 @@ ve.dm.example.domToDataCases = {
 				originalDomElements: $.parseHTML( '<foobar class="bar">Foo</foobar>' )
 			},
 			{ type: '/alienInline' },
-			'B',
-			'a',
-			'r',
+			...'Bar',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2214,9 +2181,7 @@ ve.dm.example.domToDataCases = {
 		body: 'Foo<foobar class="bar">Bar</foobar>',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{
 				type: 'alienInline',
 				originalDomElements: $.parseHTML( '<foobar class="bar">Bar</foobar>' )
@@ -2249,9 +2214,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'table' },
 			{ type: '/table' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'a',
-			'b',
-			'c',
+			...'abc',
 			{ type: '/paragraph' },
 			{ type: 'table' },
 			{ type: '/table' },
@@ -2263,14 +2226,10 @@ ve.dm.example.domToDataCases = {
 		body: '<p>abc</p>def<p></p>',
 		data: [
 			{ type: 'paragraph' },
-			'a',
-			'b',
-			'c',
+			...'abc',
 			{ type: '/paragraph' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'd',
-			'e',
-			'f',
+			...'def',
 			{ type: '/paragraph' },
 			{ type: 'paragraph' },
 			{ type: '/paragraph' },
@@ -2345,9 +2304,7 @@ ve.dm.example.domToDataCases = {
 	'empty document with content added by the editor': {
 		data: [
 			{ type: 'paragraph', internal: { generated: 'empty' } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2359,9 +2316,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph', internal: { generated: 'empty' } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },
@@ -2395,21 +2350,21 @@ ve.dm.example.domToDataCases = {
 		body: '<p>Foo<span id="anchorTarget"></span>Bar</p>',
 		data: [
 			{ type: 'paragraph' },
-			'F', 'o', 'o',
+			...'Foo',
 			{
 				type: 'removableAlienMeta',
 				originalDomElements: $.parseHTML( '<span id="anchorTarget"></span>' )
 			},
 			{ type: '/removableAlienMeta' },
-			'B', 'a', 'r',
+			...'Bar',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
 		realData: [
 			{ type: 'paragraph' },
-			'F', 'o', 'o',
-			'B', 'a', 'r',
+			...'Foo',
+			...'Bar',
 			{ type: '/paragraph' },
 			{
 				type: 'removableAlienMeta',
@@ -2424,21 +2379,21 @@ ve.dm.example.domToDataCases = {
 		body: 'Foo<span id="anchorTarget"></span>Bar',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F', 'o', 'o',
+			...'Foo',
 			{
 				type: 'removableAlienMeta',
 				originalDomElements: $.parseHTML( '<span id="anchorTarget"></span>' )
 			},
 			{ type: '/removableAlienMeta' },
-			'B', 'a', 'r',
+			...'Bar',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
 		realData: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F', 'o', 'o',
-			'B', 'a', 'r',
+			...'Foo',
+			...'Bar',
 			{ type: '/paragraph' },
 			{
 				type: 'removableAlienMeta',
@@ -2461,7 +2416,7 @@ ve.dm.example.domToDataCases = {
 			[ 'o', [ ve.dm.example.link( 'Foo' ) ] ],
 			{ type: '/paragraph' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'B', 'a', 'r',
+			...'Bar',
 			{ type: '/paragraph' },
 			{ type: '/tableCell' },
 			{ type: '/tableRow' },
@@ -2476,21 +2431,21 @@ ve.dm.example.domToDataCases = {
 		body: '<p>Foo<i><b><u></u></b></i>Bar</p>',
 		data: [
 			{ type: 'paragraph' },
-			'F', 'o', 'o',
+			...'Foo',
 			{
 				type: 'removableAlienMeta',
 				originalDomElements: $.parseHTML( '<i><b><u></u></b></i>' )
 			},
 			{ type: '/removableAlienMeta' },
-			'B', 'a', 'r',
+			...'Bar',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
 		realData: [
 			{ type: 'paragraph' },
-			'F', 'o', 'o',
-			'B', 'a', 'r',
+			...'Foo',
+			...'Bar',
 			{ type: '/paragraph' },
 			{
 				type: 'removableAlienMeta',
@@ -2538,7 +2493,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p>Foo<b><!-- Bar --></b>Baz</p>',
 		data: [
 			{ type: 'paragraph' },
-			'F', 'o', 'o',
+			...'Foo',
 			{
 				type: 'comment',
 				annotations: [ ve.dm.example.bold ],
@@ -2547,7 +2502,7 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ type: '/comment' },
-			'B', 'a', 'z',
+			...'Baz',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2559,21 +2514,21 @@ ve.dm.example.domToDataCases = {
 		body: '<p>Foo<b><meta /></b>Baz</p>',
 		data: [
 			{ type: 'paragraph' },
-			'F', 'o', 'o',
+			...'Foo',
 			{
 				type: 'alienMeta',
 				originalDomElements: $.parseHTML( '<b><meta /></b>' )
 			},
 			{ type: '/alienMeta' },
-			'B', 'a', 'z',
+			...'Baz',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
 		realData: [
 			{ type: 'paragraph' },
-			'F', 'o', 'o',
-			'B', 'a', 'z',
+			...'Foo',
+			...'Baz',
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -2743,37 +2698,28 @@ ve.dm.example.domToDataCases = {
 		body: '<h2>Foo</h2><h2> Bar</h2><h2>Baz </h2><h2>  Quux   </h2>',
 		data: [
 			{ type: 'heading', attributes: { level: 2 } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{ type: '/heading' },
 			{
 				type: 'heading',
 				attributes: { level: 2 },
 				internal: { whitespace: [ undefined, ' ' ] }
 			},
-			'B',
-			'a',
-			'r',
+			...'Bar',
 			{ type: '/heading' },
 			{
 				type: 'heading',
 				attributes: { level: 2 },
 				internal: { whitespace: [ undefined, undefined, ' ' ] }
 			},
-			'B',
-			'a',
-			'z',
+			...'Baz',
 			{ type: '/heading' },
 			{
 				type: 'heading',
 				attributes: { level: 2 },
 				internal: { whitespace: [ undefined, '  ', '   ' ] }
 			},
-			'Q',
-			'u',
-			'u',
-			'x',
+			...'Quux',
 			{ type: '/heading' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2785,23 +2731,17 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: 'listItem', internal: { whitespace: [ undefined, ' ' ] } },
 			{ type: 'paragraph', internal: { whitespace: [ ' ' ], generated: 'wrapper' } },
-			'B',
-			'a',
-			'r',
+			...'Bar',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: 'listItem', internal: { whitespace: [ undefined, undefined, ' ' ] } },
 			{ type: 'paragraph', internal: { whitespace: [ undefined, undefined, undefined, ' ' ], generated: 'wrapper' } },
-			'B',
-			'a',
-			'z',
+			...'Baz',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: 'listItem', internal: { whitespace: [ undefined, '  ', '   ' ] } },
@@ -2809,10 +2749,7 @@ ve.dm.example.domToDataCases = {
 				type: 'paragraph',
 				internal: { whitespace: [ '  ', undefined, undefined, '   ' ], generated: 'wrapper' }
 			},
-			'Q',
-			'u',
-			'u',
-			'x',
+			...'Quux',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },
@@ -2847,11 +2784,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' }, internal: { whitespace: [ '\n', '\n\n', '\t\n', '\t\n\t\n' ] } },
 			{ type: 'listItem', internal: { whitespace: [ '\n\n', '\n\n\n', '\n\n\n\n', '\n\n\n\n\n' ] } },
 			{ type: 'paragraph', internal: { generated: 'wrapper', whitespace: [ '\n\n\n', undefined, undefined, '\n\n\n\n' ] } },
-			'B',
-			'a',
-			' ',
-			'r',
-			'e',
+			...'Ba re',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: 'listItem', internal: { whitespace: [ '\n\n\n\n\n', '\t', '\t\t\t\t', '\t\n' ] } },
@@ -2871,11 +2804,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' }, internal: { whitespace: [ undefined, '\n', '\t\t\t' ] } },
 			{ type: 'listItem', internal: { whitespace: [ '\n', '\n\n', '\t\t', '\t\t\t' ] } },
 			{ type: 'paragraph', internal: { generated: 'wrapper', whitespace: [ '\n\n', undefined, undefined, '\n\n\n' ] } },
-			'B',
-			'a',
-			' ',
-			'r',
-			'e',
+			...'Ba re',
 			{ type: '/paragraph' },
 			{ type: 'list', attributes: { style: 'bullet' }, internal: { whitespace: [ '\n\n\n', '\n\n\n\n', '\t', '\t\t' ] } },
 			{ type: 'listItem', internal: { whitespace: [ '\n\n\n\n', ' ', '    ', '\t' ] } },
@@ -2894,40 +2823,24 @@ ve.dm.example.domToDataCases = {
 		body: '<p> A  B   <b>    C\t</b>\t\tD\t\t\t</p>\nE\n\nF\n\n\n<b>\n\n\n\nG </b>  H   ',
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\t\t\t', '\n' ] } },
-			'A',
-			' ',
-			' ',
-			'B',
-			' ',
-			' ',
-			' ',
+			...'A  B   ',
 			[ ' ', [ ve.dm.example.bold ] ],
 			[ ' ', [ ve.dm.example.bold ] ],
 			[ ' ', [ ve.dm.example.bold ] ],
 			[ ' ', [ ve.dm.example.bold ] ],
 			[ 'C', [ ve.dm.example.bold ] ],
 			[ '\t', [ ve.dm.example.bold ] ],
-			'\t',
-			'\t',
-			'D',
+			...'\t\tD',
 			{ type: '/paragraph' },
 			{ type: 'paragraph', internal: { generated: 'wrapper', whitespace: [ '\n', undefined, undefined, '   ' ] } },
-			'E',
-			'\n',
-			'\n',
-			'F',
-			'\n',
-			'\n',
-			'\n',
+			...'E\n\nF\n\n\n',
 			[ '\n', [ ve.dm.example.bold ] ],
 			[ '\n', [ ve.dm.example.bold ] ],
 			[ '\n', [ ve.dm.example.bold ] ],
 			[ '\n', [ ve.dm.example.bold ] ],
 			[ 'G', [ ve.dm.example.bold ] ],
 			[ ' ', [ ve.dm.example.bold ] ],
-			' ',
-			' ',
-			'H',
+			...'  H',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2939,13 +2852,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p> A  B   <b>    C\t<i>\t\tD\t\t\t</i>\t\t\t\tE\n</b>\n\nF\n\n\n</p>',
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\n\n\n' ] } },
-			'A',
-			' ',
-			' ',
-			'B',
-			' ',
-			' ',
-			' ',
+			...'A  B   ',
 			[ ' ', [ ve.dm.example.bold ] ],
 			[ ' ', [ ve.dm.example.bold ] ],
 			[ ' ', [ ve.dm.example.bold ] ],
@@ -2964,9 +2871,7 @@ ve.dm.example.domToDataCases = {
 			[ '\t', [ ve.dm.example.bold ] ],
 			[ 'E', [ ve.dm.example.bold ] ],
 			[ '\n', [ ve.dm.example.bold ] ],
-			'\n',
-			'\n',
-			'F',
+			...'\n\nF',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2977,22 +2882,14 @@ ve.dm.example.domToDataCases = {
 		body: '<p> A  B   <b><i>\t\tC\t\t\t</i></b>\n\nD\n\n\n</p>',
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\n\n\n' ] } },
-			'A',
-			' ',
-			' ',
-			'B',
-			' ',
-			' ',
-			' ',
+			...'A  B   ',
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			'\n',
-			'\n',
-			'D',
+			...'\n\nD',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3003,13 +2900,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p> A  B   <b>\n\t<i>\t\tC\t\t\t</i></b>\n\nD\n\n\n</p>',
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\n\n\n' ] } },
-			'A',
-			' ',
-			' ',
-			'B',
-			' ',
-			' ',
-			' ',
+			...'A  B   ',
 			[ '\n', [ ve.dm.example.bold ] ],
 			[ '\t', [ ve.dm.example.bold ] ],
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
@@ -3018,9 +2909,7 @@ ve.dm.example.domToDataCases = {
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			'\n',
-			'\n',
-			'D',
+			...'\n\nD',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3031,13 +2920,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p> A  B   <b><i>\t\tC\t\t\t</i>\n\t</b>\n\nD\n\n\n</p>',
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\n\n\n' ] } },
-			'A',
-			' ',
-			' ',
-			'B',
-			' ',
-			' ',
-			' ',
+			...'A  B   ',
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
@@ -3046,9 +2929,7 @@ ve.dm.example.domToDataCases = {
 			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			[ '\n', [ ve.dm.example.bold ] ],
 			[ '\t', [ ve.dm.example.bold ] ],
-			'\n',
-			'\n',
-			'D',
+			...'\n\nD',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3067,30 +2948,16 @@ ve.dm.example.domToDataCases = {
 			},
 			{ type: '/alienBlock' },
 			{ type: 'paragraph', internal: { whitespace: [ '    ', '\t', ' \n', '\t\n' ] } },
-			'F',
-			'o',
-			'o',
-			'\t',
-			'\t',
+			...'Foo\t\t',
 			{ type: 'alienInline', originalDomElements: $.parseHTML( '<foobar>\t\t\tBar\t\t\t\t</foobar>' ) },
 			{ type: '/alienInline' },
-			'\n',
-			'B',
-			'a',
-			'z',
-			'\n',
-			'\n',
+			...'\nBaz\n\n',
 			{
 				type: 'alienInline',
 				originalDomElements: $.parseHTML( '<foobar>\n\n\nQuux\n\n\n\n</foobar>' )
 			},
 			{ type: '/alienInline' },
-			' ',
-			'\t',
-			'W',
-			'h',
-			'e',
-			'e',
+			...' \tWhee',
 			{ type: '/paragraph' },
 			{
 				type: 'alienBlock',
@@ -3109,21 +2976,7 @@ ve.dm.example.domToDataCases = {
 		body: '\n<pre>\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n',
 		data: [
 			{ type: 'preformatted', internal: { whitespace: [ '\n', undefined, undefined, '\n\n\n\n\n' ] } },
-			'\n',
-			'\n',
-			'F',
-			'o',
-			'o',
-			'\n',
-			'\n',
-			'\n',
-			'B',
-			'a',
-			'r',
-			'\n',
-			'\n',
-			'\n',
-			'\n',
+			...'\n\nFoo\n\n\nBar\n\n\n\n',
 			{ type: '/preformatted' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3138,10 +2991,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'tableRow' },
 			{ type: 'tableCell', attributes: { style: 'data' } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F',
-			'o',
-			'o',
-			' ',
+			...'Foo ',
 			[ 'B', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'r', [ ve.dm.example.bold ] ],
@@ -3192,9 +3042,7 @@ ve.dm.example.domToDataCases = {
 					generated: 'wrapper'
 				}
 			},
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3224,10 +3072,7 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ type: '/comment' },
-			'\n',
-			'F',
-			'o',
-			'o',
+			...'\nFoo',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3261,7 +3106,7 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			'b', 'a', 'r',
+			...'bar',
 			{
 				type: 'comment',
 				attributes: {
@@ -3269,7 +3114,7 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ type: '/comment' },
-			'q', 'u', 'u', 'x',
+			...'quux',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },
@@ -3305,13 +3150,13 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			'b', 'a', 'r',
+			...'bar',
 			{
 				type: 'alienMeta',
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
-			'q', 'u', 'u', 'x',
+			...'quux',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },
@@ -3342,8 +3187,8 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			'b', 'a', 'r',
-			'q', 'u', 'u', 'x',
+			...'bar',
+			...'quux',
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -3379,7 +3224,7 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			'b', 'a', 'r',
+			...'bar',
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -3420,7 +3265,7 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			'b', 'a', 'r',
+			...'bar',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			// FIXME! <alienMeta></alienMeta> should be before </listItem>. T189826
@@ -3468,7 +3313,7 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			'f', 'o', 'o',
+			...'foo',
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -3525,7 +3370,7 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			'f', 'o', 'o',
+			...'foo',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			// FIXME! <alienMeta></alienMeta> should be before </listItem>. T189826
@@ -3580,7 +3425,7 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ type: '/comment' },
-			'b', 'a', 'r',
+			...'bar',
 			{
 				type: 'comment',
 				attributes: {
@@ -3599,7 +3444,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p>  &nbsp;&nbsp;foo&nbsp;\t</p>',
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, '  ', '\t' ] } },
-			'\u00a0', '\u00a0', 'f', 'o', 'o', '\u00a0',
+			...'\u00a0\u00a0foo\u00a0',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3677,7 +3522,7 @@ ve.dm.example.domToDataCases = {
 		body: '  Hello\n\t',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper', whitespace: [ '  ', undefined, undefined, '\n\t' ] } },
-			'H', 'e', 'l', 'l', 'o',
+			...'Hello',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3720,8 +3565,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p>A <b> B <i> C\t</i> </b><u>\nD\t</u></p>',
 		data: [
 			{ type: 'paragraph' },
-			'A',
-			' ',
+			...'A ',
 			[ ' ', [ ve.dm.example.bold ] ],
 			[ 'B', [ ve.dm.example.bold ] ],
 			[ ' ', [ ve.dm.example.bold ] ],
@@ -3835,10 +3679,7 @@ ve.dm.example.domToDataCases = {
 			},
 			{ type: '/alienBlock' },
 			{ type: 'paragraph' },
-			'W',
-			'h',
-			'e',
-			'e',
+			...'Whee',
 			{ type: '/paragraph' },
 			{
 				type: 'alienBlock',
@@ -3962,9 +3803,7 @@ ve.dm.example.domToDataCases = {
 		body: 'Foo<span>\n<p>Bar</p></span>Baz',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			[ '\n', [ ve.dm.example.span ] ],
 			{
 				type: 'alienInline',
@@ -3972,9 +3811,7 @@ ve.dm.example.domToDataCases = {
 				annotations: [ ve.dm.example.span ]
 			},
 			{ type: '/alienInline' },
-			'B',
-			'a',
-			'z',
+			...'Baz',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3987,9 +3824,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{
@@ -3999,9 +3834,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/alienBlock' },
 			{ type: 'listItem' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'B',
-			'a',
-			'z',
+			...'Baz',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },
@@ -4027,9 +3860,7 @@ ve.dm.example.domToDataCases = {
 					whitespace: [ undefined, undefined, undefined, '\n' ]
 				}
 			},
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -4060,9 +3891,7 @@ ve.dm.example.domToDataCases = {
 					whitespace: [ undefined, undefined, undefined, '\n' ]
 				}
 			},
-			'F',
-			'o',
-			'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{ type: '/tableCell' },
 			// FIXME! <alienMeta></alienMeta> should be before </tableCell>. T189826
@@ -4139,9 +3968,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'f',
-			'o',
-			'o',
+			...'foo',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: 'commentMeta', attributes: { text: 'bar' } },
@@ -4154,9 +3981,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'f',
-			'o',
-			'o',
+			...'foo',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			// FIXME! 'commentMeta' should not be a child of 'list'. T189543
@@ -4175,9 +4000,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'tableRow' },
 			{ type: 'tableCell', attributes: { style: 'data' } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'f',
-			'o',
-			'o',
+			...'foo',
 			{ type: '/paragraph' },
 			{ type: '/tableCell' },
 			{ type: 'commentMeta', attributes: { text: 'bar' } },
@@ -4194,9 +4017,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'tableRow' },
 			{ type: 'tableCell', attributes: { style: 'data' } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'f',
-			'o',
-			'o',
+			...'foo',
 			{ type: '/paragraph' },
 			{ type: '/tableCell' },
 			// FIXME! 'commentMeta' should not be a child of 'tableRow'. T189543
@@ -4215,17 +4036,17 @@ ve.dm.example.domToDataCases = {
 			{ type: 'article' },
 			{ type: 'section', attributes: { style: 'header' } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F', 'o', 'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{ type: '/section' },
 			{ type: 'section', attributes: { style: 'section' } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'B', 'a', 'r',
+			...'Bar',
 			{ type: '/paragraph' },
 			{ type: '/section' },
 			{ type: 'section', attributes: { style: 'footer' } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'B', 'a', 'z',
+			...'Baz',
 			{ type: '/paragraph' },
 			{ type: '/section' },
 			{ type: '/article' },
@@ -4251,14 +4072,14 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'center' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'F', 'o', 'o',
+			...'Foo',
 			{ type: '/paragraph' },
 			{ type: '/center' },
 			{ type: 'horizontalRule' },
 			{ type: '/horizontalRule' },
 			{ type: 'blockquote' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			'B', 'a', 'r',
+			...'Bar',
 			{ type: '/paragraph' },
 			{ type: '/blockquote' },
 			{ type: 'internalList' },
@@ -4327,48 +4148,44 @@ ve.dm.example.isolationData = [
 	{ type: 'list', attributes: { style: 'bullet' } },
 	{ type: 'listItem' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'I', 't', 'e', 'm', ' ', '1',
+	...'Item 1',
 	{ type: '/paragraph' },
 	// 10
 	{ type: '/listItem' },
 	{ type: 'listItem' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'I', 't', 'e', 'm', ' ', '2',
+	...'Item 2',
 	{ type: '/paragraph' },
 	// 20
 	{ type: '/listItem' },
 	{ type: 'listItem' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'I', 't', 'e', 'm', ' ', '3',
+	...'Item 3',
 	{ type: '/paragraph' },
 	// 30
 	{ type: '/listItem' },
 	{ type: '/list' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'P', 'a', 'r', 'a', 'g', 'r', 'a',
-	// 40
-	'p', 'h',
+	...'Paragraph',
+	// 42
 	{ type: '/paragraph' },
 	{ type: 'list', attributes: { style: 'bullet' } },
 	{ type: 'listItem' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'I', 't', 'e', 'm',
-	// 50
-	' ', '4',
+	...'Item 4',
+	// 52
 	{ type: '/paragraph' },
 	{ type: '/listItem' },
 	{ type: 'listItem' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'I', 't', 'e', 'm',
-	// 60
-	' ', '5',
+	...'Item 5',
+	// 62
 	{ type: '/paragraph' },
 	{ type: '/listItem' },
 	{ type: 'listItem' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'I', 't', 'e', 'm',
-	// 70
-	' ', '6',
+	...'Item 6',
+	// 72
 	{ type: '/paragraph' },
 	{ type: '/listItem' },
 	{ type: '/list' },
@@ -4378,19 +4195,19 @@ ve.dm.example.isolationData = [
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
 	// 80
-	'C', 'e', 'l', 'l', ' ', '1',
+	...'Cell 1',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
 	// 90
-	'C', 'e', 'l', 'l', ' ', '2',
+	...'Cell 2',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
 	// 100
-	'C', 'e', 'l', 'l', ' ', '3',
+	...'Cell 3',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
@@ -4398,7 +4215,7 @@ ve.dm.example.isolationData = [
 	// 110
 	{ type: 'tableCell', attributes: { style: 'data' } },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'C', 'e', 'l', 'l', ' ', '4',
+	...'Cell 4',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	// 120
@@ -4406,28 +4223,23 @@ ve.dm.example.isolationData = [
 	{ type: '/tableSection' },
 	{ type: '/table' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'N', 'o', 't', ' ', 'a', 'l',
-	// 130
-	'l', 'o', 'w', 'e', 'd', ' ', 'b', 'y', ' ', 'd',
-	// 140
-	'm', ':',
+	// 124
+	...'Not allowed by dm:',
+	// 142
 	{ type: '/paragraph' },
 	{ type: 'list', attributes: { style: 'bullet' } },
 	{ type: 'listItem' },
 	{ type: 'heading', attributes: { level: 1 } },
-	'T', 'i', 't', 'l',
-	// 150
-	'e', ' ', 'i', 'n', ' ', 'l', 'i', 's', 't',
+	// 146
+	...'Title in list',
 	{ type: '/heading' },
 	// 160
 	{ type: '/listItem' },
 	{ type: 'listItem' },
 	{ type: 'preformatted' },
-	'P', 'r', 'e', 'f', 'o', 'r', 'm',
-	// 170
-	'a', 't', 't', 'e', 'd', ' ', 'i', 'n', ' ', 'l',
-	// 180
-	'i', 's', 't',
+	// 163
+	...'Preformatted in list',
+	// 183
 	{ type: '/preformatted' },
 	{ type: '/listItem' },
 	{ type: '/list' },
@@ -4437,22 +4249,20 @@ ve.dm.example.isolationData = [
 	{ type: 'listItem' },
 	// 190
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'N', 'e', 's', 't', 'e', 'd', ' ', '1',
+	...'Nested 1',
 	{ type: '/paragraph' },
 	// 200
 	{ type: '/listItem' },
 	{ type: 'listItem' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'N', 'e', 's', 't', 'e', 'd', ' ',
-	// 210
-	'2',
+	...'Nested 2',
+	// 211
 	{ type: '/paragraph' },
 	{ type: '/listItem' },
 	{ type: 'listItem' },
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
-	'N', 'e', 's', 't', 'e',
-	// 220
-	'd', ' ', '3',
+	...'Nested 3',
+	// 223
 	{ type: '/paragraph' },
 	{ type: '/listItem' },
 	{ type: '/list' },
@@ -4462,15 +4272,14 @@ ve.dm.example.isolationData = [
 	{ type: 'listItem' },
 	// 230
 	{ type: 'paragraph' },
-	'P', '1',
+	...'P1',
 	{ type: '/paragraph' },
 	{ type: 'paragraph' },
-	'P', '2',
+	...'P2',
 	{ type: '/paragraph' },
 	{ type: 'paragraph' },
-	'P',
-	// 240
-	'3',
+	...'P3',
+	// 241
 	{ type: '/paragraph' },
 	{ type: '/listItem' },
 	{ type: '/list' },
@@ -4510,15 +4319,11 @@ ve.dm.modelRegistry.register( ve.dm.example.IgnoreChildrenNode );
 
 ve.dm.example.annotationData = [
 	{ type: 'paragraph' },
-	'F',
-	'o',
-	'o',
+	...'Foo',
 	{ type: 'exampleUnboldable' },
 	// 5
 	{ type: '/exampleUnboldable' },
-	'B',
-	'a',
-	'r',
+	...'Bar',
 	{ type: '/paragraph' },
 	// 10
 	{ type: 'exampleIgnoreChildren' },
@@ -4537,10 +4342,8 @@ ve.dm.example.annotationData = [
 	{ type: '/paragraph' },
 	{ type: '/exampleIgnoreChildren' },
 	{ type: 'paragraph' },
-	'B',
-	// 25
-	'a',
-	'z',
+	// 24
+	...'Baz',
 	{ type: '/paragraph' },
 	{ type: 'internalList' },
 	{ type: '/internalList' }

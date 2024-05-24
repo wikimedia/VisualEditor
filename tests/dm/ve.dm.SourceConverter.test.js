@@ -16,7 +16,7 @@ QUnit.test( 'conversion', ( assert ) => {
 			textFromDataRange: 'foo\n',
 			data: [
 				{ type: 'paragraph' },
-				'f', 'o', 'o',
+				...'foo',
 				{ type: '/paragraph' }
 			],
 			options: {
@@ -30,12 +30,12 @@ QUnit.test( 'conversion', ( assert ) => {
 			textFromDataRange: 'foo \n\n\tbar\n\n',
 			data: [
 				{ type: 'paragraph' },
-				'f', 'o', 'o', ' ',
+				...'foo ',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
-				'\t', 'b', 'a', 'r',
+				...'\tbar',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
 				{ type: '/paragraph' }
@@ -47,16 +47,16 @@ QUnit.test( 'conversion', ( assert ) => {
 			textFromDataRange: 'asd\nasd\nasd\nasd\n',
 			data: [
 				{ type: 'paragraph' },
-				'a', 's', 'd',
+				...'asd',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
-				'a', 's', 'd',
+				...'asd',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
-				'a', 's', 'd',
+				...'asd',
 				{ type: '/paragraph' },
 				{ type: 'paragraph' },
-				'a', 's', 'd',
+				...'asd',
 				{ type: '/paragraph' }
 			],
 			textRoundtrip: 'asd\nasd\nasd\nasd'

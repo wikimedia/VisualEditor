@@ -272,7 +272,7 @@ QUnit.test( 'sparseSplice', ( assert ) => {
 } );
 
 QUnit.test( 'batchSplice', ( assert ) => {
-	const actual = [ 'a', 'b', 'c', 'd', 'e' ],
+	const actual = [ ...'abcde' ],
 		expected = actual.slice( 0 );
 
 	let actualRet = ve.batchSplice( actual, 1, 1, [] );
@@ -280,13 +280,13 @@ QUnit.test( 'batchSplice', ( assert ) => {
 	assert.deepEqual( expectedRet, actualRet, 'Removing 1 element (return value)' );
 	assert.deepEqual( expected, actual, 'Removing 1 element (array)' );
 
-	actualRet = ve.batchSplice( actual, 3, 2, [ 'w', 'x', 'y', 'z' ] );
-	expectedRet = expected.splice( 3, 2, 'w', 'x', 'y', 'z' );
+	actualRet = ve.batchSplice( actual, 3, 2, [ ...'wxyz' ] );
+	expectedRet = expected.splice( 3, 2, ...'wxyz' );
 	assert.deepEqual( expectedRet, actualRet, 'Replacing 2 elements with 4 elements (return value)' );
 	assert.deepEqual( expected, actual, 'Replacing 2 elements with 4 elements (array)' );
 
-	actualRet = ve.batchSplice( actual, 0, 0, [ 'f', 'o', 'o' ] );
-	expectedRet = expected.splice( 0, 0, 'f', 'o', 'o' );
+	actualRet = ve.batchSplice( actual, 0, 0, [ ...'Foo' ] );
+	expectedRet = expected.splice( 0, 0, ...'Foo' );
 	assert.deepEqual( expectedRet, actualRet, 'Inserting 3 elements (return value)' );
 	assert.deepEqual( expected, actual, 'Inserting 3 elements (array)' );
 
@@ -328,17 +328,17 @@ QUnit.test( 'batchPush', ( assert ) => {
 } );
 
 QUnit.test( 'insertIntoArray', ( assert ) => {
-	let target = [ 'a', 'b', 'c' ];
-	ve.insertIntoArray( target, 0, [ 'x', 'y' ] );
-	assert.deepEqual( target, [ 'x', 'y', 'a', 'b', 'c' ], 'insert at start' );
+	let target = [ ...'abc' ];
+	ve.insertIntoArray( target, 0, [ ...'xy' ] );
+	assert.deepEqual( target, [ ...'xyabc' ], 'insert at start' );
 
-	target = [ 'a', 'b', 'c' ];
-	ve.insertIntoArray( target, 2, [ 'x', 'y' ] );
-	assert.deepEqual( target, [ 'a', 'b', 'x', 'y', 'c' ], 'insert into the middle' );
+	target = [ ...'abc' ];
+	ve.insertIntoArray( target, 2, [ ...'xy' ] );
+	assert.deepEqual( target, [ ...'abxyc' ], 'insert into the middle' );
 
-	target = [ 'a', 'b', 'c' ];
-	ve.insertIntoArray( target, 10, [ 'x', 'y' ] );
-	assert.deepEqual( target, [ 'a', 'b', 'c', 'x', 'y' ], 'insert beyond end' );
+	target = [ ...'abc' ];
+	ve.insertIntoArray( target, 10, [ ...'xy' ] );
+	assert.deepEqual( target, [ ...'abcxy' ], 'insert beyond end' );
 } );
 
 QUnit.test( 'escapeHtml', ( assert ) => {
@@ -867,7 +867,7 @@ QUnit.test( 'adjacentDomPosition', ( assert ) => {
 QUnit.test( 'deepFreeze', ( assert ) => {
 	const data = [
 		{ type: 'heading', attributes: { level: 1 } },
-		'F', 'o', 'o',
+		...'Foo',
 		{ type: '/heading' }
 	];
 

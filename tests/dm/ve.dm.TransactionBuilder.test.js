@@ -50,7 +50,7 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 			ve.dm.example.preprocessAnnotations( [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] )
 		),
 		doc3 = new ve.dm.Document(
-			ve.dm.example.preprocessAnnotations( [ { type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] )
+			ve.dm.example.preprocessAnnotations( [ { type: 'paragraph' }, ...'Foo', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] )
 		),
 		cases = {
 			'paragraph before first element': {
@@ -89,13 +89,13 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				]
 			},
 			'paragraph inside a heading closes and reopens heading': {
-				args: [ doc, 2, [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ] ],
+				args: [ doc, 2, [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 2 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: '/heading' }, { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: 'heading', attributes: { level: 1 } } ],
+						insert: [ { type: '/heading' }, { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: 'heading', attributes: { level: 1 } } ],
 						insertedDataOffset: 1,
 						insertedDataLength: 5
 					},
@@ -104,26 +104,26 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 3, 8 )
 			},
 			'paragraph inside a list moves in front of list': {
-				args: [ doc, 13, [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ] ],
+				args: [ doc, 13, [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 12 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ]
+						insert: [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 51 }
 				],
 				range: new ve.Range( 12, 17 )
 			},
 			'tableCell inside the document is wrapped in a table, tableSection and tableRow': {
-				args: [ doc, 43, [ { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: '/tableCell' } ] ],
+				args: [ doc, 43, [ { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: '/tableCell' } ] ],
 				ops: [
 					{ type: 'retain', length: 43 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }, { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: '/tableCell' }, { type: '/tableRow' }, { type: '/tableSection' }, { type: '/table' } ],
+						insert: [ { type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }, { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: '/tableCell' }, { type: '/tableRow' }, { type: '/tableSection' }, { type: '/table' } ],
 						insertedDataOffset: 3,
 						insertedDataLength: 7
 					},
@@ -132,13 +132,13 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 46, 53 )
 			},
 			'tableCell inside a paragraph is wrapped in a table, tableSection and tableRow and moves outside of paragraph': {
-				args: [ doc, 52, [ { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: '/tableCell' } ] ],
+				args: [ doc, 52, [ { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: '/tableCell' } ] ],
 				ops: [
 					{ type: 'retain', length: 53 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }, { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: '/tableCell' }, { type: '/tableRow' }, { type: '/tableSection' }, { type: '/table' } ],
+						insert: [ { type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }, { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: '/tableCell' }, { type: '/tableRow' }, { type: '/tableSection' }, { type: '/table' } ],
 						insertedDataOffset: 3,
 						insertedDataLength: 7
 					},
@@ -147,14 +147,14 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 56, 63 )
 			},
 			'text at a structural location in the document is wrapped in a paragraph': {
-				args: [ doc, 0, [ 'F', 'O', 'O' ] ],
+				args: [ doc, 0, [ ...'FOO' ] ],
 				ops: [
 					{
 						type: 'replace',
 						remove: [],
 						insert: [
 							{ type: 'paragraph', internal: { generated: 'wrapper' } },
-							'F', 'O', 'O',
+							...'FOO',
 							{ type: '/paragraph' }
 						],
 						insertedDataOffset: 1,
@@ -165,25 +165,25 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 1, 4 )
 			},
 			'text inside a paragraph is not wrapped in a paragraph': {
-				args: [ doc, 16, [ 'F', 'O', 'O' ] ],
+				args: [ doc, 16, [ ...'FOO' ] ],
 				ops: [
 					{ type: 'retain', length: 16 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', 'O', 'O' ]
+						insert: [ ...'FOO' ]
 					},
 					{ type: 'retain', length: 47 }
 				]
 			},
 			'text inside a heading is not wrapped in a paragraph': {
-				args: [ doc, 2, [ 'F', 'O', 'O' ] ],
+				args: [ doc, 2, [ ...'FOO' ] ],
 				ops: [
 					{ type: 'retain', length: 2 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', 'O', 'O' ]
+						insert: [ ...'FOO' ]
 					},
 					{ type: 'retain', length: 61 }
 				]
@@ -206,13 +206,13 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 16, 23 )
 			},
 			'text inside a tableSection moves all the way to the end of the table and is wrapped in a paragraph': {
-				args: [ doc, 34, [ 'F', 'O', 'O' ] ],
+				args: [ doc, 34, [ ...'FOO' ] ],
 				ops: [
 					{ type: 'retain', length: 37 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph', internal: { generated: 'wrapper' } }, 'F', 'O', 'O', { type: '/paragraph' } ],
+						insert: [ { type: 'paragraph', internal: { generated: 'wrapper' } }, ...'FOO', { type: '/paragraph' } ],
 						insertedDataOffset: 1,
 						insertedDataLength: 3
 					},
@@ -221,28 +221,28 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 38, 41 )
 			},
 			'insert two complete paragraphs into start of paragraph moves insertion point left': {
-				args: [ doc, 10, [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ] ],
+				args: [ doc, 10, [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 9 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ]
+						insert: [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 54 }
 				],
 				range: new ve.Range( 9, 19 )
 			},
 			'insert text, close paragraph and open heading into end of paragraph moves insertion point right': {
-				args: [ doc, 57, [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'heading', attributes: { level: 1 } }, 'B', 'A', 'R' ] ],
+				args: [ doc, 57, [ ...'FOO', { type: '/paragraph' }, { type: 'heading', attributes: { level: 1 } }, ...'BAR' ] ],
 				ops: [
 					{ type: 'retain', length: 58 },
 					{
 						type: 'replace',
 						remove: [],
 						insert: [
-							{ type: 'paragraph', internal: { generated: 'wrapper' } }, 'F', 'O', 'O', { type: '/paragraph' },
-							{ type: 'heading', attributes: { level: 1 } }, 'B', 'A', 'R', { type: '/heading' }
+							{ type: 'paragraph', internal: { generated: 'wrapper' } }, ...'FOO', { type: '/paragraph' },
+							{ type: 'heading', attributes: { level: 1 } }, ...'BAR', { type: '/heading' }
 						],
 						insertedDataOffset: 1,
 						insertedDataLength: 8
@@ -252,15 +252,15 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 59, 67 )
 			},
 			'insert heading and incomplete paragraph into heading': {
-				args: [ doc, 2, [ { type: 'heading', attributes: { level: 1 } }, 'F', 'O', 'O', { type: '/heading' }, { type: 'paragraph' }, 'B', 'A', 'R' ] ],
+				args: [ doc, 2, [ { type: 'heading', attributes: { level: 1 } }, ...'FOO', { type: '/heading' }, { type: 'paragraph' }, ...'BAR' ] ],
 				ops: [
 					{ type: 'retain', length: 2 },
 					{
 						type: 'replace',
 						remove: [],
 						insert: [
-							{ type: '/heading' }, { type: 'heading', attributes: { level: 1 } }, 'F', 'O', 'O', { type: '/heading' },
-							{ type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' },
+							{ type: '/heading' }, { type: 'heading', attributes: { level: 1 } }, ...'FOO', { type: '/heading' },
+							{ type: 'paragraph' }, ...'BAR', { type: '/paragraph' },
 							{ type: 'heading', attributes: { level: 1 } }
 						],
 						insertedDataOffset: 1,
@@ -271,62 +271,62 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 3, 12 )
 			},
 			'inserting two paragraphs into a document with just an empty paragraph': {
-				args: [ doc2, 1, [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R' ] ],
+				args: [ doc2, 1, [ ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR' ] ],
 				ops: [
 					{ type: 'retain', length: 1 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R' ]
+						insert: [ ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR' ]
 					},
 					{ type: 'retain', length: 3 }
 				]
 			},
 			'inserting three paragraphs into a document with just an empty paragraph': {
-				args: [ doc2, 1, [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'Z' ] ],
+				args: [ doc2, 1, [ ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAZ' ] ],
 				ops: [
 					{ type: 'retain', length: 1 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'Z' ]
+						insert: [ ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAZ' ]
 					},
 					{ type: 'retain', length: 3 }
 				]
 			},
 			'inserting one paragraph into empty paragraph replaces it': {
-				args: [ doc2, 1, [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ] ],
+				args: [ doc2, 1, [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' } ] ],
 				ops: [
 					{
 						type: 'replace',
 						remove: [ { type: 'paragraph' }, { type: '/paragraph' } ],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ]
+						insert: [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 2 }
 				],
 				range: new ve.Range( 0, 5 )
 			},
 			'inserting paragraph at end of paragraph moves insertion point forward': {
-				args: [ doc3, 4, [ { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ] ],
+				args: [ doc3, 4, [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 5 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ]
+						insert: [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 2 }
 				],
 				range: new ve.Range( 5, 10 )
 			},
 			'inserting paragraph into middle of paragraph splits paragraph': {
-				args: [ doc3, 2, [ { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ] ],
+				args: [ doc3, 2, [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 2 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' }, { type: 'paragraph' } ],
+						insert: [ { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR', { type: '/paragraph' }, { type: 'paragraph' } ],
 						insertedDataOffset: 1,
 						insertedDataLength: 5
 					},
@@ -335,13 +335,13 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 3, 8 )
 			},
 			'inserting paragraph into middle of list splits list': {
-				args: [ isolationDoc, 11, [ { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ] ],
+				args: [ isolationDoc, 11, [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 11 },
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: '/list' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' }, { type: 'list', attributes: { style: 'bullet' } } ],
+						insert: [ { type: '/list' }, { type: 'paragraph' }, ...'BAR', { type: '/paragraph' }, { type: 'list', attributes: { style: 'bullet' } } ],
 						insertedDataOffset: 1,
 						insertedDataLength: 5
 					},
@@ -350,7 +350,7 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				range: new ve.Range( 12, 17 )
 			},
 			'inserting paragraph between table cells splits table, tableSection and tableRow': {
-				args: [ complexTableDoc, 40, [ { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ] ],
+				args: [ complexTableDoc, 40, [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 40 },
 					{
@@ -358,7 +358,7 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 						remove: [],
 						insert: [
 							{ type: '/tableRow' }, { type: '/tableSection' }, { type: '/table' },
-							{ type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' },
+							{ type: 'paragraph' }, ...'BAR', { type: '/paragraph' },
 							{ type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }
 						],
 						insertedDataOffset: 3,
@@ -638,7 +638,7 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{
 						type: 'replace',
 						remove: [
-							'o', 'o',
+							...'oo',
 							{ type: '/paragraph' }
 						],
 						insert: []
@@ -648,7 +648,7 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 						type: 'replace',
 						remove: [
 							{ type: 'paragraph' },
-							'Q', 'u'
+							...'Qu'
 						],
 						insert: []
 					},
@@ -662,7 +662,7 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{
 						type: 'replace',
 						remove: [
-							'o', 'o'
+							...'oo'
 						],
 						insert: []
 					},
@@ -676,7 +676,7 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{
 						type: 'replace',
 						remove: [
-							'Q', 'u'
+							...'Qu'
 						],
 						insert: []
 					},
@@ -711,7 +711,7 @@ QUnit.test( 'newFromReplacement', ( assert ) => {
 
 		cases = {
 			'replace, preserving metadata': {
-				args: [ metaDoc, new ve.Range( 6, 21 ), [ 'X', 'Y' ] ],
+				args: [ metaDoc, new ve.Range( 6, 21 ), [ ...'XY' ] ],
 				ops: [
 					{ type: 'retain', length: 4 },
 					{
@@ -724,19 +724,19 @@ QUnit.test( 'newFromReplacement', ( assert ) => {
 					{ type: 'retain', length: 2 },
 					{
 						type: 'replace',
-						insert: [ 'X', 'Y' ],
+						insert: [ ...'XY' ],
 						remove: metaDoc.getData( new ve.Range( 6, 21 ) )
 					},
 					{ type: 'retain', length: 14 }
 				]
 			},
 			'replace, removing metadata': {
-				args: [ metaDoc, new ve.Range( 6, 21 ), [ 'X', 'Y' ], true ],
+				args: [ metaDoc, new ve.Range( 6, 21 ), [ ...'XY' ], true ],
 				ops: [
 					{ type: 'retain', length: 6 },
 					{
 						type: 'replace',
-						insert: [ 'X', 'Y' ],
+						insert: [ ...'XY' ],
 						remove: metaDoc.getData( new ve.Range( 6, 21 ) )
 					},
 					{ type: 'retain', length: 14 }
@@ -760,8 +760,8 @@ QUnit.test( 'newFromReplacement', ( assert ) => {
 QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
-		whee = [ { type: 'paragraph' }, 'W', 'h', 'e', 'e', { type: '/paragraph' } ],
-		wheeItem = [ { type: 'internalItem' } ].concat( whee ).concat( [ { type: '/internalItem' } ] ),
+		whee = [ { type: 'paragraph' }, ...'Whee', { type: '/paragraph' } ],
+		wheeItem = [ { type: 'internalItem' }, ...whee, { type: '/internalItem' } ],
 		cases = [
 			{
 				msg: 'simple insertion',
@@ -771,7 +771,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				modify: function ( newDoc ) {
 					// Change "Bar" to "Bazaar"
 					newDoc.commit( ve.dm.TransactionBuilder.static.newFromInsertion(
-						newDoc, 3, [ 'z', 'a', 'a' ]
+						newDoc, 3, [ ...'zaa' ]
 					) );
 				},
 				removalOps: [
@@ -787,11 +787,15 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 					{ type: 'retain', length: 6 },
 					{
 						type: 'replace',
-						remove: doc.getData( new ve.Range( 6, 7 ) )
-							.concat( doc.getData( new ve.Range( 12, 20 ) ) ),
-						insert: doc.getData( new ve.Range( 6, 10 ) )
-							.concat( [ 'z', 'a', 'a' ] )
-							.concat( doc.getData( new ve.Range( 10, 20 ) ) )
+						remove: [
+							...doc.getData( new ve.Range( 6, 7 ) ),
+							...doc.getData( new ve.Range( 12, 20 ) )
+						],
+						insert: [
+							...doc.getData( new ve.Range( 6, 10 ) ),
+							...'zaa',
+							...doc.getData( new ve.Range( 10, 20 ) )
+						]
 					},
 					{ type: 'retain', length: 7 }
 				]
@@ -872,7 +876,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				range: new ve.Range( 21, 27 ),
 				modify: function ( newDoc ) {
 					newDoc.commit( ve.dm.TransactionBuilder.static.newFromInsertion(
-						newDoc, 12, [ '!', '!', '!' ]
+						newDoc, 12, [ ...'!!!' ]
 					) );
 				},
 				removalOps: [
@@ -888,9 +892,11 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 					{
 						type: 'replace',
 						remove: doc.getData( new ve.Range( 6, 20 ) ),
-						insert: doc.getData( new ve.Range( 6, 11 ) )
-							.concat( [ '!', '!', '!' ] )
-							.concat( doc.getData( new ve.Range( 11, 20 ) ) )
+						insert: [
+							...doc.getData( new ve.Range( 6, 11 ) ),
+							...'!!!',
+							...doc.getData( new ve.Range( 11, 20 ) )
+						]
 					},
 					{ type: 'retain', length: 1 },
 					{
@@ -934,7 +940,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				doc: 'internalData',
 				offset: 0,
 				newDocData: [
-					{ type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' },
+					{ type: 'paragraph' }, ...'Foo', { type: '/paragraph' },
 					{ type: 'internalList' }, { type: '/internalList' }
 				],
 				removalOps: [],
@@ -942,7 +948,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' } ]
+						insert: [ { type: 'paragraph' }, ...'Foo', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 6 },
 					{
@@ -1164,7 +1170,7 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 							[ 'a', [ ve.dm.example.strongHash ] ],
 							[ 'r', [ ve.dm.example.strongHash ] ]
 						],
-						insert: [ 'B', 'a', 'r' ]
+						insert: [ ...'Bar' ]
 					},
 					{ type: 'retain', length: 3 }
 				]
@@ -1231,7 +1237,7 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 1 },
 					{
 						type: 'replace',
-						remove: [ 'F', 'o', 'o' ],
+						remove: [ ...'Foo' ],
 						insert: [
 							[ 'F', [ ve.dm.example.boldHash ] ],
 							[ 'o', [ ve.dm.example.boldHash ] ],
@@ -1241,7 +1247,7 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 2 },
 					{
 						type: 'replace',
-						remove: [ 'B', 'a', 'r' ],
+						remove: [ ...'Bar' ],
 						insert: [
 							[ 'B', [ ve.dm.example.boldHash ] ],
 							[ 'a', [ ve.dm.example.boldHash ] ],
@@ -1257,7 +1263,7 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 1 },
 					{
 						type: 'replace',
-						remove: [ 'F', 'o', 'o' ],
+						remove: [ ...'Foo' ],
 						insert: [
 							[ 'F', [ ve.dm.example.boldHash ] ],
 							[ 'o', [ ve.dm.example.boldHash ] ],
@@ -1267,7 +1273,7 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 2 },
 					{
 						type: 'replace',
-						remove: [ 'B', 'a', 'r' ],
+						remove: [ ...'Bar' ],
 						insert: [
 							[ 'B', [ ve.dm.example.boldHash ] ],
 							[ 'a', [ ve.dm.example.boldHash ] ],
@@ -1277,7 +1283,7 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 15 },
 					{
 						type: 'replace',
-						remove: [ 'B', 'a', 'z' ],
+						remove: [ ...'Baz' ],
 						insert: [
 							[ 'B', [ ve.dm.example.boldHash ] ],
 							[ 'a', [ ve.dm.example.boldHash ] ],
@@ -1710,32 +1716,32 @@ QUnit.test( 'pushRetain', ( assert ) => {
 } );
 
 QUnit.test( 'pushReplacement', ( assert ) => {
-	const doc = new ve.dm.Document( [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] ),
-		doc2 = new ve.dm.Document( [ { type: 'paragraph' }, 'a', 'b', 'c', 'g', 'h', 'i', { type: '/paragraph' } ] ),
+	const doc = new ve.dm.Document( [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ] ),
+		doc2 = new ve.dm.Document( [ { type: 'paragraph' }, ...'abcghi', { type: '/paragraph' } ] ),
 		cases = {
 			insert: {
 				calls: [
-					[ 'pushReplacement', doc, 0, 0, [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] ]
+					[ 'pushReplacement', doc, 0, 0, [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ] ]
 				],
 				ops: [
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ]
+						insert: [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ]
 					}
 				],
 				diff: 5
 			},
 			'multiple insert': {
 				calls: [
-					[ 'pushReplacement', doc, 0, 0, [ { type: 'paragraph' }, 'a', 'b' ] ],
+					[ 'pushReplacement', doc, 0, 0, [ { type: 'paragraph' }, ...'ab' ] ],
 					[ 'pushReplacement', doc, 0, 0, [ 'c', { type: '/paragraph' } ] ]
 				],
 				ops: [
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ]
+						insert: [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ]
 					}
 				],
 				diff: 5
@@ -1743,11 +1749,11 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 			'insert and retain': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplacement', doc, 0, 0, [ 'a', 'b', 'c' ] ]
+					[ 'pushReplacement', doc, 0, 0, [ ...'abc' ] ]
 				],
 				ops: [
 					{ type: 'retain', length: 1 },
-					{ type: 'replace', remove: [], insert: [ 'a', 'b', 'c' ] }
+					{ type: 'replace', remove: [], insert: [ ...'abc' ] }
 				],
 				diff: 3
 			},
@@ -1758,7 +1764,7 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				ops: [
 					{
 						type: 'replace',
-						remove: [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ],
+						remove: [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ],
 						insert: []
 					}
 				],
@@ -1772,7 +1778,7 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				ops: [
 					{
 						type: 'replace',
-						remove: [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ],
+						remove: [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ],
 						insert: []
 					}
 				],
@@ -1785,33 +1791,33 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				ops: [
 					{ type: 'retain', length: 1 },
-					{ type: 'replace', remove: [ 'a', 'b', 'c' ], insert: [] }
+					{ type: 'replace', remove: [ ...'abc' ], insert: [] }
 				],
 				diff: -3
 			},
 			replace: {
 				calls: [
-					[ 'pushReplacement', doc, 1, 3, [ 'd', 'e', 'f' ] ]
+					[ 'pushReplacement', doc, 1, 3, [ ...'def' ] ]
 				],
 				ops: [
 					{
 						type: 'replace',
-						remove: [ 'a', 'b', 'c' ],
-						insert: [ 'd', 'e', 'f' ]
+						remove: [ ...'abc' ],
+						insert: [ ...'def' ]
 					}
 				],
 				diff: 0
 			},
 			'multiple replace': {
 				calls: [
-					[ 'pushReplacement', doc2, 1, 3, [ 'd', 'e', 'f' ] ],
-					[ 'pushReplacement', doc2, 4, 3, [ 'j', 'k', 'l' ] ]
+					[ 'pushReplacement', doc2, 1, 3, [ ...'def' ] ],
+					[ 'pushReplacement', doc2, 4, 3, [ ...'jkl' ] ]
 				],
 				ops: [
 					{
 						type: 'replace',
-						remove: [ 'a', 'b', 'c', 'g', 'h', 'i' ],
-						insert: [ 'd', 'e', 'f', 'j', 'k', 'l' ]
+						remove: [ ...'abcghi' ],
+						insert: [ ...'defjkl' ]
 					}
 				],
 				diff: 0
@@ -1914,13 +1920,13 @@ QUnit.test( 'operations/build from operations', ( assert ) => {
 			{
 				msg: 'Replace annotated text',
 				method: 'newFromReplacement',
-				args: [ doc, new ve.Range( 1, 4 ), [ 'F', 'o', 'o' ] ],
+				args: [ doc, new ve.Range( 1, 4 ), [ ...'Foo' ] ],
 				expected: [
 					{ type: 'retain', length: 1 },
 					{
 						type: 'replace',
 						remove: [ 'a', [ 'b', [ ve.dm.example.boldHash ] ], [ 'c', [ ve.dm.example.italicHash ] ] ],
-						insert: [ 'F', 'o', 'o' ]
+						insert: [ ...'Foo' ]
 					},
 					{ type: 'retain', length: 59 }
 				]
@@ -2012,9 +2018,7 @@ QUnit.test( 'newFromRemoval preserving metadata', ( assert ) => {
 					{ type: '/alienMeta' }
 				], remove: [
 					{ type: 'paragraph' },
-					'f',
-					'o',
-					'o',
+					...'foo',
 					{ type: '/paragraph' },
 					{ type: 'alienMeta' },
 					{ type: '/alienMeta' }
@@ -2035,9 +2039,7 @@ QUnit.test( 'newFromRemoval preserving metadata', ( assert ) => {
 					{ type: 'alienMeta' },
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
-					'b',
-					'a',
-					'r',
+					...'bar',
 					{ type: '/paragraph' }
 				] },
 				{ type: 'retain', length: 2 }
@@ -2053,16 +2055,12 @@ QUnit.test( 'newFromRemoval preserving metadata', ( assert ) => {
 					{ type: '/alienMeta' }
 				], remove: [
 					{ type: 'paragraph' },
-					'f',
-					'o',
-					'o',
+					...'foo',
 					{ type: '/paragraph' },
 					{ type: 'alienMeta' },
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
-					'b',
-					'a',
-					'r',
+					...'bar',
 					{ type: '/paragraph' }
 				] },
 				{ type: 'retain', length: 7 }
@@ -2080,8 +2078,7 @@ QUnit.test( 'newFromRemoval preserving metadata', ( assert ) => {
 				] },
 				{ type: 'retain', length: 2 },
 				{ type: 'replace', insert: [], remove: [
-					'o',
-					'o',
+					...'oo',
 					{ type: '/paragraph' },
 					{ type: '/listItem' },
 					{ type: 'listItem' },

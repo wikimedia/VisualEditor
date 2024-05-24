@@ -301,11 +301,11 @@ QUnit.test( 'nextCursorOffset', ( assert ) => {
 
 QUnit.test( 'resolveTestOffset', ( assert ) => {
 	const cases = [
-		[ 'o', 'k' ],
+		[ ...'ok' ],
 		// TODO: doesn't handle tags correctly yet!
-		// ['w', '<b>', 'x', 'y', '</b>', 'z'],
-		// ['q', '<b>', 'r', '<b>', 's', 't', '</b>', 'u', '</b>', 'v']
-		[ 'h', 'e', 'l', 'l', 'o' ]
+		// [ 'w', '<b>', 'x', 'y', '</b>', 'z' ],
+		// [ 'q', '<b>', 'r', '<b>', 's', 't', '</b>', 'u', '</b>', 'v' ]
+		[ ...'hello' ]
 	];
 
 	const dom = ve.createDocumentFromHtml( '' );

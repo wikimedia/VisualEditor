@@ -324,12 +324,12 @@ QUnit.test( 'getAnnotationsFromRange', ( assert ) => {
 		},
 		{
 			msg: 'no common coverage from all plain characters',
-			data: [ 'a', 'b' ],
+			data: [ ...'ab' ],
 			expected: []
 		},
 		{
 			msg: 'no common coverage using all from all plain characters',
-			data: [ 'a', 'b' ],
+			data: [ ...'ab' ],
 			all: true,
 			expected: []
 		},
@@ -616,8 +616,7 @@ QUnit.test( 'isContentOffset', ( assert ) => {
 			'a',
 			{ type: 'inlineImage' },
 			{ type: '/inlineImage' },
-			'b',
-			'c',
+			...'bc',
 			{ type: '/heading' },
 			{ type: 'paragraph' },
 			{ type: '/paragraph' },
@@ -688,8 +687,7 @@ QUnit.test( 'isStructuralOffset', ( assert ) => {
 			'a',
 			{ type: 'inlineImage' },
 			{ type: '/inlineImage' },
-			'b',
-			'c',
+			...'bc',
 			{ type: '/heading' },
 			{ type: 'paragraph' },
 			{ type: '/paragraph' },
@@ -799,8 +797,8 @@ QUnit.test( 'getSourceText', ( assert ) => {
 	const data = new ve.dm.ElementLinearData(
 			new ve.dm.HashValueStore(),
 			[
-				{ type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' },
-				{ type: 'paragraph' }, 'b', 'a', 'r', { type: '/paragraph' },
+				{ type: 'paragraph' }, ...'foo', { type: '/paragraph' },
+				{ type: 'paragraph' }, ...'bar', { type: '/paragraph' },
 				{ type: 'internalList' }, { type: '/internalList' }
 			]
 		),
@@ -845,7 +843,7 @@ QUnit.test( 'isContentData', ( assert ) => {
 		},
 		{
 			msg: 'plain text',
-			data: [ 'a', 'b', 'c' ],
+			data: [ ...'abc' ],
 			expected: true
 		},
 		{
@@ -884,7 +882,7 @@ QUnit.test( 'getRelativeOffset', ( assert ) => {
 			msg: 'document with all valid offsets returns offset + distance',
 			offset: 0,
 			distance: 2,
-			data: [ 'a', 'b' ],
+			data: [ ...'ab' ],
 			callback: function () {
 				return true;
 			},
@@ -899,7 +897,7 @@ QUnit.test( 'getRelativeOffset', ( assert ) => {
 				{ type: 'internalList' },
 				{ type: 'internalItem' },
 				{ type: 'paragraph', internal: { generated: 'wrapper' } },
-				'a', 'b', 'c',
+				...'abc',
 				{ type: '/paragraph' },
 				{ type: '/internalItem' },
 				{ type: '/internalList' }
@@ -1559,7 +1557,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>B<span rel="ve:Alien">a</span>r<img src="//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg"/></p>',
 				data: [
 					{ type: 'paragraph' },
-					'B', 'r',
+					...'Br',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1576,7 +1574,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>B<i><b>a</b>z</i></p>',
 				data: [
 					{ type: 'paragraph' },
-					'B', 'a', 'z',
+					...'Baz',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1650,13 +1648,13 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<h1>Bar</h1><h2>Baz</h2><p>Quux</p>',
 				data: [
 					{ type: 'paragraph' },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' },
 					{ type: 'paragraph' },
-					'B', 'a', 'z',
+					...'Baz',
 					{ type: '/paragraph' },
 					{ type: 'paragraph' },
-					'Q', 'u', 'u', 'x',
+					...'Quux',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1668,7 +1666,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>Bar</p><p>Baz</p><p>Quux</p>',
 				data: [
 					{ type: 'paragraph' },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1681,7 +1679,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				data: [
 					// TODO: non-relevant attributes should be discarded, T130377
 					{ type: 'paragraph', attributes: { level: 1 } },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1693,10 +1691,10 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>Foo</p><p></p><h1></h1><p>Bar</p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o',
+					...'Foo',
 					{ type: '/paragraph' },
 					{ type: 'paragraph' },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1735,7 +1733,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<div>Foo</div>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o',
+					...'Foo',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1747,7 +1745,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><span style="color:red;" class="red">Foo</span></p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o',
+					...'Foo',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1759,7 +1757,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><span style="color:red;"><span style="color:red;">Foo</span></span></p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o',
+					...'Foo',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1809,7 +1807,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>Foo\nBar\n <b>Baz \nQ&nbsp;uu\nx</b></p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o', ' ', 'B', 'a', 'r', ' ',
+					...'Foo Bar ',
 					[ 'B', [ ve.dm.example.annHash( 'b' ) ] ],
 					[ 'a', [ ve.dm.example.annHash( 'b' ) ] ],
 					[ 'z', [ ve.dm.example.annHash( 'b' ) ] ],
@@ -1830,16 +1828,16 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>Foo\nBar\n </p><pre>Baz \nQu&nbsp;ux<!--comment-->\nWhee</pre><p>A&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;C</p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o', ' ', 'B', 'a', 'r',
+					...'Foo Bar',
 					{ type: '/paragraph' },
 					{ type: 'preformatted' },
-					'B', 'a', 'z', ' ', '\n', 'Q', 'u', '\u00a0', 'u', 'x',
+					...'Baz \nQu\u00a0ux',
 					{ type: 'comment', attributes: { text: 'comment' } },
 					{ type: '/comment' },
-					'\n', 'W', 'h', 'e', 'e',
+					'\n', ...'Whee',
 					{ type: '/preformatted' },
 					{ type: 'paragraph' },
-					'A', ' ', '\u00a0', 'B', ' ', '\u00a0', ' ', 'C',
+					...'A \u00a0B \u00a0 C',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1850,10 +1848,10 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>Foo</p> \n\t <p>Bar</p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o',
+					...'Foo',
 					{ type: '/paragraph' },
 					{ type: 'paragraph' },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1864,10 +1862,10 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>Foo</p> \n\t <p>Bar</p>',
 				data: [
 					{ type: 'paragraph', internal: { whitespace: [ undefined, undefined, undefined, ' \n\t ' ] } },
-					'F', 'o', 'o',
+					...'Foo',
 					{ type: '/paragraph' },
 					{ type: 'paragraph', internal: { whitespace: [ ' \n\t ' ] } },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1879,12 +1877,12 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>Foo</p><p><br /></p><p>Bar</p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o',
+					...'Foo',
 					{ type: '/paragraph' },
 					{ type: 'paragraph' },
 					{ type: '/paragraph' },
 					{ type: 'paragraph' },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1896,12 +1894,12 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>Foo<br /><br />Bar</p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', 'o', 'o',
+					...'Foo',
 					{ type: '/paragraph' },
 					{ type: 'paragraph' },
 					{ type: '/paragraph' },
 					{ type: 'paragraph' },
-					'B', 'a', 'r',
+					...'Bar',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1913,7 +1911,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>A<meta foo="bar" />B</p>',
 				data: [
 					{ type: 'paragraph' },
-					'A', 'B',
+					...'AB',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1925,7 +1923,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p>A<meta foo="bar" />B</p>',
 				data: [
 					{ type: 'paragraph' },
-					'A', 'B',
+					...'AB',
 					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
@@ -1974,7 +1972,7 @@ QUnit.test( 'countNonInternalElements', ( assert ) => {
 		{
 			data: [
 				{ type: 'paragraph' },
-				'F', 'o',
+				...'Fo',
 				{ type: '/paragraph' },
 				{ type: 'internalList' },
 				{ type: 'internalItem' },

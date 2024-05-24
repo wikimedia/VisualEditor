@@ -56,7 +56,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 		{
 			title: 'Bold',
 			html: '<p>x<b>y</b>z</p>',
-			data: [ '<paragraph>', 'x', 'y', 'z', '</paragraph>' ],
+			data: [ '<paragraph>', ...'xyz', '</paragraph>' ],
 			positions: docNodeStart + "|" + pNodeStart + "<#text>|x|</#text><b class='ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>y|</#text></b><#text>z|</#text></p></div>"
 		},
 		{
@@ -90,7 +90,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 		{
 			title: 'Paragraph with links',
 			html: '<p><a href="A">A</a><a href="B">B</a></p>',
-			data: [ '<paragraph>', 'A', 'B', '</paragraph>' ],
+			data: [ '<paragraph>', ...'AB', '</paragraph>' ],
 			positions: docNodeStart + "|" + pNodeStart + "|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-annotation ve-ce-nailedAnnotation ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>A</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-annotation ve-ce-nailedAnnotation ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>B</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>|</p></div>"
 		},
 		{

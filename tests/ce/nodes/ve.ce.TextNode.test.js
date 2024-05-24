@@ -13,12 +13,10 @@ QUnit.test( 'getAnnotatedHtml', ( assert ) => {
 		{
 			data: [
 				{ type: 'paragraph' },
-				'a',
-				'b',
-				'c',
+				...'abc',
 				{ type: '/paragraph' }
 			],
-			html: [ 'a', 'b', 'c' ]
+			html: [ ...'abc' ]
 		},
 		{
 			data: [

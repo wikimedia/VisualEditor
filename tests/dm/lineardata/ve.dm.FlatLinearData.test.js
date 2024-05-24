@@ -84,7 +84,7 @@ QUnit.test( 'containsElementData', ( assert ) => {
 		},
 		{
 			msg: 'plain text',
-			data: [ 'a', 'b', 'c' ],
+			data: [ ...'abc' ],
 			expected: false
 		},
 		{

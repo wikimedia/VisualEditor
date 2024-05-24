@@ -14,9 +14,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Plain text without annotations',
 			data: [
 				{ type: 'paragraph' },
-				'a',
-				'b',
-				'c',
+				...'abc',
 				{ type: '/paragraph' }
 			],
 			html: 'abc'
@@ -254,9 +252,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Text annotated in varying order, surrounded by plain text',
 			data: [
 				{ type: 'paragraph' },
-				'a',
-				'b',
-				'c',
+				...'abc',
 				[ 'd', [
 					{ type: 'textStyle/bold' },
 					{ type: 'textStyle/italic' },
@@ -272,9 +268,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 					{ type: 'textStyle/bold' },
 					{ type: 'textStyle/italic' }
 				] ],
-				'g',
-				'h',
-				'i',
+				...'ghi',
 				{ type: '/paragraph' }
 			],
 			html: 'abc<b><i><u>def</u></i></b>ghi'
@@ -283,9 +277,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Out-of-order closings do not produce misnested tags',
 			data: [
 				{ type: 'paragraph' },
-				'a',
-				'b',
-				'c',
+				...'abc',
 				[ 'd', [
 					{ type: 'textStyle/bold' },
 					{ type: 'textStyle/italic' },
@@ -300,9 +292,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 					{ type: 'textStyle/bold' },
 					{ type: 'textStyle/italic' }
 				] ],
-				'g',
-				'h',
-				'i',
+				...'ghi',
 				{ type: '/paragraph' }
 			],
 			html: 'abc<b><i><u>d</u></i></b><i><u>e<b>f</b></u></i>ghi'
@@ -311,9 +301,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Additional openings are added inline, even when out of order',
 			data: [
 				{ type: 'paragraph' },
-				'a',
-				'b',
-				'c',
+				...'abc',
 				[ 'd', [
 					{ type: 'textStyle/italic' },
 					{ type: 'textStyle/underline' },
@@ -328,9 +316,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 					{ type: 'textStyle/bold' },
 					{ type: 'textStyle/italic' }
 				] ],
-				'g',
-				'h',
-				'i',
+				...'ghi',
 				{ type: '/paragraph' }
 			],
 			html: 'abc<i><u><b>d</b>e<b>f</b></u></i>ghi'
@@ -339,9 +325,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Out-of-order closings surrounded by plain text',
 			data: [
 				{ type: 'paragraph' },
-				'a',
-				'b',
-				'c',
+				...'abc',
 				[ 'd', [
 					{ type: 'textStyle/italic' },
 					{ type: 'textStyle/underline' },
@@ -355,9 +339,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 					{ type: 'textStyle/underline' },
 					{ type: 'textStyle/bold' }
 				] ],
-				'g',
-				'h',
-				'i',
+				...'ghi',
 				{ type: '/paragraph' }
 			],
 			html: 'abc<i><u><b>d</b></u></i><b><u>ef</u></b>ghi'

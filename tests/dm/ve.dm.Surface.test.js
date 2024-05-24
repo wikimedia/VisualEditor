@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.Surface' );
 
 ve.dm.SurfaceStub = function VeDmSurfaceStub( data, range ) {
-	const doc = new ve.dm.Document( data || [ { type: 'paragraph' }, 'h', 'i', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] );
+	const doc = new ve.dm.Document( data || [ { type: 'paragraph' }, ...'hi', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] );
 
 	// Inheritance
 	ve.dm.SurfaceStub.super.call( this, doc );
@@ -33,7 +33,7 @@ QUnit.test( 'getSelection', ( assert ) => {
 QUnit.test( 'setSelection out of range', ( assert ) => {
 	const surface = new ve.dm.SurfaceStub( [
 		{ type: 'paragraph' },
-		'F', 'o', 'o',
+		...'Foo',
 		{ type: '/paragraph' },
 		{ type: 'internalList' }, { type: '/internalList' }
 	] );
@@ -49,7 +49,7 @@ QUnit.test( 'setSelection out of range', ( assert ) => {
 QUnit.test( 'contextChange events', ( assert ) => {
 	const surface = new ve.dm.SurfaceStub( ve.dm.example.preprocessAnnotations( [
 		{ type: 'paragraph' },
-		'F', 'o', 'o',
+		...'Foo',
 		// Bold "bar"
 		[ 'b', [ ve.dm.example.bold ] ],
 		[ 'a', [ ve.dm.example.bold ] ],
@@ -58,17 +58,17 @@ QUnit.test( 'contextChange events', ( assert ) => {
 		[ 'b', [ ve.dm.example.italic ] ],
 		[ 'a', [ ve.dm.example.italic ] ],
 		[ 'z', [ ve.dm.example.italic ] ],
-		'F', 'o', 'o',
+		...'Foo',
 		{ type: '/paragraph' },
 		{ type: 'list', attributes: { style: 'bullet' } },
 		{ type: 'listItem' },
 		{ type: 'paragraph' },
-		'O', 'n', 'e',
+		...'One',
 		{ type: '/paragraph' },
 		{ type: '/listItem' },
 		{ type: 'listItem' },
 		{ type: 'paragraph' },
-		'T', 'w', 'o',
+		...'Two',
 		{ type: '/paragraph' },
 		{ type: '/listItem' },
 		{ type: '/list' },
@@ -241,22 +241,22 @@ QUnit.test( 'multi-user undo', ( assert ) => {
 
 		const doc = surface.getDocument();
 
-		let tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, 'foo'.split( '' ) );
+		let tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ ...'foo' ] );
 		tx.authorId = 1;
 		surface.change( tx );
 		surface.breakpoint();
 
-		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 6, '123'.split( '' ) );
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 6, [ ...'123' ] );
 		tx.authorId = 2;
 		surface.change( tx );
 		surface.breakpoint();
 
-		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 4, 'bar'.split( '' ) );
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 4, [ ...'bar' ] );
 		tx.authorId = 1;
 		surface.change( tx );
 		surface.breakpoint();
 
-		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 12, '456'.split( '' ) );
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 12, [ ...'456' ] );
 		tx.authorId = 2;
 		surface.change( tx );
 		surface.breakpoint();
@@ -271,7 +271,7 @@ QUnit.test( 'multi-user undo', ( assert ) => {
 		surfaces[ 0 ].getDocument().getData(),
 		[
 			{ type: 'paragraph' }, { type: '/paragraph' },
-			{ type: 'paragraph' }, '1', '2', '3', '4', '5', '6', { type: '/paragraph' },
+			{ type: 'paragraph' }, ...'123456', { type: '/paragraph' },
 			{ type: 'internalList' }, { type: '/internalList' }
 		]
 	);
@@ -283,7 +283,7 @@ QUnit.test( 'multi-user undo', ( assert ) => {
 	assert.equalLinearData(
 		surfaces[ 1 ].getDocument().getData(),
 		[
-			{ type: 'paragraph' }, 'f', 'o', 'o', 'b', 'a', 'r', { type: '/paragraph' },
+			{ type: 'paragraph' }, ...'foobar', { type: '/paragraph' },
 			{ type: 'paragraph' }, { type: '/paragraph' },
 			{ type: 'internalList' }, { type: '/internalList' }
 		]
@@ -432,9 +432,9 @@ QUnit.test( 'staging', ( assert ) => {
 
 QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFromSourceOffsets', ( assert ) => {
 	const surface = new ve.dm.SurfaceStub( [
-			{ type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' },
-			{ type: 'paragraph' }, 'b', 'a', { type: '/paragraph' },
-			{ type: 'paragraph' }, 'q', 'u', 'u', 'x', { type: '/paragraph' },
+			{ type: 'paragraph' }, ...'Foo', { type: '/paragraph' },
+			{ type: 'paragraph' }, ...'ba', { type: '/paragraph' },
+			{ type: 'paragraph' }, ...'Quux', { type: '/paragraph' },
 			{ type: 'internalList' }, { type: '/internalList' }
 		] ),
 		expectedOffsets = [

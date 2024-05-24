@@ -15,19 +15,19 @@ QUnit.test( 'translateOffset', ( assert ) => {
 	const b = [ ve.dm.example.boldHash ];
 
 	const tx = new ve.dm.Transaction( [
-		{ type: 'replace', remove: [], insert: [ 'a', 'b', 'c' ] },
+		{ type: 'replace', remove: [], insert: [ ...'abc' ] },
 		{ type: 'retain', length: 5 },
-		{ type: 'replace', remove: [ 'd', 'e', 'f', 'g' ], insert: [] },
+		{ type: 'replace', remove: [ ...'defg' ], insert: [] },
 		{ type: 'retain', length: 3 },
-		{ type: 'replace', remove: [ 'h' ], insert: [ 'i', 'j', 'k', 'l', 'm' ] },
+		{ type: 'replace', remove: [ 'h' ], insert: [ ...'ijklm' ] },
 		{ type: 'retain', length: 2 },
-		{ type: 'replace', remove: [], insert: [ 'n', 'o', 'p' ] },
+		{ type: 'replace', remove: [], insert: [ ...'nop' ] },
 		{ type: 'retain', length: 2 },
-		{ type: 'replace', remove: [ 'o', 'k' ], insert: [ [ 'o', b ], [ 'k', b ] ] },
+		{ type: 'replace', remove: [ ...'ok' ], insert: [ [ 'o', b ], [ 'k', b ] ] },
 		{ type: 'retain', length: 2 },
-		{ type: 'replace', remove: [ 'n', 'o', 'n' ], insert: [ [ 'n', b ], [ 'o', b ] ] },
+		{ type: 'replace', remove: [ ...'non' ], insert: [ [ 'n', b ], [ 'o', b ] ] },
 		{ type: 'retain', length: 2 },
-		{ type: 'replace', remove: [ 'h', 'i' ], insert: [ [ 'l', b ], [ 'o', b ] ] }
+		{ type: 'replace', remove: [ ...'hi' ], insert: [ [ 'l', b ], [ 'o', b ] ] }
 	] );
 
 	const mapping = {
@@ -125,7 +125,7 @@ QUnit.test( 'getModifiedRange', ( assert ) => {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplacement', doc, 5, 0, [ 'a', 'b', 'c' ] ],
+					[ 'pushReplacement', doc, 5, 0, [ ...'abc' ] ],
 					[ 'pushRetain', 42 ]
 				],
 				range: new ve.Range( 5, 8 ),
@@ -143,7 +143,7 @@ QUnit.test( 'getModifiedRange', ( assert ) => {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplacement', doc, 5, 3, [ 'a', 'b', 'c', 'd' ] ],
+					[ 'pushReplacement', doc, 5, 3, [ ...'abcd' ] ],
 					[ 'pushRetain', 42 ]
 				],
 				range: new ve.Range( 5, 9 ),
@@ -152,7 +152,7 @@ QUnit.test( 'getModifiedRange', ( assert ) => {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplacement', doc, 5, 13, [ 'a', 'b', 'c', 'd' ] ],
+					[ 'pushReplacement', doc, 5, 13, [ ...'abcd' ] ],
 					[ 'pushRetain', 42 ]
 				],
 				range: new ve.Range( 5, 9 ),
@@ -163,7 +163,7 @@ QUnit.test( 'getModifiedRange', ( assert ) => {
 					[ 'pushRetain', 5 ],
 					[ 'pushReplacement', doc, 5, 3, [] ],
 					[ 'pushRetain', 42 ],
-					[ 'pushReplacement', doc, 50, 0, [ 'h', 'e', 'l', 'l', 'o' ] ],
+					[ 'pushReplacement', doc, 50, 0, [ ...'hello' ] ],
 					[ 'pushRetain', 108 ]
 				],
 				range: new ve.Range( 5, 52 ),
@@ -172,9 +172,9 @@ QUnit.test( 'getModifiedRange', ( assert ) => {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplacement', doc, 5, 3, [ 'a', 'b', 'c', 'd' ] ],
+					[ 'pushReplacement', doc, 5, 3, [ ...'abcd' ] ],
 					[ 'pushRetain', 54 ],
-					[ 'pushReplacement', doc, 62, 0, [ 'h', 'e', 'l', 'l', 'o' ] ],
+					[ 'pushReplacement', doc, 62, 0, [ ...'hello' ] ],
 					[ 'pushRetain', 1 ]
 				],
 				range: new ve.Range( 5, 9 ),
@@ -189,7 +189,7 @@ QUnit.test( 'getModifiedRange', ( assert ) => {
 			},
 			{
 				calls: [
-					[ 'pushReplacement', doc, 0, 0, [ 'a', 'b', 'c' ] ]
+					[ 'pushReplacement', doc, 0, 0, [ ...'abc' ] ]
 				],
 				range: new ve.Range( 0, 3 ),
 				msg: 'insertion without retains'
