@@ -6,7 +6,9 @@
 
 .ve-ui-findAndReplaceDialog {
 	&-row {
-		display: table;
+		display: flex;
+		align-items: center;
+		column-gap: 1em;
 		min-width: 30em;
 		padding-bottom: 0.3em;
 
@@ -17,17 +19,11 @@
 	}
 
 	&-cell {
-		display: table-cell;
-		vertical-align: middle;
-		white-space: nowrap;
-		padding-right: 1em;
-
-		&:last-child {
-			padding-right: 0;
-		}
+		margin: 0;
 
 		&-input {
-			width: 100%;
+			flex-grow: 1;
+			flex-basis: 0;
 
 			.oo-ui-textInputWidget {
 				max-width: none;
