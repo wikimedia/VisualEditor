@@ -12,15 +12,15 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [fixedRatio=true] Object has a fixed aspect ratio
- * @cfg {Object} [currentDimensions] Current dimensions, width & height
- * @cfg {Object} [originalDimensions] Original dimensions, width & height
- * @cfg {Object} [defaultDimensions] Default dimensions, width & height
- * @cfg {boolean} [isDefault] Object is using its default dimensions
- * @cfg {Object} [minDimensions] Minimum dimensions, width & height
- * @cfg {Object} [maxDimensions] Maximum dimensions, width & height
- * @cfg {boolean} [enforceMin=true] Enforce the minimum dimensions
- * @cfg {boolean} [enforceMax=true] Enforce the maximum dimensions
+ * @param {boolean} [config.fixedRatio=true] Object has a fixed aspect ratio
+ * @param {Object} [config.currentDimensions] Current dimensions, width & height
+ * @param {Object} [config.originalDimensions] Original dimensions, width & height
+ * @param {Object} [config.defaultDimensions] Default dimensions, width & height
+ * @param {boolean} [config.isDefault] Object is using its default dimensions
+ * @param {Object} [config.minDimensions] Minimum dimensions, width & height
+ * @param {Object} [config.maxDimensions] Maximum dimensions, width & height
+ * @param {boolean} [config.enforceMin=true] Enforce the minimum dimensions
+ * @param {boolean} [config.enforceMax=true] Enforce the maximum dimensions
  */
 ve.dm.Scalable = function VeDmScalable( config ) {
 	config = ve.extendObject( {

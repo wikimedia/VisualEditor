@@ -14,12 +14,12 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {Object} [toolbarConfig={}] Configuration options for the toolbar
- * @cfg {Object} [toolbarGroups] Toolbar groups, defaults to this.constructor.static.toolbarGroups
- * @cfg {Object} [actionGroups] Toolbar groups, defaults to this.constructor.static.actionGroups
- * @cfg {string[]} [modes] Available editing modes. Defaults to static.modes
- * @cfg {string} [defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
- * @cfg {boolean} [register=true] Register the target at ve.init.target
+ * @param {Object} [config.toolbarConfig={}] Configuration options for the toolbar
+ * @param {Object} [config.toolbarGroups] Toolbar groups, defaults to this.constructor.static.toolbarGroups
+ * @param {Object} [config.actionGroups] Toolbar groups, defaults to this.constructor.static.actionGroups
+ * @param {string[]} [config.modes] Available editing modes. Defaults to static.modes
+ * @param {string} [config.defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
+ * @param {boolean} [register=true] Register the target at ve.init.target
  */
 ve.init.Target = function VeInitTarget( config ) {
 	config = config || {};

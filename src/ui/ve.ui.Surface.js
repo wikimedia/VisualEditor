@@ -15,24 +15,24 @@
  * @param {ve.init.Target} target Target the surface belongs to
  * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.Document|ve.dm.Surface} dataOrDocOrSurface Document data, document model, or surface model to edit
  * @param {Object} [config] Configuration options
- * @cfg {ve.dm.BranchNode} [attachedRoot] Node to surface, if ve.dm.Document passed in
- * @cfg {string} mode Editing mode, either "visual" or "source"
- * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
- * @cfg {jQuery} [$scrollListener] The scroll listener of the surface
- * @cfg {jQuery} [$overlayContainer] Clipping container for local overlays, defaults to surface view
- * @cfg {number} [overlayPadding] Padding beween local overlays and clipping container
- * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
- * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
- * @cfg {ve.ui.DataTransferHandlerFactory} [dataTransferHandlerFactory] Data transfer handler factory to use
- * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
- * @cfg {string[]} [excludeCommands] List of commands to exclude
- * @cfg {Object} [importRules={}] Import rules
- * @cfg {boolean} [multiline=true] Multi-line surface
- * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
- * @cfg {string} [readOnly=false] Surface is read-only
- * @cfg {string} [nullSelectionOnBlur=true] Surface selection is set to null on blur
- * @cfg {string} [inDialog=''] The name of the dialog this surface is in
- * @cfg {boolean} [inTargetWidget=false] The surface is in a target widget
+ * @param {ve.dm.BranchNode} [config.attachedRoot] Node to surface, if ve.dm.Document passed in
+ * @param {string} config.mode Editing mode, either "visual" or "source"
+ * @param {jQuery} [config.$scrollContainer] The scroll container of the surface
+ * @param {jQuery} [config.$scrollListener] The scroll listener of the surface
+ * @param {jQuery} [config.$overlayContainer] Clipping container for local overlays, defaults to surface view
+ * @param {number} [config.overlayPadding] Padding beween local overlays and clipping container
+ * @param {ve.ui.CommandRegistry} [config.commandRegistry] Command registry to use
+ * @param {ve.ui.SequenceRegistry} [config.sequenceRegistry] Sequence registry to use
+ * @param {ve.ui.DataTransferHandlerFactory} [config.dataTransferHandlerFactory] Data transfer handler factory to use
+ * @param {string[]|null} [config.includeCommands] List of commands to include, null for all registered commands
+ * @param {string[]} [config.excludeCommands] List of commands to exclude
+ * @param {Object} [config.importRules={}] Import rules
+ * @param {boolean} [config.multiline=true] Multi-line surface
+ * @param {string} [config.placeholder] Placeholder text to display when the surface is empty
+ * @param {string} [config.readOnly=false] Surface is read-only
+ * @param {string} [config.nullSelectionOnBlur=true] Surface selection is set to null on blur
+ * @param {string} [config.inDialog=''] The name of the dialog this surface is in
+ * @param {boolean} [config.inTargetWidget=false] The surface is in a target widget
  */
 ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 	config = config || {};

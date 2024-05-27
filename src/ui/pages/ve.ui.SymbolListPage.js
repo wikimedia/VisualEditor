@@ -14,9 +14,9 @@
  * @constructor
  * @param {string} name Unique symbolic name of page
  * @param {Object} [config] Configuration options
- * @cfg {string} [label] Group label
- * @cfg {Object} [symbols] Symbol set
- * @cfg {Object} [attributes] Extra attributes for the group, e.g. `lang` & `dir`
+ * @param {string} [config.label] Group label
+ * @param {Object} [config.symbols] Symbol set
+ * @param {Object} [config.attributes] Extra attributes for the group, e.g. `lang` & `dir`
  */
 ve.ui.SymbolListPage = function VeUiSymbolListPage( name, config ) {
 	// Parent constructor

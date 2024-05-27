@@ -12,8 +12,8 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [valueAndWhitespace=''] Initial value and whitespace
- * @cfg {number} [limit] Maximum number of characters to preserve at each end
+ * @param {string} [config.valueAndWhitespace=''] Initial value and whitespace
+ * @param {number} [config.limit] Maximum number of characters to preserve at each end
  */
 ve.ui.WhitespacePreservingTextInputWidget = function VeUiWhitespacePreservingTextInputWidget( config ) {
 	// Configuration

@@ -17,8 +17,8 @@
  * @param {ve.dm.Surface} surface Surface model to synchronize
  * @param {string} documentId Document ID
  * @param {Object} [config] Configuration options
- * @cfg {string} [server] IO server
- * @cfg {string} [defaultName] Default username
+ * @param {string} [config.server] IO server
+ * @param {string} [config.defaultName] Default username
  */
 ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentId, config ) {
 	config = config || {};

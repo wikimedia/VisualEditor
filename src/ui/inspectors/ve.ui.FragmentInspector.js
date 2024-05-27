@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [padded=true] Inspector form area has padding,
+ * @param {boolean} [config.padded=true] Inspector form area has padding,
  *      set to false for edge-to-edge layouts, e.g. IndexLayout
  */
 ve.ui.FragmentInspector = function VeUiFragmentInspector( config ) {

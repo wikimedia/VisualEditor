@@ -12,7 +12,7 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {ve.ui.Overlay} [overlay] Overlay to use for menus
+ * @param {ve.ui.Overlay} [config.overlay] Overlay to use for menus
  */
 ve.ui.WindowManager = function VeUiWindowManager( config ) {
 	// Configuration initialization

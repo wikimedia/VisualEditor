@@ -13,7 +13,7 @@
  * @constructor
  * @param {ve.ui.Surface} surface Surface this belongs to
  * @param {Object} [config] Configuration options
- * @cfg {ve.ui.Overlay} [overlay] Overlay to use for menus
+ * @param {ve.ui.Overlay} [config.overlay] Overlay to use for menus
  */
 ve.ui.SurfaceWindowManager = function VeUiSurfaceWindowManager( surface, config ) {
 	// Properties

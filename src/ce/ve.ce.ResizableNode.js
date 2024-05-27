@@ -13,10 +13,10 @@
  * @constructor
  * @param {jQuery} [$resizable=this.$element] Resizable DOM element
  * @param {Object} [config] Configuration options
- * @cfg {number|null} [snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
- * @cfg {boolean} [outline=false] Resize using an outline of the element only, don't live preview.
- * @cfg {boolean} [showSizeLabel=true] Show a label with the current dimensions while resizing
- * @cfg {boolean} [showScaleLabel=true] Show a label with the current scale while resizing
+ * @param {number|null} [config.snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
+ * @param {boolean} [config.outline=false] Resize using an outline of the element only, don't live preview.
+ * @param {boolean} [config.showSizeLabel=true] Show a label with the current dimensions while resizing
+ * @param {boolean} [config.showScaleLabel=true] Show a label with the current scale while resizing
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	config = config || {};

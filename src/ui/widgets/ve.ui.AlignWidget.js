@@ -12,7 +12,7 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [dir='ltr'] Interface directionality
+ * @param {string} [config.dir='ltr'] Interface directionality
  */
 ve.ui.AlignWidget = function VeUiAlignWidget( config ) {
 	config = config || {};

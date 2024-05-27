@@ -13,9 +13,9 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {Object} [defaults] Default dimensions
- * @cfg {Object} [validate] Validation pattern passed to TextInputWidgets
- * @cfg {boolean} [readOnly=false] Prevent changes to the value of the widget.
+ * @param {Object} [config.defaults] Default dimensions
+ * @param {Object} [config.validate] Validation pattern passed to TextInputWidgets
+ * @param {boolean} [config.readOnly=false] Prevent changes to the value of the widget.
  */
 ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	// Configuration

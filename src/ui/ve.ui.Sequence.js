@@ -18,14 +18,14 @@
  * @param {number} [strip=0] Number of data elements to strip after execution
  *         (from the right)
  * @param {Object} [config] [description]
- * @cfg {boolean} [setSelection=false] Whether to set the selection to the
+ * @param {boolean} [config.setSelection=false] Whether to set the selection to the
  *       range matching the sequence before executing the command.
- * @cfg {boolean} [delayed=false] Whether to wait for the user to stop typing matching content
+ * @param {boolean} [config.delayed=false] Whether to wait for the user to stop typing matching content
  *       before executing the command. When the sequence matches typed text, it will not be executed
  *       immediately, but only after more non-matching text is added afterwards or the selection is
  *       changed. This is useful for variable-length sequences (defined with RegExps).
- * @cfg {boolean} [checkOnPaste=false] Whether the sequence should also be matched after paste.
- * @cfg {boolean} [checkOnDelete=false] Whether the sequence should also be matched after delete.
+ * @param {boolean} [config.checkOnPaste=false] Whether the sequence should also be matched after paste.
+ * @param {boolean} [config.checkOnDelete=false] Whether the sequence should also be matched after delete.
  */
 ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, config ) {
 	this.name = name;

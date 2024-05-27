@@ -15,7 +15,7 @@
  * @constructor
  * @param {ve.dm.Node} [model] Model from which to create a preview
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [useView=false] Use the view HTML, and don't bother generating model HTML, which
+ * @param {boolean} [config.useView=false] Use the view HTML, and don't bother generating model HTML, which
  *  is a bit slower
  */
 ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {

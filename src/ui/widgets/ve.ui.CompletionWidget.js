@@ -13,8 +13,8 @@
  * @constructor
  * @param {ve.ui.Surface} surface Surface to complete into
  * @param {Object} [config] Configuration options
- * @cfg {Object} [validate] Validation pattern passed to TextInputWidgets
- * @cfg {boolean} [readOnly=false] Prevent changes to the value of the widget.
+ * @param {Object} [config.validate] Validation pattern passed to TextInputWidgets
+ * @param {boolean} [config.readOnly=false] Prevent changes to the value of the widget.
  */
 ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 	this.surface = surface;

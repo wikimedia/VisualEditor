@@ -13,7 +13,7 @@
  * @constructor
  * @param {ve.init.Target} target
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [floatable] Toolbar can float when scrolled off the page
+ * @param {boolean} [config.floatable] Toolbar can float when scrolled off the page
  */
 ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, config ) {
 	config = config || {};

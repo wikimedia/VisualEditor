@@ -26,7 +26,7 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
+ * @param {Object} [config.toolbarConfig] Configuration options for the toolbar
  */
 ve.init.sa.Target = function VeInitSaTarget( config ) {
 	config = config || {};

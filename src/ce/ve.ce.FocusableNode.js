@@ -23,9 +23,9 @@
  * @constructor
  * @param {jQuery} [$focusable=this.$element] Primary element user is focusing on
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$bounding=$focusable] Element to consider for bounding box calculations (e.g.
+ * @param {jQuery} [config.$bounding=$focusable] Element to consider for bounding box calculations (e.g.
  *   attaching inspectors)
- * @cfg {string[]} [classes] CSS classes to be added to the highlight container
+ * @param {string[]} [config.classes] CSS classes to be added to the highlight container
  */
 ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 	config = config || {};

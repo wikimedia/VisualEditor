@@ -12,15 +12,15 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [dirInput='auto'] How to display the directionality input. Options are:
+ * @param {string} [config.dirInput='auto'] How to display the directionality input. Options are:
  *      - none: Directionality input is hidden.
  *      - no-auto: Directionality input is visible and options are LTR or RTL.
  *      - auto: Directionality input is visible and options include "auto" in
  *            addition to LTR and RTL.
- * @cfg {boolean} [readOnly=false] Prevent changes to the value of the input.
- * @cfg {boolean} [hideCodeInput] Prevent user from entering a language code as free text
- * @cfg {ve.ui.WindowManager} [dialogManager] Window manager to launch the language search dialog in
- * @cfg {string[]} [availableLanguages] Available language codes to show in search dialog
+ * @param {boolean} [config.readOnly=false] Prevent changes to the value of the input.
+ * @param {boolean} [config.hideCodeInput] Prevent user from entering a language code as free text
+ * @param {ve.ui.WindowManager} [config.dialogManager] Window manager to launch the language search dialog in
+ * @param {string[]} [config.availableLanguages] Available language codes to show in search dialog
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	// Configuration initialization

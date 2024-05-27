@@ -13,8 +13,8 @@
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$popupContainer] Clipping container for context popup
- * @cfg {number} [popupPadding=10] Padding between popup and $popupContainer, can be negative
+ * @param {jQuery} [config.$popupContainer] Clipping container for context popup
+ * @param {number} [config.popupPadding=10] Padding between popup and $popupContainer, can be negative
  */
 ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	config = config || {};

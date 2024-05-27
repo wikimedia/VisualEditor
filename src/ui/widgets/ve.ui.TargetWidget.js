@@ -17,17 +17,17 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {ve.dm.Document} [doc] Initial document model
- * @cfg {Object} [modes] Available editing modes.
- * @cfg {Object} [defaultMode] Default mode for new surfaces.
- * @cfg {Object} [toolbarGroups] Target's toolbar groups config.
- * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
- * @cfg {string[]} [excludeCommands] List of commands to exclude
- * @cfg {Object} [importRules] Import rules
- * @cfg {boolean} [multiline=true] Multi-line surface
- * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
- * @cfg {boolean} [readOnly] Surface is read-only
- * @cfg {string} [inDialog] The name of the dialog this surface widget is in
+ * @param {ve.dm.Document} [config.doc] Initial document model
+ * @param {Object} [config.modes] Available editing modes.
+ * @param {Object} [config.defaultMode] Default mode for new surfaces.
+ * @param {Object} [config.toolbarGroups] Target's toolbar groups config.
+ * @param {string[]|null} [config.includeCommands] List of commands to include, null for all registered commands
+ * @param {string[]} [config.excludeCommands] List of commands to exclude
+ * @param {Object} [config.importRules] Import rules
+ * @param {boolean} [config.multiline=true] Multi-line surface
+ * @param {string} [config.placeholder] Placeholder text to display when the surface is empty
+ * @param {boolean} [config.readOnly] Surface is read-only
+ * @param {string} [config.inDialog] The name of the dialog this surface widget is in
  */
 ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	// Config initialization
