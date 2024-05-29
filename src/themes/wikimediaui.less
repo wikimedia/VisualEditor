@@ -4,28 +4,30 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 /* ve.ui.TargetWidget */
 
 .ve-ui-targetWidget {
-	border: 1px solid #a2a9b1;
-	border-radius: 2px;
-	transition: border-color 250ms, box-shadow 250ms;
+	border: @border-base;
+	border-radius: @border-radius-base;
+	transition: border-color @transition-duration-medium, box-shadow @transition-duration-medium;
 
 	> :last-child {
 		border-bottom: 0;
 	}
 
 	&-focused {
-		border-color: #36c;
-		box-shadow: inset 0 0 0 1px #36c;
+		border-color: @border-color-progressive;
+		box-shadow: @box-shadow-inset-small @box-shadow-color-progressive--focus;
 	}
 
 	&:not( .oo-ui-pendingElement-pending ) {
-		background: #fff;
+		background: @background-color-base;
 	}
 
 	&-readOnly:not( .oo-ui-pendingElement-pending ) {
-		background: #f8f9fa;
+		background: @background-color-neutral-subtle;
 	}
 
 	.ve-ui-targetToolbar:not( .ve-ui-toolbar-empty ) {
