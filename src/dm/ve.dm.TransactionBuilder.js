@@ -811,7 +811,8 @@ ve.dm.TransactionBuilder.prototype.pushReplacement = function ( doc, offset, rem
 			!ve.dm.nodeFactory.isRemovableMetaData( type );
 	} );
 	if ( removeLength === collapse.length && insert.length === 0 ) {
-		// Don't push no-ops
+		// Push retain instead of no-op replace
+		this.pushRetain( collapse.length );
 		return;
 	}
 

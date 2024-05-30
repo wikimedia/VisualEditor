@@ -449,6 +449,32 @@ QUnit.test( 'delete', ( assert ) => {
 			},
 			expectedRange: new ve.Range( 1 ),
 			msg: 'Delete all when document starts and ends with a focusable node'
+		},
+		{
+			html: '<p>foo</p><meta><p>bar</p>',
+			range: new ve.Range( 3, 9 ),
+			directionAfterRemove: -1,
+			expectedData: function ( data ) {
+				const meta = data.slice( 5, 7 );
+				data.splice( 3, 6 );
+				data.splice( 0, 0, ...meta );
+			},
+			expectedRange: new ve.Range( 5 ),
+			msg: 'Partial removal across meta (p -> p)'
+		},
+		{
+			html: '<h2>foo</h2><meta><p>bar</p>',
+			range: new ve.Range( 3, 9 ),
+			directionAfterRemove: -1,
+			expectedData: function ( data ) {
+				const meta = data.slice( 5, 7 );
+				const ar = data.slice( 9, 11 );
+				data.splice( 5, 7 );
+				data.splice( 3, 1, ...ar );
+				data.splice( 6, 0, ...meta );
+			},
+			expectedRange: new ve.Range( 3 ),
+			msg: 'Partial removal across meta (h2 -> p)'
 		}
 	];
 
