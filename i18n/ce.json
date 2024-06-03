@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
+			"Исмаил Садуев",
 			"Умар"
 		]
 	},
@@ -49,7 +50,7 @@
 	"visualeditor-content-select-all": "Билгалйе массо",
 	"visualeditor-contextitemwidget-label-close": "ДӀачӀагӀа",
 	"visualeditor-contextitemwidget-label-remove": "ДӀайаккха",
-	"visualeditor-contextitemwidget-label-secondary": "Нисйе",
+	"visualeditor-contextitemwidget-label-secondary": "Нисйан",
 	"visualeditor-contextitemwidget-label-view": "Хьажар",
 	"visualeditor-debugbar-close": "ДӀачӀагӀа",
 	"visualeditor-debugbar-showmodel": "Гайта модель",
