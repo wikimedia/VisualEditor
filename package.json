@@ -23,8 +23,8 @@
 		}
 	],
 	"devDependencies": {
-		"eslint-config-wikimedia": "0.27.0",
-		"eslint-plugin-html": "7.1.0",
+		"eslint-config-wikimedia": "0.28.0",
+		"eslint-plugin-html": "8.1.1",
 		"fast-glob": "3.3.2",
 		"grunt": "1.6.1",
 		"grunt-banana-checker": "0.13.0",
@@ -37,7 +37,7 @@
 		"grunt-cssjanus": "1.0.0",
 		"grunt-eslint": "24.3.0",
 		"grunt-karma": "4.0.2",
-		"grunt-stylelint": "0.19.0",
+		"grunt-stylelint": "0.20.0",
 		"grunt-tyops": "0.1.1",
 		"jsdoc": "4.0.2",
 		"jsdoc-class-hierarchy": "1.1.2",
@@ -50,7 +50,7 @@
 		"karma-qunit": "4.1.2",
 		"qunit": "2.20.0",
 		"stringify-object": "3.3.0",
-		"stylelint-config-wikimedia": "0.16.1",
+		"stylelint-config-wikimedia": "0.17.0",
 		"svgo": "3.2.0"
 	}
 }
