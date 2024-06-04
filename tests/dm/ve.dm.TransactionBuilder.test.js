@@ -2120,8 +2120,8 @@ QUnit.test( 'newFromRemoval preserving metadata', ( assert ) => {
 		const doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.html ) );
 		const tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, caseItem.range );
 		assert.deepEqual(
-			caseItem.ops,
 			removeBoringProperties( tx.operations ),
+			caseItem.ops,
 			caseItem.msg
 		);
 	} );
