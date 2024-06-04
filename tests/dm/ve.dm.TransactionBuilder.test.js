@@ -1925,7 +1925,7 @@ QUnit.test( 'isNoOp', ( assert ) => {
 } );
 
 QUnit.test( 'operations/build from operations', ( assert ) => {
-	const tBSstatic = ve.dm.TransactionBuilder.static,
+	const TBstatic = ve.dm.TransactionBuilder.static,
 		doc = ve.dm.example.createExampleDocument(),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
 		cases = [
@@ -1995,11 +1995,11 @@ QUnit.test( 'operations/build from operations', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		let tx = tBSstatic[ caseItem.method ].apply( tBSstatic, caseItem.args );
+		let tx = TBstatic[ caseItem.method ].apply( TBstatic, caseItem.args );
 		const ops = ve.copy( tx.operations );
 		assert.deepEqual( ops, caseItem.expected, caseItem.msg + ': operations' );
 		if ( caseItem.roundTripArgs ) {
-			tx = tBSstatic[ caseItem.method ].apply( tBSstatic, caseItem.roundTripArgs );
+			tx = TBstatic[ caseItem.method ].apply( TBstatic, caseItem.roundTripArgs );
 		}
 		assert.deepEqual( new ve.dm.Transaction( ops ), tx, caseItem.msg + ': build from operations' );
 	} );
