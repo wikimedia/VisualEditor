@@ -363,7 +363,7 @@ module.exports = function ( grunt ) {
 				reportNeedlessDisables: true
 			},
 			all: fg.globSync( [
-				'**/*.css',
+				'**/*.{css,less}',
 				'!lib/**',
 				'!**/{coverage,dist,docs,node_modules}/**'
 			] )
