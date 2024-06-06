@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			555,
 			"Cainamarques",
 			"Dianakc",
 			"Diegobiavati",
@@ -22,8 +23,7 @@
 			"TheEduGobi",
 			"TheGabrielZaum",
 			"Trigonometria87",
-			"Walesson",
-			555
+			"Walesson"
 		]
 	},
 	"visualeditor": "Editor visual",
