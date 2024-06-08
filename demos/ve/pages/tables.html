@@ -113,19 +113,22 @@
 
 <table>
 	<tr>
-		<td>A</td><td>B</td><td>C</td><td>D</td>
+		<td>A</td><td>B</td><td>C</td><td rel="ve:Alien" rowspan="2">Alien with rowspan</td>
 	</tr>
 	<tr>
-		<td>E</td><td rel="ve:Alien">F</td><td rel="ve:Alien">G</td><td>H</td>
+		<td>E</td><td rel="ve:Alien">Alien 1</td><td rel="ve:Alien">Alien 2</td>
 	</tr>
 	<tr rel="ve:Alien">
-		<td>I</td><td>J</td><td>K</td><td>L</td>
-	</tr>
-	<tr rel="ve:Alien">
-		<td rel="ve:Alien" colspan="4">One alien</td>
+		<td>Table</td><td>row</td><td>is an</td><td>alien</td>
 	</tr>
 	<tr>
-		<td>M</td><td colspan="2" rel="ve:Alien">N, O</td><td>P</td>
+		<td rel="ve:Alien" colspan="4">Row-spanning alien cell</td>
+	</tr>
+	<tr>
+		<td>M</td><td colspan="2" rel="ve:Alien">Alien with colspan</td><td>P</td>
+	</tr>
+	<tr>
+		<td>Q</td><td rel="ve:Alien" about="#group1">About-grouped</td><td rel="ve:Alien" about="#group1">alien cells</td><td>T</td>
 	</tr>
 </table>
 
