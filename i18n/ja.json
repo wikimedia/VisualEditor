@@ -80,6 +80,7 @@
 	"visualeditor-clipboard-cut": "切り取り",
 	"visualeditor-clipboard-paste": "貼り付け",
 	"visualeditor-clipboard-paste-special": "プレーンテキストとして貼り付け",
+	"visualeditor-collab-user-placeholder": "利用者 $1",
 	"visualeditor-command-dialog-cancel": "閉じる / 変更を破棄",
 	"visualeditor-command-dialog-confirm": "変更を確認",
 	"visualeditor-command-dialog-focus-context": "コンテキスト・ポップアップにカーソルを移動",
