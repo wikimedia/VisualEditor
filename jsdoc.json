@@ -13,12 +13,7 @@
 		}
 	},
 	"plugins": [
-		"plugins/markdown",
-		"node_modules/jsdoc-wmf-theme/plugins/allow-dots-in-modules",
-		"node_modules/jsdoc-wmf-theme/plugins/betterlinks",
-		"node_modules/jsdoc-wmf-theme/plugins/externals",
-		"node_modules/jsdoc-wmf-theme/plugins/summarize",
-		"node_modules/jsdoc-class-hierarchy"
+		"node_modules/jsdoc-wmf-theme/plugins/default"
 	],
 	"source": {
 		"include": [ "src", "rebaser/src" ]
@@ -31,33 +26,9 @@
 		"wmf": {
 			"maintitle": "VisualEditor",
 			"repository": "https://gerrit.wikimedia.org/g/VisualEditor/VisualEditor/",
-			"prefixMap": {
-				"OO.ui.": "https://doc.wikimedia.org/oojs-ui/master/js/{type}.html",
-				"OO.": "https://doc.wikimedia.org/oojs/master/{type}.html"
-			},
 			"linkMap": {
-				"Array": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
-				"Error": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
-				"Object": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
-				"Promise": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
-				"Set": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
-
 				"OO.ui.debounce": "https://doc.wikimedia.org/oojs-ui/master/js/OO.ui.html#.debounce",
 				"OO.ui.throttle": "https://doc.wikimedia.org/oojs-ui/master/js/OO.ui.html#.throttle",
-
-				"Blob": "https://developer.mozilla.org/en-US/docs/Web/API/Blob",
-				"DataTransfer": "https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer",
-				"DataTransferItem": "https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem",
-				"Event": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
-				"HTMLDocument": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument",
-				"HTMLElement": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement",
-				"MutationRecord": "https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord",
-				"Node": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
-				"NodeList": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
-				"Range": "https://developer.mozilla.org/en-US/docs/Web/API/Range",
-				"Selection": "https://developer.mozilla.org/en-US/docs/Web/API/Selection",
-				"Storage": "https://developer.mozilla.org/en-US/docs/Web/API/Storage",
-				"Text": "https://developer.mozilla.org/en-US/docs/Web/API/Text",
 
 				"Qunit.Assert": "https://qunitjs.com/api/assert/",
 
@@ -66,12 +37,7 @@
 				"treeDiffer.Tree": "https://github.com/Tchanders/treeDiffer.js/blob/master/src/treeDiffer.Tree.js",
 				"treeDiffer.TreeNode": "https://github.com/Tchanders/treeDiffer.js/blob/master/src/treeDiffer.TreeNode.js",
 
-				"diff_match_patch": "https://github.com/edg2s/google-diff-match-patch/blob/master/javascript/diff_match_patch_uncompressed.js",
-
-				"jQuery": "http://api.jquery.com/",
-				"jQuery.Deferred": "http://api.jquery.com/jQuery.Deferred/",
-				"jQuery.Event": "http://api.jquery.com/Types/#Event",
-				"jQuery.Promise": "http://api.jquery.com/Types/#Promise"
+				"diff_match_patch": "https://github.com/edg2s/google-diff-match-patch/blob/master/javascript/diff_match_patch_uncompressed.js"
 			}
 		}
 	}
