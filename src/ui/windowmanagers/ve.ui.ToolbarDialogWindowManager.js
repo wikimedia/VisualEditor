@@ -54,7 +54,7 @@ ve.ui.ToolbarDialogWindowManager.prototype.getTeardownDelay = function () {
 /**
  * Get an object describing the amount of padding the toolbar dialog adds to the surface.
  *
- * @return {null|Object} Padding object, or null
+ * @return {ve.ui.Surface.Padding|null} Padding object
  */
 ve.ui.ToolbarDialogWindowManager.prototype.getSurfacePadding = function () {
 	const currentWindow = this.getCurrentWindow();

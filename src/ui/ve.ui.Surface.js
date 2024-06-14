@@ -368,7 +368,7 @@ ve.ui.Surface.prototype.getViewportDimensions = function () {
 		return null;
 	}
 
-	const top = Math.max( this.padding.top - rect.top, 0 );
+	const top = Math.max( this.getPadding().top - rect.top, 0 );
 	const bottom = $( this.getElementWindow() ).height() - rect.top;
 
 	return {
@@ -545,7 +545,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 	// We want viewport-relative coordinates, so we need to translate it
 	clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
 
-	const padding = ve.copy( this.padding );
+	const padding = ve.copy( this.getPadding() );
 
 	let animate = true;
 	if ( isNative ) {
@@ -740,19 +740,44 @@ ve.ui.Surface.prototype.setToolbarHeight = function ( toolbarHeight ) {
 };
 
 /**
+ * @typedef {Object} Padding
+ * @memberof ve.ui.Surface
+ * @property {number} [top] Top padding
+ * @property {number} [right] Right padding
+ * @property {number} [bottom] Bottom padding
+ * @property {number} [left] Left padding
+ */
+
+/**
  * Set content area padding.
  *
  * When UI components obscure the surface (e.g. the toolbar),
  * set the appropriate amount of padding here so that
  * scroll-into-view calculations can be adjusted.
  *
- * @param {Object} padding Padding object containing top, right, bottom
- *  and/or left values. Omit properties to leave unchanged.
+ * @param {ve.ui.Surface.Padding} padding Padding object. Omit properties to leave unchanged.
  */
 ve.ui.Surface.prototype.setPadding = function ( padding ) {
 	ve.extendObject( this.padding, padding );
 	// Deprecated, use this.padding.top
 	this.toolbarHeight = this.padding.top;
+};
+
+/**
+ * Get the current content area padding
+ *
+ * Padding in this context means areas of the surface which are
+ * rendered but are obsured by some other UI element, e.g. a
+ * floating toolbar (but not a static toolbar).
+ *
+ * This can be used when deciding how to position other floating
+ * UI elements, e.g. to avoid rendering a context menu under
+ * a floating toolbar.
+ *
+ * @return {ve.ui.Surface.Padding}
+ */
+ve.ui.Surface.prototype.getPadding = function () {
+	return this.padding;
 };
 
 /**
@@ -800,10 +825,10 @@ ve.ui.Surface.prototype.adjustVisiblePadding = function () {
 			// iOS needs a whole extra page of padding when the virtual keyboard is shown.
 			// Note: we keep this padding when surface is deactivated-but-shown-as-activated
 			// so that the view doesn't shift when e.g. opening a toolbar toolgroup popup.
-			bottom = $( window ).height() - this.padding.top;
+			bottom = $( window ).height() - this.getPadding().top;
 		} else {
 			// otherwise just add padding to account for the context
-			bottom = this.padding.bottom;
+			bottom = this.getPadding().bottom;
 		}
 		this.getView().$attachedRootNode.css( 'padding-bottom', bottom );
 		this.scrollSelectionIntoView();
