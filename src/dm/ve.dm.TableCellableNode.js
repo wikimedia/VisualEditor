@@ -29,24 +29,53 @@ ve.dm.TableCellableNode.static.isCellable = true;
 
 /* Static Methods */
 
-ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElements ) {
-	const style = domElements[ 0 ].nodeName.toLowerCase() === 'th' ? 'header' : 'data',
-		colspan = domElements[ 0 ].getAttribute( 'colspan' ),
-		rowspan = domElements[ 0 ].getAttribute( 'rowspan' );
+ve.dm.TableCellableNode.static.areNodesCellable = function ( domNodes ) {
+	// We can handle a DM node consisting of multiple table cell DOM elements with identical rowspan
+	// as a table element. Give up on anything else.
+	const cellElems = new Set( [ 'td', 'th' ] );
+	return domNodes.every(
+		( node ) => cellElems.has( node.nodeName.toLowerCase() ) &&
+			node.rowspan === domNodes[ 0 ].rowspan
+	);
+};
 
-	attributes.style = style;
-
-	if ( colspan !== null ) {
-		attributes.originalColspan = colspan;
-		if ( colspan !== '' && !isNaN( Number( colspan ) ) ) {
-			attributes.colspan = Number( colspan );
+ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElements, isAlien ) {
+	if ( isAlien ) {
+		// For alienTableCells, we only need the colspan and rowspan, which
+		// may need to be summed over an about-group (T366984).
+		let colspan = 0, rowspan = 0;
+		Array.prototype.forEach.call( domElements, ( node ) => {
+			const attrs = {};
+			this.setAttributes( attrs, [ node ], false );
+			colspan += attrs.colspan || 1;
+			// TODO: Support a non-rectangular alien group
+			rowspan = Math.max( rowspan, attrs.rowspan || 1 );
+		} );
+		if ( colspan !== 1 ) {
+			attributes.colspan = colspan;
 		}
-	}
+		if ( rowspan !== 1 ) {
+			attributes.rowspan = rowspan;
+		}
+	} else {
+		const style = domElements[ 0 ].nodeName.toLowerCase() === 'th' ? 'header' : 'data';
+		const colspan = domElements[ 0 ].getAttribute( 'colspan' );
+		const rowspan = domElements[ 0 ].getAttribute( 'rowspan' );
 
-	if ( rowspan !== null ) {
-		attributes.originalRowspan = rowspan;
-		if ( rowspan !== '' && !isNaN( Number( rowspan ) ) ) {
-			attributes.rowspan = Number( rowspan );
+		attributes.style = style;
+
+		if ( colspan !== null ) {
+			attributes.originalColspan = colspan;
+			if ( colspan !== '' && !isNaN( Number( colspan ) ) ) {
+				attributes.colspan = Number( colspan );
+			}
+		}
+
+		if ( rowspan !== null ) {
+			attributes.originalRowspan = rowspan;
+			if ( rowspan !== '' && !isNaN( Number( rowspan ) ) ) {
+				attributes.rowspan = Number( rowspan );
+			}
 		}
 	}
 };
@@ -86,7 +115,7 @@ ve.dm.TableCellableNode.static.applyAttributes = function ( attributes, domEleme
  * @return {number} Rows spanned
  */
 ve.dm.TableCellableNode.prototype.getRowspan = function () {
-	return this.element.attributes.rowspan || 1;
+	return this.getAttribute( 'rowspan' ) || 1;
 };
 
 /**
@@ -95,7 +124,7 @@ ve.dm.TableCellableNode.prototype.getRowspan = function () {
  * @return {number} Columns spanned
  */
 ve.dm.TableCellableNode.prototype.getColspan = function () {
-	return this.element.attributes.colspan || 1;
+	return this.getAttribute( 'colspan' ) || 1;
 };
 
 /**
@@ -116,7 +145,7 @@ ve.dm.TableCellableNode.prototype.getSpans = function () {
  * @return {string} Style, 'header' or 'data'
  */
 ve.dm.TableCellableNode.prototype.getStyle = function () {
-	return this.element.attributes.style || 'data';
+	return this.getAttribute( 'style' ) || 'data';
 };
 
 /**

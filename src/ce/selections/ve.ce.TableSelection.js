@@ -48,19 +48,23 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 	let left = Infinity;
 	let right = -Infinity;
 
+	const cellElements = [];
+	nodes.forEach( ( node ) => {
+		cellElements.push( ...node.$element.toArray() );
+	} );
+
 	// Compute a bounding box for the given cell elements
-	for ( let i = 0, l = nodes.length; i < l; i++ ) {
-		const cellNode = nodes[ i ].$element[ 0 ];
-		if ( !cellNode ) {
+	cellElements.forEach( ( cellElement ) => {
+		if ( !cellElement ) {
 			return null;
 		}
-		const cellOffset = cellNode.getBoundingClientRect();
+		const cellOffset = cellElement.getBoundingClientRect();
 
 		top = Math.min( top, cellOffset.top );
 		bottom = Math.max( bottom, cellOffset.bottom );
 		left = Math.min( left, cellOffset.left );
 		right = Math.max( right, cellOffset.right );
-	}
+	} );
 
 	// Browser tweaks to adjust for border-collapse:collapse
 	if ( !ve.test ) {

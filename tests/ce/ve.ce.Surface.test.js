@@ -1877,7 +1877,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								{ type: 'alienTableCell', attributes: { style: 'data' } },
+								{ type: 'alienTableCell' },
 								{ type: '/alienTableCell' }
 							],
 							remove: [
@@ -1914,7 +1914,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							remove: [
-								{ type: 'alienTableCell', attributes: { style: 'data' } },
+								{ type: 'alienTableCell' },
 								{ type: '/alienTableCell' }
 							],
 							insert: [

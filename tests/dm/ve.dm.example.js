@@ -4100,6 +4100,123 @@ ve.dm.example.domToDataCases = {
 			</blockquote>
 			${ ve.dm.example.blockSlug }
 		`
+	},
+	'alien table cells': {
+		body: ve.dm.example.singleLine`
+			<table>
+				<tr>
+					<td>A</td><td>B</td><td>C</td><td rel="ve:Alien" rowspan="2">Alien with rowspan</td>
+				</tr>
+				<tr>
+					<td>E</td><td rel="ve:Alien">Alien 1</td><td rel="ve:Alien">Alien 2</td>
+				</tr>
+				<tr rel="ve:Alien">
+					<td>Table</td><td>row</td><td>is an</td><td>alien</td>
+				</tr>
+				<tr>
+					<td rel="ve:Alien" colspan="4">Row-spanning alien cell</td>
+				</tr>
+				<tr>
+					<td>M</td><td colspan="2" rel="ve:Alien">Alien with colspan</td><td>P</td>
+				</tr>
+				<tr>
+					<td>Q</td><td rel="ve:Alien" about="#group1">About-grouped</td><td rel="ve:Alien" about="#group1">alien cells</td><td>T</td>
+				</tr>
+			</table>
+		`,
+		data: [
+			{ type: 'table' },
+			{ type: 'tableSection', attributes: { style: 'body' } },
+			{ type: 'tableRow' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'A',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'B',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'C',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				type: 'alienTableCell',
+				attributes: { rowspan: 2 },
+				originalDomElements: $.parseHTML( '<td rel="ve:Alien" rowspan="2">Alien with rowspan</td>' ) },
+			{ type: '/alienTableCell' },
+			{ type: '/tableRow' },
+			{ type: 'tableRow' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'E',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				type: 'alienTableCell',
+				originalDomElements: $.parseHTML( '<td rel="ve:Alien">Alien 1</td>' )
+			},
+			{ type: '/alienTableCell' },
+			{
+				type: 'alienTableCell',
+				originalDomElements: $.parseHTML( '<td rel="ve:Alien">Alien 2</td>' )
+			},
+			{ type: '/alienTableCell' },
+			{ type: '/tableRow' },
+			{ type: 'alienBlock', originalDomElements: $.parseHTML( '<tr rel="ve:Alien"><td>Table</td><td>row</td><td>is an</td><td>alien</td></tr>' ) },
+			{ type: '/alienBlock' },
+			{ type: 'tableRow' },
+			{
+				type: 'alienTableCell',
+				attributes: { colspan: 4 },
+				originalDomElements: $.parseHTML( '<td rel="ve:Alien" colspan="4">Row-spanning alien cell</td>' )
+			},
+			{ type: '/alienTableCell' },
+			{ type: '/tableRow' },
+			{ type: 'tableRow' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'M',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				type: 'alienTableCell',
+				attributes: { colspan: 2 },
+				originalDomElements: $.parseHTML( '<td colspan="2" rel="ve:Alien">Alien with colspan</td>' )
+			},
+			{ type: '/alienTableCell' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'P',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{ type: '/tableRow' },
+			{ type: 'tableRow' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'Q',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				type: 'alienTableCell',
+				attributes: { colspan: 2 },
+				originalDomElements: $.parseHTML( '<td rel="ve:Alien" about="#group1">About-grouped</td><td rel="ve:Alien" about="#group1">alien cells</td>' )
+			},
+			{ type: '/alienTableCell' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'T',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{ type: '/tableRow' },
+			{ type: '/tableSection' },
+			{ type: '/table' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
 	}
 };
 

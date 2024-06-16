@@ -32,6 +32,15 @@ OO.mixinClass( ve.ce.AlienTableCellNode, ve.ce.TableCellableNode );
 
 ve.ce.AlienTableCellNode.static.name = 'alienTableCell';
 
+/* Methods */
+
+ve.ce.AlienTableCellNode.prototype.getTagName = function () {
+	// alienTableCells have no style attribute. Give them a table
+	// cell to start with, although it will get overwritten with
+	// originalDomElements.
+	return 'td';
+};
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.AlienTableCellNode );

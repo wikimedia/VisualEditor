@@ -48,13 +48,14 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 
 	if ( this.name !== 'alien' ) {
 		element = { type: this.name };
-	} else if ( domElements.length === 1 && [ 'td', 'th' ].indexOf( domElements[ 0 ].nodeName.toLowerCase() ) !== -1 ) {
+	} else if ( ve.dm.TableCellableNode.static.areNodesCellable( domElements ) ) {
+		element = { type: 'alienTableCell' };
+
 		const attributes = {};
-		ve.dm.TableCellableNode.static.setAttributes( attributes, domElements );
-		element = {
-			type: 'alienTableCell',
-			attributes: attributes
-		};
+		ve.dm.TableCellableNode.static.setAttributes( attributes, domElements, true );
+		if ( !ve.isEmptyObject( attributes ) ) {
+			element.attributes = attributes;
+		}
 	} else {
 		const isInline = this.isHybridInline( domElements, converter );
 		const type = isInline ? 'alienInline' : 'alienBlock';
