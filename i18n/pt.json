@@ -86,6 +86,7 @@
 	"visualeditor-collab-url-mismatch": "O URL da sessão não corresponde a esta página",
 	"visualeditor-collab-url-placeholder": "[URL da sessão]",
 	"visualeditor-collab-url-prompt": "Insira o URL da sessão para entrar nela",
+	"visualeditor-collab-user-placeholder": "Utilizador $1",
 	"visualeditor-command-dialog-cancel": "Fechar/cancelar alteração",
 	"visualeditor-command-dialog-confirm": "Confirmar alteração",
 	"visualeditor-command-dialog-focus-context": "Mover o foco para janela contextual",
