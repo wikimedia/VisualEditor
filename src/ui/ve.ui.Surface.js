@@ -108,10 +108,8 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 		bottom: 0,
 		left: 0
 	};
-	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( this, {
-		factory: ve.ui.windowFactory,
-		modal: false
-	} );
+	// Intiailised on first use
+	this.toolbarDialogs = {};
 
 	// Events
 	this.getModel().connect( this, {
@@ -207,7 +205,9 @@ ve.ui.Surface.prototype.destroy = function () {
 	// Destroy the ce.Surface, the ui.Context and window managers
 	this.context.destroy();
 	this.dialogs.destroy();
-	this.toolbarDialogs.destroy();
+	for ( const side in this.toolbarDialogs ) {
+		this.toolbarDialogs[ side ].destroy();
+	}
 	this.view.destroy();
 	if ( this.debugBar ) {
 		this.debugBar.destroy();
@@ -418,10 +418,17 @@ ve.ui.Surface.prototype.getDialogs = function () {
 /**
  * Get toolbar dialogs window set.
  *
+ * @param {string} [position='side'] Get the toolbar dialogs window set for a specific position
  * @return {ve.ui.WindowManager} Toolbar dialogs window set
  */
-ve.ui.Surface.prototype.getToolbarDialogs = function () {
-	return this.toolbarDialogs;
+ve.ui.Surface.prototype.getToolbarDialogs = function ( position ) {
+	position = position || 'side';
+	this.toolbarDialogs[ position ] = this.toolbarDialogs[ position ] ||
+		new ve.ui.ToolbarDialogWindowManager( this, {
+			factory: ve.ui.windowFactory,
+			modal: false
+		} );
+	return this.toolbarDialogs[ position ];
 };
 
 /**
@@ -658,8 +665,11 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
  * Handle position events from the view
  */
 ve.ui.Surface.prototype.onViewPosition = function () {
-	const padding = this.toolbarDialogs.getSurfacePadding();
-	if ( padding ) {
+	const padding = {};
+	for ( const side in this.toolbarDialogs ) {
+		ve.extendObject( padding, this.toolbarDialogs[ side ].getSurfacePadding() );
+	}
+	if ( Object.keys( padding ).length ) {
 		this.setPadding( padding );
 		this.adjustVisiblePadding();
 		this.scrollSelectionIntoView();

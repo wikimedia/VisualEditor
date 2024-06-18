@@ -48,19 +48,20 @@ OO.inheritClass( ve.ui.PositionedTargetToolbar, ve.ui.TargetToolbar );
  * @inheritdoc
  */
 ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
-	const toolbarDialogs = surface.getToolbarDialogs();
-
 	// Parent method
 	ve.ui.PositionedTargetToolbar.super.prototype.setup.apply( this, arguments );
 
-	if ( this.position === 'bottom' ) {
-		this.$bar.prepend( toolbarDialogs.$element );
-	} else {
-		this.$bar.append( toolbarDialogs.$element );
-	}
-	toolbarDialogs.connect( this, {
-		opening: 'onToolbarDialogsOpeningOrClosing',
-		closing: 'onToolbarDialogsOpeningOrClosing'
+	[ 'above', 'below', 'side', 'inline' ].forEach( ( dialogPosition ) => {
+		const toolbarDialogs = surface.getToolbarDialogs( dialogPosition );
+		if ( this.position === 'bottom' ) {
+			this.$bar.prepend( toolbarDialogs.$element );
+		} else {
+			this.$bar.append( toolbarDialogs.$element );
+		}
+		toolbarDialogs.connect( this, {
+			opening: 'onToolbarDialogsOpeningOrClosing',
+			closing: 'onToolbarDialogsOpeningOrClosing'
+		} );
 	} );
 	if ( this.isFloatable() ) {
 		this.target.$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollThrottled, { passive: true } );
@@ -73,8 +74,10 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
 ve.ui.PositionedTargetToolbar.prototype.detach = function () {
 	// Events
 	if ( this.getSurface() ) {
-		this.getSurface().getToolbarDialogs().disconnect( this );
-		this.getSurface().getToolbarDialogs().clearWindows();
+		[ 'above', 'below', 'side', 'inline' ].forEach( ( dialogPosition ) => {
+			this.getSurface().getToolbarDialogs( dialogPosition ).disconnect( this );
+			this.getSurface().getToolbarDialogs( dialogPosition ).clearWindows();
+		} );
 	}
 	this.target.$scrollListener[ 0 ].removeEventListener( 'scroll', this.onWindowScrollThrottled );
 
@@ -232,7 +235,10 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 				this.getSurface().getView().emit( 'position' );
 			}, transitionDuration );
 			this.getSurface().getView().emit( 'position' );
-		} else if ( win.constructor.static.position === 'below' ) {
+		} else if (
+			win.constructor.static.position === 'above' ||
+			win.constructor.static.position === 'below'
+		) {
 			setTimeout( () => {
 				this.onViewportResize();
 				this.getSurface().getView().emit( 'position' );
@@ -259,13 +265,12 @@ ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
 		return;
 	}
 
-	const toolbarDialogs = surface.getToolbarDialogs();
-	const win = toolbarDialogs.getCurrentWindow();
+	const sideWindow = surface.getToolbarDialogs( 'side' ).getCurrentWindow();
 
-	if ( win && win.constructor.static.position === 'side' ) {
+	if ( sideWindow ) {
 		const viewportDimensions = surface.getViewportDimensions();
 		if ( viewportDimensions ) {
-			toolbarDialogs.getCurrentWindow().$frame.css(
+			sideWindow.$frame.css(
 				'height', Math.min( surface.getBoundingClientRect().height, viewportDimensions.height )
 			);
 		}
