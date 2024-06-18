@@ -35,7 +35,21 @@ OO.inheritClass( ve.ui.ToolbarDialog, OO.ui.Dialog );
 
 ve.ui.ToolbarDialog.static.size = 'full';
 
+/**
+ * The dialog is padded
+ *
+ * @static
+ * @type {boolean}
+ */
 ve.ui.ToolbarDialog.static.padded = true;
+
+/**
+ * The dialog has a frame border, for use with position='side'
+ *
+ * @static
+ * @type {boolean}
+ */
+ve.ui.ToolbarDialog.static.framed = true;
 
 /**
  * Toolbar position, either 'above', 'side' (right in LTR), 'below' or 'inline'
@@ -64,6 +78,9 @@ ve.ui.ToolbarDialog.prototype.initialize = function () {
 	this.$element.addClass( 've-ui-toolbarDialog-position-' + this.constructor.static.position );
 	if ( this.constructor.static.padded ) {
 		this.$element.addClass( 've-ui-toolbarDialog-padded' );
+	}
+	if ( this.constructor.static.framed ) {
+		this.$element.addClass( 've-ui-toolbarDialog-framed' );
 	}
 	// Invisible title for accessibility
 	this.title.setInvisibleLabel( true );
