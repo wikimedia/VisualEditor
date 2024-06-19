@@ -519,7 +519,11 @@ ve.ui.Surface.prototype.onModelSelect = function () {
 		// occurs (or any event other 'selectionchange') so the flag is unset.
 		return;
 	}
-	this.scrollSelectionIntoViewDebounced();
+	const synchronizer = this.getModel().synchronizer;
+	// Don't scroll to this user's cursor due to another user's changes being applied
+	if ( !( synchronizer && synchronizer.applying ) ) {
+		this.scrollSelectionIntoViewDebounced();
+	}
 };
 
 /**
@@ -663,8 +667,10 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 
 /**
  * Handle position events from the view
+ *
+ * @param {boolean} [wasSynchronizing]
  */
-ve.ui.Surface.prototype.onViewPosition = function () {
+ve.ui.Surface.prototype.onViewPosition = function ( wasSynchronizing ) {
 	const padding = {};
 	for ( const side in this.toolbarDialogs ) {
 		ve.extendObject( padding, this.toolbarDialogs[ side ].getSurfacePadding() );
@@ -672,7 +678,10 @@ ve.ui.Surface.prototype.onViewPosition = function () {
 	if ( Object.keys( padding ).length ) {
 		this.setPadding( padding );
 		this.adjustVisiblePadding();
-		this.scrollSelectionIntoView();
+		// Don't scroll to this user's cursor due to another user's changes being applied
+		if ( !wasSynchronizing ) {
+			this.scrollSelectionIntoView();
+		}
 	}
 	if ( this.placeholderVisible ) {
 		this.getView().$element.css( 'min-height', this.$placeholder.outerHeight() );

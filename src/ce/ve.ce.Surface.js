@@ -257,6 +257,8 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  * (only after initialize has already been called).
  *
  * @event ve.ce.Surface#position
+ * @param {boolean} [wasSynchronizing] The surface was positioned due to
+ *  synchronization (ve.dm.SurfaceSynchronizer)
  */
 
 /**
@@ -3658,9 +3660,10 @@ ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
 	}
 	// Update the state of the SurfaceObserver
 	this.surfaceObserver.pollOnceNoCallback();
+	const wasSynchronizing = !!( this.getModel().synchronizer && this.getModel().synchronizer.applying );
 	// setTimeout: Wait for other documentUpdate listeners to run before emitting
 	setTimeout( () => {
-		this.emit( 'position' );
+		this.emit( 'position', wasSynchronizing );
 	} );
 };
 
