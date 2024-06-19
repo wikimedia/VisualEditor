@@ -76,6 +76,10 @@ module.exports = function ( grunt ) {
 			/@import ["'](.*)["']/g,
 			( ...args ) => `@import '${ makeRelative( args[ 1 ] ) }'`
 		);
+		src = src.replace(
+			/url\([\s]*["']?([^)]*)["']?[\s]*\)/g,
+			( ...args ) => args[ 1 ].includes( 'data:' ) ? args[ 0 ] : `url('${ makeRelative( args[ 1 ] ) }')`
+		);
 
 		return src;
 	}
@@ -168,11 +172,6 @@ module.exports = function ( grunt ) {
 			}
 		},
 		cssUrlEmbed: {
-			options: {
-				// TODO: Image paths are relative to their folders, but the files have already been
-				// flattened as this point, so supporting more that one baseDir is not possible.
-				baseDir: 'src/ui/styles/nodes'
-			},
 			dist: {
 				files: {
 					'dist/visualEditor-apex.css': 'dist/visualEditor-apex.css',
