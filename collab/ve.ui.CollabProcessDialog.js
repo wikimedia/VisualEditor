@@ -42,6 +42,7 @@ ve.ui.CollabProcessDialog.prototype.initialize = function () {
 
 	this.initPanel.$element.append(
 		$( '<img>' ).prop( 'src', ve.ui.CollabProcessDialog.static.imageUri )
+			.attr( { width: 250, height: 150 } )
 			.css( { display: 'block', margin: '2em auto' } ),
 		this.$summary.css( { 'font-weight': 'bold' } ),
 		$( '<p>' ).text( ve.msg( 'visualeditor-collab-dialog-sharing' ) ),
