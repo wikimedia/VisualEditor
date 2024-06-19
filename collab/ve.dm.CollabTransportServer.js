@@ -83,7 +83,7 @@ ve.dm.CollabTransportServer.prototype.onConnection = function ( conn ) {
 		server.welcomeClient(
 			context,
 			startHeight,
-			( authorId ) => ve.init.platform.getUserName() || ve.msg( 'visualeditor-collab-user-placeholder', authorId )
+			( authorId ) => ve.msg( 'visualeditor-collab-user-placeholder', authorId )
 		);
 	} );
 };
