@@ -38,7 +38,7 @@ ve.ce.NailedAnnotation.static.makeNail = function ( type ) {
 	const nail = document.createElement( 'img' );
 	// Support: Firefox
 	// Firefox <=37 misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
-	// Firefox misbehaves if we don't set an src and there is no sizing at node creation time: https://bugzilla.mozilla.org/show_bug.cgi?id=1267906
+	// Firefox <= ~69 misbehaves if we don't set an src and there is no sizing at node creation time: https://bugzilla.mozilla.org/show_bug.cgi?id=1267906
 	// Setting an src in Chrome is slow, so only set it in affected versions of Firefox
 	if ( $.client.profile().layout === 'gecko' || ve.inputDebug ) {
 		nail.src = ve.inputDebug ? ve.ce.nailImgDataUri : ve.ce.minImgDataUri;

@@ -248,9 +248,11 @@ ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
 /**
  * Workaround for catastrophic Firefox bug (T209646)
  *
+ * Support: Firefox <= ~70
  * anchorNode and focusNode return unusable 'Restricted' object
  * when focus is in a number input:
  * https://bugzilla.mozilla.org/show_bug.cgi?id=1495482
+ * This task was resolved around late 2019
  *
  * @param {Selection} selection Native selection
  */

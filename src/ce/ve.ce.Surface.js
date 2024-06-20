@@ -525,9 +525,11 @@ ve.ce.Surface.prototype.getSelectionDirectionality = function () {
 ve.ce.Surface.prototype.initialize = function () {
 	this.attachedRoot.setLive( true );
 	if ( $.client.profile().layout === 'gecko' ) {
+		// Support: Firefox < 64
 		// Turn off native object editing. This must be tried after the surface has been added to DOM.
 		// This is only needed in Gecko. In other engines, these properties are off by default,
 		// and turning them off again is expensive; see https://phabricator.wikimedia.org/T89928
+		// These are disabled by default since Firefox 64.
 		try {
 			this.$document[ 0 ].execCommand( 'enableObjectResizing', false, false );
 			this.$document[ 0 ].execCommand( 'enableInlineTableEditing', false, false );
@@ -3449,7 +3451,7 @@ ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
 		this.model.selection instanceof ve.dm.TableSelection &&
 		$.client.profile().layout === 'gecko'
 	) {
-		// Support: Firefox
+		// Support: Firefox <= ~51
 		// Work around a segfault on blur+focus in Firefox compositionstart handlers.
 		// It would get triggered by handleInsertion emptying the table cell then putting
 		// a linear selection inside it. See:
