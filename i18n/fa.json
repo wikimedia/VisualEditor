@@ -66,6 +66,7 @@
 	"visualeditor-changedesc-link-removed": "پیوند حذف‌شده: $1",
 	"visualeditor-changedesc-list-indent": "دندانهٔ آیتم فهرست افزایش یافت",
 	"visualeditor-changedesc-list-outdent": "دندانهٔ آیتم فهرست کاهش یافت",
+	"visualeditor-changedesc-list-style-indent": "تورفتگی",
 	"visualeditor-changedesc-no-key": "$1 به $2 تغییریافت",
 	"visualeditor-changedesc-set": "$1 به $2 تنظیم‌شد",
 	"visualeditor-changedesc-textstyle-added": "سبک‌بندی افزوده‌شده برای متن: $1",
