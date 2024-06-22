@@ -37,7 +37,6 @@
  */
 
 /**
- *
  * To fire after-event listeners promptly, the EventSequencer may need to
  * listen to some events for which it has no registered on-event or
  * after-event listeners. For instance, to ensure an after-keydown listener
