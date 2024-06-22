@@ -9,7 +9,7 @@
 		"test": "grunt test",
 		"prepare": "grunt build",
 		"postinstall": "cd rebaser && npm ci",
-		"doc": "jsdoc -c .jsdoc.json"
+		"doc": "jsdoc -c jsdoc.json"
 	},
 	"homepage": "https://www.mediawiki.org/wiki/VisualEditor",
 	"repository": {
