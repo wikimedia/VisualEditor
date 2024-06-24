@@ -202,7 +202,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standaard",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Schaal",
 	"visualeditor-pagemenu-tooltip": "Pagina-instellingen",
-	"visualeditor-rebase-client-author-name": "Naam",
+	"visualeditor-rebase-client-author-name": "{{#FORMAL:Uw|Jouw}} naam",
 	"visualeditor-rebase-client-connecting": "Verbinden...",
 	"visualeditor-rebase-client-document-create-edit": "Aanmaken/bewerken",
 	"visualeditor-rebase-client-document-name": "Documentnaam (optioneel)",
