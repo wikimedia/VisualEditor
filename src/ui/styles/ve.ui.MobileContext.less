@@ -4,14 +4,16 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 .ve-ui-mobileContext {
 	position: fixed;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: #fff;
+	background: @background-color-base;
 	/* Match toolbar border & shadow */
-	border-top: 1px solid #c8ccd1;
+	border-top: @border-subtle;
 	box-shadow: 0 -1px 1px 0 rgba( 0, 0, 0, 0.1 );
 	/* Transition out faster, as keyboard may be coming up */
 	transition: transform 100ms;
