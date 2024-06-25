@@ -29,8 +29,8 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.surface = surface;
 	this.doc = surface.documentModel;
 	this.store = this.doc.getStore();
-	this.authors = {};
-	this.authorSelections = {};
+	this.authors = Object.create( null );
+	this.authorSelections = Object.create( null );
 	this.documentId = documentId;
 
 	// Whether the document has been initialized
@@ -388,7 +388,7 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorChange = function ( data ) {
 };
 
 ve.dm.SurfaceSynchronizer.prototype.changeAuthor = function ( data ) {
-	this.conn.send( 'changeAuthor', ve.extendObject( {}, this.getAuthorData( this.getAuthorId() ), data ) );
+	this.conn.send( 'changeAuthor', ve.extendObject( Object.create( null ), this.getAuthorData( this.getAuthorId() ), data ) );
 };
 
 ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {

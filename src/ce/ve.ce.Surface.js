@@ -2607,7 +2607,7 @@ ve.ce.Surface.prototype.findAndExecuteDelayedSequences = function () {
 	} else {
 		matchingSequences = this.findMatchingSequences();
 	}
-	const matchingByName = {};
+	const matchingByName = Object.create( null );
 
 	matchingSequences.forEach( ( matchingSequence ) => {
 		matchingByName[ matchingSequence.sequence.getName() ] = matchingSequence;

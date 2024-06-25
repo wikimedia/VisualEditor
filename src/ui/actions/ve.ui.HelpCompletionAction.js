@@ -194,7 +194,7 @@ ve.ui.HelpCompletionAction.prototype.getGroupForTool = function ( tool ) {
 };
 
 ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
-	const menuItemsByGroup = {};
+	const menuItemsByGroup = Object.create( null );
 	const toolGroups = this.constructor.static.toolGroups;
 	menuItems.forEach( ( menuItem ) => {
 		const tool = menuItem.getData();

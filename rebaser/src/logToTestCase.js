@@ -30,7 +30,7 @@ function parseLog( log ) {
 function toTestCase( parsedLog ) {
 	const clients = [],
 		ops = [],
-		clientStates = {};
+		clientStates = Object.create( null );
 	for ( let i = 0; i < parsedLog.length; i++ ) {
 		const { type, authorId, clientId } = parsedLog[ i ];
 		if ( type === 'newClient' ) {

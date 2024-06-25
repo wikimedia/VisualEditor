@@ -435,12 +435,12 @@ ve.dm.Model.prototype.getAttribute = function ( key ) {
  * @return {Object} Attributes
  */
 ve.dm.Model.prototype.getAttributes = function ( prefix ) {
-	const attributes = this.element.attributes || {};
+	const attributes = this.element.attributes || Object.create( null );
 	if ( !prefix ) {
-		return Object.assign( {}, attributes );
+		return Object.assign( Object.create( null ), attributes );
 	}
 
-	const filtered = {};
+	const filtered = Object.create( null );
 	for ( const key in attributes ) {
 		if ( key.startsWith( prefix ) ) {
 			filtered[ key.slice( prefix.length ) ] = attributes[ key ];

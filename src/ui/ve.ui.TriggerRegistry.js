@@ -15,7 +15,7 @@ ve.ui.TriggerRegistry = function VeUiTriggerRegistry() {
 	// Parent constructor
 	ve.ui.TriggerRegistry.super.call( this );
 
-	this.triggersByString = {};
+	this.triggersByString = Object.create( null );
 };
 
 /* Inheritance */

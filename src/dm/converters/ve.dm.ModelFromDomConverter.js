@@ -395,7 +395,7 @@ ve.dm.ModelFromDomConverter.prototype.getDataFromDomSubtree = function ( domElem
 			return;
 		}
 		if ( !element.internal ) {
-			element.internal = {};
+			element.internal = Object.create( null );
 		}
 		// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
 		//         <tag>        text         </tag>         <nextTag>

@@ -71,7 +71,7 @@ ve.dm.TableSelection.static.newFromHash = function ( hash ) {
  */
 ve.dm.TableSelection.static.getTableMatrixCells = function ( matrix, selectionOffsets, includePlaceholders ) {
 	const cells = [],
-		visited = {};
+		visited = Object.create( null );
 
 	for ( let row = selectionOffsets.startRow; row <= selectionOffsets.endRow; row++ ) {
 		for ( let col = selectionOffsets.startCol; col <= selectionOffsets.endCol; col++ ) {

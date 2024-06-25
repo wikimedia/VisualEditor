@@ -793,6 +793,7 @@ ve.dm.DomFromModelConverter.prototype.getDomSubtreeFromData = function ( data, c
 					// Add clone of internal data; we use a clone rather than a reference because
 					// we modify .veInternal.whitespace[1] in some cases
 					childDomElements[ 0 ].veInternal = ve.extendObject(
+						Object.create( null ),
 						{ childDomElements },
 						dataElement.internal ? ve.copy( dataElement.internal ) : {}
 					);

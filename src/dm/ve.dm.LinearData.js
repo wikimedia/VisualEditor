@@ -882,7 +882,7 @@ ve.dm.LinearData.prototype.setAttributeAtOffset = function ( offset, key, value 
 		} else {
 			// Automatically initialize attributes object
 			if ( !item.attributes ) {
-				item.attributes = {};
+				item.attributes = Object.create( null );
 			}
 			// Set
 			item.attributes[ key ] = value;

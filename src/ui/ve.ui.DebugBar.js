@@ -563,7 +563,7 @@ ve.ui.DebugBar.prototype.testSquasher = function () {
 			0,
 			txs.map( ( tx ) => tx.clone() ),
 			txs.map( () => new ve.dm.HashValueStore() ),
-			{}
+			Object.create( null )
 		).squash().txs;
 	}
 

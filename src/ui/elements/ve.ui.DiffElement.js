@@ -83,7 +83,7 @@ ve.ui.DiffElement.static.compareAttributes = function ( oldAttributes, newAttrib
 		}
 	}
 
-	const attributeChanges = {};
+	const attributeChanges = Object.create( null );
 	for ( const key in oldAttributes ) {
 		if ( !compareKeys( oldAttributes[ key ], newAttributes[ key ] ) ) {
 			attributeChanges[ key ] = { from: oldAttributes[ key ], to: newAttributes[ key ] };
@@ -335,7 +335,7 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff, meta
 	internalListSpacerNode.setAttribute( 'class', 've-ui-diffElement-spacer-listWrapper' );
 	internalListSpacerNode.appendChild( documentSpacerNode.cloneNode( true ) );
 
-	const referencesListDiffs = {};
+	const referencesListDiffs = Object.create( null );
 	Object.keys( internalListDiff.groups ).forEach( ( group ) => {
 		const referencesListContainer = document.createElement( 'ol' );
 		const internalListGroup = internalListDiff.groups[ group ];
@@ -974,8 +974,8 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 		// Check for attribute changes
 		if ( item.diff && item.diff.attributeChange ) {
 			const attributeChange = {
-				oldAttributes: {},
-				newAttributes: {}
+				oldAttributes: Object.create( null ),
+				newAttributes: Object.create( null )
 			};
 
 			[ 'listNodeAttributeChange', 'depthChange', 'listItemAttributeChange' ].forEach( ( listChangeType ) => {

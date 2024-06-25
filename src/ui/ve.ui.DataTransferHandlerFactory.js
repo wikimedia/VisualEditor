@@ -16,11 +16,11 @@ ve.ui.DataTransferHandlerFactory = function VeUiDataTransferHandlerFactory() {
 	ve.ui.DataTransferHandlerFactory.super.apply( this, arguments );
 
 	// Handlers which match all kinds and a specific type
-	this.handlerNamesByType = {};
+	this.handlerNamesByType = Object.create( null );
 	// Handlers which match a specific kind and type
-	this.handlerNamesByKindAndType = {};
+	this.handlerNamesByKindAndType = Object.create( null );
 	// Handlers which match a specific file extension as a fallback
-	this.handlerNamesByExtension = {};
+	this.handlerNamesByExtension = Object.create( null );
 };
 
 /* Inheritance */
@@ -84,7 +84,7 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 
 	function ensureMap( obj, prop ) {
 		if ( obj[ prop ] === undefined ) {
-			obj[ prop ] = {};
+			obj[ prop ] = Object.create( null );
 		}
 		return obj[ prop ];
 	}

@@ -43,7 +43,7 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	 * @private Please use {@link #getNodeGroups} instead
 	 * @property {Object.<string,ve.dm.InternalListNodeGroup>} nodes Keyed by group name
 	 */
-	this.nodes = {};
+	this.nodes = Object.create( null );
 
 	/**
 	 * @private See {@link #markGroupAsChanged}
@@ -55,7 +55,7 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	 * @private Please use {@link #getKeyIndex} instead
 	 * @property {Object.<string,number>} keyIndexes Internal item index, keyed by "listGroup/listKey"
 	 */
-	this.keyIndexes = {};
+	this.keyIndexes = Object.create( null );
 
 	// Event handlers
 	doc.connect( this, { transact: 'onTransact' } );

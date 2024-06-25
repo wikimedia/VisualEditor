@@ -71,7 +71,7 @@ ve.dm.DocumentStore.prototype.load = function ( docName ) {
 			start: 0,
 			transactions: result.value.transactions,
 			stores: result.value.stores,
-			selections: {}
+			selections: Object.create( null )
 		}, true );
 	} );
 };

@@ -17,7 +17,7 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	 * Practically, one of these arrays can contain multiple elements when a reference (with the
 	 * same group and same name) is reused. The arrays can never be empty.
 	 */
-	this.keyedNodes = {};
+	this.keyedNodes = Object.create( null );
 
 	/**
 	 * @private Please access via {@link #getFirstNodeByListIndex} etc. if possible

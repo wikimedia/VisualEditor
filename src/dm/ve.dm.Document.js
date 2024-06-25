@@ -30,7 +30,7 @@
  */
 ve.dm.Document = function VeDmDocument(
 	data, htmlDocument = ve.createDocumentFromHtml( '' ), parentDocument = null, internalList = null,
-	innerWhitespace = null, lang = 'en', dir = 'ltr', originalDocument = null, sourceMode = false, persistentStorage = {}
+	innerWhitespace = null, lang = 'en', dir = 'ltr', originalDocument = null, sourceMode = false, persistentStorage = Object.create( null )
 ) {
 	// Parent constructor
 	ve.dm.Document.super.call( this, new ve.dm.DocumentNode() );
@@ -55,7 +55,7 @@ ve.dm.Document = function VeDmDocument(
 	// Properties
 	this.parentDocument = parentDocument;
 	this.originalDocument = originalDocument;
-	this.nodesByType = {};
+	this.nodesByType = Object.create( null );
 	this.origInternalListLength = null;
 	this.readOnly = false;
 	this.attachedRoot = this.documentNode;
@@ -788,7 +788,7 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
  */
 ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 	const insertedMetaItems = [],
-		insertions = {},
+		insertions = Object.create( null ),
 		result = [];
 
 	range = range || this.data.getRange();
@@ -1779,7 +1779,7 @@ ve.dm.Document.prototype.getCompleteHistorySince = function ( start ) {
 ve.dm.Document.prototype.getChangeSince = function ( start ) {
 	const change = this.completeHistory.mostRecent( start );
 	// Remove any selections that might have been added by e.g. ve.dm.Change#addToHistory
-	change.selections = {};
+	change.selections = Object.create( null );
 	return change;
 };
 

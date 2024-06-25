@@ -286,7 +286,7 @@ ve.dm.Node.static.disallowedAnnotationTypes = [];
  * @property {Object}
  * @inheritable
  */
-ve.dm.Node.static.defaultAttributes = {};
+ve.dm.Node.static.defaultAttributes = Object.create( null );
 
 /**
  * Sanitize the node's linear model data, typically if it was generated from an external source (e.g. copied HTML)

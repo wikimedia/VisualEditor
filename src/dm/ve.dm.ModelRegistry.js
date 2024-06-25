@@ -18,7 +18,7 @@
 		OO.Registry.call( this );
 		// Map of func presence and tag names to model names
 		// [ { tagName: [modelNamesWithoutFunc] }, { tagName: [modelNamesWithFunc] } ]
-		this.modelsByTag = [ {}, {} ];
+		this.modelsByTag = [ Object.create( null ), Object.create( null ) ];
 		// Map of func presence and rdfaTypes to model names; only rdfaTypes specified as strings are in here
 		// { matchFunctionPresence: { rdfaType: { tagName: [modelNames] } } }
 		// [ { rdfaType: { tagName: [modelNamesWithoutFunc] } }, { rdfaType: { tagName: [modelNamesWithFunc] } ]
@@ -28,7 +28,7 @@
 		this.modelsWithTypeRegExps = [ [], [] ];
 		// Map tracking registration order
 		// { nameA: 0, nameB: 1, … }
-		this.registrationOrder = {};
+		this.registrationOrder = Object.create( null );
 		this.nextNumber = 0;
 		this.extSpecificTypes = [];
 	};
@@ -61,7 +61,7 @@
 		let i, len;
 		for ( i = 0, len = keys.length - 1; i < len; i++ ) {
 			if ( o[ keys[ i ] ] === undefined ) {
-				o[ keys[ i ] ] = {};
+				o[ keys[ i ] ] = Object.create( null );
 			}
 			o = o[ keys[ i ] ];
 		}

@@ -16,8 +16,8 @@
 ve.TriggerListener = function VeTriggerListener( commands, commandRegistry ) {
 	// Properties
 	this.commands = commands;
-	this.commandsByTrigger = {};
-	this.triggers = {};
+	this.commandsByTrigger = Object.create( null );
+	this.triggers = Object.create( null );
 
 	this.commands.forEach( ( command ) => {
 		const triggers = ve.ui.triggerRegistry.lookup( command );

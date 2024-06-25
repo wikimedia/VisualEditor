@@ -102,7 +102,7 @@ ve.dm.ProtocolServer.prototype.authenticate = function ( docName, authorId, toke
  * @param {Object} event Event data
  */
 ve.dm.ProtocolServer.prototype.onLogEvent = function ( context, event ) {
-	const ob = {};
+	const ob = Object.create( null );
 	ob.recvTimestamp = this.logger.getRelativeTimestamp();
 	ob.clientId = context.authorId;
 	ob.doc = context.docName;

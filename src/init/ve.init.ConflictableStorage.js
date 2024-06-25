@@ -35,8 +35,8 @@ ve.init.createConflictableStorage = function ( storage ) {
 		ConflictableStorage.super.apply( this, arguments );
 
 		this.storageMayConflict = false;
-		this.conflictBackup = {};
-		this.conflictableKeys = {};
+		this.conflictBackup = Object.create( null );
+		this.conflictableKeys = Object.create( null );
 		this.conflictId = null;
 	}
 

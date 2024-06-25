@@ -152,7 +152,7 @@ ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
 
 		return comparableAttributes;
 	}
-	return {};
+	return Object.create( null );
 };
 
 /**

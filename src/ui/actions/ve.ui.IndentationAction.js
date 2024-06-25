@@ -223,7 +223,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		fragment.getSiblingNodes().forEach( ( child ) => {
 			const childNode = child.node;
 			if ( childNode.type === 'paragraph' && ve.getProp( childNode.element, 'internal', 'generated' ) ) {
-				surfaceModel.getLinearFragment( childNode.getOuterRange(), true ).convertNodes( 'paragraph', childNode.getAttributes(), {} );
+				surfaceModel.getLinearFragment( childNode.getOuterRange(), true ).convertNodes( 'paragraph', childNode.getAttributes(), Object.create( null ) );
 			}
 		} );
 	} else {

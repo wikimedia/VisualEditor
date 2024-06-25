@@ -72,7 +72,7 @@
  * @param {ve.dm.HashValueStore[]} [stores] For each transaction, a collection of new store items
  * @param {Object} [selections={}] For each author ID (key), latest ve.dm.Selection
  */
-ve.dm.Change = function VeDmChange( start = 0, transactions = [], stores = [], selections = {} ) {
+ve.dm.Change = function VeDmChange( start = 0, transactions = [], stores = [], selections = Object.create( null ) ) {
 	this.start = start;
 	this.transactions = transactions;
 	this.store = new ve.dm.HashValueStore();
@@ -103,7 +103,7 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 	const hasOwn = Object.prototype.hasOwnProperty,
 		getTransactionInfo = this.getTransactionInfo,
 		deserializeValue = this.deserializeValue,
-		selections = {},
+		selections = Object.create( null ),
 		transactions = [],
 		// If stores is undefined, create an array of nulls
 		stores = data.stores || data.transactions.map( () => null );
@@ -368,8 +368,8 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 	const transactionsB = uncommitted.transactions.slice();
 	let storesA = history.getStores();
 	const storesB = uncommitted.getStores();
-	const selectionsA = OO.cloneObject( history.selections );
-	let selectionsB = OO.cloneObject( uncommitted.selections );
+	const selectionsA = ve.cloneObject( history.selections );
+	let selectionsB = ve.cloneObject( uncommitted.selections );
 	let rejected = null;
 
 	// For each element b_i of transactionsB, rebase the whole list transactionsA over b_i.
@@ -410,7 +410,7 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 				rejected = uncommitted.mostRecent( uncommitted.start + i );
 				transactionsB.length = i;
 				storesB.length = i;
-				selectionsB = {};
+				selectionsB = Object.create( null );
 				break bLoop;
 			}
 			rebasedTransactionsA[ j ] = rebases[ 0 ];
@@ -431,13 +431,13 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 		uncommitted.start + transactionsA.length,
 		transactionsB,
 		storesB,
-		{}
+		Object.create( null )
 	);
 	const transposedHistory = new ve.dm.Change(
 		history.start + transactionsB.length,
 		transactionsA,
 		storesA,
-		{}
+		Object.create( null )
 	);
 	let authorId;
 	for ( authorId in selectionsB ) {
@@ -675,7 +675,7 @@ ve.dm.Change.prototype.reversed = function () {
 		this.transactions.map( ( tx ) => ve.dm.Transaction.prototype.reversed.call( tx ) ).reverse(),
 		// Empty store for each transaction (reverting cannot possibly add new annotations)
 		this.transactions.map( () => new ve.dm.HashValueStore() ),
-		{}
+		Object.create( null )
 	);
 };
 
@@ -742,7 +742,7 @@ ve.dm.Change.prototype.push = function ( other ) {
 		this.store.merge( store );
 		this.pushTransaction( transaction, this.store.getLength() );
 	} );
-	this.selections = OO.cloneObject( other.selections );
+	this.selections = ve.cloneObject( other.selections );
 };
 
 /**
@@ -770,7 +770,7 @@ ve.dm.Change.prototype.mostRecent = function ( start ) {
 		start,
 		this.transactions.slice( start - this.start ),
 		this.getStores().slice( start - this.start ),
-		OO.cloneObject( this.selections )
+		ve.cloneObject( this.selections )
 	);
 };
 
@@ -790,7 +790,7 @@ ve.dm.Change.prototype.truncate = function ( length ) {
 		this.start,
 		this.transactions.slice( 0, length ),
 		this.getStores().slice( 0, length ),
-		{}
+		Object.create( null )
 	);
 };
 
@@ -886,7 +886,7 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	const getTransactionInfo = this.constructor.static.getTransactionInfo,
-		selections = {};
+		selections = Object.create( null );
 
 	// Recursively serialize, so this method is the inverse of deserialize
 	// without having to use JSON.stringify (which is also recursive).
@@ -966,6 +966,6 @@ ve.dm.Change.prototype.squash = function () {
 		[ ve.dm.TransactionSquasher.static.squash( this.transactions ) ],
 		[ this.store.slice() ],
 		// Shallow clone (the individual selections are immutable so need no cloning)
-		OO.cloneObject( this.selections )
+		ve.cloneObject( this.selections )
 	);
 };

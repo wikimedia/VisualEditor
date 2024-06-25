@@ -33,7 +33,7 @@ OO.inheritClass( ve.dm.NodeFactory, ve.dm.ModelFactory );
 ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
 	const element = { type };
 	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
-		attributes = ve.extendObject( {}, this.registry[ type ].static.defaultAttributes, attributes );
+		attributes = ve.extendObject( Object.create( null ), this.registry[ type ].static.defaultAttributes, attributes );
 		if ( !ve.isEmptyObject( attributes ) ) {
 			element.attributes = ve.copy( attributes );
 		}

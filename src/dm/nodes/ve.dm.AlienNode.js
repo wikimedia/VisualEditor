@@ -51,7 +51,7 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	} else if ( ve.dm.TableCellableNode.static.areNodesCellable( domElements ) ) {
 		element = { type: 'alienTableCell' };
 
-		const attributes = {};
+		const attributes = Object.create( null );
 		ve.dm.TableCellableNode.static.setAttributes( attributes, domElements, true );
 		if ( !ve.isEmptyObject( attributes ) ) {
 			element.attributes = attributes;

@@ -23,7 +23,7 @@
  */
 ve.dm.HashValueStore = function VeDmHashValueStore( values ) {
 	// Maps hashes to values
-	this.hashStore = {};
+	this.hashStore = Object.create( null );
 	// Hashes in order of insertion (used for slicing)
 	this.hashes = [];
 	if ( values ) {
@@ -52,7 +52,7 @@ ve.dm.HashValueStore.static.deserialize = function ( deserializeValue, data ) {
 	}
 
 	store.hashes = data.hashes.slice();
-	store.hashStore = {};
+	store.hashStore = Object.create( null );
 	for ( const hash in data.hashStore ) {
 		store.hashStore[ hash ] = deserializeValue( data.hashStore[ hash ] );
 	}
@@ -68,7 +68,7 @@ ve.dm.HashValueStore.static.deserialize = function ( deserializeValue, data ) {
  * @return {Object|null} Serialized store, null if empty
  */
 ve.dm.HashValueStore.prototype.serialize = function ( serializeValue ) {
-	const serialized = {};
+	const serialized = Object.create( null );
 
 	for ( const hash in this.hashStore ) {
 		serialized[ hash ] = serializeValue( this.hashStore[ hash ] );

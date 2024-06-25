@@ -77,7 +77,7 @@ ve.dm.TransactionSquasher = function VeDmTransactionSquasher( transaction ) {
 	 * @property {Object} attributeOperations During squashIn, live references to attribute
 	 * operations at current offset, keyed by attribute name, or null if at an open element
 	 */
-	this.attributeOperations = {};
+	this.attributeOperations = Object.create( null );
 };
 
 /* Inheritance */
@@ -193,7 +193,7 @@ ve.dm.TransactionSquasher.prototype.processRetain = function ( maxLength ) {
 		const len = Math.min( maxLength, this.op.length - this.offset );
 		this.offset += len;
 		this.globalOffset += len;
-		this.attributeOperations = {};
+		this.attributeOperations = Object.create( null );
 		return len;
 	}
 	if ( this.op.type === 'replace' ) {
@@ -351,7 +351,7 @@ ve.dm.TransactionSquasher.prototype.processInsert = function ( items ) {
 			items
 		);
 		this.globalOffset += items.length;
-		this.attributeOperations = {};
+		this.attributeOperations = Object.create( null );
 		return items.length;
 	}
 	if ( this.op.type === 'replace' ) {
@@ -362,7 +362,7 @@ ve.dm.TransactionSquasher.prototype.processInsert = function ( items ) {
 		ve.batchSplice( this.op.insert, this.offset, 0, items );
 		this.offset += items.length;
 		this.globalOffset += items.length;
-		this.attributeOperations = {};
+		this.attributeOperations = Object.create( null );
 		return items.length;
 	}
 	throw new Error( 'Unknown operation type ' + this.op.type );
@@ -417,7 +417,7 @@ ve.dm.TransactionSquasher.prototype.processAttribute = function ( key, from, to 
  */
 ve.dm.TransactionSquasher.prototype.changeElement = function ( openElement, key, from, to ) {
 	if ( !openElement.attributes ) {
-		openElement.attributes = {};
+		openElement.attributes = Object.create( null );
 	}
 	if ( !this.constructor.static.equalItems(
 		openElement.attributes[ key ],
@@ -466,7 +466,7 @@ ve.dm.TransactionSquasher.prototype.readAttributes = function () {
 		op = this.operations[ index ],
 		offset = this.offset;
 
-	this.attributeOperations = {};
+	this.attributeOperations = Object.create( null );
 	while ( true ) {
 		if ( !op ) {
 			return;

@@ -51,7 +51,7 @@ ve.dm.TableCellNode.static.preserveHtmlAttributes = function ( attribute ) {
 /* Static Methods */
 
 ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
-	const attributes = {};
+	const attributes = Object.create( null );
 
 	ve.dm.TableCellableNode.static.setAttributes( attributes, domElements );
 	ve.dm.TableCellNode.static.setAlignmentAttributes( attributes, domElements );

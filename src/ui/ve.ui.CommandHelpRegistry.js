@@ -67,7 +67,7 @@ ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelp
  * @return {Object} Commands associated with the group
  */
 ve.ui.CommandHelpRegistry.prototype.lookupByGroup = function ( groupName ) {
-	const matches = {};
+	const matches = Object.create( null );
 	for ( const commandHelpName in this.registry ) {
 		if ( groupName === this.registry[ commandHelpName ].group ) {
 			matches[ commandHelpName ] = this.registry[ commandHelpName ];

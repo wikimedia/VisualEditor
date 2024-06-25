@@ -446,7 +446,7 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 		return null;
 	}
 
-	const charsObj = {},
+	const charsObj = Object.create( null ),
 		groups = [ 'accents', 'mathematical', 'symbols' ];
 
 	groups.forEach( ( group ) => {

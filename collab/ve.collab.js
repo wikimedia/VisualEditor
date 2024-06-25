@@ -60,7 +60,7 @@ ve.collab.initPeerServer = function ( userName ) {
 		1,
 		ve.dm.Change.static.deserialize( completeHistory.serialize(), true ),
 		completeHistory,
-		{}
+		Object.create( null )
 	);
 	ve.collab.peerServer.peer = ve.collab.newPeer();
 	ve.collab.peerServer.peer.on( 'open', ( id ) => {

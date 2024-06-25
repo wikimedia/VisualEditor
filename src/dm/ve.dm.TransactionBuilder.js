@@ -271,7 +271,7 @@ ve.dm.TransactionBuilder.static.newFromAttributeChanges = function ( doc, offset
 	// Retain up to element
 	txBuilder.pushRetain( offset );
 	// Change attributes
-	txBuilder.pushAttributeChanges( attr, data[ offset ].attributes || {} );
+	txBuilder.pushAttributeChanges( attr, data[ offset ].attributes || Object.create( null ) );
 	// Retain to end of document
 	txBuilder.pushFinalRetain( doc, offset );
 	return txBuilder.getTransaction();
@@ -449,7 +449,7 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 		}
 	} else {
 		// Set to empty object for comparison
-		attr = {};
+		attr = Object.create( null );
 	}
 	if ( internal ) {
 		if ( !ve.isEmptyObject( internal ) ) {
@@ -457,7 +457,7 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 		}
 	} else {
 		// Set to empty object for comparison
-		internal = {};
+		internal = Object.create( null );
 	}
 
 	// Replace the wrappings of each content branch in the range
@@ -474,7 +474,7 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 			if (
 				branch.getType() === type &&
 				ve.compare( attr, branch.getAttributes() ) &&
-				ve.compare( internal, branch.element.internal || {} )
+				ve.compare( internal, branch.element.internal || Object.create( null ) )
 			) {
 				return;
 			}
@@ -490,7 +490,7 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 			);
 			if (
 				branch.getType() === type &&
-				ve.compare( internal, branch.element.internal || {} )
+				ve.compare( internal, branch.element.internal || Object.create( null ) )
 			) {
 				// Same type and internal, different attributes, so we only need an attribute change
 				txBuilder.pushAttributeChanges( attr, branch.getAttributes() );

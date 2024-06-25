@@ -80,7 +80,8 @@ ve.dm.ListNode.static.describeChange = function ( key, change ) {
 		number: 'visualeditor-listbutton-number-tooltip',
 		indent: 'visualeditor-changedesc-list-style-indent'
 	};
-	if ( key === 'style' && change.from in messageKeys && change.to in messageKeys ) {
+	const hasOwn = Object.prototype.hasOwnProperty;
+	if ( key === 'style' && hasOwn.call( messageKeys, change.from ) && hasOwn.call( messageKeys, change.to ) ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
 			// Message keys documented above
 

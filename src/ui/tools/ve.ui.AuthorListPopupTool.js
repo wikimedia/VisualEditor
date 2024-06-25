@@ -72,7 +72,7 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 	this.oldName = '';
 	this.updatingName = false;
 	this.synchronizer = surface.getModel().synchronizer;
-	this.authorItems = {};
+	this.authorItems = Object.create( null );
 
 	this.surface = surface;
 

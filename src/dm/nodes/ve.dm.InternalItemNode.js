@@ -56,7 +56,7 @@ ve.dm.InternalItemNode.static.getHashObject = function ( dataElement ) {
 ve.dm.InternalItemNode.prototype.getAttributes = function () {
 	// InternalItem node has an originalHtml attribute which confuses the differ
 	// TODO: Move this to a new model method like getAttributesForDiff
-	return {};
+	return Object.create( null );
 };
 
 /* Registration */

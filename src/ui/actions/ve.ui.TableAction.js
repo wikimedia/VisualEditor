@@ -634,7 +634,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 	const matrix = tableNode.matrix,
 		insertCells = [],
 		txBuilders = [],
-		updated = {},
+		updated = Object.create( null ),
 		inserts = [],
 		surfaceModel = this.surface.getModel();
 
@@ -855,7 +855,7 @@ ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, max
 ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIndex, maxIndex ) {
 	const removedMatrix = [],
 		txBuilders = [],
-		adapted = {},
+		adapted = Object.create( null ),
 		actions = [],
 		cells = [],
 		surfaceModel = this.surface.getModel(),
