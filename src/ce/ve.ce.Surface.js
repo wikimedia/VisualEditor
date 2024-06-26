@@ -904,7 +904,10 @@ ve.ce.Surface.prototype.hasNativeCursorSelection = function () {
 ve.ce.Surface.prototype.drawSelections = function ( name, selections, options ) {
 	options = options || {};
 
-	const drawnSelection = ( this.drawnSelections[ name ] = this.drawnSelections[ name ] || {} );
+	if ( !Object.prototype.hasOwnProperty.call( this.drawnSelections, name ) ) {
+		this.drawnSelections[ name ] = {};
+	}
+	const drawnSelection = this.drawnSelections[ name ];
 
 	drawnSelection.$selections = drawnSelection.$selections ||
 		// The following classes are used here:
@@ -1005,7 +1008,7 @@ ve.ce.Surface.prototype.getDrawnSelectionCacheKey = function ( name, selection, 
  */
 ve.ce.Surface.prototype.getDrawnSelection = function ( name, selection, options ) {
 	const cacheKey = this.getDrawnSelectionCacheKey( name, selection, options );
-	return this.drawnSelectionCache[ cacheKey ] || null;
+	return Object.prototype.hasOwnProperty.call( this.drawnSelectionCache, cacheKey ) ? this.drawnSelectionCache[ cacheKey ] : null;
 };
 
 /**
@@ -5446,13 +5449,13 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 
 	const color = '#' + authorData.color;
 
-	if ( !this.userSelectionDeactivate[ authorId ] ) {
+	if ( !Object.prototype.hasOwnProperty.call( this.userSelectionDeactivate, authorId ) ) {
 		this.userSelectionDeactivate[ authorId ] = ve.debounce( () => {
 			// TODO: Transition away the user label when inactive, maybe dim selection
-			if ( this.drawnSelections[ 'otherUserSelection-' + authorId ] ) {
+			if ( Object.prototype.hasOwnProperty.call( this.drawnSelections, 'otherUserSelection-' + authorId ) ) {
 				this.drawnSelections[ 'otherUserSelection-' + authorId ].$selections.addClass( 've-ce-surface-selections-otherUserSelection-inactive' );
 			}
-			if ( this.drawnSelections[ 'otherUserCursor-' + authorId ] ) {
+			if ( Object.prototype.hasOwnProperty.call( this.drawnSelections, 'otherUserCursor-' + authorId ) ) {
 				this.drawnSelections[ 'otherUserCursor-' + authorId ].$selections.addClass( 've-ce-surface-selections-otherUserCursor-inactive' );
 			}
 		}, 5000 );
