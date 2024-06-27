@@ -362,8 +362,8 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 	const transactionsB = uncommitted.transactions.slice();
 	let storesA = history.getStores();
 	const storesB = uncommitted.getStores();
-	const selectionsA = OO.cloneObject( history.selections );
-	let selectionsB = OO.cloneObject( uncommitted.selections );
+	const selectionsA = ve.cloneObject( history.selections );
+	let selectionsB = ve.cloneObject( uncommitted.selections );
 	let rejected = null;
 
 	// For each element b_i of transactionsB, rebase the whole list transactionsA over b_i.
@@ -739,7 +739,7 @@ ve.dm.Change.prototype.push = function ( other ) {
 		this.store.merge( store );
 		this.pushTransaction( transaction, this.store.getLength() );
 	}
-	this.selections = OO.cloneObject( other.selections );
+	this.selections = ve.cloneObject( other.selections );
 };
 
 /**
@@ -767,7 +767,7 @@ ve.dm.Change.prototype.mostRecent = function ( start ) {
 		start,
 		this.transactions.slice( start - this.start ),
 		this.getStores().slice( start - this.start ),
-		OO.cloneObject( this.selections )
+		ve.cloneObject( this.selections )
 	);
 };
 
