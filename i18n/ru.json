@@ -95,6 +95,7 @@
 	"visualeditor-clipboard-cut": "Вырезать",
 	"visualeditor-clipboard-paste": "Вставить",
 	"visualeditor-clipboard-paste-special": "Вставить как простой текст",
+	"visualeditor-collab-user-placeholder": "Участник $1",
 	"visualeditor-command-dialog-cancel": "Закрыть / отменить изменения",
 	"visualeditor-command-dialog-confirm": "Подтвердить изменения",
 	"visualeditor-command-dialog-focus-context": "Переместить фокус в контекстное всплывающее окно",
