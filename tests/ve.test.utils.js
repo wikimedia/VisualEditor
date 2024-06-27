@@ -19,6 +19,9 @@
 		this.storageDisabled = false;
 	}
 	OO.inheritClass( DummyPlatform, ve.init.Platform );
+	DummyPlatform.prototype.formatNumber = function ( number ) {
+		return number.toLocaleString();
+	};
 	DummyPlatform.prototype.getUserLanguages = function () {
 		return [ 'en' ];
 	};
