@@ -64,6 +64,7 @@
 	"visualeditor-changedesc-link-removed": "已新增連結：$1",
 	"visualeditor-changedesc-list-indent": "已增加清單項目的縮進",
 	"visualeditor-changedesc-list-outdent": "已減少清單項目的縮進",
+	"visualeditor-changedesc-list-style-indent": "縮排",
 	"visualeditor-changedesc-no-key": "$1 已變更為 $2",
 	"visualeditor-changedesc-set": "$1 已設為 $2",
 	"visualeditor-changedesc-textstyle-added": "已新增文字樣式：$1",
