@@ -160,10 +160,12 @@ ve.ui.Context.prototype.toggleMenu = function ( show ) {
  * Setup menu items.
  *
  * @protected
+ * @param {ve.ui.ContextItem[]} [previousItems] if a context is being refreshed, this will
+ *  be the previously-open items for comparison
  * @return {ve.ui.Context}
  * @chainable
  */
-ve.ui.Context.prototype.setupMenuItems = function () {
+ve.ui.Context.prototype.setupMenuItems = function ( previousItems ) {
 	const sources = this.getRelatedSources(),
 		items = [];
 
@@ -189,8 +191,17 @@ ve.ui.Context.prototype.setupMenuItems = function () {
 
 	this.addItems( items );
 	for ( i = 0, len = items.length; i < len; i++ ) {
-		items[ i ].connect( this, { command: 'onContextItemCommand' } );
-		items[ i ].setup();
+		const item = items[ i ];
+		const isRefreshing = previousItems && previousItems.some(
+			// We treat it as refreshing if they're exactly equal, or if either is null.
+			// Null here probably means we're dealing with a persistent fragment that's
+			// between text-selections currently.
+			( oldItem ) => oldItem.equals( item ) ||
+				oldItem.getFragment().isNull() ||
+				item.getFragment().isNull()
+		);
+		item.connect( this, { command: 'onContextItemCommand' } );
+		item.setup( isRefreshing );
 	}
 
 	return this;

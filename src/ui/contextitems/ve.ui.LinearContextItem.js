@@ -162,7 +162,7 @@ ve.ui.LinearContextItem.prototype.renderBody = function () {
 /**
  * @inheritdoc
  */
-ve.ui.LinearContextItem.prototype.setup = function () {
+ve.ui.LinearContextItem.prototype.setup = function ( refreshing ) {
 	this.renderBody();
 
 	const isEmpty = this.$body.is( ':empty' );
@@ -173,12 +173,9 @@ ve.ui.LinearContextItem.prototype.setup = function () {
 	}
 	this.$element.toggleClass( 've-ui-linearContextItem-empty', isEmpty );
 
-	const fragment = this.getFragment();
-	if ( !( fragment && fragment.isNull() ) ) {
-		// A null fragment here means that this is most-likely a persistent
-		// context item that's persisting through text deselection; in that
-		// case we shouldn't log context-show again (akin to how moving the
-		// cursor doesn't re-show the context)
+	if ( !refreshing ) {
+		// Re-showing a context for some reason (probably a selection-change
+		// within the context on a persistent item) shouldn't re-fire this.
 		ve.track( 'activity.' + this.constructor.static.name, { action: 'context-show' } );
 	}
 

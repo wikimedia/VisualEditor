@@ -96,8 +96,10 @@ ve.ui.LinearContext.prototype.afterContextChange = function () {
 		if ( !this.isEmpty() ) {
 			if ( this.isInspectable() ) {
 				// Change state: menu -> menu
+				// Make a copy of items so setupMenuItems can compare it
+				const previousItems = this.items.slice();
 				this.teardownMenuItems();
-				this.setupMenuItems();
+				this.setupMenuItems( previousItems );
 				this.updateDimensionsDebounced();
 			} else {
 				// Change state: menu -> closed
