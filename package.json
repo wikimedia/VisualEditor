@@ -5,11 +5,11 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
+		"doc": "jsdoc -c jsdoc.json",
 		"minify:svg": "svgo --config=.svgo.config.js --quiet --folder src/ui/styles/images/ --folder demos/ve/",
-		"test": "grunt test",
-		"prepare": "grunt build",
 		"postinstall": "cd rebaser && npm ci",
-		"doc": "jsdoc -c jsdoc.json"
+		"prepare": "grunt build",
+		"test": "grunt test"
 	},
 	"homepage": "https://www.mediawiki.org/wiki/VisualEditor",
 	"repository": {
