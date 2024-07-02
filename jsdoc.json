@@ -28,6 +28,7 @@
 			"repository": "https://gerrit.wikimedia.org/g/VisualEditor/VisualEditor/",
 			"linkMap": {
 				"OO.ui.debounce": "https://doc.wikimedia.org/oojs-ui/master/js/OO.ui.html#.debounce",
+				"OO.ui.Element#scrollIntoView": "https://doc.wikimedia.org/oojs-ui/master/js/OO.ui.Element.html#.scrollIntoView",
 				"OO.ui.throttle": "https://doc.wikimedia.org/oojs-ui/master/js/OO.ui.html#.throttle",
 
 				"Qunit.Assert": "https://qunitjs.com/api/assert/",
