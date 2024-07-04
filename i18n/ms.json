@@ -5,6 +5,7 @@
 			"Aurora",
 			"Colathewikian",
 			"CyberTroopers",
+			"Hakimi97",
 			"Pizza1016",
 			"SNN95",
 			"Tofeiku"
@@ -13,6 +14,7 @@
 	"visualeditor": "Suntingan visual",
 	"visualeditor-aliennode-tooltip": "Minta maaf, elemen ini boleh disunting dalam mod “sunting sumber” sahaja buat masa sekarang.",
 	"visualeditor-align-desc-center": "tengah",
+	"visualeditor-align-desc-default": "asali",
 	"visualeditor-align-desc-left": "kiri",
 	"visualeditor-align-desc-none": "tiada",
 	"visualeditor-align-desc-right": "kanan",
@@ -128,6 +130,7 @@
 	"visualeditor-linkcontext-label-label": "Teks",
 	"visualeditor-linkcontext-remove": "Buang pautan",
 	"visualeditor-linkinspector-title": "Pautan",
+	"visualeditor-linkinspector-title-add": "Tambah pautan",
 	"visualeditor-listbutton-bullet-tooltip": "Senarai berbulet",
 	"visualeditor-listbutton-number-tooltip": "Senarai bernombor",
 	"visualeditor-mediasizewidget-label-defaulterror": "Nilai-nilai saiz tidak sah.",
