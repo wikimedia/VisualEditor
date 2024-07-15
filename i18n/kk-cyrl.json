@@ -182,7 +182,7 @@
 	"visualeditor-table-contextitem-properties": "Сипаты",
 	"visualeditor-table-contextitem-selectionmode-cells": "Ұяшықтарды таңдау",
 	"visualeditor-table-contextitem-selectionmode-contents": "Мазмұнын таңдау",
-	"visualeditor-table-delete-col": "{{PLURAL:$1|бағанды|бағанды}} жою",
+	"visualeditor-table-delete-col": "Бағанды жою",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|Қатарды|Қатарды}} жою",
 	"visualeditor-table-format-data": "Мазмұн ұяшығы",
 	"visualeditor-table-format-header": "Тақырып ұяшығы",
