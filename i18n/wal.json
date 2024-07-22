@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ella Lachow"
+			"Ella Lachow",
+			"Malaalaa"
 		]
 	},
 	"visualeditor": "Beettiyaa giigissuwaa",
@@ -50,7 +51,7 @@
 	"visualeditor-content-select-all": "Ubbaa ekka",
 	"visualeditor-contextitemwidget-label-close": "Gordda",
 	"visualeditor-contextitemwidget-label-remove": "Xayssa",
-	"visualeditor-contextitemwidget-label-secondary": "Giigissa",
+	"visualeditor-contextitemwidget-label-secondary": "Goyda",
 	"visualeditor-contextitemwidget-label-view": "Be'a",
 	"visualeditor-debugbar-close": "Gordda",
 	"visualeditor-debugbar-inputdebug": "Geliyaaga giigissa",
