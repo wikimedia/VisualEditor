@@ -58,10 +58,10 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 		} );
 
 		this.colorPicker.picker.classList.add( 've-ui-authorItemWidget-colorPicker' );
-		this.colorPicker.fit = function () {
-			this.picker.style.left = this.$element[ 0 ].offsetLeft + 'px';
-			this.picker.style.top = this.$element[ 0 ].offsetTop + 'px';
-			$overlay[ 0 ].appendChild( this.picker );
+		this.colorPicker.fit = () => {
+			this.colorPicker.picker.style.left = this.$element[ 0 ].offsetLeft + 'px';
+			this.colorPicker.picker.style.top = this.$element[ 0 ].offsetTop + 'px';
+			$overlay[ 0 ].appendChild( this.colorPicker.picker );
 		};
 
 		this.$element
