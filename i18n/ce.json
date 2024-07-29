@@ -30,6 +30,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Бухахь сиз хьаькхна",
 	"visualeditor-changedesc-align": "Нисдар хийцина $1 → $2",
 	"visualeditor-changedesc-changed": "$1 хийцина $2 → $3",
+	"visualeditor-changedesc-changed-diff": "$1 хийцайелла: $2",
 	"visualeditor-changedesc-comment": "коммент хийина $1 тӀера $2 тӀе",
 	"visualeditor-changedesc-comment-diff": "Коммент хийцина: $1",
 	"visualeditor-changedesc-direction": "Йуха билгалдакхаран некъ хийцабелла $1 → $2",

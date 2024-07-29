@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Ajdar",
+			"Don Alessandro",
 			"Jdforrester",
 			"Ерней",
 			"Ильнар"
@@ -81,7 +82,7 @@
 	"visualeditor-formatdropdown-format-preformatted": "Әзер формат",
 	"visualeditor-help-tool": "Белешмә",
 	"visualeditor-historybutton-redo-tooltip": "Кайтару",
-	"visualeditor-historybutton-undo-tooltip": "Кире кайтарырга",
+	"visualeditor-historybutton-undo-tooltip": "Кире кайтару",
 	"visualeditor-horizontalrule-tooltip": "Ятма сызык",
 	"visualeditor-indentationbutton-indent-tooltip": "Буш араны арттыру",
 	"visualeditor-indentationbutton-outdent-tooltip": "Буш араны киметү",
