@@ -1,16 +1,27 @@
 {
 	"@metadata": {
 		"authors": [
-			"AlimanRuna"
+			"AlimanRuna",
+			"Elwinlhq"
 		]
 	},
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliennode-tooltip": "Achachaw, kunanqa kay qallawata pukyu qillqa hinallapim llamk'apuyta atinki.",
+	"visualeditor-align-desc-center": "chawpi",
+	"visualeditor-align-desc-default": "kikinmanta",
+	"visualeditor-align-desc-left": "lluq'i",
+	"visualeditor-align-desc-none": "mana mayqinpas",
+	"visualeditor-align-desc-right": "paña",
+	"visualeditor-align-widget-center": "Chawpichay",
+	"visualeditor-align-widget-left": "Lluq'ichay",
+	"visualeditor-align-widget-right": "Pañachay",
+	"visualeditor-annotationbutton-big-tooltip": "Hatun",
 	"visualeditor-annotationbutton-bold-tooltip": "Yanasapa",
 	"visualeditor-annotationbutton-code-tooltip": "Antañiqiqpaq tiksi qillqa",
 	"visualeditor-annotationbutton-italic-tooltip": "Wiksu",
 	"visualeditor-annotationbutton-language-tooltip": "Rimay",
 	"visualeditor-annotationbutton-link-tooltip": "T'inki",
+	"visualeditor-annotationbutton-small-tooltip": "Huch'uy",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Siq'inchampuy",
 	"visualeditor-annotationbutton-subscript-tooltip": "Uraychasqa",
 	"visualeditor-annotationbutton-superscript-tooltip": "Huqarisqa",

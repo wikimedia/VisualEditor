@@ -169,7 +169,7 @@
 	"visualeditor-specialcharacter-group-label-symbols": "สัญลักษณ์",
 	"visualeditor-table-context-col": "คอลัมน์",
 	"visualeditor-table-context-row": "แถว",
-	"visualeditor-table-contextitem-properties": "คุณลักษณะ",
+	"visualeditor-table-contextitem-properties": "คุณสมบัติ",
 	"visualeditor-table-contextitem-selectionmode-cells": "เลือกเซลล์",
 	"visualeditor-table-contextitem-selectionmode-contents": "เลือกเนื้อหา",
 	"visualeditor-table-delete-col": "ลบ{{PLURAL:$1|คอลัมน์}}",
