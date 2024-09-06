@@ -179,7 +179,7 @@ ve.dm.example.commentNodePreview = function ( text ) {
 			classes: [ 've-ce-focusableNode-invisibleIcon' ],
 			framed: false,
 			tabIndex: null,
-			icon: 'notice'
+			icon: ve.ce.CommentNode.static.iconWhenInvisible
 		} ).setLabel( text ) ).$element[ 0 ].outerHTML +
 	'</span>';
 };

@@ -706,6 +706,7 @@
 			"src/ui/pages/ve.ui.SymbolListPage.js"
 		],
 		"styles": [
+			"src/ui/styles/ve.ui.icons.less",
 			"src/ui/styles/dialogs/ve.ui.ToolbarDialog.less",
 			"src/ui/styles/dialogs/ve.ui.CommandHelpDialog.less",
 			"src/ui/styles/dialogs/ve.ui.FindAndReplaceDialog.less",
