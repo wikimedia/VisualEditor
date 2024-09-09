@@ -19,6 +19,11 @@
 	}
 }
 
+.ve-ce-nail::selection { /* stylelint-disable-line plugin/no-unsupported-browser-features */
+	/* T373868 */
+	background-color: transparent;
+}
+
 .ve-ce-nail:not( .ve-ce-nail-debug ) {
 	/*
 	 * Give nail some width to trick layout engine into creating a cursor
