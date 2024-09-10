@@ -371,6 +371,7 @@ module.exports = function ( grunt ) {
 			},
 			all: fg.globSync( [
 				'**/*.{js,json}',
+				'**/.*.{js,json}',
 				'demos/**/*.html',
 				'!lib/**',
 				'!**/{coverage,dist,docs,node_modules}/**'
