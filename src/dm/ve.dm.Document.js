@@ -1624,6 +1624,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  *
  * @param {string|RegExp} query Text to find, string or regex with no flags
  * @param {Object} [options] Search options
+ * @param {boolean} [options.searchRange] Range to search. Defaults to the attached root.
  * @param {boolean} [options.caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
  * @param {boolean} [options.diacriticInsensitiveString] Diacritic insensitive search for a string query. Ignored by regexes.
  *  Only works in browsers which support the Internationalization API
@@ -1633,14 +1634,14 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  */
 ve.dm.Document.prototype.findText = function ( query, options ) {
 	const data = this.data,
-		documentRange = this.getDocumentRange();
+		searchRange = options.searchRange || this.getAttachedRootRange();
 	let ranges = [];
 
 	options = options || {};
 
 	if ( query instanceof RegExp ) {
 		// Avoid multi-line matching by only matching within content (text or content elements)
-		data.forEachRunOfContent( documentRange, ( off, line ) => {
+		data.forEachRunOfContent( searchRange, ( off, line ) => {
 			query.lastIndex = 0;
 			let match;
 			while ( ( match = query.exec( line ) ) !== null ) {
@@ -1706,7 +1707,7 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 		const compare = new Intl.Collator( this.lang, { sensitivity: sensitivity } ).compare;
 		// Iterate up to (and including) offset textLength - queryLength. Beyond that point
 		// there is not enough room for the query to exist
-		for ( let offset = 0, l = documentRange.getLength() - qLen; offset <= l; offset++ ) {
+		for ( let offset = searchRange.start, l = searchRange.end - qLen; offset <= l; offset++ ) {
 			let j = 0;
 			while ( compare( data.getCharacterData( offset + j ), query[ j ] ) === 0 ) {
 				j++;
