@@ -28,7 +28,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.attachedRoot = this.getDocument().getDocumentNode().getNodeFromOffset(
-		model.getAttachedRoot().getOffset() + ( model.getAttachedRoot().isWrapped() ? 1 : 0 )
+		model.getDocument().getAttachedRoot().getOffset() + ( model.getDocument().getAttachedRoot().isWrapped() ? 1 : 0 )
 	);
 	this.selection = null;
 	this.readOnly = false;
@@ -4596,7 +4596,7 @@ ve.ce.Surface.prototype.selectRelativeSelectableContentOffset = function ( start
  */
 ve.ce.Surface.prototype.selectFirstSelectableContentOffset = function () {
 	this.selectRelativeSelectableContentOffset(
-		this.getModel().getAttachedRoot().getOffset(),
+		this.getModel().getDocument().getAttachedRoot().getOffset(),
 		1
 	);
 };
