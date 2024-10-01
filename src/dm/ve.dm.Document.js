@@ -1633,11 +1633,11 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @return {ve.Range[]} List of ranges where the string was found
  */
 ve.dm.Document.prototype.findText = function ( query, options ) {
+	options = options || {};
+
 	const data = this.data,
 		searchRange = options.searchRange || this.getAttachedRootRange();
 	let ranges = [];
-
-	options = options || {};
 
 	if ( query instanceof RegExp ) {
 		// Avoid multi-line matching by only matching within content (text or content elements)
