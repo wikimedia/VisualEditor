@@ -102,6 +102,7 @@
 	"visualeditor-collab-url-mismatch": "La URL de la sesión no coincide con esta página",
 	"visualeditor-collab-url-placeholder": "[URL de sesión]",
 	"visualeditor-collab-url-prompt": "Ingresa la URL de la sesión para unirse",
+	"visualeditor-collab-user-placeholder": "Usuario $1",
 	"visualeditor-command-dialog-cancel": "Cerrar/cancelar cambios",
 	"visualeditor-command-dialog-confirm": "Confirmar cambios",
 	"visualeditor-command-dialog-focus-context": "Mover foco a una ventana emergente contextual",
