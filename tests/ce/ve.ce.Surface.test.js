@@ -164,7 +164,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 			'text/html': item.pasteHtml,
 			'text/plain': item.pasteText
 		},
-		clipboardData = new ve.test.utils.DataTransfer( ve.copy( pasteData ) ),
+		clipboardData = new ve.test.utils.MockDataTransfer( ve.copy( pasteData ) ),
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView, item.config ) :
 			htmlOrView,
@@ -192,9 +192,9 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
 	} else {
 		if ( item.useClipboardData ) {
-			clipboardData.setData( 'text/xcustom', 'useClipboardData-0' );
+			clipboardData.setData( view.constructor.static.clipboardKeyMimeType, 'useClipboardData-0' );
 		} else if ( item.fromVe ) {
-			clipboardData.setData( 'text/xcustom', '0.123-0' );
+			clipboardData.setData( view.constructor.static.clipboardKeyMimeType, '0.123-0' );
 		}
 		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
 	}
@@ -285,11 +285,12 @@ ve.test.utils.createTestEvent = function TestEvent( src, props ) {
 	return event;
 };
 
-ve.test.utils.DataTransfer = function DataTransfer( initialData ) {
+ve.test.utils.MockDataTransfer = function MockDataTransfer( initialData ) {
 	const data = {},
 		items = [];
 
 	this.items = items;
+	this.types = [];
 	this.getData = function ( prop ) {
 		return data[ prop ];
 	};
@@ -301,6 +302,7 @@ ve.test.utils.DataTransfer = function DataTransfer( initialData ) {
 			} );
 		}
 		data[ prop ] = val;
+		this.types.push( prop );
 		return true;
 	};
 	if ( initialData ) {
@@ -701,7 +703,7 @@ QUnit.test( 'onCopy', ( assert ) => {
 	];
 
 	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
-		const clipboardData = new ve.test.utils.DataTransfer(),
+		const clipboardData = new ve.test.utils.MockDataTransfer(),
 			testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } ),
 			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
 			model = view.getModel();
@@ -745,7 +747,7 @@ QUnit.test( 'onCopy', ( assert ) => {
 			assert.strictEqual( clipboardData.getData( 'text/plain' ).trim(), expectedText, msg + ': text' );
 		}
 		if ( !noClipboardData ) {
-			assert.strictEqual( clipboardData.getData( 'text/xcustom' ), clipboardKey, msg + ': clipboardId set' );
+			assert.strictEqual( clipboardData.getData( view.constructor.static.clipboardKeyMimeType ), clipboardKey, msg + ': clipboardId set' );
 		}
 
 		view.destroy();
