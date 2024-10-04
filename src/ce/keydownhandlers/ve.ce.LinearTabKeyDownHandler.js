@@ -85,7 +85,7 @@ ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
 			return true;
 		}
 	}
-	return false;
+	return surface.getSurface().doesAllowTabFocusChange();
 };
 
 /* Registration */

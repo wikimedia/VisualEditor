@@ -157,6 +157,12 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 
 					const $shortcut = $( '<dt>' );
 					triggerList.forEach( ( trigger ) => {
+						if ( surface.doesAllowTabFocusChange() ) {
+							const triggerString = trigger.toString();
+							if ( triggerString === 'tab' || triggerString === 'shift+tab' ) {
+								return;
+							}
+						}
 						// Append an array of jQuery collections from buildKeyNode
 						// eslint-disable-next-line no-jquery/no-append-html
 						$shortcut.append( $( '<kbd>' ).addClass( 've-ui-commandHelpDialog-shortcut' ).append(

@@ -33,6 +33,7 @@
  * @param {string} [config.nullSelectionOnBlur=true] Surface selection is set to null on blur
  * @param {string} [config.inDialog=''] The name of the dialog this surface is in
  * @param {boolean} [config.inTargetWidget=false] The surface is in a target widget
+ * @param {boolean} [config.allowTabFocusChange=false] Allow changing focus from target surfaces with tab/shift+tab
  */
 ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 	config = config || {};
@@ -46,6 +47,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 	this.$scrollListener = config.$scrollListener || $( this.getElementWindow() );
 	this.inDialog = config.inDialog || '';
 	this.inTargetWidget = !!config.inTargetWidget;
+	this.allowTabFocusChange = !!config.allowTabFocusChange;
 	this.mode = config.mode;
 
 	// The following classes are used here:
@@ -918,4 +920,13 @@ ve.ui.Surface.prototype.getDir = function () {
  */
 ve.ui.Surface.prototype.getInDialog = function () {
 	return this.inDialog;
+};
+
+/**
+ * Does the surface allow changing focus from target surfaces with tab/shift+tab
+ *
+ * @return {boolean}
+ */
+ve.ui.Surface.prototype.doesAllowTabFocusChange = function () {
+	return this.allowTabFocusChange;
 };

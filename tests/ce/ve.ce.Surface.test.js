@@ -42,8 +42,8 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		msg = caseItem.msg,
 		forceSelection = caseItem.forceSelection,
 		view = typeof htmlOrDoc === 'string' ?
-			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
-			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ) ),
+			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc, caseItem.surfaceConfig ) :
+			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument(), caseItem.surfaceConfig ) ),
 		model = view.getModel(),
 		data = ve.copy( model.getDocument().getFullData() ),
 		wereDefaultsPrevented = [],
@@ -127,6 +127,9 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 			expectedRangeOrSelection
 		);
 		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
+		if ( typeof caseItem.expectedHasFocus === 'boolean' ) {
+			assert.strictEqual( document.activeElement === view.getDocument().getDocumentNode().$element[ 0 ], caseItem.expectedHasFocus, msg + ': has focus' );
+		}
 		view.destroy();
 	} );
 	return promise.catch( ( error ) => {
