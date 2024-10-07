@@ -199,6 +199,7 @@
 	"visualeditor-rebase-client-document-create-edit": "생성/편집",
 	"visualeditor-rebase-client-document-name": "문서 제목 (선택사항)",
 	"visualeditor-rebase-corrupted-document-error": "문서가 손상되었습니다: $1",
+	"visualeditor-rebase-corrupted-document-title": "손상된 문서",
 	"visualeditor-rebase-missing-document-error": "서버에 문서가 없습니다. 데이터 손실을 방지하려면 내용을 복사해서 붙여넣으십시오.",
 	"visualeditor-rebase-missing-document-title": "존재하지 않는 문서",
 	"visualeditor-shortcuts-clipboard": "클립보드",
