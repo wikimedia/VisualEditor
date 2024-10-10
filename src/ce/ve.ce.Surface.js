@@ -67,7 +67,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.deactivated = false;
 	this.showAsActivated = false;
 	this.hideSelection = false;
-	this.$deactivatedSelection = $( '<div>' );
 	this.userSelectionDeactivate = {};
 	this.drawnSelections = {};
 	this.drawnSelectionCache = {};
@@ -80,7 +79,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$highlights = $( '<div>' ).append(
 		this.$highlightsFocused, this.$highlightsBlurred
 	);
-	this.$findResults = $( '<div>' );
 	this.$dropMarker = $( '<div>' ).addClass( 've-ce-surface-dropMarker oo-ui-element-hidden' );
 	this.$lastDropTarget = null;
 	this.lastDropPosition = null;
@@ -214,7 +212,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$highlights.addClass( 've-ce-surface-highlights' );
 	this.$highlightsFocused.addClass( 've-ce-surface-highlights-focused' );
 	this.$highlightsBlurred.addClass( 've-ce-surface-highlights-blurred' );
-	this.$deactivatedSelection.addClass( 've-ce-surface-deactivatedSelection' );
 	this.$pasteTarget
 		.addClass( 've-ce-surface-paste' )
 		// T283853
@@ -228,7 +225,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$highlights.append( this.$dropMarker );
 	this.$element.append( this.$attachedRootNode, this.$pasteTarget );
 	this.surface.$blockers.append( this.$highlights );
-	this.surface.$selections.append( this.$deactivatedSelection );
 };
 
 /* Inheritance */
