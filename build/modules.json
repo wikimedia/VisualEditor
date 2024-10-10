@@ -488,6 +488,7 @@
 			"src/ce/ve.ce.TableCellableNode.js",
 			"src/ce/ve.ce.Selection.js",
 			"src/ce/ve.ce.ClipboardHandler.js",
+			"src/ce/ve.ce.SelectionManager.js",
 			"src/ce/ve.ce.Surface.js",
 			"src/ce/ve.ce.SurfaceObserver.js",
 			"src/ce/ve.ce.KeyDownHandlerFactory.js",

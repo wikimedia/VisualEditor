@@ -254,7 +254,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			surfaceModel.setSelection( selection );
 
 			// Generates ve-ce-surface-selections-findResults CSS class
-			surfaceView.drawSelections( 'findResults', [] );
+			surfaceView.getSelectionManager().drawSelections( 'findResults', [] );
 			this.fragments = [];
 			this.surface = null;
 			this.focusedIndex = 0;
@@ -438,13 +438,14 @@ ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
  */
 ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range ) {
 	const selections = [];
+	const surfaceView = this.surface.getView();
 	for ( let i = range.start; i < range.end; i++ ) {
 		selections.push(
-			this.surface.getView().getSelection( this.fragments[ i ].getSelection() )
+			surfaceView.getSelection( this.fragments[ i ].getSelection() )
 		);
 	}
 	// Generates ve-ce-surface-selections-findResults CSS class
-	this.surface.getView().drawSelections( 'findResults', selections );
+	surfaceView.getSelectionManager().drawSelections( 'findResults', selections );
 	this.isClipped = range.getLength() < this.results;
 	this.highlightFocused();
 };
@@ -472,7 +473,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 	}
 
 	if ( this.focusedSelection ) {
-		const $focusedSelection = surfaceView.getDrawnSelection( 'findResults', this.focusedSelection );
+		const $focusedSelection = surfaceView.getSelectionManager().getDrawnSelection( 'findResults', this.focusedSelection );
 		if ( $focusedSelection ) {
 			$focusedSelection.removeClass( 've-ce-surface-selections-findResult-focused' );
 		}
@@ -481,7 +482,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 	const selection = this.fragments[ this.focusedIndex ].getSelection();
 	this.startOffset = selection.getCoveringRange().start;
 
-	const $selection = surfaceView.getDrawnSelection( 'findResults', selection );
+	const $selection = surfaceView.getSelectionManager().getDrawnSelection( 'findResults', selection );
 	if ( $selection ) {
 		$selection.addClass( 've-ce-surface-selections-findResult-focused' );
 	}
