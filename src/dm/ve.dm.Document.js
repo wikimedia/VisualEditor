@@ -1164,6 +1164,9 @@ ve.dm.Document.prototype.rebuildTree = function () {
  * @param {ve.dm.BranchNode} rootNode Node to rebuild
  */
 ve.dm.Document.prototype.rebuildTreeNode = function ( rootNode ) {
+	if ( !rootNode.length ) {
+		this.buildNodeTree();
+	}
 	const range = rootNode.getRange();
 	const data = this.data.sliceObject( range.start, range.end );
 	// Build document fragment from data
