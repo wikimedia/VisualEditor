@@ -362,8 +362,8 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 	const transactionsB = uncommitted.transactions.slice();
 	let storesA = history.getStores();
 	const storesB = uncommitted.getStores();
-	const selectionsA = ve.cloneObject( history.selections );
-	let selectionsB = ve.cloneObject( uncommitted.selections );
+	const selectionsA = OO.cloneObject( history.selections );
+	let selectionsB = OO.cloneObject( uncommitted.selections );
 	let rejected = null;
 
 	// For each element b_i of transactionsB, rebase the whole list transactionsA over b_i.
@@ -739,7 +739,7 @@ ve.dm.Change.prototype.push = function ( other ) {
 		this.store.merge( store );
 		this.pushTransaction( transaction, this.store.getLength() );
 	}
-	this.selections = ve.cloneObject( other.selections );
+	this.selections = OO.cloneObject( other.selections );
 };
 
 /**
@@ -767,7 +767,7 @@ ve.dm.Change.prototype.mostRecent = function ( start ) {
 		start,
 		this.transactions.slice( start - this.start ),
 		this.getStores().slice( start - this.start ),
-		ve.cloneObject( this.selections )
+		OO.cloneObject( this.selections )
 	);
 };
 
@@ -966,6 +966,6 @@ ve.dm.Change.prototype.squash = function () {
 		[ ve.dm.TransactionSquasher.static.squash( this.transactions ) ],
 		[ this.store.slice() ],
 		// Shallow clone (the individual selections are immutable so need no cloning)
-		ve.cloneObject( this.selections )
+		OO.cloneObject( this.selections )
 	);
 };
