@@ -1648,6 +1648,16 @@ ve.dm.example.domToDataCases = {
 			</p>
 		`
 	},
+	'importedData annotation': {
+		data: [
+			{ type: 'paragraph' },
+			...ve.dm.example.annotateText( 'foo', { type: 'meta/importedData', attributes: { source: null } } ),
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		fromDataBody: '<p>foo</p>'
+	},
 	'check list': {
 		body: ve.dm.example.singleLine`
 			<ul rel="ve:checkList">

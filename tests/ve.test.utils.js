@@ -634,6 +634,9 @@
 			getView: function () {
 				return view;
 			},
+			getTarget: function () {
+				return ve.init.target;
+			},
 			getCommands: function () {
 				return ve.ui.commandRegistry.getNames();
 			},

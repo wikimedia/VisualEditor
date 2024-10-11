@@ -28,6 +28,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView, item.config ) :
 			htmlOrView,
 		model = view.getModel(),
+		target = view.getSurface().getTarget(),
 		doc = model.getDocument(),
 		done = assert.async();
 
@@ -74,6 +75,11 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 	}
 	if ( item.pasteSpecial ) {
 		view.clipboardHandler.prepareForPasteSpecial();
+	}
+	let wasAnnotatingImportedData;
+	if ( item.annotateImportedData ) {
+		wasAnnotatingImportedData = target.constructor.static.annotateImportedData;
+		target.constructor.static.annotateImportedData = item.annotateImportedData;
 	}
 
 	// Replicate the sequencing of ce.Surface.onPaste, without any setTimeouts:
@@ -124,6 +130,11 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		}
 		assert.strictEqual( testEvent.isDefaultPrevented(), !!item.expectedDefaultPrevented, item.msg + ': default action ' + ( item.expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
 		view.destroy();
+
+		if ( item.annotateImportedData ) {
+			target.constructor.static.annotateImportedData = wasAnnotatingImportedData;
+		}
+
 		done();
 	} );
 };
@@ -281,6 +292,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 		bold = ve.dm.example.bold,
 		italic = ve.dm.example.italic,
 		link = ve.dm.example.link( 'Foo' ),
+		imported = { type: 'meta/importedData', attributes: { source: null } },
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1 ),
@@ -298,6 +310,26 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					]
 				],
 				msg: 'Text into empty paragraph'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', imported )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'Text into empty paragraph (annotateImportedData)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 4 ),

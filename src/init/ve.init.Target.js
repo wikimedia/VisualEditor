@@ -257,6 +257,13 @@ ve.init.Target.static.importRules = {
 	all: null
 };
 
+/**
+ * Apply the meta/importedData annotation to pasted/dropped data
+ *
+ * @type {boolean}
+ */
+ve.init.Target.static.annotateImportedData = false;
+
 /* Static methods */
 
 /**

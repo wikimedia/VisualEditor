@@ -52,6 +52,16 @@ ve.dm.Annotation.static.enableAboutGrouping = false;
 ve.dm.Annotation.static.applyToAppendedContent = true;
 
 /**
+ * Automatically apply annotation to content inserted within it.
+ *
+ * This includes content inserted after the annotation (appended content).
+ *
+ * @property {boolean}
+ * @see ve.ce.TextState#getChangeTransaction
+ */
+ve.dm.Annotation.static.applyToInsertedContent = true;
+
+/**
  * Accept this annotation when the browser spontaneously adds it to view's DOM.
  *
  * @property {boolean}

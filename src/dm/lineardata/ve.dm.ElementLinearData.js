@@ -696,8 +696,10 @@ ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( 
 
 	// Return those startAnnotations that either continue in afterAnnotations or
 	// should get added to appended content
-	return startAnnotations.filter( ( annotation ) => annotation.constructor.static.applyToAppendedContent ||
-			afterAnnotations.containsComparable( annotation ) );
+	return startAnnotations.filter(
+		( annotation ) => annotation.constructor.static.applyToInsertedContent &&
+			( annotation.constructor.static.applyToAppendedContent || afterAnnotations.containsComparable( annotation ) )
+	);
 };
 
 /**

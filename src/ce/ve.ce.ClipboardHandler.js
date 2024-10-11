@@ -964,7 +964,23 @@ ve.ce.ClipboardHandler.prototype.afterPasteInsertExternalData = function ( targe
 		}
 	}
 	if ( !handled ) {
-		targetFragment.insertDocument( pastedDocumentModel, contextRange, this.getBeforePasteAnnotationSet() );
+		const annotations = this.getBeforePasteAnnotationSet();
+
+		const target = this.getSurface().getSurface().getTarget();
+		if ( target.constructor.static.annotateImportedData ) {
+			annotations.push(
+				ve.dm.annotationFactory.createFromElement(
+					{
+						type: 'meta/importedData',
+						attributes: {
+							source: this.beforePasteData.source
+						}
+					}
+				)
+			);
+		}
+
+		targetFragment.insertDocument( pastedDocumentModel, contextRange, annotations );
 	}
 	return targetFragment.getPending();
 };
