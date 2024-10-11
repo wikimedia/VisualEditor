@@ -27,10 +27,6 @@ ve.ce.TextStyleAnnotation = function VeCeTextStyleAnnotation() {
 
 OO.inheritClass( ve.ce.TextStyleAnnotation, ve.ce.Annotation );
 
-/* Static Properties */
-
-ve.ce.TextStyleAnnotation.static.name = 'textStyle';
-
 /* Methods */
 
 /**
@@ -39,7 +35,3 @@ ve.ce.TextStyleAnnotation.static.name = 'textStyle';
 ve.ce.TextStyleAnnotation.prototype.getTagName = function () {
 	return this.getModel().getAttribute( 'nodeName' ) || this.constructor.static.tagName;
 };
-
-/* Registration */
-
-ve.ce.annotationFactory.register( ve.ce.TextStyleAnnotation );

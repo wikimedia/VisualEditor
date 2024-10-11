@@ -24,8 +24,6 @@ OO.inheritClass( ve.dm.TextStyleAnnotation, ve.dm.Annotation );
 
 /* Static Properties */
 
-ve.dm.TextStyleAnnotation.static.name = 'textStyle';
-
 ve.dm.TextStyleAnnotation.static.matchTagNames = [];
 
 ve.dm.TextStyleAnnotation.static.toDataElement = function ( domElements, converter ) {
@@ -68,7 +66,3 @@ ve.dm.TextStyleAnnotation.prototype.describeRemoved = function () {
 	}
 	return [];
 };
-
-/* Registration */
-
-ve.dm.modelRegistry.register( ve.dm.TextStyleAnnotation );
