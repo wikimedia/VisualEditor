@@ -200,3 +200,59 @@ ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
 	}
 	return false;
 };
+
+/**
+ * @typedef {Object} AnnotationRange
+ * @memberof ve.dm.BranchNode
+ * @property {ve.dm.Annotation} annotation
+ * @property {ve.dm.Range} range
+ */
+
+/**
+ * Get all annotations and the ranges they cover
+ *
+ * @return {ve.dm.BranchNode.AnnotationRange[]} Annotation ranges
+ */
+ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
+	const contentBranchNodes = [];
+	this.traverse( ( node ) => {
+		if ( node.canContainContent() ) {
+			contentBranchNodes.push( node );
+		}
+	} );
+	const startOffsets = {};
+	const annotationRanges = [];
+	const annotationStack = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+	contentBranchNodes.forEach( ( node ) => {
+		const range = node.getRange();
+		let i;
+		const open = ( ann ) => {
+			const key = JSON.stringify( ann.getComparableObject() );
+			startOffsets[ key ] = i;
+		};
+		const close = ( ann ) => {
+			const key = JSON.stringify( ann.getComparableObject() );
+			const startOffset = startOffsets[ key ];
+			annotationRanges.push( {
+				annotation: ann,
+				range: new ve.Range( startOffset, i )
+			} );
+		};
+		for ( i = range.start; i < range.end; i++ ) {
+			const annotations = node.getDocument().data.getAnnotationsFromOffset( i );
+			ve.dm.Converter.static.openAndCloseAnnotations(
+				annotationStack, annotations,
+				open,
+				close
+			);
+		}
+		// Close remaining annotations
+		const emptySet = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+		ve.dm.Converter.static.openAndCloseAnnotations(
+			annotationStack, emptySet,
+			open,
+			close
+		);
+	} );
+	return annotationRanges;
+};
