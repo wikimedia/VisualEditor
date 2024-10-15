@@ -3,7 +3,6 @@
 	"extends": [
 		"wikimedia/client-es6",
 		"wikimedia/jquery",
-		"wikimedia/mediawiki",
 		"wikimedia/jsdoc"
 	],
 	"globals": {
