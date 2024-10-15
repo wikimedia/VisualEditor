@@ -211,7 +211,7 @@ ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
 /**
  * Get all annotations and the ranges they cover
  *
- * @return {ve.dm.BranchNode.AnnotationRange[]} Annotation ranges
+ * @return {ve.dm.BranchNode.AnnotationRange[]} Annotation ranges, ordered by start then end
  */
 ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
 	const contentBranchNodes = [];
@@ -254,5 +254,6 @@ ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
 			close
 		);
 	} );
+	annotationRanges.sort( ( a, b ) => a.range.start - b.range.start || a.range.end - b.range.end );
 	return annotationRanges;
 };

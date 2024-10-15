@@ -1894,8 +1894,7 @@ ve.dm.example.domToDataCases = {
 			[ 2, 6, ve.dm.example.bold ],
 			[ 4, 6, ve.dm.example.italic ],
 			[ 6, 9, ve.dm.example.italic ]
-		],
-		annotationRangesTestFail: true
+		]
 	},
 	'annotated comments': {
 		body: '<p><b><!--foo-->bar<!--baz--></b></p>',
@@ -2955,7 +2954,6 @@ ve.dm.example.domToDataCases = {
 			[ 8, 26, ve.dm.example.bold ],
 			[ 14, 20, ve.dm.example.italic ]
 		],
-		annotationRangesTestFail: true,
 		fromDataBody: '<p> A  B       <b>C\t\t\t<i>D</i>\t\t\t\t\t\t\tE</b>\n\n\nF\n\n\n</p>'
 	},
 	'whitespace preservation with tightly nested annotations': {
@@ -3748,8 +3746,7 @@ ve.dm.example.domToDataCases = {
 			[ 5, 10, ve.dm.example.italic ],
 			[ 6, 7, ve.dm.example.bold ],
 			[ 8, 9, ve.dm.example.underline ]
-		],
-		annotationRangesTestFail: true
+		]
 	},
 	'about grouping': {
 		body: ve.dm.example.singleLine`
