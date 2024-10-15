@@ -130,3 +130,25 @@ QUnit.test( 'splice', ( assert ) => {
 	assert.deepEqual( node4.splice( 1, 1, node3 ), [ node2 ] );
 	assert.deepEqual( node4.getChildren(), [ node1, node3 ] );
 } );
+
+QUnit.test( 'getAnnotationRanges', ( assert ) => {
+	for ( const name in ve.dm.example.domToDataCases ) {
+		const domToDataCase = ve.dm.example.domToDataCases[ name ];
+		if ( !domToDataCase.annotationRanges ) {
+			continue;
+		}
+		const doc = ve.dm.converter.getModelFromDom(
+			ve.createDocumentFromHtml( domToDataCase.body || domToDataCase.fromDataBody )
+		);
+		const annotationRanges = doc.getDocumentNode().getAnnotationRanges().map( ( { annotation, range } ) => {
+			const el = annotation.getClonedElement();
+			delete el.originalDomElementsHash;
+			return [ range.start, range.end, el ];
+		} );
+		if ( domToDataCase.annotationRangesTestFail ) {
+			assert.notDeepEqual( annotationRanges, domToDataCase.annotationRanges, name );
+		} else {
+			assert.deepEqual( annotationRanges, domToDataCase.annotationRanges, name );
+		}
+	}
+} );

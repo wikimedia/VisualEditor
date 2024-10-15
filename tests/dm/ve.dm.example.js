@@ -1,4 +1,7 @@
 /*!
+			[ 2, 3, ve.dm.example.italic ],
+			[ 3, 4, ve.dm.example.underline ]
+		],
  * VisualEditor DataModel example data sets.
  *
  * @copyright See AUTHORS.txt
@@ -1382,7 +1385,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		annotationRanges: []
 	},
 	'annotated text with bold, italic, underline formatting': {
 		body: '<p><b>a</b><i>b</i><u>c</u></p>',
@@ -1394,6 +1398,11 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		annotationRanges: [
+			[ 1, 2, ve.dm.example.bold ],
+			[ 2, 3, ve.dm.example.italic ],
+			[ 3, 4, ve.dm.example.underline ]
 		],
 		ceHtml: ve.dm.example.singleLine`
 			${ ve.dm.example.ceParagraph }
@@ -1412,6 +1421,9 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
+		annotationRanges: [
+			[ 1, 2, ve.dm.example.bold ]
+		],
 		fromDataBody: '<p><b>a</b></p>'
 	},
 	'equivalent annotations': {
@@ -1428,6 +1440,12 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
+		annotationRanges: [
+			[ 1, 2, ve.dm.example.code ],
+			[ 3, 4, ve.dm.example.tt ],
+			[ 5, 6, ve.dm.example.code ],
+			[ 6, 7, ve.dm.example.tt ]
+		],
 		fromDataBody: '<p><code>a</code>b<tt>c</tt>d<code>ef</code></p>'
 	},
 	'additive annotations': {
@@ -1443,7 +1461,14 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		annotationRanges: [
+			[ 1, 4, ve.dm.example.big ],
+			[ 2, 3, ve.dm.example.big ],
+			[ 4, 7, ve.dm.example.bold ],
+			[ 5, 6, ve.dm.example.bold ]
+		],
+		annotationRangesTestFail: true
 	},
 	'additive annotations overlapping other annotations': {
 		body: '<p><i><big>a<big><b>b</b></big><b>c</b></big></i></p>',
@@ -1455,7 +1480,14 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		annotationRanges: [
+			[ 1, 4, ve.dm.example.italic ],
+			[ 1, 4, ve.dm.example.big ],
+			[ 2, 3, ve.dm.example.big ],
+			[ 3, 4, ve.dm.example.bold ]
+		],
+		annotationRangesTestFail: true
 	},
 	'annotations normalised on import': {
 		body: '<p><em>Foo</em><strong>bar</strong></p>',
@@ -1530,6 +1562,13 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
+		annotationRanges: [
+			[ 1, 4, ve.dm.example.language( 'en', null ) ],
+			[ 4, 7, ve.dm.example.language( 'fr', 'ltr' ) ],
+			[ 7, 10, ve.dm.example.language( 'cy', 'ltr', 'bdo' ) ],
+			[ 10, 12, ve.dm.example.language( null, 'rtl' ) ],
+			[ 12, 14, ve.dm.example.language( null, 'RtL' ) ]
+		],
 		ceHtml: ve.dm.example.singleLine`
 			${ ve.dm.example.ceParagraph }
 				<span class="${ ve.dm.example.textStyleClasses } ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="en" title="visualeditor-languageannotation-description,langname-en">ten</span>
@@ -1555,6 +1594,10 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		annotationRanges: [
+			[ 1, 2, { type: 'textStyle/datetime', attributes: { nodeName: 'time', datetime: null } } ],
+			[ 2, 3, { type: 'textStyle/datetime', attributes: { nodeName: 'time', datetime: '2001-05-15T19:00' } } ]
 		],
 		ceHtml: ve.dm.example.singleLine`
 			${ ve.dm.example.ceParagraph }
@@ -1846,7 +1889,13 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		annotationRanges: [
+			[ 2, 6, ve.dm.example.bold ],
+			[ 4, 6, ve.dm.example.italic ],
+			[ 6, 9, ve.dm.example.italic ]
+		],
+		annotationRangesTestFail: true
 	},
 	'annotated comments': {
 		body: '<p><b><!--foo-->bar<!--baz--></b></p>',
@@ -1874,6 +1923,9 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		annotationRanges: [
+			[ 1, 8, ve.dm.example.bold ]
 		],
 		clipboardBody: ve.dm.example.singleLine`
 			<p>
@@ -1948,7 +2000,12 @@ ve.dm.example.domToDataCases = {
 			{ type: '/alienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		annotationRanges: [
+			[ 1, 4, ve.dm.example.bold ],
+			[ 5, 8, ve.dm.example.bold ]
+		],
+		annotationRangesTestFail: true
 	},
 	'annotated metadata in a wrapper': {
 		body: '<b><meta />bar<meta />quux<meta /></b>',
@@ -2425,6 +2482,9 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
+		annotationRanges: [
+			[ 5, 8, ve.dm.example.link( 'Foo' ) ]
+		],
 		fromDataBody: '<table><tr><td><a href="Foo">Foo</a><p>Bar</p></td></tr></table>'
 	},
 	'nested empty annotation': {
@@ -2487,6 +2547,9 @@ ve.dm.example.domToDataCases = {
 			{ type: '/removableAlienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		annotationRanges: [
+			[ 1, 4, ve.dm.example.italic ]
 		]
 	},
 	'empty annotation with comment': {
@@ -2506,6 +2569,9 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		annotationRanges: [
+			[ 4, 6, ve.dm.example.bold ]
 		],
 		clipboardBody: '<p>Foo<b><span rel="ve:Comment" data-ve-comment=" Bar ">&nbsp;</span></b>Baz</p>',
 		previewBody: '<p>Foo<b>' + ve.dm.example.commentNodePreview( ' Bar ' ) + '</b>Baz</p>'
@@ -2588,6 +2654,12 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
+		annotationRanges: [
+			[ 1, 7, ve.dm.example.bold ],
+			[ 7, 10, ve.dm.example.strong ],
+			[ 12, 18, ve.dm.example.link( 'quux' ) ],
+			[ 18, 21, ve.dm.example.link( 'whee' ) ]
+		],
 		fromDataBody: ve.dm.example.singleLine`
 			<p>
 				<b>Foobarbaz</b>
@@ -2643,6 +2715,9 @@ ve.dm.example.domToDataCases = {
 			{
 				type: '/internalList'
 			}
+		],
+		annotationRanges: [
+			[ 1, 3, { type: 'textStyle/span', attributes: { nodeName: 'a' } } ]
 		],
 		fromDataBody: '<a>ab</a>'
 	},
@@ -2876,6 +2951,11 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
+		annotationRanges: [
+			[ 8, 26, ve.dm.example.bold ],
+			[ 14, 20, ve.dm.example.italic ]
+		],
+		annotationRangesTestFail: true,
 		fromDataBody: '<p> A  B       <b>C\t\t\t<i>D</i>\t\t\t\t\t\t\tE</b>\n\n\nF\n\n\n</p>'
 	},
 	'whitespace preservation with tightly nested annotations': {
@@ -2894,6 +2974,11 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
+		annotationRanges: [
+			[ 8, 14, ve.dm.example.bold ],
+			[ 8, 14, ve.dm.example.italic ]
+		],
+		annotationRangesTestFail: true,
 		fromDataBody: '<p> A  B   \t\t<b><i>C</i></b>\t\t\t\n\nD\n\n\n</p>'
 	},
 	'whitespace preservation with nested annotations with whitespace on the left side': {
@@ -3629,7 +3714,13 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		annotationRanges: [
+			[ 1, 4, ve.dm.example.bold ],
+			[ 1, 4, ve.dm.example.underline ],
+			[ 1, 4, ve.dm.example.italic ]
+		],
+		annotationRangesTestFail: true
 	},
 	'nested annotations are closed and reopened in the correct order': {
 		body: '<p><a href="Foo">F<b>o<i>o</i></b><i>b</i></a><i>a<b>r</b>b<u>a</u>z</i></p>',
@@ -3648,7 +3739,17 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		annotationRanges: [
+			[ 1, 5, ve.dm.example.link( 'Foo' ) ],
+			[ 2, 4, ve.dm.example.bold ],
+			[ 3, 4, ve.dm.example.italic ],
+			[ 4, 5, ve.dm.example.italic ],
+			[ 5, 10, ve.dm.example.italic ],
+			[ 6, 7, ve.dm.example.bold ],
+			[ 8, 9, ve.dm.example.underline ]
+		],
+		annotationRangesTestFail: true
 	},
 	'about grouping': {
 		body: ve.dm.example.singleLine`

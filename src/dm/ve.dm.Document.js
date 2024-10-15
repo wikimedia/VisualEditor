@@ -850,6 +850,8 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 		}
 		result.push( stripMetaLoadInfo( item ) );
 		if ( mode === 'roundTrip' && insertions[ i ] ) {
+			// There are meta items to reinsert outside of ContentBranchNodes.
+			// TODO: we should strip annotations from such meta items
 			for ( let j = 0, jLen = insertions[ i ].length; j < jLen; j++ ) {
 				metaItem = insertions[ i ][ j ];
 				result.push( metaItem );
