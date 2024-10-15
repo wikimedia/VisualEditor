@@ -33,8 +33,8 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 			new OO.ui.ButtonOptionWidget( { data: 'mobile', label: 'Mobile' } )
 		] ),
 		themeSelect = new OO.ui.ButtonSelectWidget().addItems( [
-			new OO.ui.ButtonOptionWidget( { data: 'apex', label: 'Apex' } ),
-			new OO.ui.ButtonOptionWidget( { data: 'wikimediaui', label: 'WikimediaUI' } )
+			new OO.ui.ButtonOptionWidget( { data: 'wikimediaui', label: 'WikimediaUI' } ),
+			new OO.ui.ButtonOptionWidget( { data: 'apex', label: 'Apex' } )
 		] ).toggle( !OO.ui.isMobile() ); // Only one theme on mobile ATM
 	let hashChanging = false,
 		currentLang = ve.init.platform.getUserLanguages()[ 0 ],
@@ -84,10 +84,10 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 	themeSelect.selectItemByData( theme );
 
 	themeSelect.on( 'select', ( item ) => {
-		if ( item.getData() === 'wikimediaui' ) {
-			location.href = location.href.replace( '.html', '-wikimediaui.html' );
+		if ( item.getData() === 'apex' ) {
+			location.href = location.href.replace( '.html', '-apex.html' );
 		} else {
-			location.href = location.href.replace( '-wikimediaui.html', '.html' );
+			location.href = location.href.replace( '-apex.html', '.html' );
 		}
 	} );
 

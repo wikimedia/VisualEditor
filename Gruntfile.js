@@ -195,7 +195,7 @@ module.exports = function ( grunt ) {
 		},
 		buildloader: {
 			desktopDemoApex: {
-				targetFile: 'demos/ve/desktop.html',
+				targetFile: 'demos/ve/desktop-apex.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
@@ -212,7 +212,7 @@ module.exports = function ( grunt ) {
 				demoPages: demoPages
 			},
 			desktopDemoApexDist: {
-				targetFile: 'demos/ve/desktop-dist.html',
+				targetFile: 'demos/ve/desktop-apex-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
@@ -226,7 +226,7 @@ module.exports = function ( grunt ) {
 				demoPages: demoPages
 			},
 			desktopDemoWikimediaUI: {
-				targetFile: 'demos/ve/desktop-wikimediaui.html',
+				targetFile: 'demos/ve/desktop.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
@@ -243,7 +243,7 @@ module.exports = function ( grunt ) {
 				demoPages: demoPages
 			},
 			desktopDemoWikimediaUIDist: {
-				targetFile: 'demos/ve/desktop-dist-wikimediaui.html',
+				targetFile: 'demos/ve/desktop-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
@@ -292,7 +292,7 @@ module.exports = function ( grunt ) {
 				template: 'demos/ve/minimal.html.template',
 				modules: modules,
 				load: [
-					'visualEditor.standalone.apex.dist',
+					'visualEditor.standalone.wikimediaui.dist',
 					'visualEditor.standalone.read'
 				],
 				run: [ 'visualEditor.minimal.standalone.demo' ],
@@ -307,7 +307,7 @@ module.exports = function ( grunt ) {
 				template: 'demos/ve/minimal.html.template',
 				modules: modules,
 				load: [
-					'visualEditor.standalone.apex.dist',
+					'visualEditor.standalone.wikimediaui.dist',
 					'visualEditor.standalone.read'
 				],
 				run: [ 'visualEditor.minimal.standalone.demo' ],
@@ -322,7 +322,7 @@ module.exports = function ( grunt ) {
 				template: 'demos/ve/performance.html.template',
 				modules: modules,
 				load: [
-					'visualEditor.standalone.apex.dist',
+					'visualEditor.standalone.wikimediaui.dist',
 					'visualEditor.standalone.read'
 				],
 				run: [ 'visualEditor.test.performance' ],
