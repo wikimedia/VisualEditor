@@ -220,11 +220,11 @@ ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
 			contentBranchNodes.push( node );
 		}
 	} );
-	const startOffsets = {};
 	const annotationRanges = [];
-	const annotationStack = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	contentBranchNodes.forEach( ( node ) => {
 		const range = node.getRange();
+		const startOffsets = {};
+		const annotationStack = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 		let i;
 		const open = ( ann ) => {
 			const key = JSON.stringify( ann.getComparableObject() );
