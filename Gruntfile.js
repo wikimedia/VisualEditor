@@ -453,6 +453,7 @@ module.exports = function ( grunt ) {
 								'src/dm/nodes/ve.dm.ImageNode.js',
 								'src/dm/nodes/ve.dm.InternalItemNode.js',
 								// CE
+								'src/ce/ve.ce.DragDropHandler.js',
 								'src/ce/ve.ce.SelectionManager.js',
 								'src/ce/annotations/ve.ce.DeleteAnnotation.js',
 								'src/ce/annotations/ve.ce.InsertAnnotation.js',
