@@ -283,7 +283,7 @@ ve.ce.ClipboardHandler.prototype.onPaste = function ( e ) {
 	setTimeout( () => {
 		let afterPastePromise = ve.createDeferred().resolve().promise();
 		try {
-			if ( !e.isDefaultPrevented() ) {
+			if ( !e.isDefaultPrevented() || e.type === 'drop' ) {
 				afterPastePromise = this.afterPaste( e );
 			}
 		} finally {
@@ -317,7 +317,7 @@ ve.ce.ClipboardHandler.prototype.onPaste = function ( e ) {
 ve.ce.ClipboardHandler.prototype.beforePaste = function ( e ) {
 	const surface = this.getSurface(),
 		selection = surface.getModel().getSelection(),
-		clipboardData = e.originalEvent.clipboardData,
+		clipboardData = e.originalEvent.clipboardData || e.originalEvent.dataTransfer,
 		surfaceModel = surface.getModel(),
 		fragment = surfaceModel.getFragment(),
 		documentModel = surfaceModel.getDocument();
@@ -333,7 +333,9 @@ ve.ce.ClipboardHandler.prototype.beforePaste = function ( e ) {
 	}
 
 	this.beforePasteAnnotationsAtFocus = surface.annotationsAtFocus();
-	this.beforePasteData = {};
+	this.beforePasteData = {
+		isPaste: e.type === 'paste'
+	};
 	this.originalClipboardMetdata = null;
 	if ( this.middleClickPasting && !surface.lastNonCollapsedDocumentSelection.isNull() ) {
 		// Paste was triggered by middle click, and the last non-collapsed document selection was in
@@ -475,7 +477,7 @@ ve.ce.ClipboardHandler.prototype.afterPaste = function () {
 	let targetFragment = surfaceModel.getFragment( null, true );
 
 	// If the selection doesn't collapse after paste then nothing was inserted
-	if ( !surface.nativeSelection.isCollapsed ) {
+	if ( beforePasteData.isPaste && !surface.nativeSelection.isCollapsed ) {
 		return done;
 	}
 
@@ -767,6 +769,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function 
 	// and destroy nodes.
 	if (
 		$clipboardHtml && (
+			!beforePasteData.isPaste ||
 			forceClipboardData ||
 			// FIXME T126045: Allow the test runner to force the use of clipboardData
 			clipboardKey === 'useClipboardData-0' ||

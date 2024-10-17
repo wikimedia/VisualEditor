@@ -202,7 +202,6 @@ ve.ce.DragDropHandler.prototype.onDocumentDragLeave = function () {
 ve.ce.DragDropHandler.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
 	const surfaceModel = this.getSurface().getModel(),
-		dataTransfer = e.originalEvent.dataTransfer,
 		$dropTarget = this.$lastDropTarget,
 		dropPosition = this.lastDropPosition,
 		platformKey = ve.getSystemPlatform() === 'mac' ? 'mac' : 'pc';
@@ -287,7 +286,7 @@ ve.ce.DragDropHandler.prototype.onDocumentDrop = function ( e ) {
 		// External drop
 		// TODO: Support sanitized external drop into single line contexts
 		if ( isMultiline ) {
-			this.getSurface().handleDataTransfer( dataTransfer, false, targetFragment );
+			this.getSurface().getClipboardHandler().onPaste( e );
 		}
 	}
 	this.endRelocation();
