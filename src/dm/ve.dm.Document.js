@@ -1795,12 +1795,17 @@ ve.dm.Document.prototype.getDir = function () {
  * Storage is used for static variables related to document state,
  * such as InternalList's nextUniqueNumber.
  *
+ * Values stored here must be JSON-serializable, as they are written/read
+ * with ve.init.SafeStorage#setObject and getObject.
+ *
  * @param {string|Object} [keyOrStorage] Key, or storage object to restore
  * @param {any} [value] Serializable value, if key is set
  * @fires ve.dm.Document#storage
  */
 ve.dm.Document.prototype.setStorage = function ( keyOrStorage, value ) {
 	if ( typeof keyOrStorage === 'string' ) {
+		// Attempt to JSON-serialize the value now so an error can be thrown if necessary.
+		JSON.stringify( { value: value } );
 		this.persistentStorage[ keyOrStorage ] = value;
 		this.emit( 'storage' );
 	} else {
