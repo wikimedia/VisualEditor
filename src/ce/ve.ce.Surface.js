@@ -1308,7 +1308,7 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 						}
 					}
 				}
-			} else if ( dataTransfer.files ) {
+			} else if ( dataTransfer.files && dataTransfer.files.length ) {
 				for ( let i = 0, l = dataTransfer.files.length; i < l; i++ ) {
 					const item = dataTransfer.items[ i ];
 					const fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
@@ -2109,12 +2109,12 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 					items.push( ve.ui.DataTransferItem.static.newFromItem( dataTransfer.items[ i ], htmlStringData ) );
 				}
 			}
-		} else if ( dataTransfer.files ) {
+		} else if ( dataTransfer.files && dataTransfer.files.length ) {
 			for ( let i = 0, l = dataTransfer.files.length; i < l; i++ ) {
 				items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[ i ], htmlStringData ) );
 			}
 		}
-	} else if ( dataTransfer.files ) {
+	} else if ( dataTransfer.files && dataTransfer.files.length ) {
 		const htmlPreParse = $.parseHTML( htmlStringData );
 
 		let imgCount = 0;
