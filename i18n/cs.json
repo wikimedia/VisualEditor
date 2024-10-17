@@ -85,6 +85,8 @@
 	"visualeditor-collab-dialog-title": "Kolaborativní editace v reálném čase",
 	"visualeditor-collab-dialog-privacy": "Některé vaše osobní informace, jako třeba IP adresa, mohou být ostatním editorům viditelné.",
 	"visualeditor-collab-dialog-sessionend": "Tato relace skončí, až hostitel opustí editor.",
+	"visualeditor-collab-dialog-sharing": "Veškeré změny jsou hostiteli dostupné ke zveřejnění",
+	"visualeditor-collab-dialog-summary-host": "Uspořádejte společnou relaci úprav.",
 	"visualeditor-collab-joinbutton-label": "Připojit se k existující relaci",
 	"visualeditor-collab-url-placeholder": "[Session URL]",
 	"visualeditor-collab-url-prompt": "K připojení zadejte URL relace",
