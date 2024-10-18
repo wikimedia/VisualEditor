@@ -440,7 +440,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		setTimeout( () => {
 			// Undo ce=true as soon as the context menu is shown
 			this.$highlights.prop( 'contentEditable', 'false' );
-			this.focusableSurface.preparePasteTargetForCopy();
+			this.focusableSurface.prepareClipboardHandlerForCopy();
 		} );
 	}
 

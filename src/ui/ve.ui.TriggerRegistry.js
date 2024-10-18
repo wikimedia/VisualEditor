@@ -219,7 +219,7 @@ ve.ui.triggerRegistry.register(
 		pc: new ve.ui.Trigger( 'ctrl+shift+v' )
 	}
 );
-// Clipboard handlers are registered for use by the commandHelpRegistry.
+// Clipboard triggers are registered for use by the commandHelpRegistry.
 // Cut/copy/paste are handled by native events.
 ve.ui.triggerRegistry.register(
 	'cut', {

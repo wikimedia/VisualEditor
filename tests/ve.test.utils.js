@@ -188,6 +188,38 @@
 	new ve.test.utils.DummyTarget(); // Target gets appended to qunit-fixture in ve.qunit.local.js
 	/* eslint-enable no-new */
 
+	function ImageTransferHandler() {
+		// Parent constructor
+		ImageTransferHandler.super.apply( this, arguments );
+	}
+	OO.inheritClass( ImageTransferHandler, ve.ui.DataTransferHandler );
+	ImageTransferHandler.static.name = 'imageTest';
+	ImageTransferHandler.static.kinds = [ 'file' ];
+	ImageTransferHandler.static.types = [ 'image/jpeg', 'image/gif' ];
+	ImageTransferHandler.prototype.process = function () {
+		const file = this.item.getAsFile();
+		const text = file.name || ( file.type + ':' + file.size );
+		this.insertableDataDeferred.resolve( text.split( '' ) );
+	};
+
+	ve.test.utils.ImageTransferHandler = ImageTransferHandler;
+
+	/**
+	 * Creates a simulated jQuery Event
+	 *
+	 * @param {string|Object} src Event type, or original event object
+	 * @param {Object} props jQuery event properties
+	 * @return {jQuery.Event}
+	 */
+	ve.test.utils.createTestEvent = function TestEvent( src, props ) {
+		if ( props && !( 'which' in props ) ) {
+			props.which = props.keyCode;
+		}
+		const event = $.Event( src, props );
+		event.isSimulated = true;
+		return event;
+	};
+
 	// Disable scroll animatinos
 	ve.scrollIntoView = function () {
 		return ve.createDeferred().resolve().promise();
