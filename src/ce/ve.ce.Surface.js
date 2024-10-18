@@ -305,6 +305,13 @@ ve.ce.Surface.static.unsafeAttributes = [
 ];
 
 /**
+ * Private (x), vendor-specific (vnd) MIME type for clipboard key data
+ *
+ * @type {string}
+ */
+ve.ce.Surface.static.clipboardKeyMimeType = 'application/x-vnd.wikimedia.visualeditor.clipboardkey';
+
+/**
  * Values of InputEvent.inputType which map to a command
  *
  * Currently these are triggered when the user selects
@@ -2233,7 +2240,7 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	const clipboardKey = this.clipboardId + '-' + this.clipboardIndex;
 	this.clipboard = { slice: slice, hash: null };
 	// Support: Firefox<48
-	// Writing the key to text/xcustom won't work in Firefox<48, so write
+	// Writing a custom clipboard key won't work in Firefox<48, so write
 	// it to the HTML instead
 	if ( isClipboard && !ve.isClipboardDataFormatsSupported( e ) ) {
 		this.$pasteTarget.prepend(
@@ -2252,7 +2259,7 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	// Only write a custom mime type if we think the browser supports it, otherwise
 	// we will have already written a key to the HTML above.
 	if ( isClipboard && ve.isClipboardDataFormatsSupported( e, true ) ) {
-		clipboardData.setData( 'text/xcustom', clipboardKey );
+		clipboardData.setData( this.constructor.static.clipboardKeyMimeType, clipboardKey );
 	}
 	clipboardData.setData( 'text/html', this.$pasteTarget.html() );
 	// innerText "approximates the text the user would get if they highlighted the
@@ -2359,13 +2366,15 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 			slice: this.model.documentModel.shallowCloneFromSelection( this.lastNonCollapsedDocumentSelection ),
 			hash: null
 		};
-		this.beforePasteData.custom = this.clipboardId + '-' + this.clipboardIndex;
+		this.beforePasteData.clipboardKey = this.clipboardId + '-' + this.clipboardIndex;
 	} else if ( clipboardData ) {
 		if ( this.handleDataTransfer( clipboardData, true ) ) {
 			e.preventDefault();
 			return;
 		}
-		this.beforePasteData.custom = clipboardData.getData( 'text/xcustom' );
+		this.beforePasteData.clipboardKey = clipboardData.getData( this.constructor.static.clipboardKeyMimeType ) ||
+			// Backwards compatability with older versions of VE which used text/xcustom
+			clipboardData.getData( 'text/xcustom' );
 		this.beforePasteData.html = clipboardData.getData( 'text/html' );
 		if ( this.beforePasteData.html ) {
 			// http://msdn.microsoft.com/en-US/en-%20us/library/ms649015(VS.85).aspx
@@ -2552,9 +2561,9 @@ ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
 
 	let clipboardKey, clipboardHash, $clipboardHtml;
 	// Find the clipboard key
-	if ( beforePasteData.custom ) {
-		// text/xcustom was present, and requires no further processing
-		clipboardKey = beforePasteData.custom;
+	if ( beforePasteData.clipboardKey ) {
+		// Clipboard key in custom data was present, and requires no further processing
+		clipboardKey = beforePasteData.clipboardKey;
 	} else {
 		if ( beforePasteData.html ) {
 			// text/html was present, so we can check if a key was hidden in it
@@ -2581,10 +2590,10 @@ ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
 	let slice;
 	// If we have a clipboard key, validate it and fetch data
 	if ( clipboardKey === this.clipboardId + '-' + this.clipboardIndex ) {
-		// Hash validation: either text/xcustom was used or the hash must be
+		// Hash validation: either custom data was used or the hash must be
 		// equal to the hash of the pasted HTML to assert that the HTML
 		// hasn't been modified in another editor before being pasted back.
-		if ( beforePasteData.custom || clipboardHash === this.clipboard.hash ) {
+		if ( beforePasteData.clipboardKey || clipboardHash === this.clipboard.hash ) {
 			slice = this.clipboard.slice;
 			// Clone again. The elements were cloned on copy, but we need to clone
 			// on paste too in case the same thing is pasted multiple times.
