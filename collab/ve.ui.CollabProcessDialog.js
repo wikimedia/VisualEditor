@@ -34,7 +34,7 @@ ve.ui.CollabProcessDialog.prototype.initialize = function () {
 	} );
 
 	this.userNameInput = new OO.ui.TextInputWidget( {
-		value: mw.user.getName()
+		value: ve.init.platform.getUserName()
 	} );
 	const userNameField = new OO.ui.FieldLayout( this.userNameInput, {
 		label: ve.msg( 'visualeditor-rebase-client-author-name' ),
@@ -83,7 +83,11 @@ ve.ui.CollabProcessDialog.prototype.getReadyProcess = function ( data ) {
 		.next( function () {
 			switch ( this.stack.getCurrentItem() ) {
 				case this.initPanel:
-					this.initButton.focus();
+					if ( !this.userNameInput.getValue() ) {
+						this.userNameInput.focus();
+					} else {
+						this.initButton.focus();
+					}
 					break;
 				case this.copyPanel:
 					this.copyTextLayout.button.focus();
