@@ -137,7 +137,7 @@ ve.test.utils.MockDataTransfer = function MockDataTransfer( initialData ) {
 	this.items = items;
 	this.types = [];
 	this.getData = function ( prop ) {
-		return data[ prop ];
+		return data[ prop ] || '';
 	};
 	this.setData = function ( prop, val ) {
 		if ( data[ prop ] === undefined ) {
