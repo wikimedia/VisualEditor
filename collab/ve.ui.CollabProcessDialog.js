@@ -145,6 +145,9 @@ ve.ui.HostCollabProcessDialog.prototype.onButtonClick = function () {
 
 	ve.collab.initPeerServer( this.userNameInput.getValue() );
 	const collabUrl = new URL( location.href );
+	collabUrl.searchParams.delete( 'action' );
+	collabUrl.searchParams.set( 'veaction',
+		ve.init.target.getSurface().getMode() === 'source' ? 'editsource' : 'edit' );
 	ve.collab.peerServer.peer.on( 'open', ( newId ) => {
 		collabUrl.searchParams.set( 'collabSession', newId );
 		this.copyTextLayout.textInput.setValue( collabUrl );
