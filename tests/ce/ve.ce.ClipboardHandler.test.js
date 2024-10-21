@@ -1070,9 +1070,15 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					<span style="font-weight:700;">A</span>
 					<span style="font-weight:900;">2</span>
 					<span style="font-weight:bold;">3</span>
+					<span style="font-weight:bolder;">4</span>
 					<span style="font-style:italic;">B</span>
+					<span style="font-style:oblique;">2</span>
+					<span style="font-style:oblique 40deg;">3</span>
 					<span style="text-decoration:underline">C</span>
+					<span style="text-decoration:underline overline">2</span>
+					<span style="text-decoration:underline line-through">C&D</span>
 					<span style="text-decoration:line-through;">D</span>
+					<span style="text-decoration:line-through overline;">2</span>
 					<span style="vertical-align:super;">E</span>
 					<span style="vertical-align:sub;">F</span>
 					<span style="font-weight:700; font-style:italic;">G</span>
@@ -1085,10 +1091,11 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'A23', { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
-								[ 'B', [ { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
-								[ 'C', [ { type: 'textStyle/underline', attributes: { nodeName: 'u' } } ] ],
-								[ 'D', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
+								...ve.dm.example.annotateText( 'A234', { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
+								...ve.dm.example.annotateText( 'B23', { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ),
+								...ve.dm.example.annotateText( 'C2', { type: 'textStyle/underline', attributes: { nodeName: 'u' } } ),
+								...ve.dm.example.annotateText( 'C&D', [ { type: 'textStyle/underline', attributes: { nodeName: 'u' } }, { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ),
+								...ve.dm.example.annotateText( 'D2', { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ),
 								[ 'E', [ { type: 'textStyle/superscript', attributes: { nodeName: 'sup' } } ] ],
 								[ 'F', [ { type: 'textStyle/subscript', attributes: { nodeName: 'sub' } } ] ],
 								[ 'G', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } }, { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
@@ -1099,7 +1106,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{ type: 'retain', length: 29 }
 					]
 				],
-				expectedRangeOrSelection: new ve.Range( 11 ),
+				expectedRangeOrSelection: new ve.Range( 19 ),
 				testOriginalDomElements: true,
 				msg: 'Span cleanups: style converted into markup'
 			},

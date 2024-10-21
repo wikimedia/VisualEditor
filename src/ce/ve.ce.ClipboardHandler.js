@@ -1085,16 +1085,28 @@ ve.ce.ClipboardHandler.prototype.afterPasteSanitizeExternal = function ( $elemen
 			return;
 		}
 		const $node = $( node );
-		if ( +node.style.fontWeight >= 700 || node.style.fontWeight === 'bold' ) {
+		if (
+			+node.style.fontWeight >= 700 ||
+			node.style.fontWeight === 'bold' ||
+			node.style.fontWeight === 'bolder'
+		) {
 			$node.wrap( '<b>' );
 		}
-		if ( node.style.fontStyle === 'italic' ) {
+		if (
+			node.style.fontStyle === 'italic' ||
+			// Oblique can also add an angle, e.g. "oblique 40deg"
+			node.style.fontStyle.startsWith( 'oblique' )
+		) {
 			$node.wrap( '<i>' );
 		}
-		if ( node.style.textDecorationLine === 'underline' ) {
+		// textDecorationLine can take multiple values, e.g. "underline line-through"
+		// so use String.prototype.includes
+		// eslint-disable-next-line es-x/no-array-prototype-includes
+		if ( node.style.textDecorationLine.includes( 'underline' ) ) {
 			$node.wrap( '<u>' );
 		}
-		if ( node.style.textDecorationLine === 'line-through' ) {
+		// eslint-disable-next-line es-x/no-array-prototype-includes
+		if ( node.style.textDecorationLine.includes( 'line-through' ) ) {
 			$node.wrap( '<s>' );
 		}
 		if ( node.style.verticalAlign === 'super' ) {
