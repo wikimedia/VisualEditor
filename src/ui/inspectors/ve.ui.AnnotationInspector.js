@@ -230,7 +230,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			if ( this.isNew && this.isReadOnly() ) {
 				return ve.createDeferred().reject().promise();
 			}
-		}, this );
+		} );
 };
 
 /**
