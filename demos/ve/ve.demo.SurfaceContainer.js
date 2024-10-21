@@ -228,7 +228,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 				if ( page ) {
 					this.loadPage( page, mode );
 				} else if ( html !== undefined ) {
-					this.loadHtml( html, mode );
+					this.loadHtml( html, mode, true );
 				}
 				break;
 
@@ -284,15 +284,16 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
  *
  * @param {string} pageHtml HTML string
  * @param {string} mode Edit mode
+ * @param {boolean} skipAutoSave Skip auto-save check (e.g. when switching modes)
  */
-ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
+ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, skipAutoSave ) {
 	let restored = false;
 
 	if ( this.surface ) {
 		this.surface.destroy();
 	}
 
-	if ( this.autosaveToggle.getValue() ) {
+	if ( !skipAutoSave && this.autosaveToggle.getValue() ) {
 		const state = ve.init.platform.sessionStorage.getObject( 've-docstate' );
 
 		if ( state && state.page === this.page ) {
