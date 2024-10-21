@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Constraque",
 			"Gazeb"
 		]
 	},
@@ -13,5 +14,6 @@
 	"visualeditor-formatdropdown-format-heading4": "Надпис 4",
 	"visualeditor-formatdropdown-format-heading5": "Надпис 5",
 	"visualeditor-formatdropdown-format-heading6": "Надпис 6",
-	"visualeditor-formatdropdown-format-preformatted": "Передформатованый"
+	"visualeditor-formatdropdown-format-preformatted": "Передформатованый",
+	"visualeditor-languageinspector-widget-changelang": "Найти язык"
 }
