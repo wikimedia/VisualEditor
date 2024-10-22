@@ -23,9 +23,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Bold text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/bold' } ] ],
-				[ 'b', [ { type: 'textStyle/bold' } ] ],
-				[ 'c', [ { type: 'textStyle/bold' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/bold' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<b>abc</b>'
@@ -34,9 +32,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Italic text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/italic' } ] ],
-				[ 'b', [ { type: 'textStyle/italic' } ] ],
-				[ 'c', [ { type: 'textStyle/italic' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/italic' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<i>abc</i>'
@@ -45,9 +41,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Underline text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/underline' } ] ],
-				[ 'b', [ { type: 'textStyle/underline' } ] ],
-				[ 'c', [ { type: 'textStyle/underline' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/underline' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<u>abc</u>'
@@ -56,9 +50,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Strikethrough text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/strikethrough' } ] ],
-				[ 'b', [ { type: 'textStyle/strikethrough' } ] ],
-				[ 'c', [ { type: 'textStyle/strikethrough' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/strikethrough' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<s>abc</s>'
@@ -67,9 +59,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Deleted text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 'del' } } ] ],
-				[ 'b', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 'del' } } ] ],
-				[ 'c', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 'del' } } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/strikethrough', attributes: { nodeName: 'del' } } ),
 				{ type: '/paragraph' }
 			],
 			html: '<del>abc</del>'
@@ -78,9 +68,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Small text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/small' } ] ],
-				[ 'b', [ { type: 'textStyle/small' } ] ],
-				[ 'c', [ { type: 'textStyle/small' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/small' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<small>abc</small>'
@@ -89,9 +77,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Big text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/big' } ] ],
-				[ 'b', [ { type: 'textStyle/big' } ] ],
-				[ 'c', [ { type: 'textStyle/big' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/big' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<big>abc</big>'
@@ -100,9 +86,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Strong text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'strong' } } ] ],
-				[ 'b', [ { type: 'textStyle/bold', attributes: { nodeName: 'strong' } } ] ],
-				[ 'c', [ { type: 'textStyle/bold', attributes: { nodeName: 'strong' } } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/bold', attributes: { nodeName: 'strong' } } ),
 				{ type: '/paragraph' }
 			],
 			html: '<strong>abc</strong>'
@@ -111,9 +95,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Emphasized text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/italic', attributes: { nodeName: 'em' } } ] ],
-				[ 'b', [ { type: 'textStyle/italic', attributes: { nodeName: 'em' } } ] ],
-				[ 'c', [ { type: 'textStyle/italic', attributes: { nodeName: 'em' } } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/italic', attributes: { nodeName: 'em' } } ),
 				{ type: '/paragraph' }
 			],
 			html: '<em>abc</em>'
@@ -122,9 +104,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Superscript text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/superscript' } ] ],
-				[ 'b', [ { type: 'textStyle/superscript' } ] ],
-				[ 'c', [ { type: 'textStyle/superscript' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/superscript' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<sup>abc</sup>'
@@ -133,9 +113,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Subscript text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/subscript' } ] ],
-				[ 'b', [ { type: 'textStyle/subscript' } ] ],
-				[ 'c', [ { type: 'textStyle/subscript' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/subscript' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<sub>abc</sub>'
@@ -144,9 +122,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Code text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/code' } ] ],
-				[ 'b', [ { type: 'textStyle/code' } ] ],
-				[ 'c', [ { type: 'textStyle/code' } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/code' } ),
 				{ type: '/paragraph' }
 			],
 			html: '<code>abc</code>'
@@ -155,9 +131,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Teletype text',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/code', attributes: { nodeName: 'tt' } } ] ],
-				[ 'b', [ { type: 'textStyle/code', attributes: { nodeName: 'tt' } } ] ],
-				[ 'c', [ { type: 'textStyle/code', attributes: { nodeName: 'tt' } } ] ],
+				...ve.dm.example.annotateText( 'abc', { type: 'textStyle/code', attributes: { nodeName: 'tt' } } ),
 				{ type: '/paragraph' }
 			],
 			html: '<tt>abc</tt>'
@@ -187,21 +161,7 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 			msg: 'Bold, italic and underlined text (same order)',
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' },
-					{ type: 'textStyle/underline' }
-				] ],
-				[ 'b', [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' },
-					{ type: 'textStyle/underline' }
-				] ],
-				[ 'c', [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' },
-					{ type: 'textStyle/underline' }
-				] ],
+				...ve.dm.example.annotateText( 'abc', [ { type: 'textStyle/bold' }, { type: 'textStyle/italic' }, { type: 'textStyle/underline' } ] ),
 				{ type: '/paragraph' }
 			],
 			html: '<b><i><u>abc</u></i></b>'

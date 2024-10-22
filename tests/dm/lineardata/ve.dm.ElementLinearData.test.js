@@ -418,22 +418,10 @@ QUnit.test( 'getAnnotatedRangeFromOffset', ( assert ) => {
 			data: [
 				// 0
 				'a',
-				// 1
-				[ 'b', [ { type: 'textStyle/bold' } ] ],
-				// 2
-				[ 'o', [ { type: 'textStyle/bold' } ] ],
-				// 3
-				[ 'l', [ { type: 'textStyle/bold' } ] ],
-				// 4
-				[ 'd', [ { type: 'textStyle/bold' } ] ],
-				// 5
-				'w',
-				// 6
-				'o',
-				// 7
-				'r',
-				// 8
-				'd'
+				// 1-4
+				...ve.dm.example.annotateText( 'bold', { type: 'textStyle/bold' } ),
+				// 5-8
+				...'word'
 			],
 			annotation: { type: 'textStyle/bold' },
 			offset: 3,
@@ -442,26 +430,12 @@ QUnit.test( 'getAnnotatedRangeFromOffset', ( assert ) => {
 		{
 			msg: 'a linked',
 			data: [
-				// 0
-				'x',
-				// 1
-				'x',
-				// 2
-				'x',
-				// 3
-				[ 'l', [ { type: 'link' } ] ],
-				// 4
-				[ 'i', [ { type: 'link' } ] ],
-				// 5
-				[ 'n', [ { type: 'link' } ] ],
-				// 6
-				[ 'k', [ { type: 'link' } ] ],
-				// 7
-				'x',
-				// 8
-				'x',
-				// 9
-				'x'
+				// 0-2
+				...'xxx',
+				// 3-6
+				...ve.dm.example.annotateText( 'link', { type: 'link' } ),
+				// 7-9
+				...'xxx'
 			],
 			annotation: { type: 'link' },
 			offset: 3,
@@ -472,10 +446,8 @@ QUnit.test( 'getAnnotatedRangeFromOffset', ( assert ) => {
 			data: [
 				// 0
 				'h',
-				// 1
-				[ 'b', [ { type: 'textStyle/bold' } ] ],
-				// 2
-				[ 'o', [ { type: 'textStyle/bold' } ] ],
+				// 1-2
+				...ve.dm.example.annotateText( 'bo', { type: 'textStyle/bold' } ),
 				// 3
 				{
 					type: 'inlineImage',
@@ -484,10 +456,8 @@ QUnit.test( 'getAnnotatedRangeFromOffset', ( assert ) => {
 				},
 				// 4
 				{ type: '/inlineImage' },
-				// 5
-				[ 'l', [ { type: 'textStyle/bold' } ] ],
-				// 6
-				[ 'd', [ { type: 'textStyle/bold' } ] ],
+				// 5-6
+				...ve.dm.example.annotateText( 'ld', { type: 'textStyle/bold' } ),
 				// 7
 				'i'
 			],
@@ -513,30 +483,16 @@ QUnit.test( 'trimOuterSpaceFromRange', ( assert ) => {
 	const data = [
 			// 0
 			{ type: 'paragraph' },
-			// 1
-			' ',
-			// 2
-			'F',
-			// 3
-			'o',
-			// 4
-			'o',
-			// 5
-			' ',
-			// 6
-			' ',
+			// 1-6
+			...' Foo  ',
 			// 7
 			[ ' ', ve.dm.example.bold ],
 			// 8
 			[ ' ', ve.dm.example.italic ],
 			// 9
 			[ 'B', ve.dm.example.italic ],
-			// 10
-			'a',
-			// 11
-			'r',
-			// 12
-			' ',
+			// 10-12
+			...'ar ',
 			// 13
 			{ type: '/paragraph' }
 			// 14
@@ -1607,8 +1563,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><b>a<i></i>c</b></p>',
 				data: [
 					{ type: 'paragraph' },
-					[ 'a', [ 'h49981eab0f8056ff' ] ],
-					[ 'c', [ 'h49981eab0f8056ff' ] ],
+					...ve.dm.example.annotateText( 'ac', 'h49981eab0f8056ff' ),
 					{ type: '/paragraph' },
 					{
 						type: 'removableAlienMeta',
@@ -1632,8 +1587,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><b>a<i></i>c</b></p>',
 				data: [
 					{ type: 'paragraph' },
-					[ 'a', [ 'h49981eab0f8056ff' ] ],
-					[ 'c', [ 'h49981eab0f8056ff' ] ],
+					...ve.dm.example.annotateText( 'ac', 'h49981eab0f8056ff' ),
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1769,9 +1723,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><b>1<b>2</b>3</b></p>',
 				data: [
 					{ type: 'paragraph' },
-					[ '1', [ 'h49981eab0f8056ff' ] ],
-					[ '2', [ 'h49981eab0f8056ff' ] ],
-					[ '3', [ 'h49981eab0f8056ff' ] ],
+					...ve.dm.example.annotateText( '123', 'h49981eab0f8056ff' ),
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1808,16 +1760,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				data: [
 					{ type: 'paragraph' },
 					...'Foo Bar ',
-					[ 'B', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ 'a', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ 'z', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ ' ', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ 'Q', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ ' ', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ 'u', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ 'u', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ ' ', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ 'x', [ ve.dm.example.annHash( 'b' ) ] ],
+					...ve.dm.example.annotateText( 'Baz Q uu x', ve.dm.example.annHash( 'b' ) ),
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }

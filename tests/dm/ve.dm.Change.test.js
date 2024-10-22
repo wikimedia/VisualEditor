@@ -158,7 +158,7 @@ QUnit.test( 'Change operations', ( assert ) => {
 	insert2.applyTo( surface );
 	assert.deepEqual(
 		doc.data.data.slice( 1, -1 ),
-		[ [ 't', iHash ], [ 'w', iHash ], [ 'o', iHash ], ...' three' ],
+		[ ...ve.dm.example.annotateText( 'two', iHash ), ...' three' ],
 		'Apply insert2'
 	);
 
@@ -181,13 +181,9 @@ QUnit.test( 'Change operations', ( assert ) => {
 	assert.deepEqual(
 		surface.documentModel.data.data.slice( 1, -1 ),
 		[
-			[ 'o', bHash ],
-			[ 'n', bHash ],
-			[ 'e', bHash ],
+			...ve.dm.example.annotateText( 'one', bHash ),
 			' ',
-			[ 't', iHash ],
-			[ 'w', iHash ],
-			[ 'o', iHash ],
+			...ve.dm.example.annotateText( 'two', iHash ),
 			...' three'
 		],
 		'Apply insert1 then insert2'
@@ -205,15 +201,9 @@ QUnit.test( 'Change operations', ( assert ) => {
 	assert.deepEqual(
 		surface.documentModel.data.data.slice( 1, -1 ),
 		[
-			[ 'o', bHash ],
-			[ 'n', bHash ],
-			[ 'e', bHash ],
+			...ve.dm.example.annotateText( 'one', bHash ),
 			...' TWO ',
-			[ 't', uHash ],
-			[ 'h', uHash ],
-			[ 'r', uHash ],
-			[ 'e', uHash ],
-			[ 'e', uHash ]
+			...ve.dm.example.annotateText( 'three', uHash )
 		],
 		'Apply insert1 then insert2*replace2 then underline3'
 	);
@@ -448,15 +438,7 @@ QUnit.test( 'Minified serialization', ( assert ) => {
 				5,
 				[
 					[
-						[ 'r', [ 'he4e7c54e2204d10b' ] ],
-						[ 'e', [ 'he4e7c54e2204d10b' ] ],
-						[ 'd', [ 'he4e7c54e2204d10b' ] ],
-						[ ' ', [ 'he4e7c54e2204d10b' ] ],
-						[ 'p', [ 'he4e7c54e2204d10b' ] ],
-						[ 'a', [ 'he4e7c54e2204d10b' ] ],
-						[ 'n', [ 'he4e7c54e2204d10b' ] ],
-						[ 'd', [ 'he4e7c54e2204d10b' ] ],
-						[ 'a', [ 'he4e7c54e2204d10b' ] ]
+						...ve.dm.example.annotateText( 'red panda', 'he4e7c54e2204d10b' )
 					],
 					[
 						[ 'q', [ 'he4e7c54e2204d10b' ] ]
@@ -488,15 +470,7 @@ QUnit.test( 'Minified serialization', ( assert ) => {
 				36,
 				[
 					[
-						[ 'a', [ 'hfbe3cfe099b83e1e' ] ],
-						[ 'u', [ 'hfbe3cfe099b83e1e' ] ],
-						[ 't', [ 'hfbe3cfe099b83e1e' ] ],
-						[ 'o', [ 'hfbe3cfe099b83e1e' ] ],
-						[ 'm', [ 'hfbe3cfe099b83e1e' ] ],
-						[ 'a', [ 'hfbe3cfe099b83e1e' ] ],
-						[ 't', [ 'hfbe3cfe099b83e1e' ] ],
-						[ 'o', [ 'hfbe3cfe099b83e1e' ] ],
-						[ 'n', [ 'hfbe3cfe099b83e1e' ] ]
+						...ve.dm.example.annotateText( 'automaton', 'hfbe3cfe099b83e1e' )
 					],
 					[
 						[ 'l', [ 'hfbe3cfe099b83e1e' ] ]

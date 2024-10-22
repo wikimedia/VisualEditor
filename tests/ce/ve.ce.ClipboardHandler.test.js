@@ -352,9 +352,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ bold ] ],
-								[ 'o', [ bold ] ],
-								[ 'o', [ bold ] ]
+								...ve.dm.example.annotateText( 'Foo', bold )
 							],
 							remove: []
 						},
@@ -374,9 +372,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ bold ] ],
-								[ 'o', [ bold ] ],
-								[ 'o', [ bold ] ]
+								...ve.dm.example.annotateText( 'Foo', bold )
 							],
 							remove: []
 						},
@@ -398,9 +394,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ bold ] ],
-								[ 'o', [ bold ] ],
-								[ 'o', [ bold ] ]
+								...ve.dm.example.annotateText( 'Foo', bold )
 							],
 							remove: []
 						},
@@ -444,9 +438,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ bold ] ],
-								[ 'o', [ bold ] ],
-								[ 'o', [ bold ] ]
+								...ve.dm.example.annotateText( 'Foo', bold )
 							],
 							remove: []
 						},
@@ -494,9 +486,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'B', [ link ] ],
-								[ 'a', [ link ] ],
-								[ 'r', [ link ] ]
+								...ve.dm.example.annotateText( 'Bar', link )
 							],
 							remove: []
 						},
@@ -541,9 +531,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ bold ] ],
-								[ 'o', [ bold ] ],
-								[ 'o', [ bold ] ]
+								...ve.dm.example.annotateText( 'Foo', bold )
 							],
 							remove: []
 						},
@@ -562,9 +550,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ bold, italic ] ],
-								[ 'o', [ bold, italic ] ],
-								[ 'o', [ bold, italic ] ]
+								...ve.dm.example.annotateText( 'Foo', [ bold, italic ] )
 							],
 							remove: []
 						},
@@ -584,10 +570,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 							type: 'replace',
 							insert: [],
 							remove: [
-								[ 'Q', [ bold ] ],
-								[ 'u', [ bold ] ],
-								[ 'u', [ bold ] ],
-								[ 'x', [ bold ] ]
+								...ve.dm.example.annotateText( 'Quux', bold )
 							]
 						},
 						{ type: 'retain', length: docLen - 27 }
@@ -597,9 +580,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ bold ] ],
-								[ 'o', [ bold ] ],
-								[ 'o', [ bold ] ]
+								...ve.dm.example.annotateText( 'Foo', bold )
 							],
 							remove: []
 						},
@@ -1022,9 +1003,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
-								[ 'o', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
-								[ 'o', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ]
+								...ve.dm.example.annotateText( 'Foo', { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } )
 							],
 							remove: []
 						},
@@ -1043,9 +1022,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'F', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
-								[ 'o', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
-								[ 'o', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ]
+								...ve.dm.example.annotateText( 'Foo', { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } )
 							],
 							remove: []
 						},
@@ -1076,9 +1053,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								[ 'A', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
-								[ '2', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
-								[ '3', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
+								...ve.dm.example.annotateText( 'A23', { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
 								[ 'B', [ { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
 								[ 'C', [ { type: 'textStyle/underline', attributes: { nodeName: 'u' } } ] ],
 								[ 'D', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
@@ -1107,9 +1082,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 							type: 'replace',
 							insert: [
 								...'Foo',
-								[ 'B', [ { type: 'link', attributes: { href: '#safe' } } ] ],
-								[ 'a', [ { type: 'link', attributes: { href: '#safe' } } ] ],
-								[ 'r', [ { type: 'link', attributes: { href: '#safe' } } ] ]
+								...ve.dm.example.annotateText( 'Bar', { type: 'link', attributes: { href: '#safe' } } )
 							],
 							remove: []
 						},

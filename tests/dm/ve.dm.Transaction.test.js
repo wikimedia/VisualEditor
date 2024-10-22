@@ -23,11 +23,11 @@ QUnit.test( 'translateOffset', ( assert ) => {
 		{ type: 'retain', length: 2 },
 		{ type: 'replace', remove: [], insert: [ ...'nop' ] },
 		{ type: 'retain', length: 2 },
-		{ type: 'replace', remove: [ ...'ok' ], insert: [ [ 'o', b ], [ 'k', b ] ] },
+		{ type: 'replace', remove: [ ...'ok' ], insert: [ ...ve.dm.example.annotateText( 'ok', b ) ] },
 		{ type: 'retain', length: 2 },
-		{ type: 'replace', remove: [ ...'non' ], insert: [ [ 'n', b ], [ 'o', b ] ] },
+		{ type: 'replace', remove: [ ...'non' ], insert: [ ...ve.dm.example.annotateText( 'no', b ) ] },
 		{ type: 'retain', length: 2 },
-		{ type: 'replace', remove: [ ...'hi' ], insert: [ [ 'l', b ], [ 'o', b ] ] }
+		{ type: 'replace', remove: [ ...'hi' ], insert: [ ...ve.dm.example.annotateText( 'lo', b ) ] }
 	] );
 
 	const mapping = {

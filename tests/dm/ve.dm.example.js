@@ -133,6 +133,13 @@ ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 	return new ve.dm.AnnotationSet( store, store.hashAll( annotations ) );
 };
 
+ve.dm.example.annotateText = function ( text, annotationOrAnnotations ) {
+	if ( !Array.isArray( annotationOrAnnotations ) ) {
+		annotationOrAnnotations = [ annotationOrAnnotations ];
+	}
+	return text.split( '' ).map( ( char ) => [ char, ve.copy( annotationOrAnnotations ) ] );
+};
+
 /* Some common annotations in shorthand format */
 ve.dm.example.bold = { type: 'textStyle/bold', attributes: { nodeName: 'b' } };
 ve.dm.example.italic = { type: 'textStyle/italic', attributes: { nodeName: 'i' } };
@@ -298,9 +305,7 @@ ve.dm.example.blockImage = {
 		{ type: 'imageCaption' },
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },
 		...'foo ',
-		[ 'r', [ ve.dm.example.boldWithStyle ] ],
-		[ 'e', [ ve.dm.example.boldWithStyle ] ],
-		[ 'd', [ ve.dm.example.boldWithStyle ] ],
+		...ve.dm.example.annotateText( 'red', ve.dm.example.boldWithStyle ),
 		{ type: '/paragraph' },
 		{ type: '/imageCaption' },
 		{ type: '/blockImage' }
@@ -1163,9 +1168,7 @@ ve.dm.example.annotatedTable = [
 		type: 'paragraph',
 		internal: { generated: 'wrapper' }
 	},
-	[ 'F', [ ve.dm.example.bold ] ],
-	[ 'o', [ ve.dm.example.bold ] ],
-	[ 'o', [ ve.dm.example.bold ] ],
+	...ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{
@@ -1176,9 +1179,7 @@ ve.dm.example.annotatedTable = [
 		type: 'paragraph',
 		internal: { generated: 'wrapper' }
 	},
-	[ 'B', [ ve.dm.example.strong ] ],
-	[ 'a', [ ve.dm.example.strong ] ],
-	[ 'r', [ ve.dm.example.strong ] ],
+	...ve.dm.example.annotateText( 'Bar', ve.dm.example.strong ),
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{
@@ -1189,9 +1190,7 @@ ve.dm.example.annotatedTable = [
 		type: 'paragraph',
 		internal: { generated: 'wrapper' }
 	},
-	[ 'B', [ ve.dm.example.italic ] ],
-	[ 'a', [ ve.dm.example.italic ] ],
-	[ 'z', [ ve.dm.example.italic ] ],
+	...ve.dm.example.annotateText( 'Baz', ve.dm.example.italic ),
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
@@ -1204,10 +1203,7 @@ ve.dm.example.annotatedTable = [
 		type: 'paragraph',
 		internal: { generated: 'wrapper' }
 	},
-	[ 'Q', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-	[ 'u', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-	[ 'u', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-	[ 'x', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+	...ve.dm.example.annotateText( 'Quux', [ ve.dm.example.bold, ve.dm.example.italic ] ),
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{
@@ -1218,10 +1214,7 @@ ve.dm.example.annotatedTable = [
 		type: 'paragraph',
 		internal: { generated: 'wrapper' }
 	},
-	[ 'W', [ ve.dm.example.strong ] ],
-	[ 'h', [ ve.dm.example.strong ] ],
-	[ 'e', [ ve.dm.example.strong ] ],
-	[ 'e', [ ve.dm.example.strong ] ],
+	...ve.dm.example.annotateText( 'Whee', ve.dm.example.strong ),
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{
@@ -1232,9 +1225,7 @@ ve.dm.example.annotatedTable = [
 		type: 'paragraph',
 		internal: { generated: 'wrapper' }
 	},
-	[ 'Y', [ ve.dm.example.underline ] ],
-	[ 'a', [ ve.dm.example.underline ] ],
-	[ 'y', [ ve.dm.example.underline ] ],
+	...ve.dm.example.annotateText( 'Yay', ve.dm.example.underline ),
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
 	{ type: '/tableRow' },
@@ -1494,12 +1485,8 @@ ve.dm.example.domToDataCases = {
 		fromClipboard: true,
 		data: [
 			{ type: 'paragraph' },
-			[ 'F', [ ve.dm.example.italic ] ],
-			[ 'o', [ ve.dm.example.italic ] ],
-			[ 'o', [ ve.dm.example.italic ] ],
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.italic ),
+			...ve.dm.example.annotateText( 'bar', ve.dm.example.bold ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1510,16 +1497,10 @@ ve.dm.example.domToDataCases = {
 		body: '<p><b>abc</b>X<b>def</b><i>ghi</i></p>',
 		data: [
 			{ type: 'paragraph' },
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'c', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'abc', ve.dm.example.bold ),
 			'X',
-			[ 'd', [ ve.dm.example.bold ] ],
-			[ 'e', [ ve.dm.example.bold ] ],
-			[ 'f', [ ve.dm.example.bold ] ],
-			[ 'g', [ ve.dm.example.italic ] ],
-			[ 'h', [ ve.dm.example.italic ] ],
-			[ 'i', [ ve.dm.example.italic ] ],
+			...ve.dm.example.annotateText( 'def', ve.dm.example.bold ),
+			...ve.dm.example.annotateText( 'ghi', ve.dm.example.italic ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1545,19 +1526,11 @@ ve.dm.example.domToDataCases = {
 		`,
 		data: [
 			{ type: 'paragraph' },
-			[ 't', [ ve.dm.example.language( 'en', null ) ] ],
-			[ 'e', [ ve.dm.example.language( 'en', null ) ] ],
-			[ 'n', [ ve.dm.example.language( 'en', null ) ] ],
-			[ 'd', [ ve.dm.example.language( 'fr', 'ltr' ) ] ],
-			[ 'i', [ ve.dm.example.language( 'fr', 'ltr' ) ] ],
-			[ 'x', [ ve.dm.example.language( 'fr', 'ltr' ) ] ],
-			[ 'd', [ ve.dm.example.language( 'cy', 'ltr', 'bdo' ) ] ],
-			[ 'e', [ ve.dm.example.language( 'cy', 'ltr', 'bdo' ) ] ],
-			[ 'g', [ ve.dm.example.language( 'cy', 'ltr', 'bdo' ) ] ],
-			[ '1', [ ve.dm.example.language( null, 'rtl' ) ] ],
-			[ '2', [ ve.dm.example.language( null, 'rtl' ) ] ],
-			[ '3', [ ve.dm.example.language( null, 'RtL' ) ] ],
-			[ '4', [ ve.dm.example.language( null, 'RtL' ) ] ],
+			...ve.dm.example.annotateText( 'ten', ve.dm.example.language( 'en', null ) ),
+			...ve.dm.example.annotateText( 'dix', ve.dm.example.language( 'fr', 'ltr' ) ),
+			...ve.dm.example.annotateText( 'deg', ve.dm.example.language( 'cy', 'ltr', 'bdo' ) ),
+			...ve.dm.example.annotateText( '12', ve.dm.example.language( null, 'rtl' ) ),
+			...ve.dm.example.annotateText( '34', ve.dm.example.language( null, 'RtL' ) ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1908,9 +1881,7 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ type: '/comment' },
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'bar', ve.dm.example.bold ),
 			{
 				type: 'comment',
 				annotations: [ ve.dm.example.bold ],
@@ -1966,9 +1937,7 @@ ve.dm.example.domToDataCases = {
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'bar', ve.dm.example.bold ),
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
@@ -1981,9 +1950,7 @@ ve.dm.example.domToDataCases = {
 		],
 		realData: [
 			{ type: 'paragraph' },
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'bar', ve.dm.example.bold ),
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -2016,19 +1983,14 @@ ve.dm.example.domToDataCases = {
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'bar', ve.dm.example.bold ),
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
-			[ 'q', [ ve.dm.example.bold ] ],
-			[ 'u', [ ve.dm.example.bold ] ],
-			[ 'u', [ ve.dm.example.bold ] ],
-			[ 'x', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'quux', ve.dm.example.bold ),
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
@@ -2041,13 +2003,7 @@ ve.dm.example.domToDataCases = {
 		],
 		realData: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
-			[ 'q', [ ve.dm.example.bold ] ],
-			[ 'u', [ ve.dm.example.bold ] ],
-			[ 'u', [ ve.dm.example.bold ] ],
-			[ 'x', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'barquux', ve.dm.example.bold ),
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -2081,9 +2037,7 @@ ve.dm.example.domToDataCases = {
 				originalDomElements: $.parseHTML( '<link />' )
 			},
 			{ type: '/alienMeta' },
-			[ 'f', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'foo', ve.dm.example.bold ),
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
@@ -2096,9 +2050,7 @@ ve.dm.example.domToDataCases = {
 		],
 		realData: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			[ 'f', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'foo', ve.dm.example.bold ),
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -2126,9 +2078,7 @@ ve.dm.example.domToDataCases = {
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
-			[ 'B', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'z', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'Baz', ve.dm.example.bold ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2136,9 +2086,7 @@ ve.dm.example.domToDataCases = {
 		realData: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			...'Foo',
-			[ 'B', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'z', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'Baz', ve.dm.example.bold ),
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
@@ -2467,9 +2415,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'tableRow' },
 			{ type: 'tableCell', attributes: { style: 'data' } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			[ 'F', [ ve.dm.example.link( 'Foo' ) ] ],
-			[ 'o', [ ve.dm.example.link( 'Foo' ) ] ],
-			[ 'o', [ ve.dm.example.link( 'Foo' ) ] ],
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.link( 'Foo' ) ),
 			{ type: '/paragraph' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			...'Bar',
@@ -2519,9 +2465,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p><i>Foo<b></b></i></p>',
 		data: [
 			{ type: 'paragraph' },
-			[ 'F', [ ve.dm.example.italic ] ],
-			[ 'o', [ ve.dm.example.italic ] ],
-			[ 'o', [ ve.dm.example.italic ] ],
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.italic ),
 			{
 				type: 'removableAlienMeta',
 				originalDomElements: $.parseHTML( '<b></b>' ),
@@ -2534,9 +2478,7 @@ ve.dm.example.domToDataCases = {
 		],
 		realData: [
 			{ type: 'paragraph' },
-			[ 'F', [ ve.dm.example.italic ] ],
-			[ 'o', [ ve.dm.example.italic ] ],
-			[ 'o', [ ve.dm.example.italic ] ],
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.italic ),
 			{ type: '/paragraph' },
 			{
 				type: 'removableAlienMeta',
@@ -2629,26 +2571,12 @@ ve.dm.example.domToDataCases = {
 		`,
 		data: [
 			{ type: 'paragraph' },
-			[ 'F', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
-			[ 'b', [ ve.dm.example.strong ] ],
-			[ 'a', [ ve.dm.example.strong ] ],
-			[ 'z', [ ve.dm.example.strong ] ],
+			...ve.dm.example.annotateText( 'Foobar', ve.dm.example.bold ),
+			...ve.dm.example.annotateText( 'baz', ve.dm.example.strong ),
 			{ type: '/paragraph' },
 			{ type: 'paragraph' },
-			[ 'F', [ ve.dm.example.link( 'quux' ) ] ],
-			[ 'o', [ ve.dm.example.link( 'quux' ) ] ],
-			[ 'o', [ ve.dm.example.link( 'quux' ) ] ],
-			[ 'b', [ ve.dm.example.link( 'quux' ) ] ],
-			[ 'a', [ ve.dm.example.link( 'quux' ) ] ],
-			[ 'r', [ ve.dm.example.link( 'quux' ) ] ],
-			[ 'b', [ ve.dm.example.link( 'whee' ) ] ],
-			[ 'a', [ ve.dm.example.link( 'whee' ) ] ],
-			[ 'z', [ ve.dm.example.link( 'whee' ) ] ],
+			...ve.dm.example.annotateText( 'Foobar', ve.dm.example.link( 'quux' ) ),
+			...ve.dm.example.annotateText( 'baz', ve.dm.example.link( 'whee' ) ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2674,8 +2602,7 @@ ve.dm.example.domToDataCases = {
 		normalizedBody: '<p><b>xx</b></p>',
 		data: [
 			{ type: 'paragraph' },
-			[ 'x', [ ve.dm.example.bold ] ],
-			[ 'x', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'xx', ve.dm.example.bold ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2727,9 +2654,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ' ] } },
-			[ 'b', [ ve.dm.example.link( 'Foobar' ) ] ],
-			[ 'a', [ ve.dm.example.link( 'Foobar' ) ] ],
-			[ 'r', [ ve.dm.example.link( 'Foobar' ) ] ],
+			...ve.dm.example.annotateText( 'bar', ve.dm.example.link( 'Foobar' ) ),
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },
@@ -2838,14 +2763,7 @@ ve.dm.example.domToDataCases = {
 				type: 'paragraph',
 				internal: { whitespace: [ undefined, ' ', '    ' ] }
 			},
-			[ ' ', [ ve.dm.example.italic ] ],
-			[ ' ', [ ve.dm.example.italic ] ],
-			[ 'F', [ ve.dm.example.italic ] ],
-			[ 'o', [ ve.dm.example.italic ] ],
-			[ 'o', [ ve.dm.example.italic ] ],
-			[ ' ', [ ve.dm.example.italic ] ],
-			[ ' ', [ ve.dm.example.italic ] ],
-			[ ' ', [ ve.dm.example.italic ] ],
+			...ve.dm.example.annotateText( '  Foo   ', ve.dm.example.italic ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2898,22 +2816,12 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\t\t\t', '\n' ] } },
 			...'A  B   ',
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ 'C', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( '    C\t', ve.dm.example.bold ),
 			...'\t\tD',
 			{ type: '/paragraph' },
 			{ type: 'paragraph', internal: { generated: 'wrapper', whitespace: [ '\n', undefined, undefined, '   ' ] } },
 			...'E\n\nF\n\n\n',
-			[ '\n', [ ve.dm.example.bold ] ],
-			[ '\n', [ ve.dm.example.bold ] ],
-			[ '\n', [ ve.dm.example.bold ] ],
-			[ '\n', [ ve.dm.example.bold ] ],
-			[ 'G', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( '\n\n\n\nG ', ve.dm.example.bold ),
 			...'  H',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -2927,24 +2835,9 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\n\n\n' ] } },
 			...'A  B   ',
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ 'C', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ 'D', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold ] ],
-			[ 'E', [ ve.dm.example.bold ] ],
-			[ '\n', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( '    C\t', ve.dm.example.bold ),
+			...ve.dm.example.annotateText( '\t\tD\t\t\t', [ ve.dm.example.bold, ve.dm.example.italic ] ),
+			...ve.dm.example.annotateText( '\t\t\t\tE\n', ve.dm.example.bold ),
 			...'\n\nF',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -2961,12 +2854,7 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\n\n\n' ] } },
 			...'A  B   ',
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			...ve.dm.example.annotateText( '\t\tC\t\t\t', [ ve.dm.example.bold, ve.dm.example.italic ] ),
 			...'\n\nD',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -2984,14 +2872,8 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\n\n\n' ] } },
 			...'A  B   ',
-			[ '\n', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			...ve.dm.example.annotateText( '\n\t', ve.dm.example.bold ),
+			...ve.dm.example.annotateText( '\t\tC\t\t\t', [ ve.dm.example.bold, ve.dm.example.italic ] ),
 			...'\n\nD',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -3004,14 +2886,8 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ', '\n\n\n' ] } },
 			...'A  B   ',
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\n', [ ve.dm.example.bold ] ],
-			[ '\t', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( '\t\tC\t\t\t', [ ve.dm.example.bold, ve.dm.example.italic ] ),
+			...ve.dm.example.annotateText( '\n\t', ve.dm.example.bold ),
 			...'\n\nD',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -3075,9 +2951,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'tableCell', attributes: { style: 'data' } },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			...'Foo ',
-			[ 'B', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'Bar', ve.dm.example.bold ),
 			{ type: '/paragraph' },
 			{ type: '/tableCell' },
 			{ type: '/tableRow' },
@@ -3537,9 +3411,7 @@ ve.dm.example.domToDataCases = {
 		body: '<b>Foo</b> <meta />\n<i>Bar</i>',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			[ 'F', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
 			' ',
 			{
 				type: 'alienMeta',
@@ -3547,9 +3419,7 @@ ve.dm.example.domToDataCases = {
 			},
 			{ type: '/alienMeta' },
 			'\n',
-			[ 'B', [ ve.dm.example.italic ] ],
-			[ 'a', [ ve.dm.example.italic ] ],
-			[ 'r', [ ve.dm.example.italic ] ],
+			...ve.dm.example.annotateText( 'Bar', ve.dm.example.italic ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3559,9 +3429,7 @@ ve.dm.example.domToDataCases = {
 		body: '<b>Foo</b> <meta />\n<span rel="ve:Alien"></span>',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			[ 'F', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
-			[ 'o', [ ve.dm.example.bold ] ],
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
 			' ',
 			{
 				type: 'alienMeta',
@@ -3649,16 +3517,10 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'paragraph' },
 			...'A ',
+			...ve.dm.example.annotateText( ' B ', ve.dm.example.bold ),
+			...ve.dm.example.annotateText( ' C\t', [ ve.dm.example.bold, ve.dm.example.italic ] ),
 			[ ' ', [ ve.dm.example.bold ] ],
-			[ 'B', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ ' ', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ ' ', [ ve.dm.example.bold ] ],
-			[ '\n', [ ve.dm.example.underline ] ],
-			[ 'D', [ ve.dm.example.underline ] ],
-			[ '\t', [ ve.dm.example.underline ] ],
+			...ve.dm.example.annotateText( '\nD\t', ve.dm.example.underline ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3683,32 +3545,7 @@ ve.dm.example.domToDataCases = {
 		body: '<p><b><u><i>Foo</i></u></b></p>',
 		data: [
 			{ type: 'paragraph' },
-			[
-				'F',
-				[
-					ve.dm.example.bold,
-					ve.dm.example.underline,
-					ve.dm.example.italic
-				]
-			],
-			[
-				'o',
-				[
-					ve.dm.example.bold,
-					ve.dm.example.underline,
-					ve.dm.example.italic
-
-				]
-			],
-			[
-				'o',
-				[
-					ve.dm.example.bold,
-					ve.dm.example.underline,
-					ve.dm.example.italic
-
-				]
-			],
+			...ve.dm.example.annotateText( 'Foo', [ ve.dm.example.bold, ve.dm.example.underline, ve.dm.example.italic ] ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }

@@ -385,20 +385,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', ( assert ) => {
 				},
 				isPaste: true,
 				expectedData: [
-					[ 'h', [ linkHash ] ],
-					[ 't', [ linkHash ] ],
-					[ 't', [ linkHash ] ],
-					[ 'p', [ linkHash ] ],
-					[ ':', [ linkHash ] ],
-					[ '/', [ linkHash ] ],
-					[ '/', [ linkHash ] ],
-					[ 'f', [ linkHash ] ],
-					[ 'o', [ linkHash ] ],
-					[ 'o', [ linkHash ] ],
-					[ '.', [ linkHash ] ],
-					[ 'c', [ linkHash ] ],
-					[ 'o', [ linkHash ] ],
-					[ 'm', [ linkHash ] ]
+					...ve.dm.example.annotateText( 'http://foo.com', linkHash )
 				]
 			},
 			{
