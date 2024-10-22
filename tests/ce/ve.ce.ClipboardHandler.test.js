@@ -90,9 +90,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 	}
 
 	// Use #done to run immediately after paste promise
-	// TODO: Ideally these tests would run in series use 'await' to
-	// avoid selection issues with running parallel surface tests.
-	afterPastePromise.done( () => {
+	return afterPastePromise.done( () => {
 		if ( item.expectedOps ) {
 			let ops = [];
 			if ( model.getHistory().length ) {
@@ -278,7 +276,7 @@ QUnit.test( 'onCopy', ( assert ) => {
 
 } );
 
-QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
+QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 	const docLen = 30,
 		bold = ve.dm.example.bold,
 		italic = ve.dm.example.italic,
@@ -1936,5 +1934,9 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			}
 		];
 
-	cases.forEach( ve.test.utils.runSurfacePasteTest.bind( this, assert ) );
+	( async function () {
+		for ( const caseItem of cases ) {
+			await ve.test.utils.runSurfacePasteTest( assert, caseItem );
+		}
+	}() );
 } );
