@@ -538,7 +538,12 @@ module.exports = function ( grunt ) {
 				grunt.log.error( ret );
 				// Show a condensed diff
 				require( 'child_process' ).exec( 'git diff -U1 | tail -n +3', ( err2, stdout2, stderr2 ) => {
-					grunt.log.write( err2 || stderr2 || stdout2 );
+					const message = err2 || stderr2 || stdout2;
+					grunt.log.write( message );
+					if ( message.includes( 've.availableLanguages' ) ) {
+						grunt.log.subhead( 'CI likely failed because L10n-bot recently added data for a new language, and self +2\'d the change.' );
+						grunt.log.writeln( 'To fix this issue, run "grunt build" locally, then create a commit with the resulting changes.' );
+					}
 					done( false );
 				} );
 			} else {
