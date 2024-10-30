@@ -332,6 +332,15 @@ ve.init.Platform.prototype.getLanguageAutonym = null;
 ve.init.Platform.prototype.getLanguageDirection = null;
 
 /**
+ * Generate a unique ID
+ *
+ * @return {string}
+ */
+ve.init.Platform.prototype.generateUniqueId = function () {
+	return Math.random().toString( 36 ).slice( 2 );
+};
+
+/**
  * Initialize the platform. The default implementation is to do nothing and return a resolved
  * promise. Subclasses should override this if they have asynchronous initialization work to do.
  * The promise rejects if the platform is incompatible.

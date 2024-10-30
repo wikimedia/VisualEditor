@@ -11,6 +11,7 @@
 	 * @ignore
 	 */
 	ve.test = { utils: {} };
+	let nextUniqueId = 1;
 
 	// Create a dummy platform and target so ve.init.platform/target are available
 	function DummyPlatform() {
@@ -54,6 +55,9 @@
 	};
 	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () {
 		return /https?:\/\//i;
+	};
+	DummyPlatform.prototype.generateUniqueId = function () {
+		return 'test' + ( nextUniqueId++ );
 	};
 	DummyPlatform.prototype.getUserConfig = function () {
 		return undefined;
