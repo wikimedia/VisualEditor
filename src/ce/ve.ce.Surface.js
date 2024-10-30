@@ -3853,12 +3853,12 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 	let models = this.model.getFragment().getSelectedModels();
 
 	if ( this.model.selection.isCollapsed() ) {
-		const fragmentAfter = this.model.getFragment( new ve.dm.LinearSelection(
+		const fragmentAfter = this.model.getLinearFragment(
 			new ve.Range(
 				this.model.selection.range.start,
 				this.model.selection.range.start + 1
 			)
-		) );
+		);
 		models = OO.unique( [].concat(
 			models,
 			fragmentAfter.getSelectedModels()
