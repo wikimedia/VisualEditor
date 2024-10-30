@@ -4,7 +4,7 @@
  * @copyright See AUTHORS.txt
  */
 
-QUnit.module( 've.ce.Cliboardhandler', {
+QUnit.module( 've.ce.ClipboardHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
 	beforeEach: function ( assert ) {
@@ -29,8 +29,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 			htmlOrView,
 		model = view.getModel(),
 		target = view.getSurface().getTarget(),
-		doc = model.getDocument(),
-		done = assert.async();
+		doc = model.getDocument();
 
 	let afterPastePromise = ve.createDeferred().resolve().promise();
 	let testEvent;
@@ -95,8 +94,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		afterPastePromise = view.clipboardHandler.afterPaste( testEvent );
 	}
 
-	// Use #done to run immediately after paste promise
-	return afterPastePromise.done( () => {
+	return afterPastePromise.then( () => {
 		if ( item.expectedOps ) {
 			let ops = [];
 			if ( model.getHistory().length ) {
@@ -134,8 +132,6 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		if ( item.annotateImportedData ) {
 			target.constructor.static.annotateImportedData = wasAnnotatingImportedData;
 		}
-
-		done();
 	} );
 };
 
@@ -1939,9 +1935,11 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			}
 		];
 
+	const done = assert.async();
 	( async function () {
 		for ( const caseItem of cases ) {
 			await ve.test.utils.runSurfacePasteTest( assert, caseItem );
 		}
+		done();
 	}() );
 } );

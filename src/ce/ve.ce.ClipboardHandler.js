@@ -504,7 +504,7 @@ ve.ce.ClipboardHandler.prototype.afterPaste = function () {
 		if ( fragment.getSelection() instanceof ve.dm.TableSelection && pasteData.slice instanceof ve.dm.TableSlice ) {
 			const tableAction = new ve.ui.TableAction( surface.getSurface() );
 			tableAction.importTable( pasteData.slice.getTableNode( documentModel ) );
-			return ve.createDeferred().resolve().promise();
+			return done;
 		}
 
 		// For table selections the target is the first cell
