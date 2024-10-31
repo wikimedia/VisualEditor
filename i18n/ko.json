@@ -219,6 +219,7 @@
 	"visualeditor-shortcuts-text-style": "텍스트 서식",
 	"visualeditor-slug-insert": "절 넣기",
 	"visualeditor-specialcharacter-button-tooltip": "특수 문자",
+	"visualeditor-specialcharacter-group-label-accents": "악센트",
 	"visualeditor-specialcharacter-group-label-mathematical": "수학",
 	"visualeditor-specialcharacter-group-label-symbols": "기호",
 	"visualeditor-table-context-col": "열",
