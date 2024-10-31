@@ -179,7 +179,7 @@ ve.init.createConflictableStorage = function ( storage ) {
 		this.storageMayConflict = true;
 
 		if ( !this.conflictId ) {
-			this.conflictId = Math.random().toString( 36 ).slice( 2 );
+			this.conflictId = ve.init.platform.generateUniqueId();
 			// Call parent method directly when setting conflict key
 			ConflictableStorage.super.prototype.set.call( this, conflictKey, this.conflictId );
 		}

@@ -12,7 +12,7 @@ $( () => {
 			} );
 
 		function onSubmit() {
-			const docName = documentNameInput.getValue().trim().replace( / /g, '_' ) || Math.random().toString( 36 ).slice( 2 );
+			const docName = documentNameInput.getValue().trim().replace( / /g, '_' ) || ve.init.platform.generateUniqueId();
 			if ( docName ) {
 				window.location.href = '/doc/edit/' + encodeURIComponent( docName );
 			} else {

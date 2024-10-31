@@ -18,7 +18,7 @@ ve.ce.ClipboardHandler = function VeCeClipboardHandler( surface ) {
 	this.surface = surface;
 
 	this.clipboard = null;
-	this.clipboardId = Math.random().toString();
+	this.clipboardId = ve.init.platform.generateUniqueId();
 	this.clipboardIndex = 0;
 	this.pasting = false;
 	this.beforePasteAnnotationsAtFocus = [];
