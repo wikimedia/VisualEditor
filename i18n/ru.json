@@ -100,6 +100,8 @@
 	"visualeditor-clipboard-cut": "Вырезать",
 	"visualeditor-clipboard-paste": "Вставить",
 	"visualeditor-clipboard-paste-special": "Вставить как простой текст",
+	"visualeditor-collab-copy-title": "Поделиться URL этой сессии",
+	"visualeditor-collab-dialog-title": "Совместное редактирование в реальном времени",
 	"visualeditor-collab-url-placeholder": "[URL-адрес сессии]",
 	"visualeditor-collab-user-placeholder": "Участник $1",
 	"visualeditor-command-dialog-cancel": "Закрыть / отменить изменения",
