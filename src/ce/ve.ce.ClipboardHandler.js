@@ -973,7 +973,8 @@ ve.ce.ClipboardHandler.prototype.afterPasteInsertExternalData = function ( targe
 					{
 						type: 'meta/importedData',
 						attributes: {
-							source: this.beforePasteData.source
+							source: this.beforePasteData.source,
+							eventId: ve.init.platform.generateUniqueId()
 						}
 					}
 				)

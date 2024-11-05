@@ -10,9 +10,12 @@ QUnit.module( 've.ce.ClipboardHandler', {
 	beforeEach: function ( assert ) {
 		const done = assert.async();
 		ve.ui.dataTransferHandlerFactory.register( ve.test.utils.ImageTransferHandler );
+		ve.test.utils.DummyPlatform.prototype.generateUniqueIdOrig = ve.test.utils.DummyPlatform.prototype.generateUniqueId;
+		ve.test.utils.DummyPlatform.prototype.generateUniqueId = () => 'testid';
 		return ve.init.platform.getInitializedPromise().then( done );
 	},
 	afterEach: function () {
+		ve.test.utils.DummyPlatform.prototype.generateUniqueId = ve.test.utils.DummyPlatform.prototype.generateUniqueIdOrig;
 		ve.ui.dataTransferHandlerFactory.unregister( ve.test.utils.ImageTransferHandler );
 	}
 } );
@@ -288,7 +291,8 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 		bold = ve.dm.example.bold,
 		italic = ve.dm.example.italic,
 		link = ve.dm.example.link( 'Foo' ),
-		imported = { type: 'meta/importedData', attributes: { source: null } },
+		// generateUniqueId is deterministic on the DummyPlatform
+		imported = { type: 'meta/importedData', attributes: { source: null, eventId: ve.init.platform.generateUniqueId() } },
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1 ),
