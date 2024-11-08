@@ -133,39 +133,44 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 	// Merge the stores
 	doc.getStore().merge( newDoc.getStore() );
 
-	const listMerge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength || 0 );
-	// Remap the indexes in the data
-	data.remapInternalListIndexes( listMerge.mapping, doc.internalList );
-	// Get data for the new internal list
-	let linearData, listData;
-	if ( newDoc.origInternalListLength !== null ) {
-		// newDoc is a document slice based on doc, so all the internal list items present in doc
-		// when it was cloned are also in newDoc. We need to get the newDoc version of these items
-		// so that changes made in newDoc are reflected.
-		let oldEndOffset, newEndOffset;
-		if ( newDoc.origInternalListLength > 0 ) {
-			oldEndOffset = doc.internalList.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
-			newEndOffset = newDoc.internalList.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
+	let listData;
+	// If the new list is empty, and the insertion offset is before the list, we
+	// can skip list merging completely.
+	if ( newListNode.length || offset >= listNodeRange.start ) {
+		const listMerge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength || 0 );
+		// Remap the indexes in the data
+		data.remapInternalListIndexes( listMerge.mapping, doc.internalList );
+		// Get data for the new internal list
+		let linearData;
+		if ( newDoc.origInternalListLength !== null ) {
+			// newDoc is a document slice based on doc, so all the internal list items present in doc
+			// when it was cloned are also in newDoc. We need to get the newDoc version of these items
+			// so that changes made in newDoc are reflected.
+			let oldEndOffset, newEndOffset;
+			if ( newDoc.origInternalListLength > 0 ) {
+				oldEndOffset = doc.internalList.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
+				newEndOffset = newDoc.internalList.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
+			} else {
+				oldEndOffset = listNodeRange.start;
+				newEndOffset = newListNodeRange.start;
+			}
+			linearData = new ve.dm.ElementLinearData(
+				doc.getStore(),
+				newDoc.getData( new ve.Range( newListNodeRange.start, newEndOffset ), true )
+			);
+			listData = linearData.data
+				.concat( doc.getData( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
 		} else {
-			oldEndOffset = listNodeRange.start;
-			newEndOffset = newListNodeRange.start;
+			// newDoc is brand new, so use doc's internal list as a base
+			listData = doc.getData( listNodeRange, true );
 		}
-		linearData = new ve.dm.ElementLinearData(
-			doc.getStore(),
-			newDoc.getData( new ve.Range( newListNodeRange.start, newEndOffset ), true )
-		);
-		listData = linearData.data
-			.concat( doc.getData( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
-	} else {
-		// newDoc is brand new, so use doc's internal list as a base
-		listData = doc.getData( listNodeRange, true );
-	}
-	for ( let i = 0, len = listMerge.newItemRanges.length; i < len; i++ ) {
-		linearData = new ve.dm.ElementLinearData(
-			doc.getStore(),
-			newDoc.getData( listMerge.newItemRanges[ i ], true )
-		);
-		ve.batchPush( listData, linearData.data );
+		for ( let i = 0, len = listMerge.newItemRanges.length; i < len; i++ ) {
+			linearData = new ve.dm.ElementLinearData(
+				doc.getStore(),
+				newDoc.getData( listMerge.newItemRanges[ i ], true )
+			);
+			ve.batchPush( listData, linearData.data );
+		}
 	}
 
 	const txBuilder = new ve.dm.TransactionBuilder();
@@ -179,11 +184,15 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 		insertion = doc.fixupInsertion( data.data, offset );
 		txBuilder.pushRetain( insertion.offset );
 		txBuilder.pushReplacement( doc, insertion.offset, insertion.remove, insertion.data, true );
-		txBuilder.pushRetain( listNodeRange.start - ( insertion.offset + insertion.remove ) );
-		txBuilder.pushReplacement( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
-			listData, true
-		);
-		txBuilder.pushFinalRetain( doc, listNodeRange.end );
+		if ( listData ) {
+			txBuilder.pushRetain( listNodeRange.start - ( insertion.offset + insertion.remove ) );
+			txBuilder.pushReplacement( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
+				listData, true
+			);
+			txBuilder.pushFinalRetain( doc, listNodeRange.end );
+		} else {
+			txBuilder.pushFinalRetain( doc, insertion.offset + insertion.remove );
+		}
 	} else if ( offset >= listNodeRange.end ) {
 		// offset is after listNodeRange
 		// First replace the internal list, then the node

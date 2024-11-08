@@ -962,13 +962,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 						remove: [],
 						insert: [ { type: 'paragraph' }, ...'Foo', { type: '/paragraph' } ]
 					},
-					{ type: 'retain', length: 6 },
-					{
-						type: 'replace',
-						remove: doc.getData( new ve.Range( 6, 20 ) ),
-						insert: doc.getData( new ve.Range( 6, 20 ) )
-					},
-					{ type: 'retain', length: 7 }
+					{ type: 'retain', length: 27 }
 				]
 			},
 			{
@@ -988,13 +982,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 						remove: [],
 						insert: [ { type: 'paragraph' }, 'F', [ 'o', [ ve.dm.example.boldHash ] ], 'o', { type: '/paragraph' } ]
 					},
-					{ type: 'retain', length: 6 },
-					{
-						type: 'replace',
-						remove: doc.getData( new ve.Range( 6, 20 ) ),
-						insert: doc.getData( new ve.Range( 6, 20 ) )
-					},
-					{ type: 'retain', length: 7 }
+					{ type: 'retain', length: 27 }
 				],
 				expectedStoreItems: {
 					h49981eab0f8056ff: bold
