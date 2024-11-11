@@ -77,6 +77,14 @@ QUnit.test( 'getFullData', ( assert ) => {
 			// BUG! <i></i> is not restored
 			// EXPECTED: Same as beforeHtml
 			beforeHtmlUndo: '<p>x</p><p>abcd</p><p>efgh</p>'
+		},
+		{
+			msg: 'BUG: When annotated metadata gets moved out of a ContentBranchNode, the annotations remain',
+			beforeHtml: '<p><i>ab<meta foo="x">cd</i></p>',
+			transaction: function ( doc ) {
+				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 1, 2 ) );
+			},
+			afterHtml: '<p><i>bcd</i></p><i><meta foo="x"></i>'
 		}
 	];
 
