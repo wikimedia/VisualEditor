@@ -1569,9 +1569,9 @@ QUnit.test( 'sanitize', ( assert ) => {
 						type: 'removableAlienMeta',
 						internal: {
 							loadMetaParentHash: 'hd25d21d36fa98e7a',
-							loadMetaParentOffset: 1
-						},
-						annotations: [ 'h49981eab0f8056ff' ]
+							loadMetaParentOffset: 1,
+							preservedAnnotations: [ 'h96560f31226e3199' ]
+						}
 					},
 					{ type: '/removableAlienMeta' },
 					{ type: 'internalList' },

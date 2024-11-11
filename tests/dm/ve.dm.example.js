@@ -1964,13 +1964,11 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
-				annotations: [ ve.dm.example.bold ],
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
 			{
 				type: 'alienMeta',
-				annotations: [ ve.dm.example.bold ],
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
@@ -2017,19 +2015,16 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
-				annotations: [ ve.dm.example.bold ],
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
 			{
 				type: 'alienMeta',
-				annotations: [ ve.dm.example.bold ],
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
 			{
 				type: 'alienMeta',
-				annotations: [ ve.dm.example.bold ],
 				originalDomElements: $.parseHTML( '<meta />' )
 			},
 			{ type: '/alienMeta' },
@@ -2064,13 +2059,11 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
-				annotations: [ ve.dm.example.bold ],
 				originalDomElements: $.parseHTML( '<link />' )
 			},
 			{ type: '/alienMeta' },
 			{
 				type: 'alienMeta',
-				annotations: [ ve.dm.example.bold ],
 				originalDomElements: $.parseHTML( '<link />' )
 			},
 			{ type: '/alienMeta' },
@@ -2492,8 +2485,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'removableAlienMeta',
-				originalDomElements: $.parseHTML( '<b></b>' ),
-				annotations: [ ve.dm.example.italic ]
+				originalDomElements: $.parseHTML( '<b></b>' )
 			},
 			{ type: '/removableAlienMeta' },
 			{ type: 'internalList' },

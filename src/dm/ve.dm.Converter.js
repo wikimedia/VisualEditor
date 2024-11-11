@@ -261,6 +261,11 @@ ve.dm.Converter.static.moveInlineMetaItems = function ( data ) {
 			if ( ve.getProp( item, 'internal', 'isInlineMeta' ) ) {
 				// This is an inline meta item: move it
 				delete item.internal.isInlineMeta;
+				if ( item.annotations ) {
+					// Remove annotations, but save so we could restore
+					item.internal.preservedAnnotations = item.annotations;
+					delete item.annotations;
+				}
 				metaParent = closestMetaParent();
 				if ( metaParent ) {
 					metaParent.item.internal.metaItems.push( item );
