@@ -785,6 +785,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 		delete element.internal.metaItems;
 		delete element.internal.loadMetaParentHash;
 		delete element.internal.loadMetaParentOffset;
+		delete element.internal.preservedAnnotations;
 		if ( Object.keys( element.internal ).length === 0 ) {
 			delete element.internal;
 		}
@@ -831,6 +832,10 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 
 						delete metaItem.internal.loadBranchNodeHash;
 						delete metaItem.internal.loadBranchNodeOffset;
+						if ( metaItem.internal.preservedAnnotations ) {
+							metaItem.annotations = metaItem.internal.preservedAnnotations;
+							delete metaItem.internal.preservedAnnotations;
+						}
 						if ( Object.keys( metaItem.internal ).length === 0 ) {
 							delete metaItem.internal;
 						}
