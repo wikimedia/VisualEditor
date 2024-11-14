@@ -22,17 +22,21 @@ QUnit.module( 've.ce.ClipboardHandler', {
 
 ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 	const htmlOrView = item.documentHtml || '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tr></tbody></table><p><b>Quux</b></p>',
-		pasteData = {
-			'text/html': item.pasteHtml,
-			'text/plain': item.pasteText
-		},
-		clipboardData = new ve.test.utils.MockDataTransfer( ve.copy( pasteData ) ),
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView, item.config ) :
 			htmlOrView,
 		model = view.getModel(),
 		target = view.getSurface().getTarget(),
 		doc = model.getDocument();
+
+	const pasteData = {};
+	if ( item.pasteHtml ) {
+		pasteData[ 'text/html' ] = item.pasteHtml;
+	}
+	if ( item.pasteText ) {
+		pasteData[ 'text/plain' ] = item.pasteText;
+	}
+	const clipboardData = new ve.test.utils.MockDataTransfer( ve.copy( pasteData ) );
 
 	let afterPastePromise = ve.createDeferred().resolve().promise();
 	let testEvent;
@@ -292,7 +296,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 		italic = ve.dm.example.italic,
 		link = ve.dm.example.link( 'Foo' ),
 		// generateUniqueId is deterministic on the DummyPlatform
-		imported = { type: 'meta/importedData', attributes: { source: null, eventId: ve.init.platform.generateUniqueId() } },
+		imported = ( source ) => ( { type: 'meta/importedData', attributes: { source: source, eventId: ve.init.platform.generateUniqueId() } } ),
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1 ),
@@ -310,26 +314,6 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					]
 				],
 				msg: 'Text into empty paragraph'
-			},
-			{
-				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml: 'Foo',
-				expectedRangeOrSelection: new ve.Range( 4 ),
-				annotateImportedData: true,
-				expectedOps: [
-					[
-						{ type: 'retain', length: 1 },
-						{
-							type: 'replace',
-							insert: [
-								...ve.dm.example.annotateText( 'Foo', imported )
-							],
-							remove: []
-						},
-						{ type: 'retain', length: docLen - 1 }
-					]
-				],
-				msg: 'Text into empty paragraph (annotateImportedData)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 4 ),
@@ -1943,6 +1927,127 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					}
 				},
 				msg: 'Formatting removed by import rules'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', imported( null ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'Text into empty paragraph (annotateImportedData)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<span id="docs-internal-guid-111-111-111">Foo</span>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', imported( 'googleDocs' ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Google docs'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				fromVe: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', imported( 'visualEditor' ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from VisualEditor'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<meta name="generator" content="LibreOffice 7.3.7.2 (Linux)"/>Foo',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', imported( 'libreOffice' ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from LibreOffice'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<span data-contrast="auto" class="TextRun SCXW177593693 BCX0><span class="NormalTextRun SCXW177593693 BCX0">Foo</span></span>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', imported( 'microsoftOffice' ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from MicrosoftOffice'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteText: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', imported( 'plainText' ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'Plain text paste annotated as plain'
 			}
 		];
 

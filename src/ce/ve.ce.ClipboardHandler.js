@@ -90,10 +90,10 @@ ve.ce.ClipboardHandler.static.clipboardKeyMimeType = 'application/x-vnd.wikimedi
  * @type {Object}
  */
 ve.ce.ClipboardHandler.static.pasteSourceDetectors = {
-	GoogleDocs: ( clipboardData ) => clipboardData.types.some( ( type ) => type.startsWith( 'application/x-vnd.google-docs' ) ) ||
+	googleDocs: ( clipboardData ) => clipboardData.types.some( ( type ) => type.startsWith( 'application/x-vnd.google-docs' ) ) ||
 		clipboardData.getData( 'text/html' ).match( /id=['"]?docs-internal-guid/i ),
-	LibreOffice: ( clipboardData ) => clipboardData.getData( 'text/html' ).match( /content=['"]?LibreOffice/i ),
-	MicrosoftOffice: ( clipboardData ) => {
+	libreOffice: ( clipboardData ) => clipboardData.getData( 'text/html' ).match( /content=['"]?LibreOffice/i ),
+	microsoftOffice: ( clipboardData ) => {
 		const html = clipboardData.getData( 'text/html' );
 		// Word365 (Desktop)
 		return html.match( /content=Word.Document/i ) ||
@@ -101,7 +101,7 @@ ve.ce.ClipboardHandler.static.pasteSourceDetectors = {
 			// eslint-disable-next-line es-x/no-array-prototype-includes
 			( html.match( /data-contrast=["']/i ) && html.includes( 'TextRun' ) );
 	},
-	PlainText: ( clipboardData ) => clipboardData.types.length === 1 && clipboardData.types[ 0 ] === 'text/plain'
+	plainText: ( clipboardData ) => clipboardData.types.length === 1 && clipboardData.types[ 0 ] === 'text/plain'
 };
 
 /* Static methods */
@@ -380,6 +380,8 @@ ve.ce.ClipboardHandler.prototype.beforePaste = function ( e ) {
 				break;
 			}
 		}
+	} else {
+		source = 'visualEditor';
 	}
 	this.beforePasteData.source = source;
 
