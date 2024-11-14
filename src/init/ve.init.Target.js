@@ -212,6 +212,19 @@ ve.init.Target.static.includeCommands = null;
 ve.init.Target.static.excludeCommands = [];
 
 /**
+ * Enforce interactive-widget=resizes-content
+ *
+ * When this target is setup, enforce interactive-widget=resizes-content
+ * in the <meta name=viewport> tag.
+ *
+ * This should be done if the target uses a position:fixed toolbar
+ * on a device which may have a virtual keyboard.
+ *
+ * @type {boolean}
+ */
+ve.init.Target.static.enforceResizesContent = false;
+
+/**
  * Surface import rules
  *
  * One set for external (non-VE) paste sources and one for all paste sources.
@@ -681,6 +694,10 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 		}
 	}
 
+	if ( this.constructor.static.enforceResizesContent ) {
+		this.toggleResizesContent( true );
+	}
+
 	toolbar.connect( this, {
 		resize: 'onToolbarResize',
 		active: 'onToolbarActive'
@@ -785,6 +802,9 @@ ve.init.Target.prototype.teardownToolbar = function () {
 	if ( this.actionsToolbar ) {
 		this.actionsToolbar = null;
 	}
+	if ( this.constructor.static.enforceResizesContent ) {
+		this.toggleResizesContent( false );
+	}
 	return ve.createDeferred().resolve().promise();
 };
 
@@ -795,4 +815,39 @@ ve.init.Target.prototype.attachToolbar = function () {
 	const toolbar = this.getToolbar();
 	toolbar.$element.insertBefore( toolbar.getSurface().$element );
 	toolbar.initialize();
+};
+
+/**
+ * Toggle "resizes content" mode of the viewport
+ *
+ * See #static-enforceResizesContent
+ *
+ * @param {boolean} set Set (true) or restore initial value (false)
+ */
+ve.init.Target.prototype.toggleResizesContent = function ( set ) {
+	// eslint-disable-next-line no-jquery/no-global-selector
+	let $viewportTag = $( 'meta[name=viewport]' );
+	if ( !$viewportTag.length ) {
+		$viewportTag = $( '<meta>' ).attr( 'name', 'viewport' ).appendTo( 'head' );
+	}
+	const obj = Object.create( null );
+	( $viewportTag.attr( 'content' ) || '' ).split( /[,;]/g ).forEach( ( pair ) => {
+		const [ key, value ] = pair.split( '=' );
+		obj[ key.trim().toLowerCase() ] = value.trim();
+	} );
+
+	if ( set && !this.interactiveWidgetValueSet ) {
+		this.initialInteractiveWidgetValue = obj[ 'interactive-widget' ];
+		obj[ 'interactive-widget' ] = 'resizes-content';
+		this.interactiveWidgetValueSet = true;
+	} else if ( !set && this.interactiveWidgetValueSet ) {
+		if ( this.initialInteractiveWidgetValue ) {
+			obj[ 'interactive-widget' ] = this.initialInteractiveWidgetValue;
+		} else {
+			delete obj[ 'interactive-widget' ];
+		}
+		this.interactiveWidgetValueSet = false;
+	}
+
+	$viewportTag.attr( 'content', Object.keys( obj ).map( ( key ) => key + '=' + obj[ key ] ).join( ',' ) );
 };

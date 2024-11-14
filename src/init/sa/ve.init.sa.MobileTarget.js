@@ -73,3 +73,5 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
 		include: '*'
 	}
 ];
+
+ve.init.sa.MobileTarget.static.enforceResizesContent = true;
