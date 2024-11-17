@@ -464,6 +464,55 @@ ve.dm.ElementLinearData.prototype.getAnnotationHashesFromOffset = function ( off
 };
 
 /**
+ * @typedef {Object} AnnotationRange
+ * @memberof ve.dm.ElementLinearData
+ * @property {ve.dm.Annotation} annotation
+ * @property {ve.dm.Range} range
+ */
+
+/**
+ * Get contiguous ranges covered by annotations
+ *
+ * @param {ve.Range} range Range to search
+ * @return {ve.dm.ElementLinearData.AnnotationRange[]} Contiguous annotation ranges, ordered by start then end
+ */
+ve.dm.ElementLinearData.prototype.getAnnotationRanges = function ( range ) {
+	const annotationRanges = [];
+	const startOffsets = {};
+	const annotationStack = new ve.dm.AnnotationSet( this.getStore() );
+	let i;
+	const open = ( ann ) => {
+		const key = JSON.stringify( ann.getComparableObject() );
+		startOffsets[ key ] = i;
+	};
+	const close = ( ann ) => {
+		const key = JSON.stringify( ann.getComparableObject() );
+		const startOffset = startOffsets[ key ];
+		annotationRanges.push( {
+			annotation: ann,
+			range: new ve.Range( startOffset, i )
+		} );
+	};
+	for ( i = range.start; i < range.end; i++ ) {
+		const annotations = this.getAnnotationsFromOffset( i );
+		ve.dm.Converter.static.openAndCloseAnnotations(
+			annotationStack, annotations,
+			open,
+			close
+		);
+	}
+	// Close remaining annotations
+	const emptySet = new ve.dm.AnnotationSet( this.getStore() );
+	ve.dm.Converter.static.openAndCloseAnnotations(
+		annotationStack, emptySet,
+		open,
+		close
+	);
+	annotationRanges.sort( ( a, b ) => a.range.start - b.range.start || a.range.end - b.range.end );
+	return annotationRanges;
+};
+
+/**
  * Get annotations covered by an offset.
  *
  * The returned AnnotationSet is a clone of the one in the data.

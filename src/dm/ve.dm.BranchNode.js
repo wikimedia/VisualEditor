@@ -202,58 +202,18 @@ ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
 };
 
 /**
- * @typedef {Object} AnnotationRange
- * @memberof ve.dm.BranchNode
- * @property {ve.dm.Annotation} annotation
- * @property {ve.dm.Range} range
- */
-
-/**
  * Get all annotations and the ranges they cover
  *
- * @return {ve.dm.BranchNode.AnnotationRange[]} Annotation ranges, ordered by start then end
+ * @return {ve.dm.ElementLinearData.AnnotationRange[]} Contiguous annotation ranges, ordered by start then end
  */
 ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
-	const contentBranchNodes = [];
+	const annotationRanges = [];
 	this.traverse( ( node ) => {
 		if ( node.canContainContent() ) {
-			contentBranchNodes.push( node );
-		}
-	} );
-	const annotationRanges = [];
-	contentBranchNodes.forEach( ( node ) => {
-		const range = node.getRange();
-		const startOffsets = {};
-		const annotationStack = new ve.dm.AnnotationSet( this.getDocument().getStore() );
-		let i;
-		const open = ( ann ) => {
-			const key = JSON.stringify( ann.getComparableObject() );
-			startOffsets[ key ] = i;
-		};
-		const close = ( ann ) => {
-			const key = JSON.stringify( ann.getComparableObject() );
-			const startOffset = startOffsets[ key ];
-			annotationRanges.push( {
-				annotation: ann,
-				range: new ve.Range( startOffset, i )
-			} );
-		};
-		for ( i = range.start; i < range.end; i++ ) {
-			const annotations = node.getDocument().data.getAnnotationsFromOffset( i );
-			ve.dm.Converter.static.openAndCloseAnnotations(
-				annotationStack, annotations,
-				open,
-				close
+			annotationRanges.push(
+				...this.getDocument().data.getAnnotationRanges( node.getRange() )
 			);
 		}
-		// Close remaining annotations
-		const emptySet = new ve.dm.AnnotationSet( this.getDocument().getStore() );
-		ve.dm.Converter.static.openAndCloseAnnotations(
-			annotationStack, emptySet,
-			open,
-			close
-		);
 	} );
-	annotationRanges.sort( ( a, b ) => a.range.start - b.range.start || a.range.end - b.range.end );
 	return annotationRanges;
 };
