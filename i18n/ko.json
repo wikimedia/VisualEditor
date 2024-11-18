@@ -118,6 +118,7 @@
 	"visualeditor-debugbar-showtransactions": "트랜잭션 표시",
 	"visualeditor-debugbar-startfilibuster": "필리버스터",
 	"visualeditor-debugbar-stopfilibuster": "필리버스터 중지",
+	"visualeditor-debugbar-testsquasher": "시험 집계기",
 	"visualeditor-debugbar-updatemodel": "변경사항에 대한 업데이트",
 	"visualeditor-dialog-action-apply": "바뀜 적용",
 	"visualeditor-dialog-action-cancel": "취소",
