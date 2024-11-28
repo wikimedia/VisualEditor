@@ -20,34 +20,27 @@ QUnit.test( 'squash', ( assert ) => {
 		let newData;
 		if ( method === 'set' ) {
 			newData = oldData.map( ( item ) => {
-				let ch, hashList;
-				if ( Array.isArray( item ) ) {
-					ch = item[ 0 ];
-					hashList = item[ 1 ];
-				} else {
-					ch = item;
+				let ch = item,
 					hashList = [];
+				if ( Array.isArray( item ) ) {
+					[ ch, hashList ] = item;
 				}
-				hashList = [].concat(
-					hashList.slice( 0, spliceAt ),
+				hashList = [
+					...hashList.slice( 0, spliceAt ),
 					hash,
-					hashList.slice( spliceAt )
-				);
+					...hashList.slice( spliceAt )
+				];
 				return [ ch, hashList ];
 			} );
 		} else {
 			newData = oldData.map( ( item ) => {
-				const ch = item[ 0 ];
-				let hashList = item[ 1 ];
-				hashList = [].concat(
-					hashList.slice( 0, spliceAt ),
-					hashList.slice( spliceAt + 1 )
-				);
-				if ( hashList.length === 0 ) {
-					return ch;
-				} else {
-					return [ ch, hashList ];
-				}
+				// eslint-disable-next-line prefer-const
+				let [ ch, hashList ] = item;
+				hashList = [
+					...hashList.slice( 0, spliceAt ),
+					...hashList.slice( spliceAt + 1 )
+				];
+				return hashList.length ? [ ch, hashList ] : ch;
 			} );
 		}
 		return [ start, [ oldData, newData ], length - stop ];
