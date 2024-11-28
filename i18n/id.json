@@ -88,6 +88,7 @@
 	"visualeditor-collab-hostbutton-label": "Selenggarakan sesi baru",
 	"visualeditor-collab-joinbutton-label": "Bergabung dengan sesi yang ada",
 	"visualeditor-collab-url-mismatch": "URL sesi tidak cocok dengan halaman ini",
+	"visualeditor-collab-url-placeholder": "[URL Sesi]",
 	"visualeditor-collab-url-prompt": "Masukkan URL sesi untuk bergabung",
 	"visualeditor-collab-user-placeholder": "Pengguna $1",
 	"visualeditor-command-dialog-cancel": "Tutup / batalkan perubahan",
