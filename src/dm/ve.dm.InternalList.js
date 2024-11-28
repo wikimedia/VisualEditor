@@ -414,6 +414,8 @@ ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {
 		// Sometimes there is no node at the time of sorting (T350902) so move these to the end to be ignored
 		if ( !group.firstNodes[ index1 ] ) {
 			return !group.firstNodes[ index2 ] ? 0 : 1;
+		} else if ( !group.firstNodes[ index2 ] ) {
+			return -1;
 		}
 		// Sort placeholder nodes to the end, so they don't interfere with numbering
 		if ( group.firstNodes[ index1 ].getAttribute( 'placeholder' ) ) {
