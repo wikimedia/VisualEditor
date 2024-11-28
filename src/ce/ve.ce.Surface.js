@@ -3843,7 +3843,6 @@ ve.ce.Surface.prototype.setNotUnicorningAll = function ( node ) {
  *
  * Exclude active annotations unless the CE focus is inside a link
  *
- * @param {boolean} [all] Include nodes and annotations which only cover some of the fragment
  * @return {ve.dm.Model[]} Selected models
  */
 ve.ce.Surface.prototype.getSelectedModels = function () {

@@ -37,9 +37,6 @@ OO.inheritClass( ve.ce.KeyDownHandlerFactory, OO.Factory );
  * See https://doc.wikimedia.org/oojs/master/OO.Factory.html
  *
  * @param {Function} constructor Constructor to use when creating object
- * @param {string} [name] Symbolic name to use for #create().
- *  This parameter may be omitted in favour of letting the constructor decide
- *  its own name, through `constructor.static.name`.
  * @throws {Error} If a parameter is invalid
  */
 ve.ce.KeyDownHandlerFactory.prototype.register = function ( constructor ) {
