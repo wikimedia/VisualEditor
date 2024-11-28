@@ -312,7 +312,7 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
  *     ^      .          ^           .      ^
  *
  * @param {number} offset Document offset
- * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
+ * @param {boolean} [unrestricted=false] Only return true if any kind of element can be inserted at offset
  * @return {boolean} Structure can be inserted at offset
  */
 ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrestricted ) {
@@ -415,7 +415,7 @@ ve.dm.ElementLinearData.prototype.isContentData = function () {
  *
  * @param {number} offset
  * @param {ve.dm.Annotation} annotation
- * @param {boolean} [ignoreClose] Ignore close elements, otherwise check if their open element is annotatable
+ * @param {boolean} [ignoreClose=false] Ignore close elements, otherwise check if their open element is annotatable
  * @return {boolean} Annotation can be applied at this offset
  */
 ve.dm.ElementLinearData.prototype.canTakeAnnotationAtOffset = function ( offset, annotation, ignoreClose ) {
@@ -437,7 +437,7 @@ ve.dm.ElementLinearData.prototype.canTakeAnnotationAtOffset = function ( offset,
  * Get annotations' store hashes covered by an offset.
  *
  * @param {number} offset Offset to get annotations for
- * @param {boolean} [ignoreClose] Ignore annotations on close elements
+ * @param {boolean} [ignoreClose=false] Ignore annotations on close elements
  * @return {string[]} An array of annotation store hashes the offset is covered by
  * @throws {Error} offset out of bounds
  */
@@ -518,7 +518,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationRanges = function ( range ) {
  * The returned AnnotationSet is a clone of the one in the data.
  *
  * @param {number} offset Offset to get annotations for
- * @param {boolean} [ignoreClose] Ignore annotations on close elements
+ * @param {boolean} [ignoreClose=false] Ignore annotations on close elements
  * @return {ve.dm.AnnotationSet} A set of all annotation objects offset is covered by
  * @throws {Error} offset out of bounds
  */
@@ -711,7 +711,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
  * see https://phabricator.wikimedia.org/T113869 .
  *
  * @param {ve.Range} range The range into which text would be inserted
- * @param {boolean} [startAfterAnnotations] Use annotations after cursor if collapsed
+ * @param {boolean} [startAfterAnnotations=false] Use annotations after cursor if collapsed
  * @return {ve.dm.AnnotationSet} The insertion annotations that should apply
  */
 ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( range, startAfterAnnotations ) {
@@ -788,10 +788,10 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  * Check if the data is just text
  *
  * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
- * @param {boolean} [ignoreNonContentNodes] Ignore all non-content nodes, e.g. paragraphs, headings, lists
+ * @param {boolean} [ignoreNonContentNodes=false] Ignore all non-content nodes, e.g. paragraphs, headings, lists
  * @param {string[]} [ignoredTypes] Only ignore specific non-content types
- * @param {boolean} [ignoreCoveringAnnotations] Ignore covering annotations
- * @param {boolean} [ignoreAllAnnotations] Ignore all annotations
+ * @param {boolean} [ignoreCoveringAnnotations=false] Ignore covering annotations
+ * @param {boolean} [ignoreAllAnnotations=false] Ignore all annotations
  * @return {boolean} The data is plain text
  */
 ve.dm.ElementLinearData.prototype.isPlainText = function ( range, ignoreNonContentNodes, ignoredTypes, ignoreCoveringAnnotations, ignoreAllAnnotations ) {
@@ -863,7 +863,7 @@ ve.dm.ElementLinearData.prototype.forEachRunOfContent = function ( range, callba
 /**
  * Get the data as plain text
  *
- * @param {boolean} [maintainIndices] Maintain data offset to string index alignment by replacing elements with line breaks
+ * @param {boolean} [maintainIndices=false] Maintain data offset to string index alignment by replacing elements with line breaks
  * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
  * @return {string} Data as plain text
  */
@@ -1046,7 +1046,7 @@ ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, d
  *
  * @param {number} offset Offset to start from
  * @param {number} distance Number of structural offsets to move
- * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
+ * @param {boolean} [unrestricted=false] Only consider offsets where any kind of element can be inserted
  * @return {number} Relative structural offset
  */
 ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offset, distance, unrestricted ) {
@@ -1070,7 +1070,7 @@ ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offse
  *
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
+ * @param {boolean} [unrestricted=false] Only consider offsets where any kind of element can be inserted
  * @return {number} Nearest structural offset
  */
 ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset, direction, unrestricted ) {
@@ -1263,13 +1263,13 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
  * @param {Object} rules Sanitization rules
  * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
  * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
- * @param {boolean} [rules.removeOriginalDomElements] Remove references to DOM elements data was converted from
- * @param {boolean} [rules.plainText] Remove all formatting for plain text import
- * @param {boolean} [rules.allowBreaks] Allow <br> line breaks, otherwise the node will be split
- * @param {boolean} [rules.preserveHtmlWhitespace] Preserve non-semantic HTML whitespace
- * @param {boolean} [rules.nodeSanitization] Apply per-type node sanitizations via ve.dm.Node#sanitize
- * @param {boolean} [rules.keepEmptyContentBranches] Preserve empty content branch nodes
- * @param {boolean} [rules.singleLine] Don't allow more that one ContentBranchNode
+ * @param {boolean} [rules.removeOriginalDomElements=false] Remove references to DOM elements data was converted from
+ * @param {boolean} [rules.plainText=false] Remove all formatting for plain text import
+ * @param {boolean} [rules.allowBreaks=false] Allow <br> line breaks, otherwise the node will be split
+ * @param {boolean} [rules.preserveHtmlWhitespace=false] Preserve non-semantic HTML whitespace
+ * @param {boolean} [rules.nodeSanitization=false] Apply per-type node sanitizations via ve.dm.Node#sanitize
+ * @param {boolean} [rules.keepEmptyContentBranches=false] Preserve empty content branch nodes
+ * @param {boolean} [rules.singleLine=false] Don't allow more that one ContentBranchNode
  * @param {boolean} [rules.allowMetaData] Don't strip metadata
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {

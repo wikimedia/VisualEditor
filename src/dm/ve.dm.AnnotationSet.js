@@ -9,7 +9,7 @@
  *
  * @constructor
  * @param {ve.dm.HashValueStore} store
- * @param {string[]} [storeHashes]
+ * @param {string[]} [storeHashes=[]]
  */
 ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeHashes ) {
 	// Parent constructor
@@ -226,7 +226,7 @@ ve.dm.AnnotationSet.prototype.offsetOfHash = function ( storeHash ) {
  * This returns a new set with all annotations in the set for which the callback returned true for.
  *
  * @param {Function} callback Function that takes an annotation and returns boolean true to include
- * @param {boolean} [returnBool] For internal use only
+ * @param {boolean} [returnBool=false] For internal use only
  * @return {ve.dm.AnnotationSet|boolean} New set containing only the matching annotations
  */
 ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {

@@ -207,7 +207,7 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  * (only after initialize has already been called).
  *
  * @event ve.ce.Surface#position
- * @param {boolean} [wasSynchronizing] The surface was positioned due to
+ * @param {boolean} [wasSynchronizing=false] The surface was positioned due to
  *  synchronization (ve.dm.SurfaceSynchronizer)
  */
 
@@ -704,8 +704,8 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  * Used by dialogs so they can take focus without losing the original document selection.
  *
  * @param {boolean} [showAsActivated=true] Surface should still show as activated
- * @param {boolean} [noSelectionChange] Don't change the native selection.
- * @param {boolean} [hideSelection] Completely hide the selection
+ * @param {boolean} [noSelectionChange=false] Don't change the native selection.
+ * @param {boolean} [hideSelection=false] Completely hide the selection
  * @fires ve.ce.Surface#activation
  */
 ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange, hideSelection ) {
@@ -2522,8 +2522,8 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
 /**
  * Find sequence matches at the current surface offset
  *
- * @param {boolean} [isPaste] Whether this in the context of a paste
- * @param {boolean} [isDelete] Whether this is after content being deleted
+ * @param {boolean} [isPaste=false] Whether this in the context of a paste
+ * @param {boolean} [isDelete=false] Whether this is after content being deleted
  * @return {ve.ui.SequenceRegistry.Match[]}
  */
 ve.ce.Surface.prototype.findMatchingSequences = function ( isPaste, isDelete ) {
@@ -2544,8 +2544,8 @@ ve.ce.Surface.prototype.findMatchingSequences = function ( isPaste, isDelete ) {
 /**
  * Find sequence matches at the current surface offset and execute them
  *
- * @param {boolean} [isPaste] Whether this in the context of a paste
- * @param {boolean} [isDelete] Whether this is after content being deleted
+ * @param {boolean} [isPaste=false] Whether this in the context of a paste
+ * @param {boolean} [isDelete=false] Whether this is after content being deleted
  */
 ve.ce.Surface.prototype.findAndExecuteSequences = function ( isPaste, isDelete ) {
 	this.executeSequences( this.findMatchingSequences( isPaste, isDelete ) );
@@ -3093,7 +3093,7 @@ ve.ce.Surface.prototype.selectLastSelectableContentOffset = function () {
  * single element is particularly large this might be very distinct from the
  * visible content.
  *
- * @param {boolean} [covering] Get a range which fully covers the viewport, otherwise
+ * @param {boolean} [covering=false] Get a range which fully covers the viewport, otherwise
  *  get a range which is full contained within the viewport.
  * @param {number} [padding=0] Increase computed size of viewport by this amount at the top and bottom
  * @return {ve.Range|null} Range covering data visible in the viewport, null if the surface is not attached
@@ -3219,7 +3219,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
  * - The first visible content offset (at any position in the CBN)
  * - The first selectable content offset in the doc (if fallbackToFirst is set)
  *
- * @param {boolean} [fallbackToFirst] Whether to select the first content offset if a visible offset can't be found
+ * @param {boolean} [fallbackToFirst=false] Whether to select the first content offset if a visible offset can't be found
  */
 ve.ce.Surface.prototype.selectFirstVisibleStartContentOffset = function ( fallbackToFirst ) {
 	// When scrolled. add about one line height of padding so the browser doesn't try to scroll the line above the cursor into view
@@ -3271,7 +3271,7 @@ ve.ce.Surface.prototype.forceShowModelSelection = function () {
 /**
  * Apply a DM selection to the DOM
  *
- * @param {boolean} [force] Replace the DOM selection if it is different but DM-equivalent
+ * @param {boolean} [force=false] Replace the DOM selection if it is different but DM-equivalent
  * @return {boolean} Whether the selection actually changed
  */
 ve.ce.Surface.prototype.showModelSelection = function ( force ) {

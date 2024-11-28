@@ -67,10 +67,10 @@
  *
  * @class
  * @constructor
- * @param {number} [start] Length of the history stack at change start
+ * @param {number} [start=0] Length of the history stack at change start
  * @param {ve.dm.Transaction[]} [transactions] Transactions to apply
  * @param {ve.dm.HashValueStore[]} [stores] For each transaction, a collection of new store items
- * @param {Object} [selections] For each author ID (key), latest ve.dm.Selection
+ * @param {Object} [selections={}] For each author ID (key), latest ve.dm.Selection
  */
 ve.dm.Change = function VeDmChange( start, transactions, stores, selections ) {
 	this.start = start || 0;
@@ -97,7 +97,7 @@ ve.dm.Change.static = {};
  * Change object will be rebased and reserialized without ever being applied to a document.
  *
  * @param {Object} data Change serialized as a JSONable object
- * @param {boolean} [preserveStoreValues] Keep store values verbatim instead of deserializing
+ * @param {boolean} [preserveStoreValues=false] Keep store values verbatim instead of deserializing
  * @param {boolean} [unsafe] Use unsafe deserialization (skipping DOMPurify), used via #unsafeDeserialize
  * @return {ve.dm.Change} Deserialized change
  */
@@ -795,7 +795,7 @@ ve.dm.Change.prototype.truncate = function ( length ) {
  * Apply change to surface
  *
  * @param {ve.dm.Surface} surface Surface in change start state
- * @param {boolean} [applySelection] Apply a selection based on the modified range
+ * @param {boolean} [applySelection=false] Apply a selection based on the modified range
  */
 ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
 	const doc = surface.getDocument();
@@ -878,7 +878,7 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  * Store values can be serialized, or kept verbatim (which only makes sense if they are serialized
  * already, i.e. the Change object was created by #deserialize without deserializing store values).
  *
- * @param {boolean} [preserveStoreValues] If true, keep store values verbatim instead of serializing
+ * @param {boolean} [preserveStoreValues=false] If true, keep store values verbatim instead of serializing
  * @return {Object} JSONable object
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {

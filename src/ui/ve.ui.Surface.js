@@ -668,7 +668,7 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 /**
  * Handle position events from the view
  *
- * @param {boolean} [wasSynchronizing]
+ * @param {boolean} [wasSynchronizing=false]
  */
 ve.ui.Surface.prototype.onViewPosition = function ( wasSynchronizing ) {
 	const padding = {};

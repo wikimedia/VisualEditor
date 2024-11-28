@@ -422,7 +422,7 @@ ve.ui.Trigger.prototype.toString = function () {
  * This is similar to #toString but the resulting string will be formatted in a way that makes it
  * appear more native for the platform, and special keys will be translated.
  *
- * @param {boolean} explode Whether to return the message split up into some
+ * @param {boolean} [explode=false] Whether to return the message split up into some
  *        reasonable sequence of inputs required
  * @return {string[]|string} Seprate key messages, or a joined string
  */

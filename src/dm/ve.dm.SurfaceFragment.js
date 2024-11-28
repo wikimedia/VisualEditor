@@ -43,7 +43,7 @@ OO.initClass( ve.dm.SurfaceFragment );
 /**
  * Get list of selected nodes and annotations.
  *
- * @param {boolean} [all] Include nodes and annotations which only cover some of the fragment
+ * @param {boolean} [all=false] Include nodes and annotations which only cover some of the fragment
  * @return {ve.dm.Model[]} Selected models
  */
 ve.dm.SurfaceFragment.prototype.getSelectedModels = function ( all ) {
@@ -451,7 +451,7 @@ ve.dm.SurfaceFragment.prototype.containsOnlyText = function () {
  * By default, this will only get annotations that completely cover the fragment. Use the {all}
  * argument to get all annotations that occur within the fragment.
  *
- * @param {boolean} [all] Get annotations which only cover some of the fragment
+ * @param {boolean} [all=false] Get annotations which only cover some of the fragment
  * @return {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {

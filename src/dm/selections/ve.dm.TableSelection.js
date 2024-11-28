@@ -73,7 +73,7 @@ ve.dm.TableSelection.static.newFromHash = function ( hash ) {
  * @static
  * @param {ve.dm.TableMatrix} matrix The table matrix
  * @param {Object} selectionOffsets Selection col/row offsets (startRow/endRow/startCol/endCol)
- * @param {boolean} [includePlaceholders] Include placeholders in result
+ * @param {boolean} [includePlaceholders=false] Include placeholders in result
  * @return {ve.dm.TableMatrixCell[]} List of table cells
  */
 ve.dm.TableSelection.static.getTableMatrixCells = function ( matrix, selectionOffsets, includePlaceholders ) {
@@ -287,7 +287,7 @@ ve.dm.TableSelection.prototype.getOuterRanges = function ( doc ) {
  * Retrieves all cells within a given selection.
  *
  * @param {ve.dm.Document} doc The document to which this selection applies
- * @param {boolean} [includePlaceholders] Include placeholders in result
+ * @param {boolean} [includePlaceholders=false] Include placeholders in result
  * @return {ve.dm.TableMatrixCell[]} List of table cells
  */
 ve.dm.TableSelection.prototype.getMatrixCells = function ( doc, includePlaceholders ) {
@@ -418,7 +418,7 @@ ve.dm.TableSelection.prototype.getTableNode = function ( doc ) {
  * @param {number} fromRowOffset Starting row offset
  * @param {number} [toColOffset] End column offset
  * @param {number} [toRowOffset] End row offset
- * @param {number} [wrap] Wrap to the next/previous row if column limits are exceeded
+ * @param {boolean} [wrap=false] Wrap to the next/previous row if column limits are exceeded
  * @return {ve.dm.TableSelection} Adjusted selection
  */
 ve.dm.TableSelection.prototype.newFromAdjustment = function ( doc, fromColOffset, fromRowOffset, toColOffset, toRowOffset, wrap ) {

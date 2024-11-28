@@ -22,11 +22,11 @@
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes, used when cloning
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  * @param {Array.<string|undefined>} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
- * @param {string} [lang] Language code
+ * @param {string} [lang='en'] Language code
  * @param {string} [dir='ltr'] Directionality (ltr/rtl)
  * @param {ve.dm.Document} [originalDocument] Original document form which this was cloned.
- * @param {boolean} [sourceMode] Document is in source mode
- * @param {Object} [persistentStorage] Persistent storage object
+ * @param {boolean} [sourceMode=false] Document is in source mode
+ * @param {Object} [persistentStorage={}] Persistent storage object
  */
 ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir, originalDocument, sourceMode, persistentStorage ) {
 	// Parent constructor
@@ -122,9 +122,9 @@ OO.inheritClass( ve.dm.Document, ve.Document );
  * @static
  * @param {ve.dm.ElementLinearData|Array} data Data to apply annotations to
  * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
- * @param {boolean} [replaceComparable] Whether to remove annotations from the data which are comparable to those in annotationSet
+ * @param {boolean} [replaceComparable=false] Whether to remove annotations from the data which are comparable to those in annotationSet
  * @param {ve.dm.HashValueStore} [store] Store associated with the data; only needs to be provided if that data is associated with a different store than annotationSet
- * @param {boolean} [prepend] Whether to prepend annotationSet to the existing annotations
+ * @param {boolean} [prepend=false] Whether to prepend annotationSet to the existing annotations
  */
 ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, replaceComparable, store, prepend ) {
 	const offset = prepend ? 0 : undefined;

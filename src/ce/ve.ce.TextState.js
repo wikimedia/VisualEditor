@@ -43,7 +43,7 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 	 * Add to chunks, merging content with the same elements/type into the same chunk
 	 *
 	 * @param {string} text Plain text
-	 * @param {string} [type] If this is a unicorn then 'unicorn', else 'text' (default)
+	 * @param {string} [type="text"] If this is a unicorn then 'unicorn', else 'text' (default)
 	 */
 	function add( text, type ) {
 		type = type || 'text';

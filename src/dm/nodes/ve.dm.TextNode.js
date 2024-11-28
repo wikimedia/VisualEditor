@@ -11,7 +11,7 @@
  * @extends ve.dm.LeafNode
  *
  * @constructor
- * @param {number} [length] Length of content data in document
+ * @param {number} [length=0] Length of content data in document
  */
 ve.dm.TextNode = function VeDmTextNode( length ) {
 	// Parent constructor

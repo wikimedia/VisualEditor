@@ -175,7 +175,7 @@ ve.ce.GeneratedContentNode.prototype.filterRenderedDomElements = function ( domE
  * Rerender the contents of this node.
  *
  * @param {Object|string|Array} generatedContents Generated contents, in the default case an HTMLElement array
- * @param {boolean} [staged] Update happened in staging mode
+ * @param {boolean} [staged=false] Update happened in staging mode
  * @fires ve.ce.View#setup
  * @fires ve.ce.View#teardown
  * @fires ve.dm.GeneratedContentNode#generatedContentsError
@@ -284,7 +284,7 @@ ve.ce.GeneratedContentNode.prototype.validateGeneratedContents = function () {
  * model and config data has been rendered before, the cached rendering in the store will be used.
  *
  * @param {Object} [config] Optional additional data to pass to generateContents()
- * @param {boolean} [staged] Update happened in staging mode
+ * @param {boolean} [staged=false] Update happened in staging mode
  */
 ve.ce.GeneratedContentNode.prototype.update = function ( config, staged ) {
 	const store = this.model.doc.getStore(),
@@ -300,7 +300,7 @@ ve.ce.GeneratedContentNode.prototype.update = function ( config, staged ) {
  * Force the contents to be updated. Like update(), but bypasses the store.
  *
  * @param {Object} [config] Optional additional data to pass to generateContents()
- * @param {boolean} [staged] Update happened in staging mode
+ * @param {boolean} [staged=false] Update happened in staging mode
  */
 ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config, staged ) {
 	if ( this.generatingPromise ) {
@@ -362,7 +362,7 @@ ve.ce.GeneratedContentNode.prototype.abortGenerating = function () {
  *
  * @param {Object|string|Array} generatedContents Generated contents
  * @param {Object} [config] Config object passed to forceUpdate()
- * @param {boolean} [staged] Update happened in staging mode
+ * @param {boolean} [staged=false] Update happened in staging mode
  */
 ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedContents, config, staged ) {
 	this.$element.removeClass( 've-ce-generatedContentNode-generating' );

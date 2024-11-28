@@ -97,9 +97,9 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
  * @param {ve.ce.Surface} surface
  * @param {number} rowOffset how many rows to move
  * @param {number} colOffset how many columns to move
- * @param {boolean} checkDir whether to translate offsets according to ltr settings
- * @param {boolean} expand whether to expand the selection or replace it
- * @param {boolean} wrap Wrap to the next/previous row at edges, insert new row at end
+ * @param {boolean} [checkDir=false] whether to translate offsets according to ltr settings
+ * @param {boolean} [expand=false] whether to expand the selection or replace it
+ * @param {boolean} [wrap=false] Wrap to the next/previous row at edges, insert new row at end
  */
 ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, rowOffset, colOffset, checkDir, expand, wrap ) {
 	let selection = surface.getModel().getSelection();

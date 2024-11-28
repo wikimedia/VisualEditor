@@ -51,8 +51,8 @@ ve.ui.SequenceRegistry.prototype.register = function ( sequence ) {
  *
  * @param {ve.dm.ElementLinearData} data
  * @param {number} offset
- * @param {boolean} [isPaste] Whether this in the context of a paste
- * @param {boolean} [isDelete] Whether this is after content being deleted
+ * @param {boolean} [isPaste=false] Whether this in the context of a paste
+ * @param {boolean} [isDelete=false] Whether this is after content being deleted
  * @return {ve.ui.SequenceRegistry.Match[]} Array of matching sequences, and the corresponding range of the match for each.
  */
 ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset, isPaste, isDelete ) {
