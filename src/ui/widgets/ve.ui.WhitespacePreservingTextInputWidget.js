@@ -44,11 +44,15 @@ OO.inheritClass( ve.ui.WhitespacePreservingTextInputWidget, OO.ui.MultilineTextI
 ve.ui.WhitespacePreservingTextInputWidget.prototype.setValueAndWhitespace = function ( value ) {
 	const leftValue = this.limit ? value.slice( 0, this.limit ) : value;
 	this.whitespace[ 0 ] = leftValue.match( /^\s*/ )[ 0 ];
-	value = value.slice( this.whitespace[ 0 ].length );
+	if ( this.whitespace[ 0 ] ) {
+		value = value.slice( this.whitespace[ 0 ].length );
+	}
 
 	const rightValue = this.limit ? value.slice( -this.limit ) : value;
 	this.whitespace[ 1 ] = rightValue.match( /\s*$/ )[ 0 ];
-	value = value.slice( 0, value.length - this.whitespace[ 1 ].length );
+	if ( this.whitespace[ 1 ] ) {
+		value = value.slice( 0, -this.whitespace[ 1 ].length );
+	}
 
 	this.setValue( value );
 };

@@ -257,7 +257,7 @@ ve.ce.DragDropHandler.prototype.onDocumentDrop = function ( e ) {
 			originData = linearData.data;
 			// Unwrap CBN
 			if ( originData[ 0 ].type && ve.dm.nodeFactory.canNodeContainContent( originData[ 0 ].type ) ) {
-				originData = originData.slice( 1, originData.length - 1 );
+				originData = originData.slice( 1, -1 );
 			}
 		} else {
 			originData = originFragment.getData();
