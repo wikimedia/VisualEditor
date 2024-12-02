@@ -353,3 +353,15 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 		view.destroy();
 	} );
 } );
+
+QUnit.test( 'getChunks', ( assert ) => {
+	const surface = ve.test.utils.createSurfaceFromHtml( '<p>foo<span rel="ve:Alien">bar</span>baz</p>' );
+	const p = surface.getView().$documentNode[ 0 ].firstChild;
+	const chunks = ve.ce.TextState.static.getChunks( p );
+	assert.deepEqual(
+		chunks.map( ( chunk ) => ( { elements: chunk.elements, text: chunk.text, type: chunk.type } ) ),
+		[ { elements: [], text: 'foo\u2603\u2603baz', type: 'text' } ],
+		'alien'
+	);
+	surface.destroy();
+} );
