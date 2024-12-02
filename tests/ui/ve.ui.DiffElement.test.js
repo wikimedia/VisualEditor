@@ -1816,7 +1816,7 @@ QUnit.test( 'Diffing', ( assert ) => {
 				expected: ve.dm.example.singleLine`
 					<p data-diff-action="none">Hi${ '<ref></ref>'.repeat( 6 ) }</p>
 					<ol>
-						<li value="1"><p>Foo<ins data-diff-action="insert"> 1</ins></p></li>
+						<li value="1">Foo<ins data-diff-action="insert"> 1</ins></li>
 						<li value="2"><p data-diff-action="remove">Bar</p></li>
 						<li value="2"><p data-diff-action="none">Baz1</p></li>
 						<li class="ve-ui-diffElement-internalListSpacer">${ spacer }</li>
