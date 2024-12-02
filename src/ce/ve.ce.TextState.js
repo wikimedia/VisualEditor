@@ -46,18 +46,19 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 	 * @param {string} [type] If this is a unicorn then 'unicorn', else 'text' (default)
 	 */
 	function add( text, type ) {
-		if (
-			!chunks.length ||
-			chunks[ chunks.length - 1 ].elements !== elementListStack[ stackTop ] ||
-			chunks[ chunks.length - 1 ].type !== type
+		type = type || 'text';
+		const last = chunks[ chunks.length - 1 ];
+		if ( last &&
+			last.elements === elementListStack[ stackTop ] &&
+			last.type === type
 		) {
+			last.text += text;
+		} else {
 			chunks.push( new ve.ce.TextStateChunk(
 				text,
 				elementListStack[ stackTop ],
-				type || 'text'
+				type
 			) );
-		} else {
-			chunks[ chunks.length - 1 ].text += text;
 		}
 	}
 
