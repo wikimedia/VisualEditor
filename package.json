@@ -39,7 +39,7 @@
 		"grunt-karma": "4.0.2",
 		"grunt-stylelint": "0.20.1",
 		"grunt-tyops": "0.1.1",
-		"jsdoc": "4.0.3",
+		"jsdoc": "4.0.4",
 		"jsdoc-wmf-theme": "1.1.0",
 		"karma": "6.4.2",
 		"karma-chrome-launcher": "3.2.0",
