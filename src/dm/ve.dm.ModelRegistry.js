@@ -136,25 +136,25 @@
 			[ '' ] :
 			constructor.static.getMatchRdfaTypes();
 
-		for ( let i = 0; i < tags.length; i++ ) {
+		tags.forEach( ( tag ) => {
 			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
 			addType( this.modelsByTag, +!!constructor.static.matchFunction,
-				tags[ i ], name
+				tag, name
 			);
-		}
-		for ( let i = 0; i < types.length; i++ ) {
-			if ( types[ i ] instanceof RegExp ) {
+		} );
+		types.forEach( ( type ) => {
+			if ( type instanceof RegExp ) {
 				// TODO: Guard against running this again during subsequent
 				// iterations of the for loop
 				addType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
 			} else {
-				for ( let j = 0; j < tags.length; j++ ) {
+				tags.forEach( ( tag ) => {
 					addType( this.modelsByTypeAndTag,
-						+!!constructor.static.matchFunction, types[ i ], tags[ j ], name
+						+!!constructor.static.matchFunction, type, tag, name
 					);
-				}
+				} );
 			}
-		}
+		} );
 
 		this.registrationOrder[ name ] = this.nextNumber++;
 	};
@@ -196,25 +196,25 @@
 			[ '' ] :
 			constructor.static.getMatchRdfaTypes();
 
-		for ( let i = 0; i < tags.length; i++ ) {
+		tags.forEach( ( tag ) => {
 			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
 			removeType( this.modelsByTag, +!!constructor.static.matchFunction,
-				tags[ i ], name
+				tag, name
 			);
-		}
-		for ( let i = 0; i < types.length; i++ ) {
-			if ( types[ i ] instanceof RegExp ) {
+		} );
+		types.forEach( ( type ) => {
+			if ( type instanceof RegExp ) {
 				// TODO: Guard against running this again during subsequent
 				// iterations of the for loop
 				removeType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
 			} else {
-				for ( let j = 0; j < tags.length; j++ ) {
+				tags.forEach( ( tag ) => {
 					removeType( this.modelsByTypeAndTag,
-						+!!constructor.static.matchFunction, types[ i ], tags[ j ], name
+						+!!constructor.static.matchFunction, type, tag, name
 					);
-				}
+				} );
 			}
-		}
+		} );
 
 		delete this.registrationOrder[ name ];
 	};
@@ -256,24 +256,24 @@
 		const matchTypeRegExps = ( type, tag, withFunc ) => {
 			const matchedModels = [],
 				models = this.modelsWithTypeRegExps[ +withFunc ];
-			for ( let j = 0; j < models.length; j++ ) {
-				if ( excludeTypes && excludeTypes.indexOf( models[ j ] ) !== -1 ) {
-					continue;
+			models.forEach( ( name ) => {
+				if ( excludeTypes && excludeTypes.indexOf( name ) !== -1 ) {
+					return;
 				}
-				const matchTypes = this.registry[ models[ j ] ].static.getMatchRdfaTypes();
-				for ( let k = 0; k < matchTypes.length; k++ ) {
+				const matchTypes = this.registry[ name ].static.getMatchRdfaTypes();
+				matchTypes.forEach( ( matchType ) => {
 					if (
-						matchTypes[ k ] instanceof RegExp &&
-						matchTypes[ k ].test( type ) &&
+						matchType instanceof RegExp &&
+						matchType.test( type ) &&
 						(
-							( tag === '' && this.registry[ models[ j ] ].static.matchTagNames === null ) ||
-							( this.registry[ models[ j ] ].static.matchTagNames || [] ).indexOf( tag ) !== -1
+							( tag === '' && this.registry[ name ].static.matchTagNames === null ) ||
+							( this.registry[ name ].static.matchTagNames || [] ).indexOf( tag ) !== -1
 						)
 					) {
-						matchedModels.push( models[ j ] );
+						matchedModels.push( name );
 					}
-				}
-			}
+				} );
+			} );
 			return matchedModels;
 		};
 
@@ -295,32 +295,24 @@
 				return rule instanceof RegExp ? rule.test( type ) : rule === type;
 			}
 
-			for ( let j = 0; j < types.length; j++ ) {
-				let typeAllowed = false;
-				for ( let k = 0; k < allowedTypes.length; k++ ) {
-					if ( checkType( allowedTypes[ k ], types[ j ] ) ) {
-						typeAllowed = true;
-						break;
-					}
-				}
-				if ( !typeAllowed ) {
-					return false;
-				}
-			}
-			return true;
+			return types.every(
+				( type ) => allowedTypes.some(
+					( allowedType ) => checkType( allowedType, type )
+				)
+			);
 		};
 
 		const matchWithFunc = ( tag ) => {
 			let queue = [],
 				queue2 = [];
-			for ( let j = 0; j < types.length; j++ ) {
+			types.forEach( ( type ) => {
 				// Queue string matches and regexp matches separately
-				ve.batchPush( queue, ve.getProp( this.modelsByTypeAndTag, 1, types[ j ], tag ) || [] );
+				ve.batchPush( queue, ve.getProp( this.modelsByTypeAndTag, 1, type, tag ) || [] );
 				if ( excludeTypes ) {
 					queue = OO.simpleArrayDifference( queue, excludeTypes );
 				}
-				ve.batchPush( queue2, matchTypeRegExps( types[ j ], tag, true ) );
-			}
+				ve.batchPush( queue2, matchTypeRegExps( type, tag, true ) );
+			} );
 			// Filter out matches which contain types which aren't allowed
 			queue = queue.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
 			queue2 = queue2.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
@@ -333,26 +325,22 @@
 			queue.sort( byRegistrationOrderDesc );
 			queue2.sort( byRegistrationOrderDesc );
 			ve.batchPush( queue, queue2 );
-			for ( let j = 0; j < queue.length; j++ ) {
-				if ( this.registry[ queue[ j ] ].static.matchFunction( node ) ) {
-					return queue[ j ];
-				}
-			}
-			return null;
+
+			return queue.find( ( name ) => this.registry[ name ].static.matchFunction( node ) ) || null;
 		};
 
 		const matchWithoutFunc = ( tag ) => {
 			let queue = [],
 				queue2 = [],
 				winningName = null;
-			for ( let j = 0; j < types.length; j++ ) {
+			types.forEach( ( type ) => {
 				// Queue string and regexp matches separately
-				ve.batchPush( queue, ve.getProp( this.modelsByTypeAndTag, 0, types[ j ], tag ) || [] );
+				ve.batchPush( queue, ve.getProp( this.modelsByTypeAndTag, 0, type, tag ) || [] );
 				if ( excludeTypes ) {
 					queue = OO.simpleArrayDifference( queue, excludeTypes );
 				}
-				ve.batchPush( queue2, matchTypeRegExps( types[ j ], tag, false ) );
-			}
+				ve.batchPush( queue2, matchTypeRegExps( type, tag, false ) );
+			} );
 			// Filter out matches which contain types which aren't allowed
 			queue = queue.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
 			queue2 = queue2.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
@@ -364,14 +352,14 @@
 			// Only try regexp matches if there are no string matches
 			queue = queue.length > 0 ? queue : queue2;
 			// Find most recently registered
-			for ( let j = 0; j < queue.length; j++ ) {
+			queue.forEach( ( name ) => {
 				if (
 					winningName === null ||
-					this.registrationOrder[ winningName ] < this.registrationOrder[ queue[ j ] ]
+					this.registrationOrder[ winningName ] < this.registrationOrder[ name ]
 				) {
-					winningName = queue[ j ];
+					winningName = name;
 				}
-			}
+			} );
 			return winningName;
 		};
 
@@ -405,17 +393,18 @@
 		}
 
 		// func+tag match
-		let matches = ve.getProp( this.modelsByTag, 1, nodeName ) || [];
+		const funcAndTagMatches = ve.getProp( this.modelsByTag, 1, nodeName ) || [];
 		// No need to sort because individual arrays in modelsByTag are already sorted
 		// correctly
-		for ( let i = 0; i < matches.length; i++ ) {
-			const m = this.registry[ matches[ i ] ];
+		const funcAndTagMatched = funcAndTagMatches.find( ( match ) => {
+			const model = this.registry[ match ];
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// func+tag+type step above, or its type rule doesn't match
-			if ( m.static.getMatchRdfaTypes() === null && m.static.matchFunction( node ) && allTypesAllowed( m ) ) {
-				return matches[ i ];
-			}
+			return model.static.getMatchRdfaTypes() === null && model.static.matchFunction( node ) && allTypesAllowed( model );
+		} );
+		if ( funcAndTagMatched ) {
+			return funcAndTagMatched;
 		}
 
 		// func only
@@ -424,12 +413,13 @@
 		// match this node.
 		// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
 		// correctly
-		matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
-		for ( let i = 0; i < matches.length; i++ ) {
-			const m = this.registry[ matches[ i ] ];
-			if ( m.static.matchFunction( node ) && allTypesAllowed( m ) ) {
-				return matches[ i ];
-			}
+		const typeAndTagMatches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
+		const typeAndTagMatched = typeAndTagMatches.find( ( name ) => {
+			const model = this.registry[ name ];
+			return model.static.matchFunction( node ) && allTypesAllowed( model );
+		} );
+		if ( typeAndTagMatched ) {
+			return typeAndTagMatched;
 		}
 
 		// tag+type
@@ -447,28 +437,30 @@
 		}
 
 		// tag only
-		matches = ve.getProp( this.modelsByTag, 0, nodeName ) || [];
+		const tagOnlyMatches = ve.getProp( this.modelsByTag, 0, nodeName ) || [];
 		// No need to track winningName because the individual arrays in modelsByTag are
 		// already sorted correctly
-		for ( let i = 0; i < matches.length; i++ ) {
-			const m = this.registry[ matches[ i ] ];
+		const tagOnlyMatched = tagOnlyMatches.find( ( name ) => {
+			const model = this.registry[ name ];
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// tag+type step above, or its type rule doesn't match
-			if ( m.static.getMatchRdfaTypes() === null && allTypesAllowed( m ) ) {
-				return matches[ i ];
-			}
+			return model.static.getMatchRdfaTypes() === null && allTypesAllowed( model );
+		} );
+		if ( tagOnlyMatched ) {
+			return tagOnlyMatched;
 		}
 
 		// Rules with no type or tag specified
 		// These are the only rules that can still qualify at this point, the others we've either
 		// already processed or have a type or tag rule that disqualifies them
-		matches = ve.getProp( this.modelsByTypeAndTag, 0, '', '' ) || [];
-		for ( let i = 0; i < matches.length; i++ ) {
-			const m = this.registry[ matches[ i ] ];
-			if ( allTypesAllowed( m ) ) {
-				return matches[ i ];
-			}
+		const otherMatches = ve.getProp( this.modelsByTypeAndTag, 0, '', '' ) || [];
+		const otherMatched = otherMatches.find( ( name ) => {
+			const model = this.registry[ name ];
+			return allTypesAllowed( model );
+		} );
+		if ( otherMatched ) {
+			return otherMatched;
 		}
 
 		// We didn't find anything, give up
