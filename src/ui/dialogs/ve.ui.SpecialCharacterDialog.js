@@ -51,11 +51,11 @@ ve.ui.SpecialCharacterDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.SpecialCharacterDialog.super.prototype.initialize.call( this );
 
-	this.characterListLayout = new ve.ui.SymbolListBookletLayout();
+	// Use 'visualeditor-symbolList-recentlyUsed-specialCharacters' in Hooks.php
+	this.characterListLayout = new ve.ui.SymbolListBookletLayout( { preferenceNameSuffix: 'specialCharacters' } );
 	this.characterListLayout.connect( this, {
 		choose: 'onCharacterListChoose'
 	} );
-	// Character list is lazy-loaded the first time getSetupProcess runs
 
 	this.$body.append( this.characterListLayout.$element );
 };

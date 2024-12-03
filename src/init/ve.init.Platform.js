@@ -159,6 +159,15 @@ ve.init.Platform.prototype.getUserConfig = null;
 ve.init.Platform.prototype.setUserConfig = null;
 
 /**
+ * Determine whether we can store preferences
+ *
+ * @return {boolean}
+ */
+ve.init.Platform.prototype.canUseUserConfig = function () {
+	return true;
+};
+
+/**
  * Create a safe storage object
  *
  * @abstract
