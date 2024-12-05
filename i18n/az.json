@@ -54,7 +54,7 @@
 	"visualeditor-changedesc-unknown": "$1 dəyişdirildi",
 	"visualeditor-changedesc-unset": "$1 parametrindən $2 silindi",
 	"visualeditor-changedir": "İstiqamətliliyi dəyişdir",
-	"visualeditor-changedir-tool-ltr": "soldan-sağa olaraq bax",
+	"visualeditor-changedir-tool-ltr": "Soldan-sağa formatında bax",
 	"visualeditor-changedir-tool-rtl": "Sağdan-sola formatında bax",
 	"visualeditor-clearbutton-tooltip": "Sil",
 	"visualeditor-clipboard-copy": "Kopyala",
