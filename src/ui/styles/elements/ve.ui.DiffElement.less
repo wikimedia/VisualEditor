@@ -95,6 +95,10 @@
 			word-break: break-word;
 			word-wrap: break-word;
 			overflow-wrap: break-word;
+			/* As we're rendering whitespace, use a sensible tab width. */
+			/* The surface uses 4, but as we're in a narrow sidebar use 2 */
+			-moz-tab-size: 2;
+			tab-size: 2;
 
 			ol,
 			ul {
