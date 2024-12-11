@@ -1134,7 +1134,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					const matches = text.match( this.trailingWhitespacesRegex );
 					if ( matches && matches[ 0 ] !== '' ) {
 						addWhitespace( wrapperElement, 2, matches[ 0 ] );
-						text = text.slice( 0, text.length - matches[ 0 ].length );
+						text = text.slice( 0, -matches[ 0 ].length );
 					}
 				}
 

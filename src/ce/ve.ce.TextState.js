@@ -280,8 +280,8 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		if ( i === change.start ) {
 			data = data.slice( textStart );
 		}
-		if ( i === iLen - 1 ) {
-			data = data.slice( 0, data.length - textEnd );
+		if ( i === iLen - 1 && textEnd > 0 ) {
+			data = data.slice( 0, -textEnd );
 		}
 		if ( data.length === 0 ) {
 			// There is nothing to add, because textStart/textEnd causes all the

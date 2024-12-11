@@ -1307,7 +1307,7 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( diff
 	let data = this.getChangedDocListData( newNode, diff, true );
 
 	// Remove internal list wrapper
-	data = data.slice( 1, data.length - 1 );
+	data = data.slice( 1, -1 );
 
 	this.markMove( move, listItemNode );
 	const newDoc = newNode.getRoot().getDocument();

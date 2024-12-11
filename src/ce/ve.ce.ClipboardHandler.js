@@ -716,7 +716,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromInternal = function 
 		if ( !isMultiline ) {
 			// Unwrap single CBN
 			if ( data[ 0 ].type ) {
-				data = data.slice( 1, data.length - 1 );
+				data = data.slice( 1, -1 );
 			}
 		}
 

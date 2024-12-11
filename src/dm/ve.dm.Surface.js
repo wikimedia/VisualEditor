@@ -286,7 +286,7 @@ ve.dm.Surface.prototype.resetHistoryTrackingInterval = function () {
  * @return {ve.dm.Surface.UndoStackItem[]} List of applied transaction stacks
  */
 ve.dm.Surface.prototype.getHistory = function () {
-	const appliedUndoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
+	const appliedUndoStack = this.undoIndex ? this.undoStack.slice( 0, -this.undoIndex ) : this.undoStack.slice();
 	if ( this.newTransactions.length > 0 ) {
 		appliedUndoStack.push( { transactions: this.newTransactions.slice( 0 ) } );
 	}
@@ -640,7 +640,7 @@ ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excl
  */
 ve.dm.Surface.prototype.truncateUndoStack = function () {
 	if ( this.undoIndex ) {
-		this.undoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
+		this.undoStack = this.undoStack.slice( 0, -this.undoIndex );
 		this.undoIndex = 0;
 		this.emit( 'undoStackChange' );
 	}
