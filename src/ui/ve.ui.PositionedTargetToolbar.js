@@ -234,7 +234,6 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 				this.onViewportResize();
 				this.getSurface().getView().emit( 'position' );
 			}, transitionDuration );
-			this.getSurface().getView().emit( 'position' );
 		} else if (
 			win.constructor.static.position === 'above' ||
 			win.constructor.static.position === 'below'
