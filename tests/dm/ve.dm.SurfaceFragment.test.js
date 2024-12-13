@@ -285,6 +285,42 @@ QUnit.test( 'expandLinearSelection (word)', ( assert ) => {
 			range: new ve.Range( 7 ),
 			expected: 'quick',
 			msg: 'zero-length range'
+		},
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 4, 9 ),
+			expected: 'quick',
+			msg: 'simple word selection'
+		},
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 3, 9 ),
+			expected: 'the quick',
+			msg: 'word and leading space'
+		},
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 4, 10 ),
+			expected: 'quick brown',
+			msg: 'word and trailing space'
+		},
+		{
+			phrase: '香港曾經以人煙稀少嘅漁農村為主',
+			range: new ve.Range( 2, 4 ),
+			expected: '曾經',
+			msg: 'Chinese characters are not expanded'
+		},
+		{
+			phrase: '香港曾經以人煙稀少嘅漁農村為主',
+			range: new ve.Range( 8, 3 ),
+			expected: '經以人煙稀',
+			msg: 'backwards Chinese range'
+		},
+		{
+			phrase: '香港曾經以人煙稀少嘅漁農村為主',
+			range: new ve.Range( 1 ),
+			expected: '',
+			msg: 'Zero-length range in Chinese characters not expanded'
 		}
 	];
 

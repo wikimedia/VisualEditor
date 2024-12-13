@@ -1110,26 +1110,30 @@ ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
 		// direction only (preferring backwards if there are word codepoints on both
 		// sides).
 
-		if ( this.constructor.static.endWordRegExp.exec(
+		const isAfterWord = this.constructor.static.endWordRegExp.exec(
 			( dataString.read( offset - 2 ) || ' ' ) +
 			( dataString.read( offset - 1 ) || ' ' )
-		) ) {
+		);
+		const isBeforeWord = this.constructor.static.startWordRegExp.exec(
+			( dataString.read( offset ) || ' ' ) +
+			( dataString.read( offset + 1 ) || ' ' )
+		);
+
+		if ( isAfterWord && !isBeforeWord ) {
 			// Cursor is immediately after a word codepoint: expand backwards
 			range = new ve.Range(
 				unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
 				offset
 			);
-		} else if ( this.constructor.static.startWordRegExp.exec(
-			( dataString.read( offset ) || ' ' ) +
-			( dataString.read( offset + 1 ) || ' ' )
-		) ) {
+		} else if ( isBeforeWord && !isAfterWord ) {
 			// Cursor is immediately before a word codepoint: expand forwards
 			range = new ve.Range(
 				offset,
 				unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
 			);
 		} else {
-			// Cursor is not adjacent to a word codepoint: do not expand
+			// Cursor is not adjacent to a word codepoint, or there
+			// are words either side (T382144): do not expand
 			return new ve.Range( offset );
 		}
 	} else {

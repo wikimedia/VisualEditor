@@ -1347,6 +1347,12 @@ QUnit.test( 'getWordRange', ( assert ) => {
 				expected: 'aided'
 			},
 			{
+				phrase: 'Double  space',
+				msg: 'middle of double space',
+				offset: 7,
+				expected: ''
+			},
+			{
 				phrase: 'Water (l\'eau) is',
 				msg: 'apostrophe and parentheses (Latin)',
 				offset: 8,
@@ -1414,15 +1420,33 @@ QUnit.test( 'getWordRange', ( assert ) => {
 			},
 			{
 				phrase: '维基百科',
-				msg: 'Hanzi characters (cursor in middle)',
+				msg: 'Hanzi characters (cursor in middle, so can\'t choose)',
 				offset: 2,
-				expected: '基'
+				expected: ''
 			},
 			{
 				phrase: '维基百科',
 				msg: 'Hanzi characters (cursor at end)',
 				offset: 4,
 				expected: '科'
+			},
+			{
+				phrase: '维基百科',
+				msg: 'Hanzi characters (cursor at start)',
+				offset: 0,
+				expected: '维'
+			},
+			{
+				phrase: '维 基 百科',
+				msg: 'Hanzi character isolated (cursor at start)',
+				offset: 2,
+				expected: '基'
+			},
+			{
+				phrase: '维 基 百科',
+				msg: 'Hanzi character isolated (cursor at end)',
+				offset: 3,
+				expected: '基'
 			},
 			{
 				phrase: 'a b',
@@ -1437,9 +1461,9 @@ QUnit.test( 'getWordRange', ( assert ) => {
 				expected: 'b'
 			},
 			{
-				phrase: '佢地嘅𨋢壞咗',
+				phrase: '"𨋢"=lip1',
 				msg: 'Surrogate-pair word character before cursor',
-				offset: 5,
+				offset: 2,
 				expected: '𨋢'
 			},
 			{
