@@ -1170,6 +1170,9 @@ ve.dm.Surface.prototype.getSelectedNode = function () {
 /**
  * Get the selected node covering a specific selection, or null
  *
+ * Will return a node if it is wrapped (e.g. not a TextNode or DocumentNode)
+ * and fully selected.
+ *
  * @param {ve.dm.Selection} [selection] Selection, defaults to the current selection
  * @return {ve.dm.Node|null} Selected node
  */
@@ -1184,7 +1187,7 @@ ve.dm.Surface.prototype.getSelectedNodeFromSelection = function ( selection ) {
 	const range = selection.getRange();
 	if ( !range.isCollapsed() ) {
 		const startNode = this.getDocument().documentNode.getNodeFromOffset( range.start + 1 );
-		if ( startNode && startNode.getOuterRange().equalsSelection( range ) ) {
+		if ( startNode && startNode.isWrapped() && startNode.getOuterRange().equalsSelection( range ) ) {
 			selectedNode = startNode;
 		}
 	}

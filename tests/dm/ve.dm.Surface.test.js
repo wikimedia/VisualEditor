@@ -634,6 +634,52 @@ QUnit.test( 'autosave', function ( assert ) {
 
 } );
 
+QUnit.skip( 'getSelectedNodeFromSelection', ( assert ) => {
+	const currentRange = new ve.Range( 4, 6 );
+	const surface = new ve.dm.SurfaceStub( ve.copy( ve.dm.example.alienData ), currentRange );
+	const cases = [
+		{
+			msg: 'Collapsed selection in focusable node returns null',
+			range: new ve.Range( 5 ),
+			expected: null
+		},
+		{
+			msg: 'Inline alien',
+			range: new ve.Range( 4, 6 ),
+			expected: new ve.Range( 4, 6 )
+		},
+		{
+			msg: 'Block alien',
+			range: new ve.Range( 0, 2 ),
+			expected: new ve.Range( 0, 2 )
+		},
+		{
+			msg: 'Document returns null',
+			range: new ve.Range( 0, 10 ),
+			expected: null
+		},
+		{
+			msg: 'Null argument checks currentRange',
+			range: null,
+			expected: currentRange
+		},
+		{
+			msg: 'Text node returns null',
+			range: new ve.Range( 3, 4 ),
+			expected: null
+		},
+		{
+			msg: 'Paragraph node',
+			range: new ve.Range( 2, 8 ),
+			expected: new ve.Range( 2, 8 )
+		}
+	];
+	cases.forEach( ( caseItem ) => {
+		const node = surface.getSelectedNodeFromSelection( caseItem.range && new ve.dm.LinearSelection( caseItem.range ) );
+		assert.equalRange( node && node.getOuterRange(), caseItem.expected, caseItem.msg );
+	} );
+} );
+
 // TODO: ve.dm.Surface#getHistory
 // TODO: ve.dm.Surface#canRedo
 // TODO: ve.dm.Surface#canUndo
