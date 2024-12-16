@@ -95,7 +95,7 @@ ve.ui.AnnotationInspector.prototype.getInsertionText = function () {
  * but existing annotations won't be removed either.
  *
  * @abstract
- * @return {ve.dm.Annotation} Annotation to apply
+ * @return {ve.dm.Annotation|null} Annotation to apply
  */
 ve.ui.AnnotationInspector.prototype.getAnnotation = null;
 
