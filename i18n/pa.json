@@ -158,6 +158,8 @@
 	"visualeditor-specialcharacter-button-tooltip": "ਖ਼ਾਸ ਚਿੰਨ੍ਹ",
 	"visualeditor-specialcharacter-group-label-symbols": "ਨਿਸ਼ਾਨ",
 	"visualeditor-specialcharacter-recentlyused": "ਹਾਲ ਹੀ ਵਿੱਚ ਵਰਤਿਆ",
+	"visualeditor-table-contextitem-properties": "ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
+	"visualeditor-table-contextitem-selectionmode-contents": "ਸਮੱਗਰੀ ਚੁਣੋ",
 	"visualeditor-table-delete-col": "ਮਿਟਾਓ {{PLURAL:$1|ਕਾਲਮ}}",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|ਕਤਾਰ|ਕਤਾਰਾਂ}} ਮਿਟਾਓ",
 	"visualeditor-table-format-data": "ਸਮੱਗਰੀ ਖ਼ਾਨਾ",
