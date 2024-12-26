@@ -7,7 +7,8 @@
 			"NMW03",
 			"Nemoralis",
 			"Serkanland",
-			"Wertuose"
+			"Wertuose",
+			"Əkrəm Cəfər"
 		]
 	},
 	"visualeditor": "Vizual redaktor",
@@ -57,7 +58,7 @@
 	"visualeditor-changedir-tool-ltr": "Soldan-sağa formatında bax",
 	"visualeditor-changedir-tool-rtl": "Sağdan-sola formatında bax",
 	"visualeditor-clearbutton-tooltip": "Sil",
-	"visualeditor-clipboard-copy": "Kopyala",
+	"visualeditor-clipboard-copy": "Kopiyala",
 	"visualeditor-clipboard-copy-fail": "Kopyalamaq alınmadı.",
 	"visualeditor-clipboard-copy-success": "Mübadilə buferinə kopyalandı.",
 	"visualeditor-clipboard-cut": "Kəs",
