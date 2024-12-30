@@ -26,7 +26,8 @@
 			"Winston Sung",
 			"Wwycheuk",
 			"Xiplus",
-			"Yejianfei"
+			"Yejianfei",
+			"列维劳德"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
@@ -217,6 +218,7 @@
 	"visualeditor-specialcharacter-group-label-accents": "重音",
 	"visualeditor-specialcharacter-group-label-mathematical": "數學",
 	"visualeditor-specialcharacter-group-label-symbols": "符號",
+	"visualeditor-specialcharacter-recentlyused": "最近使用過",
 	"visualeditor-table-context-col": "直行",
 	"visualeditor-table-context-row": "橫列",
 	"visualeditor-table-contextitem-properties": "屬性",
