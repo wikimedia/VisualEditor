@@ -327,7 +327,18 @@ QUnit.test( 'special key down: linear arrow keys', ( assert ) => {
 				rangeOrSelection: new ve.Range( 1 ),
 				keys: [ 'TAB' ],
 				expectedRangeOrSelection: new ve.Range( 1 ),
+				expectedHasFocus: true,
 				msg: 'Tab outside a table prevents default'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				keys: [ 'TAB' ],
+				surfaceConfig: {
+					allowTabFocusChange: true
+				},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				expectedHasFocus: false,
+				msg: 'Tab with allowTabFocusChange moves the focus from the surface'
 			},
 			{
 				htmlOrDoc: slugDoc,

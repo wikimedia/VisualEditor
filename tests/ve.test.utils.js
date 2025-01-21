@@ -653,6 +653,9 @@
 			isDisabled: function () {
 				return false;
 			},
+			doesAllowTabFocusChange: function () {
+				return !!config.allowTabFocusChange;
+			},
 			emit: function () {},
 			connect: function () {},
 			disconnect: function () {},
@@ -682,8 +685,9 @@
 
 		view.surface = mockSurface;
 		mockSurface.$element.append( view.$element );
+		const $focusHolder = $( '<div>' ).prop( 'tabIndex', 0 ).addClass( 've-ui-testFocusHolder' );
 		// eslint-disable-next-line no-jquery/no-global-selector
-		$( '#qunit-fixture' ).append( mockSurface.$element );
+		$( '#qunit-fixture' ).append( mockSurface.$element, $focusHolder );
 
 		view.initialize();
 		model.initialize();

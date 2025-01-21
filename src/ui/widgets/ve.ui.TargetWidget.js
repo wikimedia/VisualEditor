@@ -24,6 +24,8 @@
  * @param {string[]|null} [config.includeCommands] List of commands to include, null for all registered commands
  * @param {string[]} [config.excludeCommands] List of commands to exclude
  * @param {Object} [config.importRules] Import rules
+ * @param {Object} [config.allowTabFocusChange=true] Allow changing focus form the surface with tab/shift+tab.
+ *  Unlike in a normal Target, this defaults to `true` in a TargetWidget.
  * @param {boolean} [config.multiline=true] Multi-line surface
  * @param {string} [config.placeholder] Placeholder text to display when the surface is empty
  * @param {boolean} [config.readOnly] Surface is read-only
@@ -48,6 +50,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	this.placeholder = config.placeholder;
 	this.readOnly = config.readOnly;
 	this.importRules = config.importRules;
+	this.allowTabFocusChange = config.allowTabFocusChange !== false;
 	this.inDialog = config.inDialog;
 	this.modes = config.modes;
 	this.defaultMode = config.defaultMode;
@@ -126,6 +129,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		includeCommands: this.includeCommands,
 		excludeCommands: this.excludeCommands,
 		importRules: this.importRules,
+		allowTabFocusChange: this.allowTabFocusChange,
 		multiline: this.multiline,
 		placeholder: this.placeholder,
 		readOnly: this.readOnly,

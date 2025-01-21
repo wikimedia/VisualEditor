@@ -271,6 +271,15 @@ ve.init.Target.static.importRules = {
 };
 
 /**
+ * Allow changing focus from target surfaces with tab/shift+tab
+ *
+ * Prevents any ve.ui.Trigger's using these shortcuts from running.
+ *
+ * @type {boolean}
+ */
+ve.init.Target.static.allowTabFocusChange = false;
+
+/**
  * Apply the meta/importedData annotation to pasted/dropped data
  *
  * @type {boolean}
@@ -575,7 +584,8 @@ ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
 			this.constructor.static.documentCommands,
 			this.constructor.static.targetCommands
 		),
-		importRules: this.constructor.static.importRules
+		importRules: this.constructor.static.importRules,
+		allowTabFocusChange: this.constructor.static.allowTabFocusChange
 	}, config );
 };
 
