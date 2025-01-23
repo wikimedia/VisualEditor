@@ -48,7 +48,7 @@
 	"visualeditor-alignablecontextitem-title": "Title for the context item for alignable nodes\n{{Identical|Alignment}}",
 	"visualeditor-annotationbutton-big-tooltip": "Tooltip text for big text button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Big}}",
 	"visualeditor-annotationbutton-bold-tooltip": "Tooltip text for bold button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Bold}}",
-	"visualeditor-annotationbutton-code-tooltip": "Tooltip text for code button.\n{{Related|Visualeditor-annotationbutton}}",
+	"visualeditor-annotationbutton-code-tooltip": "Tooltip text for code button.\n\n{{Identical|Computer code}}\n{{Related|Visualeditor-annotationbutton}}",
 	"visualeditor-annotationbutton-italic-tooltip": "Tooltip text for italic button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Italic}}",
 	"visualeditor-annotationbutton-language-tooltip": "Tooltip text for language button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Language}}",
 	"visualeditor-annotationbutton-link-tooltip": "Tooltip text for link button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Link}}",
