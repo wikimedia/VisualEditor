@@ -14,6 +14,7 @@
  * @param {ve.init.Target} target
  * @param {Object} [config] Configuration options
  * @param {boolean} [config.floatable] Toolbar can float when scrolled off the page
+ * @param {boolean} [config.attachToolbarDialogs=true]
  */
 ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, config ) {
 	config = config || {};
@@ -30,6 +31,7 @@ ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, co
 	// Properties
 	this.floating = false;
 	this.floatable = !!config.floatable;
+	this.attachToolbarDialogs = config.attachToolbarDialogs !== false;
 	this.height = 0;
 	this.elementOffset = null;
 	this.onWindowScrollThrottled = ve.throttle( this.onWindowScroll.bind( this ), 250 );
@@ -51,18 +53,20 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
 	// Parent method
 	ve.ui.PositionedTargetToolbar.super.prototype.setup.apply( this, arguments );
 
-	[ 'above', 'below', 'side', 'inline' ].forEach( ( dialogPosition ) => {
-		const toolbarDialogs = surface.getToolbarDialogs( dialogPosition );
-		if ( this.position === 'bottom' ) {
-			this.$bar.prepend( toolbarDialogs.$element );
-		} else {
-			this.$bar.append( toolbarDialogs.$element );
-		}
-		toolbarDialogs.connect( this, {
-			opening: 'onToolbarDialogsOpeningOrClosing',
-			closing: 'onToolbarDialogsOpeningOrClosing'
+	if ( this.attachToolbarDialogs ) {
+		[ 'above', 'below', 'side', 'inline' ].forEach( ( dialogPosition ) => {
+			const toolbarDialogs = surface.getToolbarDialogs( dialogPosition );
+			if ( this.position === 'bottom' ) {
+				this.$bar.prepend( toolbarDialogs.$element );
+			} else {
+				this.$bar.append( toolbarDialogs.$element );
+			}
+			toolbarDialogs.connect( this, {
+				opening: 'onToolbarDialogsOpeningOrClosing',
+				closing: 'onToolbarDialogsOpeningOrClosing'
+			} );
 		} );
-	} );
+	}
 	if ( this.isFloatable() ) {
 		this.target.$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollThrottled, { passive: true } );
 	}
