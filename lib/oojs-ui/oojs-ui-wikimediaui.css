@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.51.4
+ * OOUI v0.51.5
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2024 OOUI Team and other contributors.
+ * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2024-12-05T17:34:44Z
+ * Date: 2025-01-27T06:58:16Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -28,7 +28,6 @@
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .oo-ui-buttonElement > .oo-ui-buttonElement-button::-moz-focus-inner {
@@ -918,7 +917,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   clip: auto;
   margin: 0;
@@ -938,7 +936,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   clip: auto;
   margin: 0;
@@ -1073,7 +1070,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .oo-ui-popupWidget-head > .oo-ui-labelElement-label {
@@ -1294,12 +1290,12 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   outline: 1px solid transparent;
 }
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox']:hover + span {
-  border-color: var(--border-color-progressive--hover, #4b77d6);
+  background-color: var(--background-color-interactive-subtle--hover, #eaecf0);
+  border-color: var(--border-color-interactive--hover, #27292d);
 }
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox']:active + span {
-  background-color: var(--background-color-progressive--active, #233566);
-  border-color: var(--border-color-input-binary--active, #233566);
-  box-shadow: inset 0 0 0 1px var(--box-shadow-color-progressive--active, #233566);
+  background-color: var(--background-color-interactive-subtle--hover, #dadde3);
+  border-color: var(--border-color-interactive--active, #202122);
 }
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox']:checked + span,
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox']:indeterminate + span {
@@ -1476,11 +1472,12 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   transition-duration: 100ms;
 }
 .oo-ui-radioInputWidget.oo-ui-widget-enabled [type='radio']:hover + span {
-  border-color: var(--border-color-progressive--hover, #4b77d6);
+  background-color: var(--background-color-interactive-subtle--hover, #eaecf0);
+  border-color: var(--border-color-interactive--hover, #27292d);
 }
 .oo-ui-radioInputWidget.oo-ui-widget-enabled [type='radio']:active + span {
-  background-color: var(--background-color-progressive--active, #233566);
-  border-color: var(--border-color-input-binary--active, #233566);
+  background-color: var(--background-color-interactive-subtle--hover, #dadde3);
+  border-color: var(--border-color-interactive--active, #202122);
 }
 .oo-ui-radioInputWidget.oo-ui-widget-enabled [type='radio']:checked + span {
   border-color: var(--border-color-input-binary--checked, #36c);
@@ -1565,7 +1562,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .oo-ui-textInputWidget .oo-ui-inputWidget-input {
@@ -1770,7 +1766,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   box-sizing: border-box;
 }
@@ -2168,7 +2163,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .oo-ui-selectFileInputWidget.oo-ui-selectFileInputWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileInputWidget-dropTarget,
@@ -2370,14 +2364,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.4
+ * OOUI v0.51.5
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2024 OOUI Team and other contributors.
+ * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2024-12-05T17:34:44Z
+ * Date: 2025-01-27T06:58:16Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -2663,7 +2657,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   padding: 11px 12px;
   transition-property: background-color, color;
@@ -3134,14 +3127,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.4
+ * OOUI v0.51.5
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2024 OOUI Team and other contributors.
+ * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2024-12-05T17:34:44Z
+ * Date: 2025-01-27T06:58:16Z
  */
 .oo-ui-tool {
   box-sizing: border-box;
@@ -3667,8 +3660,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 .oo-ui-menuToolGroup {
-  border-left: 1px solid #eaecf0;
-  border-right: 1px solid #eaecf0;
+  border-left: 1px solid var(--border-color-subtle, #c8ccd1);
+  border-right: 1px solid var(--border-color-subtle, #c8ccd1);
 }
 .oo-ui-menuToolGroup-tools .oo-ui-tool {
   display: block;
@@ -3705,7 +3698,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .oo-ui-toolbar-tools {
@@ -3726,7 +3718,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: default;
   -webkit-user-select: text;
   -moz-user-select: text;
-  -ms-user-select: text;
   user-select: text;
 }
 .oo-ui-toolbar-narrow .oo-ui-toolbar-tools,
@@ -3748,7 +3739,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: default;
   -webkit-user-select: text;
   -moz-user-select: text;
-  -ms-user-select: text;
   user-select: text;
 }
 .oo-ui-toolbar-bar {
@@ -3785,14 +3775,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.4
+ * OOUI v0.51.5
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2024 OOUI Team and other contributors.
+ * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2024-12-05T17:34:44Z
+ * Date: 2025-01-27T06:58:16Z
  */
 
 .oo-ui-window {
@@ -3817,7 +3807,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .oo-ui-window-body {
@@ -4212,15 +4201,24 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 /*!
- * OOUI v0.51.4
+ * OOUI v0.51.5
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2024 OOUI Team and other contributors.
+ * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2024-12-05T17:34:44Z
+ * Date: 2025-01-27T06:58:16Z
  */
+.oo-ui-icon-arrowDown {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-arrowDown {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-arrowDown {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown-progressive.svg);
+}
 .oo-ui-icon-arrowNext {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowNext-ltr.svg);
 }
@@ -4238,6 +4236,15 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-image-progressive.oo-ui-icon-arrowPrevious {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowPrevious-ltr-progressive.svg);
+}
+.oo-ui-icon-arrowUp {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowUp.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-arrowUp {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowUp-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-arrowUp {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowUp-progressive.svg);
 }
 .oo-ui-icon-collapse {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/collapse.svg);
@@ -5363,6 +5370,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-arab-ain.svg);
 }
 /* @noflip */
+.oo-ui-icon-bold:lang(az) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-q.svg);
+}
+/* @noflip */
 .oo-ui-icon-bold:lang(be) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-cyrl-te.svg);
 }
@@ -5494,6 +5505,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-arab-ain-invert.svg);
 }
 /* @noflip */
+.oo-ui-image-invert.oo-ui-icon-bold:lang(az) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-q-invert.svg);
+}
+/* @noflip */
 .oo-ui-image-invert.oo-ui-icon-bold:lang(be) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-cyrl-te-invert.svg);
 }
@@ -5623,6 +5638,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-bold:lang(ar) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-arab-ain-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-bold:lang(az) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-q-progressive.svg);
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-bold:lang(be) {
@@ -5797,6 +5816,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-i.svg);
 }
 /* @noflip */
+.oo-ui-icon-italic:lang(az) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k.svg);
+}
+/* @noflip */
 .oo-ui-icon-italic:lang(be) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k.svg);
 }
@@ -5928,6 +5951,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-i-invert.svg);
 }
 /* @noflip */
+.oo-ui-image-invert.oo-ui-icon-italic:lang(az) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k-invert.svg);
+}
+/* @noflip */
 .oo-ui-image-invert.oo-ui-icon-italic:lang(be) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k-invert.svg);
 }
@@ -6057,6 +6084,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-italic:lang(sco) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-i-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-italic:lang(az) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k-progressive.svg);
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-italic:lang(be) {
