@@ -1,7 +1,4 @@
 /*!
-			[ 2, 3, ve.dm.example.italic ],
-			[ 3, 4, ve.dm.example.underline ]
-		],
  * VisualEditor DataModel example data sets.
  *
  * @copyright See AUTHORS.txt
