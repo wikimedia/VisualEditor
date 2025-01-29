@@ -170,7 +170,7 @@ ve.ui.LinkAnnotationWidget.prototype.setAnnotation = function ( annotation, from
 /**
  * Gets the annotation value.
  *
- * @return {ve.dm.LinkAnnotation} Link annotation
+ * @return {ve.dm.LinkAnnotation|null} Link annotation
  */
 ve.ui.LinkAnnotationWidget.prototype.getAnnotation = function () {
 	return this.annotation;
