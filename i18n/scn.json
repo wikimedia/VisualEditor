@@ -3,6 +3,7 @@
 		"authors": [
 			"Ajeje Brazorf",
 			"Gazeb",
+			"GianAntonucci",
 			"Gloria sah",
 			"Gmelfi",
 			"HalanTul",
@@ -44,6 +45,7 @@
 	"visualeditor-clearbutton-tooltip": "Leva",
 	"visualeditor-clipboard-copy": "Copia",
 	"visualeditor-clipboard-cut": "Tagghia",
+	"visualeditor-collab-dialog-privacy": "Certi nfurmazzioni pirsunali, comu u to ndrizzu IP, ponnu èssiri visìbbili ê cullabburatura.",
 	"visualeditor-command-dialog-cancel": "Chiudi / annulla canciamentu",
 	"visualeditor-command-dialog-confirm": "Cunferma canciamentu",
 	"visualeditor-commentannotationcontextitem-comment": "Cummentu",
