@@ -1612,7 +1612,10 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 		contentBranchNodeBefore.renderContents();
 	}
 
-	this.showModelSelection();
+	// Don't modify selection while pasting (T368598)
+	if ( !this.clipboardHandler.pasting ) {
+		this.showModelSelection();
+	}
 	return true;
 };
 
