@@ -39,6 +39,10 @@
 		}
 
 		.ve-ui-linkContextItem-label-body {
+			/*
+			 * Override the flex box default which expands min-width to the content size:
+			 * https://developer.mozilla.org/en-US/docs/Web/CSS/min-width#auto
+			 */
 			min-width: 0;
 		}
 
@@ -71,6 +75,10 @@
 
 			.ve-ui-linkContextItem-label-preview {
 				flex: 1;
+				/*
+				 * Override the flex box default which expands min-width to the content size:
+				 * https://developer.mozilla.org/en-US/docs/Web/CSS/min-width#auto
+				 */
 				min-width: 0;
 				color: #72777d;
 				padding-left: 0.6em;
