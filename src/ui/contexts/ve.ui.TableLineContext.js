@@ -95,14 +95,10 @@ ve.ui.TableLineContext.prototype.getRelatedSources = function () {
 	const items = this.constructor.static.groups[ this.itemGroup ];
 
 	if ( !this.relatedSources ) {
-		this.relatedSources = [];
-
-		for ( let i = 0, l = items.length; i < l; i++ ) {
-			this.relatedSources.push( {
-				type: 'item',
-				name: items[ i ]
-			} );
-		}
+		this.relatedSources = items.map( ( item ) => ( {
+			type: 'item',
+			name: item
+		} ) );
 	}
 	return this.relatedSources;
 };
