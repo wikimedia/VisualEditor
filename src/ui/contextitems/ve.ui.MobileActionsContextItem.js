@@ -56,6 +56,8 @@ ve.ui.MobileActionsContextItem.static.name = 'mobileActions';
 
 ve.ui.MobileActionsContextItem.static.editable = false;
 
+ve.ui.MobileActionsContextItem.static.exclusive = false;
+
 // Show this context last
 ve.ui.MobileActionsContextItem.static.sortOrder = 1;
 
