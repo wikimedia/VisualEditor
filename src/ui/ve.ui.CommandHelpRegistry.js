@@ -48,12 +48,11 @@ ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelp
 		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
 	if ( details.shortcuts ) {
-		for ( let i = 0; i < details.shortcuts.length; i++ ) {
-			const shortcut = details.shortcuts[ i ];
+		details.shortcuts.forEach( ( shortcut, i ) => {
 			if ( ve.isPlainObject( shortcut ) ) {
 				details.shortcuts[ i ] = shortcut[ platformKey ];
 			}
-		}
+		} );
 	}
 
 	details.group = groupName;

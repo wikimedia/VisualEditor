@@ -132,16 +132,16 @@ ve.ui.DiffElement.prototype.onDescriptionsHighlight = function ( item ) {
 	if ( item ) {
 		const overlayRect = this.$overlays[ 0 ].getBoundingClientRect();
 		const elementRects = ve.ce.FocusableNode.static.getRectsForElement( this.getDiffElementById( item.getData() ), overlayRect ).rects;
-		for ( let i = 0, l = elementRects.length; i < l; i++ ) {
+		elementRects.forEach( ( rect ) => {
 			this.$overlays.append(
 				$( '<div>' ).addClass( 've-ui-diffElement-highlight' ).css( {
-					top: elementRects[ i ].top,
-					left: elementRects[ i ].left,
-					width: elementRects[ i ].width,
-					height: elementRects[ i ].height
+					top: rect.top,
+					left: rect.left,
+					width: rect.width,
+					height: rect.height
 				} )
 			);
-		}
+		} );
 		this.lastItem = item;
 	}
 };
@@ -224,21 +224,23 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue ) {
 		}
 	}
 
-	for ( let k = 0, klen = queue.length; k < klen; k++ ) {
+	queue.forEach( ( item, i ) => {
+		const prevItem = queue[ i - 1 ];
+		const nextItem = queue[ i + 1 ];
 		if (
-			!isUnchanged( queue[ k - 1 ] ) ||
-			!isUnchanged( queue[ k ] ) ||
-			!isUnchanged( queue[ k + 1 ] )
+			!isUnchanged( prevItem ) ||
+			!isUnchanged( item ) ||
+			!isUnchanged( nextItem )
 		) {
 			hasChanges = true;
 			if ( headingContext ) {
 				// Don't render headingContext if current or next node is a heading
-				if ( !isHeading( queue[ k ] ) && !isHeading( queue[ k + 1 ] ) ) {
+				if ( !isHeading( item ) && !isHeading( nextItem ) ) {
 					if ( headingContextSpacer ) {
 						addSpacer();
 					}
 					addItem( headingContext );
-				} else if ( isHeading( queue[ k + 1 ] ) ) {
+				} else if ( isHeading( nextItem ) ) {
 					// Skipping the context header becuase the next node is a heading
 					// so reinstate the spacer.
 					needsSpacer = true;
@@ -249,23 +251,23 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue ) {
 				addSpacer();
 				needsSpacer = false;
 			}
-			addItem( queue[ k ] );
+			addItem( item );
 
-			if ( isHeading( queue[ k ] ) ) {
+			if ( isHeading( item ) ) {
 				// Heading was rendered, no need to show it as context
 				headingContext = null;
 			}
 		} else {
 			// Heading skipped, maybe show as context later
-			if ( isHeading( queue[ k ] ) ) {
-				headingContext = isUnchanged( queue[ k ] ) ? queue[ k ] : null;
+			if ( isHeading( item ) ) {
+				headingContext = isUnchanged( item ) ? item : null;
 				headingContextSpacer = needsSpacer;
 				needsSpacer = false;
 			} else {
 				needsSpacer = true;
 			}
 		}
-	}
+	} );
 
 	// Trailing spacer
 	if ( hasChanges && needsSpacer && !lastItemSpacer ) {
@@ -1097,16 +1099,17 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, new
 				// processed)
 				const siblingNodes = highestRemovedAncestor.parent.children;
 				let newPreviousNodeIndex;
-				for ( let x = 0, xlen = siblingNodes.length; x < xlen; x++ ) {
-					if ( siblingNodes[ x ].index === highestRemovedAncestor.index ) {
-						break;
+				siblingNodes.every( ( siblingNode ) => {
+					if ( siblingNode.index === highestRemovedAncestor.index ) {
+						return false;
 					} else {
-						const oldPreviousNodeIndex = siblingNodes[ x ].index;
+						const oldPreviousNodeIndex = siblingNode.index;
 						if ( correspondingNodes.oldToNew[ oldPreviousNodeIndex ] !== undefined ) {
 							newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ];
 						}
 					}
-				}
+					return true;
+				} );
 
 				// If previous node was found among siblings, insert the removed subtree just
 				// after its corresponding node in the new document. Otherwise insert the
@@ -1362,17 +1365,17 @@ ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes, class
 	const elementId = this.elementId;
 	let $label = $( [] );
 
-	for ( let i = 0, l = changes.length; i < l; i++ ) {
+	changes.forEach( ( change ) => {
 		const $change = $( '<div>' );
-		if ( typeof changes[ i ] === 'string' ) {
-			$change.text( changes[ i ] );
+		if ( typeof change === 'string' ) {
+			$change.text( change );
 		} else {
 			// changes[ i ] is definitely not an HTML string in this branch
 			// eslint-disable-next-line no-jquery/no-append-html
-			$change.append( changes[ i ] );
+			$change.append( change );
 		}
 		$label = $label.add( $change );
-	}
+	} );
 	// eslint-disable-next-line mediawiki/class-doc
 	const item = new OO.ui.OptionWidget( {
 		label: $label,

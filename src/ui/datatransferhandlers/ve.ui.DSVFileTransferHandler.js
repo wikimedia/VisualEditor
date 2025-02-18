@@ -55,28 +55,26 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 			{ type: 'tableSection', attributes: { style: 'body' } }
 		);
 
-		for ( let i = 0; i < input.data.length; i++ ) {
-			const line = input.data[ i ];
-
+		input.data.forEach( ( line, i ) => {
 			// Skip 'empty' row if at the end of the file
 			if ( i === input.data.length - 1 && line.length === 1 && line[ 0 ] === '' ) {
-				continue;
+				return;
 			}
 
 			data.push( { type: 'tableRow' } );
-			for ( let j = 0; j < line.length; j++ ) {
+			line.forEach( ( cell ) => {
 				data.push(
 					{ type: 'tableCell', attributes: { style: ( i === 0 ? 'header' : 'data' ) } },
 					{ type: 'paragraph', internal: { generated: 'wrapper' } }
 				);
-				ve.batchPush( data, line[ j ].split( '' ) );
+				ve.batchPush( data, cell.split( '' ) );
 				data.push(
 					{ type: '/paragraph' },
 					{ type: '/tableCell' }
 				);
-			}
+			} );
 			data.push( { type: '/tableRow' } );
-		}
+		} );
 
 		data.push(
 			{ type: '/tableSection' },

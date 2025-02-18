@@ -122,9 +122,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 	}
 
 	let previousList;
-	const groups = documentModel.getCoveredSiblingGroups( range );
-	for ( let i = 0; i < groups.length; i++ ) {
-		const group = groups[ i ];
+	documentModel.getCoveredSiblingGroups( range ).forEach( ( group ) => {
 		// TODO: Allow conversion between different list types
 		if ( group.grandparent && group.grandparent.getType() === listType ) {
 			if ( group.grandparent !== previousList ) {
@@ -150,7 +148,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 				// Wrap everything in a list and each content branch in a listItem
 				.wrapAllNodes( element, itemElement );
 		}
-	}
+	} );
 
 	if ( !noBreakpoints ) {
 		surfaceModel.breakpoint();

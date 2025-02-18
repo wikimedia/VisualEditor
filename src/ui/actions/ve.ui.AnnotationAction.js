@@ -108,12 +108,9 @@ ve.ui.AnnotationAction.prototype.clearAll = function () {
 
 	ve.track( 'activity.allAnnotations', { action: 'clear-all' } );
 
-	const arr = annotations.get();
 	// TODO: Allow multiple annotations to be set or cleared by ve.dm.SurfaceFragment, probably
 	// using an annotation set and ideally building a single transaction
-	for ( let i = 0, len = arr.length; i < len; i++ ) {
-		fragment.annotateContent( 'clear', arr[ i ].name, arr[ i ].data );
-	}
+	annotations.get().forEach( ( annotation ) => fragment.annotateContent( 'clear', annotation.name, annotation.data ) );
 	surfaceModel.setInsertionAnnotations( null );
 	return true;
 };
@@ -137,10 +134,7 @@ ve.ui.AnnotationAction.prototype.setInternal = function ( name, data ) {
 		}
 	}
 
-	const removes = annotationClass.static.removes;
-	for ( let i = removes.length - 1; i >= 0; i-- ) {
-		fragment.annotateContent( 'clear', removes[ i ] );
-	}
+	annotationClass.static.removes.forEach( ( remove ) => fragment.annotateContent( 'clear', remove ) );
 	fragment.annotateContent( 'set', name, data );
 	return true;
 };

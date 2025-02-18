@@ -155,10 +155,9 @@ ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
 	const selection = this.getSurface().getModel().getSelection(),
 		documentModel = this.getSurface().getModel().getDocument();
 	if ( selection instanceof ve.dm.LinearSelection || selection instanceof ve.dm.TableSelection ) {
-		const ranges = selection.getRanges( documentModel );
-		for ( let i = 0; i < ranges.length; i++ ) {
-			ve.dir( this.getSurface().view.documentView.model.data.slice( ranges[ i ].start, ranges[ i ].end ) );
-		}
+		selection.getRanges( documentModel ).forEach( ( range ) => {
+			ve.dir( this.getSurface().view.documentView.model.data.slice( range.start, range.end ) );
+		} );
 	}
 };
 
@@ -204,9 +203,8 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 		data = linearData.data;
 
 	let $chunk, prevType, prevAnnotations, $annotations;
-	for ( let i = 0; i < data.length; i++ ) {
+	data.forEach( ( element, i ) => {
 		const $label = $( '<span>' );
-		const element = data[ i ];
 		let annotations = null;
 		let text;
 		if ( element.type ) {
@@ -250,7 +248,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 
 		prevType = element.type;
 		prevAnnotations = annotations;
-	}
+	} );
 
 	// End current chunk, if any.
 	if ( $chunk ) {
@@ -272,26 +270,26 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
 	const $ol = $( '<ol>' ).attr( 'start', '0' );
 
-	for ( let i = 0; i < node.children.length; i++ ) {
+	node.children.forEach( ( child ) => {
 		const $li = $( '<li>' );
 		const $label = $( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
 		const $note = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' );
-		if ( node.children[ i ].length !== undefined ) {
+		if ( child.length !== undefined ) {
 			$li.append(
-				$label.text( node.children[ i ].type ),
-				$note.text( '(' + node.children[ i ].length + ')' )
+				$label.text( child.type ),
+				$note.text( '(' + child.length + ')' )
 			);
 		} else {
-			$li.append( $label.text( node.children[ i ].type ) );
+			$li.append( $label.text( child.type ) );
 		}
 
-		if ( node.children[ i ].children ) {
-			const $sublist = this.generateListFromNode( node.children[ i ] );
+		if ( child.children ) {
+			const $sublist = this.generateListFromNode( child );
 			$li.append( $sublist );
 		}
 
 		$ol.append( $li );
-	}
+	} );
 	return $ol;
 };
 

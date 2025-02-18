@@ -82,17 +82,16 @@ ve.ui.ModeledFactory.prototype.getRelatedItems = function ( models ) {
 	const matches = [];
 	// Collect compatible classes and the models they are specifically compatible with,
 	// discarding class's with duplicate symbolic names
-	for ( let i = 0, iLen = models.length; i < iLen; i++ ) {
-		const model = models[ i ];
+	models.forEach( ( model ) => {
 		const classes = collect( model );
-		for ( let j = 0, jLen = classes.length; j < jLen; j++ ) {
-			const name = classes[ j ].static.name;
+		classes.forEach( ( clss ) => {
+			const name = clss.static.name;
 			if ( !names[ name ] ) {
 				matches.push( { name: name, model: model } );
 			}
 			names[ name ] = true;
-		}
-	}
+		} );
+	} );
 
 	return matches;
 };

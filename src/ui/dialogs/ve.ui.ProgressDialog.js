@@ -73,21 +73,21 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 			this.text.$element.empty();
 			this.cancelDeferreds = [];
 
-			for ( let i = 0, l = progresses.length; i < l; i++ ) {
+			progresses.forEach( ( progress ) => {
 				const cancelDeferred = ve.createDeferred();
 				const $row = $( '<div>' ).addClass( 've-ui-progressDialog-row' );
 				const progressBar = new OO.ui.ProgressBarWidget();
 				const fieldLayout = new OO.ui.FieldLayout(
 					progressBar,
 					{
-						label: progresses[ i ].label,
+						label: progress.label,
 						align: 'top'
 					}
 				);
 
 				$row.append( fieldLayout.$element );
 
-				if ( progresses[ i ].cancellable ) {
+				if ( progress.cancellable ) {
 					const cancelButton = new OO.ui.ButtonWidget( {
 						framed: false,
 						icon: 'cancel',
@@ -98,13 +98,13 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 				}
 
 				this.text.$element.append( $row );
-				progresses[ i ].progressBarDeferred.resolve( progressBar, cancelDeferred.promise() );
-				progresses[ i ].progressCompletePromise.then(
+				progress.progressBarDeferred.resolve( progressBar, cancelDeferred.promise() );
+				progress.progressCompletePromise.then(
 					this.progressComplete.bind( this, $row, false ),
 					this.progressComplete.bind( this, $row, true )
 				);
 				this.cancelDeferreds.push( cancelDeferred );
-			}
+			} );
 			this.actions.setMode( cancellable ? 'cancellable' : 'default' );
 		} );
 };
@@ -115,9 +115,7 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 ve.ui.ProgressDialog.prototype.getActionProcess = function ( action ) {
 	return new OO.ui.Process( () => {
 		if ( action === 'cancel' ) {
-			for ( let i = 0, l = this.cancelDeferreds.length; i < l; i++ ) {
-				this.cancelDeferreds[ i ].reject();
-			}
+			this.cancelDeferreds.forEach( ( cancelDeferred ) => cancelDeferred.reject() );
 		}
 		this.close( { action: action } );
 	} );

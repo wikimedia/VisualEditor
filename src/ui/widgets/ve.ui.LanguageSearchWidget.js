@@ -68,13 +68,12 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
 
 	this.filteredLanguageResultWidgets = [];
 
-	for ( let i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
-		const languageResult = this.languageResultWidgets[ i ];
+	this.languageResultWidgets.forEach( ( languageResult ) => {
 		const data = languageResult.getData();
 		if ( availableLanguages.indexOf( data.code ) !== -1 ) {
 			this.filteredLanguageResultWidgets.push( languageResult );
 		}
-	}
+	} );
 };
 
 /**
@@ -89,17 +88,17 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 
 	this.results.clearItems();
 
-	for ( let i = 0, iLen = this.filteredLanguageResultWidgets.length; i < iLen; i++ ) {
-		const languageResult = this.filteredLanguageResultWidgets[ i ];
+	this.filteredLanguageResultWidgets.forEach( ( languageResult ) => {
 		const data = languageResult.getData();
 		let matchedProperty = null;
 
-		for ( let j = 0, jLen = matchProperties.length; j < jLen; j++ ) {
-			if ( data[ matchProperties[ j ] ] && compare( data[ matchProperties[ j ] ].slice( 0, query.length ), query ) === 0 ) {
-				matchedProperty = matchProperties[ j ];
-				break;
+		matchProperties.some( ( property ) => {
+			if ( data[ property ] && compare( data[ property ].slice( 0, query.length ), query ) === 0 ) {
+				matchedProperty = property;
+				return true;
 			}
-		}
+			return false;
+		} );
 
 		if ( query === '' || matchedProperty ) {
 			items.push(
@@ -109,7 +108,7 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 					.setHighlighted( false )
 			);
 		}
-	}
+	} );
 
 	this.results.addItems( items );
 	if ( hasQuery ) {

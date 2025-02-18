@@ -101,35 +101,35 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 		extensions = constructor.static.extensions;
 
 	if ( !kinds ) {
-		for ( let j = 0, jlen = types.length; j < jlen; j++ ) {
+		types.forEach( ( type ) => {
 			if ( insert ) {
-				ensureArray( this.handlerNamesByType, types[ j ] ).unshift( constructor.static.name );
+				ensureArray( this.handlerNamesByType, type ).unshift( constructor.static.name );
 			} else {
-				remove( this.handlerNamesByType[ types[ j ] ], constructor.static.name );
+				remove( this.handlerNamesByType[ type ], constructor.static.name );
 			}
-		}
+		} );
 	} else {
-		for ( let i = 0, ilen = kinds.length; i < ilen; i++ ) {
-			for ( let j = 0, jlen = types.length; j < jlen; j++ ) {
+		kinds.forEach( ( kind ) => {
+			types.forEach( ( type ) => {
 				if ( insert ) {
 					ensureArray(
-						ensureMap( this.handlerNamesByKindAndType, kinds[ i ] ),
-						types[ j ]
+						ensureMap( this.handlerNamesByKindAndType, kind ),
+						type
 					).unshift( constructor.static.name );
 				} else {
-					remove( this.handlerNamesByKindAndType[ kinds[ i ] ][ types[ j ] ], constructor.static.name );
+					remove( this.handlerNamesByKindAndType[ kind ][ type ], constructor.static.name );
 				}
-			}
-		}
+			} );
+		} );
 	}
 	if ( constructor.prototype instanceof ve.ui.FileTransferHandler ) {
-		for ( let i = 0, ilen = extensions.length; i < ilen; i++ ) {
+		extensions.forEach( ( extension ) => {
 			if ( insert ) {
-				ensureArray( this.handlerNamesByExtension, extensions[ i ] ).unshift( constructor.static.name );
+				ensureArray( this.handlerNamesByExtension, extension ).unshift( constructor.static.name );
 			} else {
-				remove( this.handlerNamesByExtension[ extensions[ i ] ], constructor.static.name );
+				remove( this.handlerNamesByExtension[ extension ], constructor.static.name );
 			}
-		}
+		} );
 	}
 };
 
@@ -170,27 +170,23 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 		...fetch( this.handlerNamesByExtension, item.getExtension() )
 	];
 
-	for ( let i = 0; i < names.length; i++ ) {
-		const name = names[ i ];
+	return names.find( ( name ) => {
 		const constructor = this.registry[ name ];
 
 		if ( isPasteSpecial && !constructor.static.handlesPasteSpecial ) {
-			continue;
+			return false;
 		}
 
 		if ( isPaste && !constructor.static.handlesPaste ) {
-			continue;
+			return false;
 		}
 
 		if ( constructor.static.matchFunction && !constructor.static.matchFunction( item ) ) {
-			continue;
+			return false;
 		}
 
-		return name;
-	}
-
-	// No matching handler
-	return;
+		return true;
+	} );
 };
 
 /* Initialization */
