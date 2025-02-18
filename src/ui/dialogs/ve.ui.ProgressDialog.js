@@ -39,7 +39,9 @@ ve.ui.ProgressDialog.static.actions = [
 
 // Individual progress items can be cancellable, but the whole
 // dialog should not be escapable.
-ve.ui.ProgressDialog.static.escapable = false;
+ve.ui.ProgressDialog.prototype.getEscapeAction = function () {
+	return null;
+};
 
 /* Methods */
 
