@@ -266,36 +266,36 @@ ve.ui.LinearContext.prototype.getRelatedSourcesFromModels = function ( selectedM
 		relatedSources = [],
 		items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
 
-	let i, len;
-	for ( i = 0, len = items.length; i < len; i++ ) {
-		if ( !items[ i ].model.isInspectable() ) {
-			continue;
+	items.forEach( ( item ) => {
+		if ( !item.model.isInspectable() ) {
+			return;
 		}
-		if ( ve.ui.contextItemFactory.isExclusive( items[ i ].name ) ) {
-			models.push( items[ i ].model );
+		if ( ve.ui.contextItemFactory.isExclusive( item.name ) ) {
+			models.push( item.model );
 		}
 		relatedSources.push( {
 			type: 'item',
-			embeddable: ve.ui.contextItemFactory.isEmbeddable( items[ i ].name ),
-			name: items[ i ].name,
-			model: items[ i ].model
+			embeddable: ve.ui.contextItemFactory.isEmbeddable( item.name ),
+			name: item.name,
+			model: item.model
 		} );
-	}
+	} );
+
 	const tools = ve.ui.toolFactory.getRelatedItems( selectedModels );
-	for ( i = 0, len = tools.length; i < len; i++ ) {
-		if ( !tools[ i ].model.isInspectable() ) {
-			continue;
+	tools.forEach( ( tool ) => {
+		if ( !tool.model.isInspectable() ) {
+			return;
 		}
-		if ( models.indexOf( tools[ i ].model ) === -1 ) {
-			const toolClass = ve.ui.toolFactory.lookup( tools[ i ].name );
+		if ( models.indexOf( tool.model ) === -1 ) {
+			const toolClass = ve.ui.toolFactory.lookup( tool.name );
 			relatedSources.push( {
 				type: 'tool',
 				embeddable: !toolClass || toolClass.static.makesEmbeddableContextItem,
-				name: tools[ i ].name,
-				model: tools[ i ].model
+				name: tool.name,
+				model: tool.model
 			} );
 		}
-	}
+	} );
 	return relatedSources;
 };
 

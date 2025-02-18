@@ -100,9 +100,9 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
 
 		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => ve.isInstanceOfAny( annotation, modelClasses ) ).get();
 	}
-	for ( let i = 0, len = annotations.length; i < len; i++ ) {
-		callback( fragment.expandLinearSelection( 'annotation', annotations[ i ] ), annotations[ i ] );
-	}
+	annotations.forEach(
+		( annotation ) => callback( fragment.expandLinearSelection( 'annotation', annotation ), annotation )
+	);
 };
 
 /**

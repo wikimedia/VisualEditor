@@ -166,32 +166,30 @@ ve.ui.Context.prototype.toggleMenu = function ( show ) {
  * @chainable
  */
 ve.ui.Context.prototype.setupMenuItems = function ( previousItems ) {
-	const sources = this.getRelatedSources(),
-		items = [];
+	const sources = this.getRelatedSources();
 
-	let i, len;
-	for ( i = 0, len = sources.length; i < len; i++ ) {
-		const source = sources[ i ];
+	const items = sources.map( ( source ) => {
 		if ( source.type === 'item' ) {
-			items.push( ve.ui.contextItemFactory.create(
-				sources[ i ].name, this, sources[ i ].model
-			) );
+			return ve.ui.contextItemFactory.create(
+				source.name, this, source.model
+			);
 		} else if ( source.type === 'tool' ) {
-			items.push( new ve.ui.ToolContextItem(
-				this, sources[ i ].model, ve.ui.toolFactory.lookup( sources[ i ].name )
-			) );
+			return new ve.ui.ToolContextItem(
+				this, source.model, ve.ui.toolFactory.lookup( source.name )
+			);
 		} else if ( source.type === 'persistent' ) {
-			items.push( ve.ui.contextItemFactory.create(
-				sources[ i ].name, this, sources[ i ].data
-			) );
+			return ve.ui.contextItemFactory.create(
+				source.name, this, source.data
+			);
 		}
-	}
+		throw new Error( 'Invalid source type' );
+	} );
 
 	items.sort( ( a, b ) => a.constructor.static.sortOrder - b.constructor.static.sortOrder );
 
 	this.addItems( items );
-	for ( i = 0, len = items.length; i < len; i++ ) {
-		const item = items[ i ];
+
+	items.forEach( ( item ) => {
 		const isRefreshing = previousItems && previousItems.some(
 			// We treat it as refreshing if they're exactly equal, or if either is null.
 			// Null here probably means we're dealing with a persistent fragment that's
@@ -202,7 +200,7 @@ ve.ui.Context.prototype.setupMenuItems = function ( previousItems ) {
 		);
 		item.connect( this, { command: 'onContextItemCommand' } );
 		item.setup( isRefreshing );
-	}
+	} );
 
 	return this;
 };
@@ -215,9 +213,7 @@ ve.ui.Context.prototype.setupMenuItems = function ( previousItems ) {
  * @chainable
  */
 ve.ui.Context.prototype.teardownMenuItems = function () {
-	for ( let i = 0, len = this.items.length; i < len; i++ ) {
-		this.items[ i ].teardown();
-	}
+	this.items.forEach( ( item ) => item.teardown() );
 	this.clearItems();
 
 	return this;
