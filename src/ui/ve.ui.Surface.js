@@ -85,6 +85,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 	}
 	this.view = this.createView( this.model );
 	this.dialogs = this.createDialogWindowManager();
+	this.sidebarDialogs = this.createSidebarWindowManager();
 	this.importRules = config.importRules || {};
 	this.multiline = config.multiline !== false;
 	this.context = this.createContext( {
@@ -139,7 +140,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 		// * ve-ui-surface-visual
 		// * ve-ui-surface-source
 		.addClass( 've-ui-surface ve-ui-surface-' + this.mode )
-		.append( this.view.$element );
+		.append( this.view.$element, this.sidebarDialogs.$element );
 	if ( this.mode === 'source' ) {
 		// Separate class to make it easier to override
 		this.getView().$element.add( this.$placeholder )
@@ -318,6 +319,15 @@ ve.ui.Surface.prototype.createDialogWindowManager = function () {
 };
 
 /**
+ * Create a sidebar window manager.
+ *
+ * @return {ve.ui.WindowManager} Sidebar window manager
+ */
+ve.ui.Surface.prototype.createSidebarWindowManager = function () {
+	return new ve.ui.SidebarDialogWindowManager( this, { factory: ve.ui.windowFactory } );
+};
+
+/**
  * Create a surface model
  *
  * @param {ve.dm.Document} doc Document model
@@ -428,6 +438,15 @@ ve.ui.Surface.prototype.getToolbarDialogs = function ( position ) {
 	this.toolbarDialogs[ position ] = this.toolbarDialogs[ position ] ||
 		new ve.ui.ToolbarDialogWindowManager( this, { factory: ve.ui.windowFactory } );
 	return this.toolbarDialogs[ position ];
+};
+
+/**
+ * Get sidebar dialogs window set.
+ *
+ * @return {ve.ui.WindowManager} Sdiebar dialogs window set
+ */
+ve.ui.Surface.prototype.getSidebarDialogs = function () {
+	return this.sidebarDialogs;
 };
 
 /**

@@ -144,9 +144,15 @@ body {
 .ve-ui-surface-placeholder,
 .ve-ui-surface .ve-ce-attachedRootNode {
 	padding: 0.5em 1.5em;
+	transition: padding 100ms;
 
 	.ve-ui-surface-source {
 		padding: 1.5em;
+	}
+
+	.ve-ui-surface-sidebarOpen-gutter&,
+	.ve-ui-surface-sidebarOpen-gutter & {
+		padding-left: 0.5em;
 	}
 }
 
