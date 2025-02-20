@@ -17,7 +17,7 @@
  */
 ve.ui.DesktopInspectorWindowManager = function VeUiDesktopInspectorWindowManager( surface, config ) {
 	// Parent constructor
-	ve.ui.DesktopInspectorWindowManager.super.call( this, surface, config );
+	ve.ui.DesktopInspectorWindowManager.super.call( this, surface, ve.extendObject( { modal: false }, config ) );
 };
 
 /* Inheritance */

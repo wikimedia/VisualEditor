@@ -426,10 +426,7 @@ ve.ui.Surface.prototype.getDialogs = function () {
 ve.ui.Surface.prototype.getToolbarDialogs = function ( position ) {
 	position = position || 'side';
 	this.toolbarDialogs[ position ] = this.toolbarDialogs[ position ] ||
-		new ve.ui.ToolbarDialogWindowManager( this, {
-			factory: ve.ui.windowFactory,
-			modal: false
-		} );
+		new ve.ui.ToolbarDialogWindowManager( this, { factory: ve.ui.windowFactory } );
 	return this.toolbarDialogs[ position ];
 };
 

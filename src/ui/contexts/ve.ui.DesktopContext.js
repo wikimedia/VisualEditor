@@ -125,8 +125,7 @@ ve.ui.DesktopContext.prototype.onPosition = function () {
 ve.ui.DesktopContext.prototype.createInspectorWindowManager = function () {
 	return new ve.ui.DesktopInspectorWindowManager( this.surface, {
 		factory: ve.ui.windowFactory,
-		overlay: this.surface.getLocalOverlay(),
-		modal: false
+		overlay: this.surface.getLocalOverlay()
 	} );
 };
 
