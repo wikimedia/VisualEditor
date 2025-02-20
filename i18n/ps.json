@@ -4,7 +4,8 @@
 			"Af420",
 			"Ahmed-Najib-Biabani-Ibrahimkhel",
 			"Amjad Khan",
-			"Baloch Khan"
+			"Baloch Khan",
+			"شاه زمان پټان"
 		]
 	},
 	"visualeditor": "ليدنيز سمونگر",
@@ -12,7 +13,7 @@
 	"visualeditor-align-desc-center": "منځ",
 	"visualeditor-align-desc-default": "تلواليز",
 	"visualeditor-align-desc-left": "کيڼ",
-	"visualeditor-align-desc-none": "هېڅ",
+	"visualeditor-align-desc-none": "هيڅ",
 	"visualeditor-align-desc-right": "ښي",
 	"visualeditor-align-widget-center": "منځ",
 	"visualeditor-align-widget-left": "کيڼ",
@@ -109,7 +110,7 @@
 	"visualeditor-slug-insert": "پاراگراف ورټومبل",
 	"visualeditor-specialcharacter-button-tooltip": "ځانگړې لوښه",
 	"visualeditor-specialcharacter-group-label-mathematical": "شمېرپوهنيز",
-	"visualeditor-specialcharacter-group-label-symbols": "سمبولونه",
+	"visualeditor-specialcharacter-group-label-symbols": "نښې",
 	"visualeditor-table-contextitem-properties": "ځانتياوې",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|ستنه|ستنې}} ړنگول",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|ليکه|ليکې}} ړنگول",
