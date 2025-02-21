@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.51.5
+ * OOUI v0.51.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-01-27T06:58:16Z
+ * Date: 2025-02-21T18:19:43Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -647,11 +647,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-fieldsetLayout.oo-ui-iconElement > .oo-ui-fieldsetLayout-header,
 .oo-ui-fieldsetLayout.oo-ui-labelElement > .oo-ui-fieldsetLayout-header {
-  color: inherit;
-  display: inline-table;
-  box-sizing: border-box;
+  display: block;
   padding: 0;
-  white-space: normal;
   float: left;
   width: 100%;
 }
@@ -2364,14 +2361,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.5
+ * OOUI v0.51.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-01-27T06:58:16Z
+ * Date: 2025-02-21T18:19:43Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -2735,22 +2732,17 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-tabSelectWidget-mobile::after {
   content: '';
   position: absolute;
-  bottom: 0;
   right: 0;
+  margin-top: 6px;
   width: 18px;
-  height: 2.2857143em;
+  height: 2.07142859em;
   pointer-events: none;
 }
 .oo-ui-tabSelectWidget-mobile.oo-ui-tabSelectWidget-framed::after {
-  background-color: #eaecf0;
-  background-image: linear-gradient(to right, rgba(234, 236, 240, 0) 0, #eaecf0 100%);
-  background-color: transparent;
+  background-image: linear-gradient(to right, rgba(234, 236, 240, 0), var(--background-color-interactive, #eaecf0));
 }
 .oo-ui-tabSelectWidget-mobile.oo-ui-tabSelectWidget-frameless::after {
-  background-color: #ffffff;
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0, #fff 100%);
-  background-color: transparent;
-  bottom: 0.14285714em;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), #fff);
 }
 .oo-ui-tabSelectWidget.oo-ui-widget-enabled:focus {
   outline: 0;
@@ -3127,14 +3119,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.5
+ * OOUI v0.51.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-01-27T06:58:16Z
+ * Date: 2025-02-21T18:19:43Z
  */
 .oo-ui-tool {
   box-sizing: border-box;
@@ -3775,14 +3767,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.5
+ * OOUI v0.51.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-01-27T06:58:16Z
+ * Date: 2025-02-21T18:19:43Z
  */
 
 .oo-ui-window {
@@ -4201,14 +4193,14 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 /*!
- * OOUI v0.51.5
+ * OOUI v0.51.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-01-27T06:58:16Z
+ * Date: 2025-02-21T18:19:43Z
  */
 .oo-ui-icon-arrowDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
@@ -5422,6 +5414,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-f.svg);
 }
 /* @noflip */
+.oo-ui-icon-bold:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-f.svg);
+}
+/* @noflip */
 .oo-ui-icon-bold:lang(nn) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-f.svg);
 }
@@ -5557,6 +5553,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-f-invert.svg);
 }
 /* @noflip */
+.oo-ui-image-invert.oo-ui-icon-bold:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-f-invert.svg);
+}
+/* @noflip */
 .oo-ui-image-invert.oo-ui-icon-bold:lang(nn) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-f-invert.svg);
 }
@@ -5689,6 +5689,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-bold:lang(ksh) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-f-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-bold:lang(nb) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bold-f-progressive.svg);
 }
 /* @noflip */
@@ -5844,6 +5848,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k.svg);
 }
 /* @noflip */
+.oo-ui-icon-italic:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k.svg);
+}
+/* @noflip */
 .oo-ui-icon-italic:lang(nn) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k.svg);
 }
@@ -5976,6 +5984,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 /* @noflip */
 .oo-ui-image-invert.oo-ui-icon-italic:lang(ky) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k-invert.svg);
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-italic:lang(nb) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k-invert.svg);
 }
 /* @noflip */
@@ -6114,6 +6126,10 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k-progressive.svg);
 }
 /* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-italic:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k-progressive.svg);
+}
+/* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-italic:lang(nn) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/italic-k-progressive.svg);
 }
@@ -6189,6 +6205,18 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s.svg);
 }
 /* @noflip */
+.oo-ui-icon-strikethrough:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s.svg);
+}
+/* @noflip */
+.oo-ui-icon-strikethrough:lang(nn) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s.svg);
+}
+/* @noflip */
+.oo-ui-icon-strikethrough:lang(no) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s.svg);
+}
+/* @noflip */
 .oo-ui-icon-strikethrough:lang(fi) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-y.svg);
 }
@@ -6200,6 +6228,18 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s-invert.svg);
 }
 /* @noflip */
+.oo-ui-image-invert.oo-ui-icon-strikethrough:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s-invert.svg);
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-strikethrough:lang(nn) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s-invert.svg);
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-strikethrough:lang(no) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s-invert.svg);
+}
+/* @noflip */
 .oo-ui-image-invert.oo-ui-icon-strikethrough:lang(fi) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-y-invert.svg);
 }
@@ -6208,6 +6248,18 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-strikethrough:lang(en) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-strikethrough:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-strikethrough:lang(nn) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-strikethrough:lang(no) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/strikethrough-s-progressive.svg);
 }
 /* @noflip */
@@ -6225,6 +6277,22 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-underline:lang(de) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u.svg);
 }
+/* @noflip */
+.oo-ui-icon-underline:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u.svg);
+}
+/* @noflip */
+.oo-ui-icon-underline:lang(nn) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u.svg);
+}
+/* @noflip */
+.oo-ui-icon-underline:lang(no) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u.svg);
+}
+/* @noflip */
+.oo-ui-icon-underline:lang(sv) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u.svg);
+}
 .oo-ui-image-invert.oo-ui-icon-underline {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-a-invert.svg);
 }
@@ -6236,6 +6304,22 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-image-invert.oo-ui-icon-underline:lang(de) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-invert.svg);
 }
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-underline:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-invert.svg);
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-underline:lang(nn) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-invert.svg);
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-underline:lang(no) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-invert.svg);
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-underline:lang(sv) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-invert.svg);
+}
 .oo-ui-image-progressive.oo-ui-icon-underline {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-a-progressive.svg);
 }
@@ -6245,6 +6329,22 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-underline:lang(de) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-underline:lang(nb) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-underline:lang(nn) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-underline:lang(no) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-underline:lang(sv) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/underline-u-progressive.svg);
 }
 .oo-ui-icon-textLanguage {
