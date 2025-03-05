@@ -250,15 +250,11 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 
 			let insertionAnnotation = false;
 			let replace = false;
-			let annotations;
 			let insertion;
 
 			const clear = () => {
 				// Clear all existing annotations
-				annotations = this.getMatchingAnnotations( fragment, true ).get();
-				for ( let i = 0, len = annotations.length; i < len; i++ ) {
-					fragment.annotateContent( 'clear', annotations[ i ] );
-				}
+				this.getMatchingAnnotations( fragment, true ).get().forEach( ( ann ) => fragment.annotateContent( 'clear', ann ) );
 			};
 
 			if ( remove ) {

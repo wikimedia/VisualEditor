@@ -138,9 +138,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 		}
 
 		ve.dm.Document.static.addAnnotationsToData( content, annotationSet );
-		for ( let i = 0; i < content.length; i++ ) {
-			result.push( content[ i ] );
-		}
+		ve.batchPush( result, content );
 	} );
 	this.resolve( result );
 };

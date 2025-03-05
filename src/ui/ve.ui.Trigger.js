@@ -37,8 +37,7 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 	} else if ( typeof e === 'string' ) {
 		// Normalization: remove whitespace and force lowercase
 		const parts = e.replace( /\s+/g, '' ).toLowerCase().split( '+' );
-		for ( let i = 0, len = parts.length; i < len; i++ ) {
-			let key = parts[ i ];
+		parts.forEach( ( key ) => {
 			// Resolve key aliases
 			if ( Object.prototype.hasOwnProperty.call( keyAliases, key ) ) {
 				key = keyAliases[ key ];
@@ -51,7 +50,7 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 				// WARNING: Only the last primary key will be used
 				this.primary = key;
 			}
-		}
+		} );
 	}
 };
 
@@ -398,14 +397,8 @@ ve.ui.Trigger.prototype.isComplete = function () {
  * @return {string} Canonical trigger string
  */
 ve.ui.Trigger.prototype.toString = function () {
-	const modifierKeys = ve.ui.Trigger.static.modifierKeys,
-		keys = [];
 	// Add modifier keywords in the correct order
-	for ( let i = 0, len = modifierKeys.length; i < len; i++ ) {
-		if ( this.modifiers[ modifierKeys[ i ] ] ) {
-			keys.push( modifierKeys[ i ] );
-		}
-	}
+	const keys = ve.ui.Trigger.static.modifierKeys.filter( ( modifierKey ) => this.modifiers[ modifierKey ] );
 	// Check that there were modifiers and the primary key is whitelisted
 	if ( this.primary ) {
 		// Add a symbolic name for the primary key

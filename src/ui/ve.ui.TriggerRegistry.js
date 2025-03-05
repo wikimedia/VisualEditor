@@ -53,16 +53,15 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 	}
 
 	// Validate arguments
-	for ( let i = 0, l = triggerList.length; i < l; i++ ) {
-		const trigger = triggerList[ i ];
-		if ( !( triggerList[ i ] instanceof ve.ui.Trigger ) ) {
+	triggerList.forEach( ( trigger ) => {
+		if ( !( trigger instanceof ve.ui.Trigger ) ) {
 			throw new Error( 'Trigger must be an instance of ve.ui.Trigger' );
 		}
-		if ( !triggerList[ i ].isComplete() ) {
+		if ( !trigger.isComplete() ) {
 			throw new Error( 'Incomplete trigger' );
 		}
 		this.triggersByString[ trigger.toString() ] = name;
-	}
+	} );
 
 	ve.ui.TriggerRegistry.super.prototype.register.call( this, name, triggerList );
 };

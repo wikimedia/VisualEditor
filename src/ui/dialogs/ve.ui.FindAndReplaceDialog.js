@@ -377,12 +377,12 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 			noOverlaps: true,
 			wholeWord: wholeWord
 		} );
-		for ( let i = 0, l = ranges.length; i < l; i++ ) {
-			this.fragments.push( surfaceModel.getLinearFragment( ranges[ i ], true, true ) );
-			if ( startIndex === undefined && ranges[ i ].start >= this.startOffset ) {
+		ranges.forEach( ( range ) => {
+			this.fragments.push( surfaceModel.getLinearFragment( range, true, true ) );
+			if ( startIndex === undefined && range.start >= this.startOffset ) {
 				startIndex = this.fragments.length - 1;
 			}
-		}
+		} );
 	}
 	this.results = this.fragments.length;
 	this.focusedIndex = startIndex || 0;

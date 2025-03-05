@@ -220,13 +220,12 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 			.unwrapNodes( 2 );
 
 		// Ensure paragraphs are not generated paragraphs now that they are not in a list
-		const children = fragment.getSiblingNodes();
-		for ( let i = 0, length = children.length; i < length; i++ ) {
-			const child = children[ i ].node;
-			if ( child.type === 'paragraph' && ve.getProp( child.element, 'internal', 'generated' ) ) {
-				surfaceModel.getLinearFragment( child.getOuterRange(), true ).convertNodes( 'paragraph', child.getAttributes(), {} );
+		fragment.getSiblingNodes().forEach( ( child ) => {
+			const childNode = child.node;
+			if ( childNode.type === 'paragraph' && ve.getProp( childNode.element, 'internal', 'generated' ) ) {
+				surfaceModel.getLinearFragment( childNode.getOuterRange(), true ).convertNodes( 'paragraph', childNode.getAttributes(), {} );
 			}
-		}
+		} );
 	} else {
 		// (3) Split the list away from parentListItem into its own listItem
 		// TODO factor common split logic somehow?

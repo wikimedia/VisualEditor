@@ -58,14 +58,13 @@ ve.ui.FragmentWindowTool.prototype.onUpdateState = function ( fragment ) {
 	// are open, which we override in this implementation
 	ve.ui.FragmentWindowTool.super.super.prototype.onUpdateState.apply( this, arguments );
 
-	const models = this.getSelectedModels( fragment );
-
-	for ( let i = 0, len = models.length; i < len; i++ ) {
-		if ( this.constructor.static.isCompatibleWith( models[ i ] ) ) {
+	this.getSelectedModels( fragment ).some( ( model ) => {
+		if ( this.constructor.static.isCompatibleWith( model ) ) {
 			this.setActive( true );
-			break;
+			return true;
 		}
-	}
+		return false;
+	} );
 };
 
 /**
