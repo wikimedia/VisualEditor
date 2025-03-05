@@ -7,3 +7,10 @@
 .ve-ui-context-hidden {
 	display: none;
 }
+
+.ve-ui-context-choosing .oo-ui-windowManager {
+	// Hide the inspector window manager until the context menu has
+	// been hidden. Use opacity=0 so that it can still be focussed
+	// as getReadyProcess will need to run in this state. (T380125)
+	opacity: 0;
+}
