@@ -131,11 +131,13 @@ ve.collab.initPeerClient = function ( serverId, isMain, userName ) {
 ve.collab.connectModelSynchronizer = function () {
 	const ceSurface = ve.init.target.surface.view;
 	ceSurface.model.synchronizer.connect( ceSurface, {
-		authorSelect: 'onSynchronizerAuthorUpdate',
-		authorChange: 'onSynchronizerAuthorUpdate',
-		authorDisconnect: 'onSynchronizerAuthorDisconnect',
 		wrongDoc: 'onSynchronizerWrongDoc',
 		pause: 'onSynchronizerPause'
+	} );
+	ceSurface.model.synchronizer.connect( ceSurface.getSelectionManager(), {
+		authorSelect: 'onSynchronizerAuthorUpdate',
+		authorChange: 'onSynchronizerAuthorUpdate',
+		authorDisconnect: 'onSynchronizerAuthorDisconnect'
 	} );
 };
 

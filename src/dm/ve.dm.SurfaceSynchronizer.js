@@ -375,9 +375,15 @@ ve.dm.SurfaceSynchronizer.prototype.getAuthorData = function ( authorId ) {
 };
 
 ve.dm.SurfaceSynchronizer.prototype.onAuthorChange = function ( data ) {
-	this.authors[ data.authorId ] = data.authorData;
+	let authorData = this.authors[ data.authorId ];
+	if ( authorData === undefined ) {
+		authorData = Object.create( null );
+		this.authors[ data.authorId ] = authorData;
+	}
+	Object.keys( data.authorData ).forEach( ( key ) => {
+		authorData[ key ] = data.authorData[ key ];
+	} );
 	this.emit( 'authorChange', data.authorId );
-
 	if ( data.authorId === this.getAuthorId() ) {
 		ve.init.platform.sessionStorage.setObject( 've-collab-author', data.authorData );
 	}

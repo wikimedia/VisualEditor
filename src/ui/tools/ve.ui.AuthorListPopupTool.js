@@ -170,7 +170,8 @@ ve.ui.AuthorListPopupTool.prototype.onSynchronizerAuthorUpdate = function ( auth
 			}
 		}
 	}
-	this.oldName = this.synchronizer.getAuthorData( authorId ).name;
+	const authorData = this.synchronizer.getAuthorData( authorId );
+	this.oldName = authorData ? authorData.name : '';
 };
 
 /**

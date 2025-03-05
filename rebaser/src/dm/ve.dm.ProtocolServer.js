@@ -180,28 +180,19 @@ ve.dm.ProtocolServer.prototype.onSubmitChange = function ( context, data ) {
  * Apply and broadcast an author change
  *
  * @param {Object} context The connection context
- * @param {string} newData The new author data
+ * @param {Object} newData The new author data
  */
 ve.dm.ProtocolServer.prototype.onChangeAuthor = function ( context, newData ) {
-	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
-		name: newData.name,
-		color: newData.color
-	} );
+	this.rebaseServer.updateDocState( context.docName, context.authorId, null, newData );
 	context.broadcast( 'authorChange', {
 		authorId: context.authorId,
-		authorData: {
-			name: newData.name,
-			color: newData.color
-		}
+		authorData: newData
 	} );
 	this.logger.logServerEvent( {
 		type: 'authorChange',
 		doc: context.docName,
 		authorId: context.authorId,
-		authorData: {
-			name: newData.name,
-			color: newData.color
-		}
+		authorData: newData
 	} );
 };
 
