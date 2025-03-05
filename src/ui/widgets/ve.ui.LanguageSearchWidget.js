@@ -90,15 +90,10 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 
 	this.filteredLanguageResultWidgets.forEach( ( languageResult ) => {
 		const data = languageResult.getData();
-		let matchedProperty = null;
 
-		matchProperties.some( ( property ) => {
-			if ( data[ property ] && compare( data[ property ].slice( 0, query.length ), query ) === 0 ) {
-				matchedProperty = property;
-				return true;
-			}
-			return false;
-		} );
+		const matchedProperty = matchProperties.find(
+			( property ) => data[ property ] && compare( data[ property ].slice( 0, query.length ), query ) === 0
+		);
 
 		if ( query === '' || matchedProperty ) {
 			items.push(
