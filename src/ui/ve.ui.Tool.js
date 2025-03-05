@@ -146,6 +146,8 @@ ve.ui.Tool.prototype.onSelect = function () {
 			}
 		} );
 	}
+
+	ve.track( 'activity.' + ( this.getName() || command.getName() ), { action: 'tool-used' } );
 };
 
 /**

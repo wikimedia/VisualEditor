@@ -126,6 +126,20 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 		opening: 'onInspectorOrDialogOpeningOrClosing',
 		closing: 'onInspectorOrDialogOpeningOrClosing'
 	} );
+
+	// instrumentation
+	this.items.forEach( ( item ) => {
+		if ( item instanceof OO.ui.ToolGroup ) {
+			const name = ( ve.entries( this.groupsByName ).find( ( entry ) => entry[ 1 ] === item ) || [] )[ 0 ];
+			if ( name ) {
+				item.on( 'active', ( isActive ) => {
+					if ( isActive ) {
+						ve.track( 'activity.' + name, { action: 'toolbar-group-active' } );
+					}
+				} );
+			}
+		}
+	} );
 };
 
 /**
