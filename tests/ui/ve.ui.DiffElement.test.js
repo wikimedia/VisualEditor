@@ -1174,6 +1174,49 @@ QUnit.test( 'Diffing', ( assert ) => {
 				]
 			},
 			{
+				msg: 'Comparable link change (T344927)',
+				oldDoc: ve.dm.example.singleLine`
+					<p>
+						on his website at
+						<a href="http://example.org/website/" data-ignored="foo">http://example.org/website</a>.
+						Lorem ipsum sit dolor amet.
+					</p>
+				`,
+				newDoc: ve.dm.example.singleLine`
+					<p>
+						on
+						<a href="http://example.org/website/" data-ignored="bar">his website</a>.
+						Lorem ipsum sit dolor amet.
+					</p>
+				`,
+				/*
+				TODO: Actual expected:
+				<p>
+					on
+					<del data-diff-action="remove">
+						 his website at
+						<a href="http://example.org/website/" data-ignored="bar">http://example.org/</a>
+					</del>
+					<ins data-diff-action="insert"><a href="http://example.org/website/" data-ignored="bar">his</a> </ins>
+					<a href="http://example.org/website/" data-ignored="bar">website</a>.
+					Lorem ipsum sit dolor amet.
+				</p>
+				*/
+				expected: ve.dm.example.singleLine`
+					<p>
+						on
+						<del data-diff-action="remove">
+							 his website at
+							<a href="http://example.org/website/" data-ignored="bar">h</a>
+							<a href="http://example.org/website/" data-ignored="foo">ttp://example.org/</a>
+						</del>
+						<ins data-diff-action="insert"><a href="http://example.org/website/" data-ignored="bar">his</a> </ins>
+						<a href="http://example.org/website/" data-ignored="bar">website</a>.
+						Lorem ipsum sit dolor amet.
+					</p>
+				`
+			},
+			{
 				msg: 'Nested annotation change',
 				oldDoc: '<p><a href="http://example.org/">foo bar baz</a></p>',
 				newDoc: '<p><a href="http://example.org/">foo <b>bar</b> baz</a></p>',
