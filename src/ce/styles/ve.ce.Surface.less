@@ -13,6 +13,17 @@
 	Should be inherited from the VE target container.
 	*/
 
+	flex: 1;
+	/*
+	 * Override the flex box default which expands min-width to the content size:
+	 * https://developer.mozilla.org/en-US/docs/Web/CSS/min-width#auto
+	 *
+	 * Without this the surface won't let itself be narrower than its
+	 * widest content, causing issues with long lines of text,
+	 * tables, floated elements, etc.
+	 */
+	min-width: 0;
+
 	&-selections {
 		position: absolute;
 		pointer-events: none;

@@ -243,7 +243,7 @@ ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
 /**
  * @typedef {Object} WindowType
  * @memberof ve.ui.WindowAction
- * @property {string|null} name Window name ('inspector', 'toolbar', 'dialog' or null)
+ * @property {string|null} name Window name ('inspector', 'toolbar', 'sidebar', dialog' or null)
  * @property {string} [position] Window position (for toolbar dialogs)
  */
 
@@ -265,6 +265,8 @@ ve.ui.WindowAction.prototype.getWindowType = function ( name ) {
 			name: 'toolbar',
 			position: windowClass.static.position
 		};
+	} else if ( windowClass.prototype instanceof ve.ui.SidebarDialog ) {
+		return { name: 'sidebar' };
 	} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
 		return { name: 'dialog' };
 	}
@@ -283,6 +285,8 @@ ve.ui.WindowAction.prototype.getWindowManager = function ( windowType ) {
 			return this.surface.getContext().getInspectors();
 		case 'toolbar':
 			return this.surface.getToolbarDialogs( windowType.position );
+		case 'sidebar':
+			return this.surface.getSidebarDialogs();
 		case 'dialog':
 			return this.surface.getDialogs();
 	}
