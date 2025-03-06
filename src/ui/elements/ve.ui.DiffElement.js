@@ -1445,11 +1445,7 @@ ve.ui.DiffElement.prototype.markMove = function ( move, elementOrData, offset ) 
  * @return {Array} Data with annotations added
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
-	const DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE,
-		DIFF_INSERT = ve.DiffMatchPatch.static.DIFF_INSERT,
-		DIFF_CHANGE_DELETE = ve.DiffMatchPatch.static.DIFF_CHANGE_DELETE,
-		DIFF_CHANGE_INSERT = ve.DiffMatchPatch.static.DIFF_CHANGE_INSERT,
-		items = [],
+	const items = [],
 		newDoc = newNode.getRoot().getDocument();
 	let start = 0; // The starting index for a range for building an annotation
 
@@ -1467,35 +1463,8 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 		const end = start + linearDiff[ i ][ 1 ].length;
 		if ( start !== end ) {
 			const range = new ve.Range( start, end );
-			const type = linearDiff[ i ][ 0 ];
-			if ( type !== 0 ) {
-				let typeAsString, domElementType, annType;
-				switch ( type ) {
-					case DIFF_DELETE:
-						typeAsString = 'remove';
-						domElementType = 'del';
-						annType = 'textStyle/delete';
-						break;
-					case DIFF_INSERT:
-						typeAsString = 'insert';
-						domElementType = 'ins';
-						annType = 'textStyle/insert';
-						break;
-					case DIFF_CHANGE_DELETE:
-						typeAsString = 'change-remove';
-						domElementType = 'span';
-						annType = 'textStyle/span';
-						break;
-					case DIFF_CHANGE_INSERT:
-						typeAsString = 'change-insert';
-						domElementType = 'span';
-						annType = 'textStyle/span';
-						break;
-				}
-				const domElement = document.createElement( domElementType );
-				domElement.setAttribute( 'data-diff-action', typeAsString );
-				const domElements = [ domElement ];
-
+			const action = linearDiff[ i ][ 0 ];
+			if ( action !== 0 ) {
 				const changes = [];
 				if ( linearDiff[ i ].annotationChanges ) {
 					linearDiff[ i ].annotationChanges.forEach( ( annotationChange ) => {
@@ -1527,21 +1496,20 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 						) );
 					} );
 				}
+				const diffAnnotationElement = {
+					type: 'textStyle/diff',
+					attributes: {
+						action: action
+					}
+				};
 				if ( changes.length ) {
 					const item = this.getChangeDescriptionItem( changes );
-					domElement.setAttribute( 'data-diff-id', item.getData() );
+					diffAnnotationElement.attributes.id = item.getData();
 					items.push( item );
 				}
 
-				const originalDomElementsHash = diffDoc.getStore().hash(
-					domElements,
-					domElements.map( ve.getNodeHtml ).join( '' )
-				);
 				const annHash = diffDoc.getStore().hash(
-					ve.dm.annotationFactory.create( annType, {
-						type: annType,
-						originalDomElementsHash: originalDomElementsHash
-					} )
+					ve.dm.annotationFactory.create( diffAnnotationElement.type, diffAnnotationElement )
 				);
 
 				// Insert annotation above annotations that span the entire range

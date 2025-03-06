@@ -1617,12 +1617,11 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		// TODO: Whitespace should be moved outside of the annotation. This is
-		// disabled because del/ins are mostly used for diffs.
+		// Whitespace is moved outside of the annotation. When this annotation was used
+		// for diffing this was not the case.
 		fromDataBody: ve.dm.example.singleLine`
 			<p>
-				<del>removed </del>
-				<ins> added</ins>
+				<del>removed</del>  <ins>added</ins>
 			</p>
 		`,
 		ceHtml: ve.dm.example.singleLine`
