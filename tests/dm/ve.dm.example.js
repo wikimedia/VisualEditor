@@ -1602,6 +1602,36 @@ ve.dm.example.domToDataCases = {
 		`,
 		previewBody: '<p>a</p>'
 	},
+	'delete and insert annotations': {
+		body: ve.dm.example.singleLine`
+			<p>
+				<del>removed </del>
+				<ins> added</ins>
+			</p>
+		`,
+		data: [
+			{ type: 'paragraph' },
+			...ve.dm.example.annotateText( 'removed ', { type: 'textStyle/delete', attributes: { nodeName: 'del' } } ),
+			...ve.dm.example.annotateText( ' added', { type: 'textStyle/insert', attributes: { nodeName: 'ins' } } ),
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		// TODO: Whitespace should be moved outside of the annotation. This is
+		// disabled because del/ins are mostly used for diffs.
+		fromDataBody: ve.dm.example.singleLine`
+			<p>
+				<del>removed </del>
+				<ins> added</ins>
+			</p>
+		`,
+		ceHtml: ve.dm.example.singleLine`
+			${ ve.dm.example.ceParagraph }
+				<del class="${ ve.dm.example.textStyleClasses } ve-ce-deleteAnnotation">removed </del>
+				<ins class="${ ve.dm.example.textStyleClasses } ve-ce-insertAnnotation"> added</ins>
+			</p>
+		`
+	},
 	'other textStyle annotations': {
 		body: ve.dm.example.singleLine`
 			<p>
