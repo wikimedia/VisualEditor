@@ -1189,26 +1189,12 @@ QUnit.test( 'Diffing', ( assert ) => {
 						Lorem ipsum sit dolor amet.
 					</p>
 				`,
-				/*
-				TODO: Actual expected:
-				<p>
-					on
-					<del data-diff-action="remove">
-						 his website at
-						<a href="http://example.org/website/" data-ignored="bar">http://example.org/</a>
-					</del>
-					<ins data-diff-action="insert"><a href="http://example.org/website/" data-ignored="bar">his</a> </ins>
-					<a href="http://example.org/website/" data-ignored="bar">website</a>.
-					Lorem ipsum sit dolor amet.
-				</p>
-				*/
 				expected: ve.dm.example.singleLine`
 					<p>
 						on
 						<del data-diff-action="remove">
 							 his website at
-							<a href="http://example.org/website/" data-ignored="bar">h</a>
-							<a href="http://example.org/website/" data-ignored="foo">ttp://example.org/</a>
+							<a href="http://example.org/website/" data-ignored="bar">http://example.org/</a>
 						</del>
 						<ins data-diff-action="insert"><a href="http://example.org/website/" data-ignored="bar">his</a> </ins>
 						<a href="http://example.org/website/" data-ignored="bar">website</a>.

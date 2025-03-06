@@ -104,8 +104,10 @@ ve.dm.Converter.static.getDataContentFromText = function ( text, annotations ) {
  * @param {ve.dm.AnnotationSet} targetSet The set of annotations we want to have.
  * @param {Function} open Callback called when an annotation is opened. Passed a ve.dm.Annotation.
  * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
+ * @param {boolean} [forSerialization=true] Compare annotations for serialization
  */
-ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
+ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSet, open, close, forSerialization ) {
+	const comparisonMethod = forSerialization !== false ? 'containsComparableForSerialization' : 'containsComparable';
 	// Close annotations as needed
 	// Go through annotationStack from bottom to top (low to high),
 	// and find the first annotation that's not in annotations.
@@ -118,7 +120,7 @@ ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSe
 			// so do a simple contains check first
 			if (
 				targetSetOpen.containsHash( hash ) ||
-				targetSetOpen.containsComparableForSerialization( currentSet.get( i ) )
+				targetSetOpen[ comparisonMethod ]( currentSet.get( i ) )
 			) {
 				targetSetOpen.removeHash( hash );
 			} else {
@@ -146,7 +148,7 @@ ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSe
 			// so do a simple contains check first
 			if (
 				currentSetOpen.containsHash( hash ) ||
-				currentSetOpen.containsComparableForSerialization( targetSet.get( i ) )
+				currentSetOpen[ comparisonMethod ]( targetSet.get( i ) )
 			) {
 				// If an annotation is already open remove it from the currentSetOpen list
 				// as it may exist multiple times in the targetSet, and so may need to be
@@ -1493,7 +1495,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 					this.store, data[ i ].annotations || data[ i ][ 1 ]
 				);
 				this.constructor.static.openAndCloseAnnotations( annotationStack, annotations,
-					openAnnotation, closeAnnotation
+					openAnnotation, closeAnnotation, !this.isForPreview()
 				);
 
 				if ( data[ i ].annotations === undefined ) {
@@ -1530,7 +1532,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			}
 			// Close any remaining annotations
 			this.constructor.static.openAndCloseAnnotations( annotationStack, new ve.dm.AnnotationSet( this.store ),
-				openAnnotation, closeAnnotation
+				openAnnotation, closeAnnotation, !this.isForPreview()
 			);
 			// Put the annotated nodes in the DOM
 			for ( let j = 0; j < annotatedDomElements.length; j++ ) {
