@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.51.6
+ * OOUI v0.51.7
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-02-21T18:19:43Z
+ * Date: 2025-03-11T00:03:34Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -524,6 +524,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-fieldsetLayout.oo-ui-iconElement > .oo-ui-fieldsetLayout-header,
 .oo-ui-fieldsetLayout.oo-ui-labelElement > .oo-ui-fieldsetLayout-header {
   display: block;
+  box-sizing: border-box;
   padding: 0;
   float: left;
   width: 100%;
@@ -1893,14 +1894,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.6
+ * OOUI v0.51.7
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-02-21T18:19:43Z
+ * Date: 2025-03-11T00:03:34Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -2593,14 +2594,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.6
+ * OOUI v0.51.7
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-02-21T18:19:43Z
+ * Date: 2025-03-11T00:03:34Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3100,14 +3101,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.6
+ * OOUI v0.51.7
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-02-21T18:19:43Z
+ * Date: 2025-03-11T00:03:34Z
  */
 
 .oo-ui-window {
@@ -3515,14 +3516,14 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 /*!
- * OOUI v0.51.6
+ * OOUI v0.51.7
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-02-21T18:19:43Z
+ * Date: 2025-03-11T00:03:34Z
  */
 .oo-ui-icon-arrowDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
