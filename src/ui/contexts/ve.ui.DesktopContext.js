@@ -26,7 +26,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.popup = new OO.ui.PopupWidget( {
 		hideWhenOutOfView: false,
 		autoFlip: false,
-		$container: config.$popupContainer || this.surface.$element,
+		$container: config.$popupContainer || this.surface.getView().$element,
 		containerPadding: config.popupPadding
 	} );
 	this.position = null;

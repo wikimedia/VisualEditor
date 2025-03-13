@@ -130,7 +130,14 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		if ( typeof caseItem.expectedHasFocus === 'boolean' ) {
 			assert.strictEqual( document.activeElement === view.getDocument().getDocumentNode().$element[ 0 ], caseItem.expectedHasFocus, msg + ': has focus' );
 		}
-		view.destroy();
+		if ( view.surface && view.surface.destroy ) {
+			// If view was created as part of a UI surface, destroy that too
+			// TODO: This should probably be done by the creator of the UI surface,
+			// but view surfaces don't emit events.
+			view.surface.destroy();
+		} else {
+			view.destroy();
+		}
 	} );
 	return promise.catch( ( error ) => {
 		assert.true( false, caseItem.msg + ': throws ' + error );
