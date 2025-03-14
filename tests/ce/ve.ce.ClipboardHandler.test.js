@@ -401,7 +401,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 				msg: 'Internal text into annotated content (noClipboardData)'
 			},
 			{
-				setViewSelection: function ( documentNode, nativeRange ) {
+				setViewSelection: ( documentNode, nativeRange ) => {
 					const boldNode = documentNode.children[ 4 ].$element.find( 'b' )[ 0 ];
 					nativeRange.setStart( boldNode.childNodes[ 0 ], 4 );
 				},
@@ -423,7 +423,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 				msg: 'Internal text into annotated content (just inside bold node)'
 			},
 			{
-				setViewSelection: function ( documentNode, nativeRange ) {
+				setViewSelection: ( documentNode, nativeRange ) => {
 					const paragraphNode = documentNode.children[ 4 ].$element[ 0 ];
 					nativeRange.setStart( paragraphNode, 1 );
 				},
@@ -445,7 +445,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 				msg: 'Internal text next to annotated content (just outside bold node)'
 			},
 			{
-				setViewSelection: function ( documentNode, nativeRange ) {
+				setViewSelection: ( documentNode, nativeRange ) => {
 					const boldNode = documentNode.children[ 4 ].$element.find( 'b' )[ 0 ];
 					nativeRange.setStart( boldNode.childNodes[ 0 ], 4 );
 				},
@@ -467,7 +467,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 				msg: 'External text into annotated content (just inside bold node)'
 			},
 			{
-				setViewSelection: function ( documentNode, nativeRange ) {
+				setViewSelection: ( documentNode, nativeRange ) => {
 					const paragraphNode = documentNode.children[ 4 ].$element[ 0 ];
 					nativeRange.setStart( paragraphNode, 1 );
 				},
@@ -492,7 +492,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 				// eslint-disable-next-line no-useless-concat
 				documentHtml: '<p><a href="Foo">Foo' + '</a> Bar</p>',
 				// cursor goes here -----------------^
-				setViewSelection: function ( documentNode, nativeRange ) {
+				setViewSelection: ( documentNode, nativeRange ) => {
 					const preCloseNail = documentNode.children[ 0 ].$element.find( '.ve-ce-nail-pre-close' )[ 0 ];
 					const textNode = preCloseNail.previousSibling;
 					nativeRange.setStart( textNode, 3 );
@@ -518,7 +518,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 				// eslint-disable-next-line no-useless-concat
 				documentHtml: '<p><a href="Foo">Bar</a>' + ' Bar</p>',
 				// cursor goes here ---------------------^
-				setViewSelection: function ( documentNode, nativeRange ) {
+				setViewSelection: ( documentNode, nativeRange ) => {
 					const paragraphNode = documentNode.children[ 0 ].$element[ 0 ];
 					// offset 3 = pre-nail + link + post-nail
 					nativeRange.setStart( paragraphNode, 3 );
@@ -1175,12 +1175,12 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					[
 						{
 							type: 'replace',
-							insert: ( function () {
+							insert: ( () => {
 								const data = ve.copy( ve.dm.example.blockImage.data );
 								// Removed by ClassAttributeNode's sanitization
 								delete data[ 0 ].attributes.unrecognizedClasses;
 								return data;
-							}() ),
+							} )(),
 							remove: []
 						},
 						{ type: 'retain', length: docLen }

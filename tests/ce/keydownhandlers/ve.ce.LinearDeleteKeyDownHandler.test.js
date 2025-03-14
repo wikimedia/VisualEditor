@@ -15,7 +15,7 @@ QUnit.module( 've.ce.LinearDeleteKeyDownHandler', {
 
 QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 	const done = assert.async(),
-		noChange = function () {},
+		noChange = () => {},
 		emptyList = '<ul><li><p></p></li></ul>',
 		blockAlien = '<div rel="ve:Alien"></div>',
 		blockAliens = blockAlien + '<p>a</p>' + blockAlien,
@@ -27,7 +27,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 4 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 3, 1 );
 				},
 				expectedRangeOrSelection: new ve.Range( 3 ),
@@ -37,7 +37,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 3 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 3, 1 );
 				},
 				expectedRangeOrSelection: new ve.Range( 3 ),
@@ -55,7 +55,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 1, 3 );
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
@@ -64,7 +64,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 1, 3 );
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
@@ -73,7 +73,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 4 ),
 				keys: [ 'CTRL+BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 1, 3 );
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
@@ -82,7 +82,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 1 ),
 				keys: [ 'CTRL+DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 1, 3 );
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
@@ -91,7 +91,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 56, 57 ),
 				keys: [ 'DELETE', 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 55, 3 );
 				},
 				expectedRangeOrSelection: new ve.Range( 56 ),
@@ -114,7 +114,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 39, 41 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 39, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 39 ),
@@ -140,7 +140,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: blockAliens,
 				rangeOrSelection: new ve.Range( 0, 2 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 0, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
@@ -150,7 +150,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: blockAliensEmptyParagraph,
 				rangeOrSelection: new ve.Range( 3 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 2, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 0, 2 ),
@@ -160,7 +160,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: blockAliensEmptyParagraph,
 				rangeOrSelection: new ve.Range( 3 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 2, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 2, 4 ),
@@ -194,7 +194,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: tablesEmptyParagraph,
 				rangeOrSelection: new ve.Range( 12 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 11, 2 );
 				},
 				expectedRangeOrSelection: {
@@ -209,7 +209,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: tablesEmptyParagraph,
 				rangeOrSelection: new ve.Range( 12 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 11, 2 );
 				},
 				expectedRangeOrSelection: {
@@ -225,7 +225,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 6 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 3, 6 );
 				},
 				expectedRangeOrSelection: new ve.Range( 4 ),
@@ -235,7 +235,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 6 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 3, 6 );
 				},
 				expectedRangeOrSelection: new ve.Range( 2 ),
@@ -245,7 +245,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 2 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 3, 6 );
 				},
 				expectedRangeOrSelection: new ve.Range( 2 ),
@@ -255,7 +255,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 10 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 3, 6 );
 				},
 				expectedRangeOrSelection: new ve.Range( 4 ),
@@ -265,7 +265,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<ul><li><p></p>' + emptyList + '</li></ul>',
 				rangeOrSelection: new ve.Range( 7 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 2, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 5 ),
@@ -274,7 +274,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 0, 61 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice(
 						0,
 						61,
@@ -289,7 +289,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: emptyList + '<p>foo</p>',
 				rangeOrSelection: new ve.Range( 3 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 0, 2 );
 					data.splice( 2, 2 );
 				},
@@ -300,7 +300,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>foo</p>' + emptyList,
 				rangeOrSelection: new ve.Range( 8 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 5, 2 );
 					data.splice( 7, 2 );
 				},
@@ -311,7 +311,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>foo</p><ul><li><p>bar</p></li></ul>',
 				rangeOrSelection: new ve.Range( 11 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 5, 2 );
 					data.splice( 10, 2 );
 				},
@@ -322,7 +322,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>foo</p><ul><li><p>bar</p></li><li><p>baz</p></li></ul>',
 				rangeOrSelection: new ve.Range( 18 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					const paragraph = data.splice( 14, 5 );
 					data.splice( 13, 2 ); // Remove the empty listItem
 					data.splice( 14, 0, ...paragraph );
@@ -334,7 +334,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li></ul>',
 				rangeOrSelection: new ve.Range( 6 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 6, 4 );
 				},
 				expectedRangeOrSelection: new ve.Range( 6 ),
@@ -344,7 +344,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li></ul>',
 				rangeOrSelection: new ve.Range( 10 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 6, 4 );
 				},
 				expectedRangeOrSelection: new ve.Range( 6 ),
@@ -354,8 +354,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>foo</p>',
 				rangeOrSelection: new ve.Range( 4 ),
 				keys: [ 'DELETE' ],
-				expectedData: function () {
-				},
+				expectedData: () => {},
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				msg: 'Delete at end of last paragraph does nothing'
 			},
@@ -363,8 +362,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>foo</p><p>bar</p><p></p>',
 				rangeOrSelection: new ve.Range( 11 ),
 				keys: [ 'DELETE' ],
-				expectedData: function () {
-				},
+				expectedData: () => {},
 				expectedRangeOrSelection: new ve.Range( 11 ),
 				msg: 'Delete at end of last empty paragraph does nothing'
 			},
@@ -372,8 +370,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<div rel="ve:Alien">foo</div><p>bar</p>',
 				rangeOrSelection: new ve.Range( 2 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function () {
-				},
+				expectedData: () => {},
 				expectedRangeOrSelection: new ve.Range( 0, 2 ),
 				msg: 'Backspace after an alien just selects it'
 			},
@@ -381,8 +378,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>bar</p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 4 ),
 				keys: [ 'DELETE' ],
-				expectedData: function () {
-				},
+				expectedData: () => {},
 				expectedRangeOrSelection: new ve.Range( 5, 7 ),
 				msg: 'Delete before an alien just selects it'
 			},
@@ -390,7 +386,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<div rel="ve:Alien">foo</div><ul><li><p>bar</p></li></ul>',
 				rangeOrSelection: new ve.Range( 5 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 2, 2 );
 					data.splice( 7, 2 );
 				},
@@ -401,8 +397,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p>baz</p><div rel="ve:Alien">foo</div><ul><li><p>bar</p></li></ul>',
 				rangeOrSelection: new ve.Range( 10 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function () {
-				},
+				expectedData: () => {},
 				expectedRangeOrSelection: new ve.Range( 5, 7 ),
 				// TODO: Make this more consistent with "List after an alien unwrapped by backspace"
 				msg: 'List after an alien after content selects the alien'
@@ -411,7 +406,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p></p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 2, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
@@ -421,7 +416,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<p></p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 2, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
@@ -431,7 +426,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 2, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 0 ),
@@ -441,7 +436,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				keys: [ 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 2, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 0 ),
@@ -451,7 +446,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: '<div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 0, 2 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 0, 2,
 						{ type: 'paragraph' },
 						{ type: '/paragraph' }
@@ -472,8 +467,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: link,
 				rangeOrSelection: new ve.Range( 5 ),
 				keys: [ 'DELETE' ],
-				expectedData: function () {
-				},
+				expectedData: () => {},
 				expectedRangeOrSelection: new ve.Range( 5 ),
 				msg: 'Delete from outside a link just activates the link'
 			},
@@ -481,7 +475,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: link,
 				rangeOrSelection: new ve.Range( 6 ),
 				keys: [ 'BACKSPACE', 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 5, 1 );
 				},
 				expectedRangeOrSelection: new ve.Range( 5 ),
@@ -492,7 +486,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: link,
 				rangeOrSelection: new ve.Range( 7 ),
 				keys: [ 'DELETE', 'DELETE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 7, 1 );
 				},
 				expectedRangeOrSelection: new ve.Range( 7 ),
@@ -503,7 +497,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				htmlOrDoc: link,
 				rangeOrSelection: new ve.Range( 8 ),
 				keys: [ 'BACKSPACE', 'BACKSPACE', 'BACKSPACE', 'BACKSPACE', 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 5, 3 );
 				},
 				expectedRangeOrSelection: new ve.Range( 5 ),

@@ -15,7 +15,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 6 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 7 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 0, { type: 'blockquote' } );
 				data.splice( 9, 0, { type: '/blockquote' } );
 			},
@@ -26,7 +26,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 2, 6 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 3, 7 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 0, 0, { type: 'blockquote' } );
 				data.splice( 9, 0, { type: '/blockquote' } );
 			},
@@ -38,7 +38,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 3, 7 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 3, 8 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 0, { type: 'blockquote' } );
 				data.splice( 9, 0, { type: '/blockquote' } );
 			},
@@ -49,7 +49,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 5, 9 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 6, 11 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 0, { type: 'blockquote' } );
 				data.splice( 9, 0, { type: '/blockquote' } );
 			},
@@ -61,7 +61,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 7 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 6 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 1 );
 				data.splice( 8, 1 );
 			},
@@ -72,7 +72,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 6, 8 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 5, 7 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 1 );
 				data.splice( 8, 1 );
 			},
@@ -83,7 +83,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 6, 7 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 5, 6 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 1 );
 				data.splice( 8, 1 );
 			},
@@ -94,7 +94,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 3, 8 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 3, 7 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 1 );
 				data.splice( 8, 1 );
 			},
@@ -105,7 +105,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 6, 11 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 5, 9 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 1 );
 				data.splice( 8, 1 );
 			},
@@ -117,7 +117,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 2, 7 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 3, 8 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 0, 0, { type: 'blockquote' } );
 				data.splice( 11, 0, { type: '/blockquote' } );
 			},
@@ -128,7 +128,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 2, 12 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 3, 13 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 0, 0, { type: 'blockquote' } );
 				data.splice( 15, 0, { type: '/blockquote' } );
 			},
@@ -140,7 +140,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 8 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 7 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 5, 1 );
 				data.splice( 9, 1 );
 			},
@@ -151,7 +151,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 3 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 2 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 0, 1 );
 				data.splice( 10, 1 );
 			},
@@ -163,7 +163,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 14 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 15 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 12, 0, { type: 'blockquote' } );
 				data.splice( 17, 0, { type: '/blockquote' } );
 			},
@@ -174,7 +174,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 8, 14 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 9, 15 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 4, 0, { type: 'blockquote' } );
 				data.splice( 25, 0, { type: '/blockquote' } );
 			},
@@ -185,7 +185,7 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 			rangeOrSelection: new ve.Range( 2, 8 ),
 			method: 'toggle',
 			expectedRangeOrSelection: new ve.Range( 3, 9 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 0, 0, { type: 'blockquote' } );
 				data.splice( 25, 0, { type: '/blockquote' } );
 			},

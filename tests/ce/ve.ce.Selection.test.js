@@ -174,14 +174,10 @@ QUnit.test( 'getDirectionality', ( assert ) => {
 
 QUnit.test( 'equals', ( assert ) => {
 	const surface1 = {
-			getFocusedNode: function () {
-				return null;
-			}
+			getFocusedNode: () => null
 		},
 		surface2 = {
-			getFocusedNode: function () {
-				return null;
-			}
+			getFocusedNode: () => null
 		},
 		modelSelection1 = new ve.dm.LinearSelection( new ve.Range( 1, 2 ) ),
 		modelSelection2 = new ve.dm.LinearSelection( new ve.Range( 2, 1 ) );

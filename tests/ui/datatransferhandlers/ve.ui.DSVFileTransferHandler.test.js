@@ -10,19 +10,15 @@ QUnit.module( 've.ui.DSVFileTransferHandler' );
 
 QUnit.test( 'getInsertableData', ( assert ) => {
 	const done = assert.async(),
-		fn = function () {},
+		fn = () => {},
 		item = {
-			getAsFile: function () {
-				return { name: 'File' };
-			}
+			getAsFile: () => ( { name: 'File' } )
 		},
 		mockSurface = {
-			createProgress: function () {
-				return ve.createDeferred().resolve(
-					{ setProgress: fn },
-					ve.createDeferred().resolve().promise()
-				).promise();
-			}
+			createProgress: () => ve.createDeferred().resolve(
+				{ setProgress: fn },
+				ve.createDeferred().resolve().promise()
+			).promise()
 		},
 		mockReader = {
 			readAsText: fn,

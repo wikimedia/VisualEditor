@@ -13,11 +13,11 @@ QUnit.test( 'commit', ( assert ) => {
 		cases = {
 			'no operations': {
 				calls: [],
-				expected: function () {}
+				expected: () => {}
 			},
 			retaining: {
 				calls: [ [ 'pushRetain', 38 ] ],
-				expected: function () {}
+				expected: () => {}
 			},
 			'changing, removing and adding attributes': {
 				calls: [
@@ -28,7 +28,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 27 ],
 					[ 'pushReplaceElementAttribute', 'src', ve.dm.example.imgSrc, undefined ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data[ 0 ].attributes.level = 2;
 					data[ 12 ].attributes.style = 'number';
 					data[ 12 ].attributes.test = 'abcd';
@@ -47,7 +47,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 0, [ ...'Foo' ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 1, 0, ...'Foo' );
 				}
 			},
@@ -56,7 +56,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 1, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 1, 1 );
 				}
 			},
@@ -65,7 +65,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 1, [ ...'Foo' ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 1, 1, ...'Foo' );
 				}
 			},
@@ -74,7 +74,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 10 ],
 					[ 'pushReplacement', 10, 1, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 10, 1 );
 				}
 			},
@@ -83,7 +83,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 1, [ ...'Foo', { type: 'inlineImage' }, { type: '/inlineImage' }, ...'Bar' ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 1, 1, ...'Foo', { type: 'inlineImage' }, { type: '/inlineImage' }, ...'Bar' );
 				}
 			},
@@ -124,7 +124,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 3 ],
 					[ 'pushReplacement', 4, 1, [ { type: '/paragraph' } ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data[ 0 ].type = 'paragraph';
 					delete data[ 0 ].attributes;
 					data[ 4 ].type = '/paragraph';
@@ -146,7 +146,7 @@ QUnit.test( 'commit', ( assert ) => {
 						[ { type: '/heading' }, { type: 'heading', attributes: { level: 1 } } ]
 					]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice(
 						2,
 						0,
@@ -160,7 +160,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 57 ],
 					[ 'pushReplacement', 57, 2, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 57, 2 );
 				}
 			},
@@ -171,7 +171,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 6 ],
 					[ 'pushReplacement', 10, 1, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 10, 1 );
 					data.splice( 3, 1 );
 				}
@@ -185,7 +185,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 3 ],
 					[ 'pushReplacement', 61, 0, [ { type: '/listItem' }, { type: '/list' } ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 61, 0, { type: '/listItem' }, { type: '/list' } );
 					data.splice( 58, 0, { type: '/listItem' }, { type: 'listItem' } );
 					data.splice( 55, 0, { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } );
@@ -200,7 +200,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 3 ],
 					[ 'pushReplacement', 53, 2, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 53, 2 );
 					data.splice( 48, 2 );
 					data.splice( 43, 2 );
@@ -215,7 +215,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 3 ],
 					[ 'pushReplacement', 53, 2, [ { type: '/listItem' }, { type: '/list' } ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 53, 2, { type: '/listItem' }, { type: '/list' } );
 					data.splice( 48, 2, { type: '/listItem' }, { type: 'listItem' } );
 					data.splice( 43, 2, { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } );
@@ -226,7 +226,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 47 ],
 					[ 'pushReplacement', 47, 4, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 47, 4 );
 				}
 			},
@@ -237,7 +237,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 57, 2, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 57, 2 );
 					data.splice( 56, 0, 'x' );
 				}
@@ -249,7 +249,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 2 ],
 					[ 'pushReplacement', 47, 4, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 47, 4 );
 					data.splice( 45, 0, { type: 'paragraph' }, 'x', { type: '/paragraph' } );
 				}
@@ -275,7 +275,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 5, 2, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 5, 2 );
 					data.splice( 2, 2 );
 				}
@@ -298,7 +298,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 5, 2, [] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 5, 2 );
 					data.splice( 2, 2 );
 				}
@@ -333,7 +333,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 6 ],
 					[ 'pushReplacement', 15, 0, [ { type: '/div' } ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 15, 0, { type: '/div' } );
 					data.splice( 9, 0, { type: 'div' } );
 					data.splice( 6, 0, { type: '/div' } );
@@ -352,7 +352,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushRetain', 4 ],
 					[ 'pushReplacement', 4, 0, [ 'b' ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 4, 0, 'b' );
 				}
 			},
@@ -373,7 +373,7 @@ QUnit.test( 'commit', ( assert ) => {
 				calls: [
 					[ 'pushReplacement', 0, 9, [ { type: 'table' }, { type: '/table' } ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 0, 3 );
 					data.splice( 2, 4, { type: 'table' }, { type: '/table' } );
 				}
@@ -401,7 +401,7 @@ QUnit.test( 'commit', ( assert ) => {
 				calls: [
 					[ 'pushReplacement', 0, 9, [ { type: 'table' }, { type: '/table' } ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					// Metadata  is merged
 					data.splice( 2, 2 );
 					data.splice( 4, 3, { type: 'table' }, { type: '/table' } );
@@ -439,7 +439,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushReplacement', 0, 9, [ { type: 'table' }, { type: '/table' } ] ],
 					[ 'pushRetain', 5 ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					// Metadata  is merged
 					data.splice( 2, 2 );
 					data.splice( 4, 3, { type: 'table' }, { type: '/table' } );
@@ -477,7 +477,7 @@ QUnit.test( 'commit', ( assert ) => {
 					[ 'pushReplacement', 0, 11, [] ],
 					[ 'pushRetain', 5 ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					// Metadata  is merged
 					data.splice( 2, 2 );
 					data.splice( 4, 3 );
@@ -491,7 +491,7 @@ QUnit.test( 'commit', ( assert ) => {
 						[ { type: 'listItem', attributes: { styles: [ 'bullet' ] } } ], []
 					]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 35, 1 ); // Remove '/list'
 					data.splice( 32, 1 ); // Remove '/listItem'
 					data.splice( 20, 1 ); // Remove 'listItem'
@@ -508,7 +508,7 @@ QUnit.test( 'commit', ( assert ) => {
 						[ { type: 'listItem', attributes: { styles: [ 'bullet' ] } } ], []
 					]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					data.splice( 35, 1 ); // Remove '/list'
 					data.splice( 32, 1 ); // Remove '/listItem'
 					data.splice( 20, 1 ); // Remove 'listItem'
@@ -522,7 +522,7 @@ QUnit.test( 'commit', ( assert ) => {
 				calls: [
 					[ 'newFromInsertion', 12, [ 'b' ] ]
 				],
-				expected: function ( data ) {
+				expected: ( data ) => {
 					ve.batchSplice( data, 12, 0, [ 'b' ] );
 				}
 			}

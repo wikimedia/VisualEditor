@@ -43,17 +43,13 @@ QUnit.test( 'getFullData', ( assert ) => {
 		{
 			msg: 'Metadata in ContentBranchNode gets moved outside by any change',
 			beforeHtml: '<p>x</p><!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
-			transaction: function ( doc ) {
-				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 13, 14 ) );
-			},
+			transaction: ( doc ) => ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 13, 14 ) ),
 			afterHtml: '<p>x</p><!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>'
 		},
 		{
 			msg: 'Metadata in ContentBranchNode is NOT removed when the whole node is removed',
 			beforeHtml: '<p>x</p><!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
-			transaction: function ( doc ) {
-				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 7, 15 ) );
-			},
+			transaction: ( doc ) => ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 7, 15 ) ),
 			afterHtml: '<p>x</p><!-- w --><meta foo="x"><meta foo="y"><p>ef<meta foo="z">gh</p>',
 			// BUG! <meta foo="y"> is not restored to the correct place after undoing
 			// EXPECTED: Same as beforeHtml
@@ -62,17 +58,13 @@ QUnit.test( 'getFullData', ( assert ) => {
 		{
 			msg: 'Removable metadata (empty annotation) in ContentBranchNode is removed by any change',
 			beforeHtml: '<p>x</p><p>ab<i></i>cd</p><p>efgh</p>',
-			transaction: function ( doc ) {
-				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 7, 8 ) );
-			},
+			transaction: ( doc ) => ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 7, 8 ) ),
 			afterHtml: '<p>x</p><p>abc</p><p>efgh</p>'
 		},
 		{
 			msg: 'Removable metadata (empty annotation) in ContentBranchNode is removed when the whole node is removed',
 			beforeHtml: '<p>x</p><p>ab<i></i>cd</p><p>efgh</p>',
-			transaction: function ( doc ) {
-				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 3, 9 ) );
-			},
+			transaction: ( doc ) => ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 3, 9 ) ),
 			afterHtml: '<p>x</p><p>efgh</p>',
 			// BUG! <i></i> is not restored
 			// EXPECTED: Same as beforeHtml
@@ -81,9 +73,7 @@ QUnit.test( 'getFullData', ( assert ) => {
 		{
 			msg: 'When annotated metadata gets moved out of a ContentBranchNode, the annotations are removed',
 			beforeHtml: '<p><i>ab<meta foo="x">cd</i></p>',
-			transaction: function ( doc ) {
-				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 1, 2 ) );
-			},
+			transaction: ( doc ) => ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 1, 2 ) ),
 			afterHtml: '<p><i>bcd</i></p><meta foo="x">'
 		}
 	];

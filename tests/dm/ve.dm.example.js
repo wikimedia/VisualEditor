@@ -1502,7 +1502,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		modify: function ( doc ) {
+		modify: ( doc ) => {
 			doc.commit( ve.dm.TransactionBuilder.static.newFromRemoval(
 				doc,
 				new ve.Range( 4, 5 )
@@ -1793,7 +1793,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		modify: function ( doc ) {
+		modify: ( doc ) => {
 			doc.commit( ve.dm.TransactionBuilder.static.newFromAnnotation(
 				doc,
 				new ve.Range( 3, 6 ),
@@ -2283,7 +2283,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		// Inserting content doesn't result in a real <p> node
-		modify: function ( doc ) {
+		modify: ( doc ) => {
 			doc.commit( ve.dm.TransactionBuilder.static.newFromInsertion(
 				doc,
 				3,

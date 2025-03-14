@@ -57,11 +57,11 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 			},
 			{
 				msg: 'multi cell selection (expanded)',
-				selection: ( function () {
+				selection: ( () => {
 					let sel = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 );
 					sel = sel.expand( doc );
 					return sel;
-				}() ),
+				} )(),
 				fromCol: 2,
 				fromRow: 2,
 				toCol: 0,

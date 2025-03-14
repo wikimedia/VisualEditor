@@ -156,9 +156,7 @@
 		};
 		if ( !Object.prototype.hasOwnProperty.call( store, 'length' ) ) {
 			Object.defineProperty( store, 'length', {
-				get: function () {
-					return Object.keys( store ).length;
-				}
+				get: () => Object.keys( store ).length
 			} );
 		}
 

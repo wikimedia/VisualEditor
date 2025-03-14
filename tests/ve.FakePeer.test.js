@@ -9,7 +9,7 @@ QUnit.module( 've.FakePeer' );
 QUnit.test( 'interactions', ( assert ) => {
 	const log = [];
 	const done = assert.async();
-	const finalCheck = function () {
+	const finalCheck = () => {
 		const expectedLog = [
 			'peer0open p0',
 			'peer1open p1',
@@ -22,10 +22,8 @@ QUnit.test( 'interactions', ( assert ) => {
 		done();
 	};
 
-	const mkPeer = function () {
-		// return new Peer( undefined, { host: 'localhost', port: 9000, path: '/myapp' } );
-		return new ve.FakePeer();
-	};
+	// new Peer( undefined, { host: 'localhost', port: 9000, path: '/myapp' } );
+	const mkPeer = () => new ve.FakePeer();
 	const peer0 = mkPeer();
 	peer0.on( 'open', ( peer0Id ) => {
 		log.push( 'peer0open ' + peer0Id );

@@ -13,13 +13,9 @@ ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, m
 		item = ve.ui.DataTransferItem.static.newFromString( string, mimeType, htmlString ),
 		doc = ve.dm.example.createExampleDocument( null, null, base ),
 		mockSurface = {
-			getModel: function () {
-				return {
-					getDocument: function () {
-						return doc;
-					}
-				};
-			}
+			getModel: () => ( {
+				getDocument: () => doc
+			} )
 		},
 		linkAction = ve.ui.actionFactory.create( 'link', mockSurface ),
 		makeLinkAnnotation = function ( href ) {
@@ -42,7 +38,7 @@ QUnit.test( 'paste', ( assert ) => {
 			msg: 'Simple external link',
 			pasteString: 'http://example.com',
 			pasteType: 'text/plain',
-			expectedData: function ( makeAnnotation ) {
+			expectedData: ( makeAnnotation ) => {
 				const a = makeAnnotation( 'http://example.com' );
 				return [
 					[ 'h', [ a ] ],
@@ -70,7 +66,7 @@ QUnit.test( 'paste', ( assert ) => {
 			msg: 'DnD standard URI list without HTML',
 			pasteString: '#comment\nhttp://example.com\n',
 			pasteType: 'text/uri-list',
-			expectedData: function ( makeAnnotation ) {
+			expectedData: ( makeAnnotation ) => {
 				const a = makeAnnotation( 'http://example.com' );
 				return [
 					[ 'h', [ a ] ],
@@ -99,7 +95,7 @@ QUnit.test( 'paste', ( assert ) => {
 			pasteString: '#comment\nhttp://example.com\n',
 			pasteType: 'text/uri-list',
 			pasteHtml: '<a href="http://example.com/foo">Foo</a>',
-			expectedData: function ( makeAnnotation ) {
+			expectedData: ( makeAnnotation ) => {
 				const a = makeAnnotation( 'http://example.com/foo' );
 				return [
 					[ 'F', [ a ] ],
@@ -112,7 +108,7 @@ QUnit.test( 'paste', ( assert ) => {
 			msg: 'Mozilla URI list',
 			pasteString: 'http://example.com\n[[Foo]]\nhttp://example.org\nBar',
 			pasteType: 'text/x-moz-url',
-			expectedData: function ( makeAnnotation ) {
+			expectedData: ( makeAnnotation ) => {
 				const a1 = makeAnnotation( 'http://example.com' ),
 					a2 = makeAnnotation( 'http://example.org' );
 				return [

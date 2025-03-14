@@ -768,7 +768,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				doc: 'internalData',
 				offset: 7,
 				range: new ve.Range( 7, 12 ),
-				modify: function ( newDoc ) {
+				modify: ( newDoc ) => {
 					// Change "Bar" to "Bazaar"
 					newDoc.commit( ve.dm.TransactionBuilder.static.newFromInsertion(
 						newDoc, 3, [ ...'zaa' ]
@@ -805,7 +805,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				doc: 'internalData',
 				offset: 14,
 				range: new ve.Range( 14, 19 ),
-				modify: function ( newDoc ) {
+				modify: ( newDoc ) => {
 					// Bold the first two characters
 					newDoc.commit( ve.dm.TransactionBuilder.static.newFromAnnotation(
 						newDoc, new ve.Range( 1, 3 ), 'set', bold
@@ -846,7 +846,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				doc: 'internalData',
 				offset: 21,
 				range: new ve.Range( 21, 27 ),
-				modify: function ( newDoc ) {
+				modify: ( newDoc ) => {
 					const insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
 					newDoc.commit( insertion.transaction );
 				},
@@ -881,7 +881,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				doc: 'internalData',
 				offset: 21,
 				range: new ve.Range( 21, 27 ),
-				modify: function ( newDoc ) {
+				modify: ( newDoc ) => {
 					newDoc.commit( ve.dm.TransactionBuilder.static.newFromInsertion(
 						newDoc, 12, [ ...'!!!' ]
 					) );
@@ -918,7 +918,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				doc: 'internalData',
 				offset: 7,
 				range: new ve.Range( 7, 12 ),
-				modify: function ( newDoc ) {
+				modify: ( newDoc ) => {
 					const insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
 					newDoc.commit( insertion.transaction );
 				},

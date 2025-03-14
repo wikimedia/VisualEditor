@@ -17,7 +17,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 1, 3,
 						[ 'F', [ newBold ] ],
 						[ 'o', [ newBold ] ],
@@ -31,7 +31,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				rangeOrSelection: new ve.Range( 7, 10 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 7, 3, ...'baz' );
 				},
 				msg: 'toggle bold on strong text'
@@ -41,7 +41,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				rangeOrSelection: new ve.Range( 4, 10 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 4, 6, ...'barbaz' );
 				},
 				msg: 'toggle bold on bold then strong text'
@@ -51,7 +51,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				rangeOrSelection: new ve.Range( 1, 14 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 1, 3,
 						[ 'F', [ newBold ] ],
 						[ 'o', [ newBold ] ],
@@ -71,7 +71,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				rangeOrSelection: new ve.Range( 14, 21 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 15, 5,
 						[ 'w', [ newBold ] ],
 						[ 'h', [ newBold ] ],
@@ -94,7 +94,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				},
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 5, 3, ...'Foo' );
 					data.splice( 12, 3, ...'Bar' );
 				},
@@ -112,7 +112,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				},
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 5, 1, 'A' );
 				},
 				msg: 'toggle bold off when selection includes an content-less cell'
@@ -129,7 +129,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				},
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 9, 1, 'A' );
 				},
 				msg: 'toggle bold off when first cell is content-less cell'

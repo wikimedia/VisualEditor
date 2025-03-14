@@ -15,7 +15,7 @@ QUnit.module( 've.ce.LinearEscapeKeyDownHandler', {
 
 QUnit.test( 'special key down: linear escape', ( assert ) => {
 	const done = assert.async(),
-		noChange = function () {},
+		noChange = () => {},
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		cases = [
 			{

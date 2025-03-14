@@ -64,10 +64,10 @@ QUnit.test( 'setDocument', ( assert ) => {
 		detachEvents = [ '-para1', '-listItem1', '-para2', '-listItem2', '-list' ];
 
 	doc.connect( doc, {
-		nodeAttached: function ( node ) {
+		nodeAttached: ( node ) => {
 			log.push( '+' + node.label );
 		},
-		nodeDetached: function ( node ) {
+		nodeDetached: ( node ) => {
 			log.push( '-' + node.label );
 		}
 	} );

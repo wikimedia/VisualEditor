@@ -6,18 +6,16 @@
 
 /* eslint-disable camelcase */
 
+// Fake time in seconds
+const mockNow = 1000000;
+
 QUnit.module( 've.init.ConflictableStorage', {
 	beforeEach: function () {
-		// Fake time in seconds
-		const mockNow = 1000000;
-		this.now = Date.now;
-		this.mockNow = mockNow;
-		Date.now = function () {
-			return mockNow * 1000;
-		};
+		this.originalNow = Date.now;
+		Date.now = () => mockNow * 1000;
 	},
 	afterEach: function () {
-		Date.now = this.now;
+		Date.now = this.originalNow;
 	}
 } );
 
@@ -39,7 +37,7 @@ QUnit.test( 'Basic methods', ( assert ) => {
 	assert.false( 'foo' in store, 'Object removed' );
 } );
 
-QUnit.test( 'Conflict handling', function ( assert ) {
+QUnit.test( 'Conflict handling', ( assert ) => {
 	const store = {},
 		conflictableKeys = {
 			foo: true,
@@ -49,12 +47,12 @@ QUnit.test( 'Conflict handling', function ( assert ) {
 		storageA = ve.init.platform.createSessionStorage( store, true ),
 		storageB = ve.init.platform.createSessionStorage( store, true );
 
-	function getData( s ) {
+	const getData = ( s ) => {
 		const copy = ve.copy( s );
 		// eslint-disable-next-line no-underscore-dangle
 		delete copy.__conflictId;
 		return copy;
-	}
+	};
 
 	storageA.addConflictableKeys( conflictableKeys );
 	storageB.addConflictableKeys( conflictableKeys );
@@ -103,7 +101,7 @@ QUnit.test( 'Conflict handling', function ( assert ) {
 	assert.deepEqual(
 		getData( store ),
 		{
-			_EXPIRY_bar: String( this.mockNow + 1000 ),
+			_EXPIRY_bar: String( mockNow + 1000 ),
 			bar: 'expires',
 			unmanagedKey: 'data'
 		},
@@ -123,7 +121,7 @@ QUnit.test( 'Conflict handling', function ( assert ) {
 	assert.deepEqual(
 		getData( store ),
 		{
-			_EXPIRY_bar: String( this.mockNow + 1000 ),
+			_EXPIRY_bar: String( mockNow + 1000 ),
 			bar: 'expires',
 			unmanagedKey: 'data'
 		},
@@ -142,7 +140,7 @@ QUnit.test( 'Conflict handling', function ( assert ) {
 	assert.deepEqual(
 		getData( store ),
 		{
-			_EXPIRY_existing: String( this.mockNow + 2000 ),
+			_EXPIRY_existing: String( mockNow + 2000 ),
 			existing: 'expires',
 			unmanagedKey: 'data'
 		},

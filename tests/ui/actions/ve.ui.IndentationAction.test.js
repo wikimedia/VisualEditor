@@ -14,7 +14,7 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 			rangeOrSelection: new ve.Range( 13, 14 ),
 			method: 'increase',
 			expectedRangeOrSelection: new ve.Range( 13, 14 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 20, 0, { type: '/listItem' }, { type: '/list' } );
 				data.splice( 10, 1, { type: 'list', attributes: { style: 'bullet' } } );
 			},
@@ -25,7 +25,7 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 			rangeOrSelection: new ve.Range( 14, 16 ),
 			method: 'decrease',
 			expectedRangeOrSelection: new ve.Range( 14, 16 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 11, 2, { type: '/list' }, { type: 'paragraph' } );
 				data.splice( 19, 2, { type: '/paragraph' }, { type: 'list', attributes: { style: 'bullet' } } );
 			},
@@ -36,7 +36,7 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 			rangeOrSelection: new ve.Range( 3, 19 ),
 			method: 'decrease',
 			expectedRangeOrSelection: new ve.Range( 1, 15 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 0, 2 );
 				data.splice( 8, 2 );
 				data.splice( 16, 1, { type: 'list', attributes: { style: 'bullet' } } );
@@ -50,7 +50,7 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 			rangeOrSelection: new ve.Range( 3, 19 ),
 			method: 'increase',
 			expectedRangeOrSelection: new ve.Range( 5, 21 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 0, 0, { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } );
 				data.splice( 23, 0, { type: '/list' }, { type: '/listItem' } );
 			},
@@ -62,7 +62,7 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 			rangeOrSelection: new ve.Range( 2 ),
 			method: 'decrease',
 			expectedRangeOrSelection: new ve.Range( 0 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 13, 2 );
 				data.splice( 0, 2 );
 			},
@@ -74,7 +74,7 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 			rangeOrSelection: new ve.Range( 2 ),
 			method: 'increase',
 			expectedRangeOrSelection: new ve.Range( 4 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 15, 0, { type: '/listItem' }, { type: '/list' } );
 				data.splice( 0, 0, { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } );
 			},
@@ -89,7 +89,7 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 			rangeOrSelection: new ve.Range( 9 ),
 			method: 'decrease',
 			expectedRangeOrSelection: new ve.Range( 9 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 11, 2 );
 				data.splice( 5, 1, { type: '/listItem' } );
 			},
@@ -115,7 +115,7 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 				toCol: 0,
 				toRow: 0
 			},
-			expectedData: function () {},
+			expectedData: () => {},
 			msg: 'no-op on a table selection'
 		}
 	];

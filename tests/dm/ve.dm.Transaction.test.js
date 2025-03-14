@@ -247,10 +247,10 @@ QUnit.test( 'Metadata transactions', ( assert ) => {
 	const surface = new ve.dm.Surface( doc );
 	const fragment = surface.getFragment();
 	metaList.connect( null, {
-		insert: function ( item ) {
+		insert: ( item ) => {
 			events.push( [ 'insert', item.element ] );
 		},
-		remove: function ( item ) {
+		remove: ( item ) => {
 			events.push( [ 'remove', item.element ] );
 		}
 	} );

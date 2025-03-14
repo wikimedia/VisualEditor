@@ -7,7 +7,7 @@
 QUnit.module( 've.ce.DragDropHandler' );
 
 QUnit.test( 'onDocumentDragStart/onDocumentDrop', ( assert ) => {
-	const noChange = function () {},
+	const noChange = () => {},
 		cases = [
 			{
 				msg: 'Simple drag and drop',
@@ -17,7 +17,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', ( assert ) => {
 					'text/html': 'a<b>b</b><i>c</i>',
 					'text/plain': 'abc'
 				},
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					const removed = data.splice( 1, 3 );
 					data.splice( 7, 0, ...removed );
 				},
@@ -45,16 +45,14 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', ( assert ) => {
 			mockEvent = {
 				originalEvent: {
 					dataTransfer: {
-						setData: function ( key, value ) {
+						setData: ( key, value ) => {
 							dataTransfer[ key ] = value;
 						},
-						getData: function ( key ) {
-							return dataTransfer[ key ];
-						}
+						getData: ( key ) => dataTransfer[ key ]
 					}
 				},
-				preventDefault: function () {},
-				stopPropagation: function () {}
+				preventDefault: () => {},
+				stopPropagation: () => {}
 			};
 
 		// Mock drop coords

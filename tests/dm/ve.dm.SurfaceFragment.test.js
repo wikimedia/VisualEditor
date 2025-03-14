@@ -410,7 +410,7 @@ QUnit.test( 'delete', ( assert ) => {
 		{
 			range: new ve.Range( 1, 4 ),
 			directionAfterRemove: -1,
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 1, 3 );
 			},
 			expectedRange: new ve.Range( 1 ),
@@ -419,7 +419,7 @@ QUnit.test( 'delete', ( assert ) => {
 		{
 			range: new ve.Range( 1, 4 ),
 			directionAfterRemove: 1,
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 1, 3 );
 			},
 			expectedRange: new ve.Range( 1 ),
@@ -428,7 +428,7 @@ QUnit.test( 'delete', ( assert ) => {
 		{
 			range: new ve.Range( 39, 41 ),
 			directionAfterRemove: 1,
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 39, 2 );
 			},
 			expectedRange: new ve.Range( 39 ),
@@ -436,7 +436,7 @@ QUnit.test( 'delete', ( assert ) => {
 		},
 		{
 			range: new ve.Range( 39, 41 ),
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice( 39, 2 );
 			},
 			expectedRange: new ve.Range( 39 ),
@@ -445,7 +445,7 @@ QUnit.test( 'delete', ( assert ) => {
 		{
 			range: new ve.Range( 0, 63 ),
 			directionAfterRemove: -1,
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice(
 					0,
 					61,
@@ -460,7 +460,7 @@ QUnit.test( 'delete', ( assert ) => {
 			html: '<div rel="ve:Alien">Foo</div><p>Bar</p>',
 			range: new ve.Range( 0, 6 ),
 			directionAfterRemove: -1,
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice(
 					0,
 					7,
@@ -475,7 +475,7 @@ QUnit.test( 'delete', ( assert ) => {
 			html: '<div rel="ve:Alien">Foo</div><p>Bar</p><div rel="ve:Alien">Baz</div>',
 			range: new ve.Range( 0, 9 ),
 			directionAfterRemove: -1,
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				data.splice(
 					0,
 					9,
@@ -490,7 +490,7 @@ QUnit.test( 'delete', ( assert ) => {
 			html: '<p>foo</p><meta><p>bar</p>',
 			range: new ve.Range( 3, 9 ),
 			directionAfterRemove: -1,
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				const meta = data.slice( 5, 7 );
 				data.splice( 3, 6 );
 				data.splice( 0, 0, ...meta );
@@ -502,7 +502,7 @@ QUnit.test( 'delete', ( assert ) => {
 			html: '<h2>foo</h2><meta><p>bar</p>',
 			range: new ve.Range( 3, 9 ),
 			directionAfterRemove: -1,
-			expectedData: function ( data ) {
+			expectedData: ( data ) => {
 				const meta = data.slice( 5, 7 );
 				const ar = data.slice( 9, 11 );
 				data.splice( 5, 7 );

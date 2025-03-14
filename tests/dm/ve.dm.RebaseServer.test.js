@@ -66,7 +66,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ '2', 'assertHist', 'AB?/CD!' ],
 				// Client 2 receives abc and rebases over it
 				[ '2', 'receive' ],
-				[ '2', 'assert', function ( client ) {
+				[ '2', 'assert', ( client ) => {
 					assert.true( Array.isArray( client.doc.completeHistory.storeLengthAtTransaction ), 'storeLengthAtTransaction array not clobbered by rebase' );
 				} ],
 				[ '2', 'assertHist', 'abc/AB?/CD!' ],
@@ -243,7 +243,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 						}
 					}
 				} ],
-				[ '1', 'assert', function ( client ) {
+				[ '1', 'assert', ( client ) => {
 					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store' );
 				} ],
@@ -263,7 +263,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ 'server', 'assertHist', 'a' ],
 				[ '1', 'receive' ],
 				[ '1', 'assertHist', 'a/XYZ!' ],
-				[ '1', 'assert', function ( client ) {
+				[ '1', 'assert', ( client ) => {
 					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after the first rebase' );
 				} ],
@@ -272,7 +272,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ 'server', 'assertHist', 'ab' ],
 				[ '1', 'receive' ],
 				[ '1', 'assertHist', 'ab/XYZ!' ],
-				[ '1', 'assert', function ( client ) {
+				[ '1', 'assert', ( client ) => {
 					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after the second rebase' );
 				} ],
@@ -357,7 +357,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 						}
 					}
 				} ],
-				[ '1', 'assert', function ( client ) {
+				[ '1', 'assert', ( client ) => {
 					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store' );
 				} ],
@@ -367,7 +367,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ 'server', 'assertHist', 'ab' ],
 				[ '1', 'receive' ],
 				[ '1', 'assertHist', 'ab/Q?/XYZ!' ],
-				[ '1', 'assert', function ( client ) {
+				[ '1', 'assert', ( client ) => {
 					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					// FIXME this fails. If uncommitted = client.getChangeSince( client.commitLength, false );
 					// then we expect uncommitted.getStore( 1 ) to contain 'h123', but instead uncommitted.getStore( 0 ) does.
@@ -379,7 +379,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ 'server', 'assertHist', 'abQ' ],
 				[ '1', 'receive' ],
 				[ '1', 'assertHist', 'abQ/XYZ!' ],
-				[ '1', 'assert', function ( client ) {
+				[ '1', 'assert', ( client ) => {
 					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after receiving our own change' );
 				} ],
@@ -394,7 +394,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ '2', 'receive' ],
 				[ '2', 'receive' ],
 				[ '2', 'receive' ],
-				[ '2', 'assert', function ( client ) {
+				[ '2', 'assert', ( client ) => {
 					const lastChange = client.getChangeSince( 3, false );
 					assert.deepEqual( lastChange.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store on the other side' );
 				} ]

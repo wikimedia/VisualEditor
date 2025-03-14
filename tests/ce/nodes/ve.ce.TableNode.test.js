@@ -72,7 +72,7 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 		e = {
 			target: cell.$element[ 0 ],
 			originalEvent: { pageX: 0, pageY: 0 },
-			preventDefault: function () {}
+			preventDefault: () => {}
 		};
 
 	// Fake ve.ce.Surface#getOffsetFromCoords (the method doesn't work properly in this unit
@@ -137,7 +137,7 @@ QUnit.test( 'onTableMouseDown', ( assert ) => {
 		tableNode = documentNode.children[ 0 ],
 		$tableNode = tableNode.$element,
 		mockEvent = {
-			preventDefault: function () {}
+			preventDefault: () => {}
 		},
 		cases = [
 			{

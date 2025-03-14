@@ -42,7 +42,7 @@ QUnit.test( 'resize events', ( assert ) => {
 		documentNode = view.getDocument().getDocumentNode(),
 		resizableNode = documentNode.children[ 0 ].children[ 0 ],
 		mockEvent = {
-			preventDefault: function () {}
+			preventDefault: () => {}
 		};
 
 	// Focusing the resizable node triggers the display of the handles. Thus,

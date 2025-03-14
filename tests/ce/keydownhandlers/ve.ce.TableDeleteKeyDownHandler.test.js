@@ -28,7 +28,7 @@ QUnit.test( 'special key down: table backspace/delete', ( assert ) => {
 					toRow: 1
 				},
 				keys: [ 'BACKSPACE' ],
-				expectedData: function ( data ) {
+				expectedData: ( data ) => {
 					data.splice( 4, 3,
 						{ type: 'paragraph', internal: { generated: 'wrapper' } },
 						{ type: '/paragraph' }

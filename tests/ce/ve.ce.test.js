@@ -341,10 +341,8 @@ QUnit.test( 'fakeImes', ( assert ) => {
 	}
 
 	// TODO: make this function actually affect the events triggered
-	const fakePreventDefault = function () {};
-	const fakeIsPreventDefault = function () {
-		return false;
-	};
+	const fakePreventDefault = () => {};
+	const fakeIsPreventDefault = () => false;
 
 	ve.ce.imetests.forEach( ( caseItem ) => {
 		const testName = caseItem[ 0 ];

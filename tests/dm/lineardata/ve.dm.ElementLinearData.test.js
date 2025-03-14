@@ -848,9 +848,7 @@ QUnit.test( 'getRelativeOffset', ( assert ) => {
 			offset: 0,
 			distance: 1,
 			data: [],
-			callback: function () {
-				return false;
-			},
+			callback: () => false,
 			expected: -1
 		},
 		{
@@ -858,9 +856,7 @@ QUnit.test( 'getRelativeOffset', ( assert ) => {
 			offset: 0,
 			distance: 2,
 			data: [ ...'ab' ],
-			callback: function () {
-				return true;
-			},
+			callback: () => true,
 			expected: 2
 		},
 		{

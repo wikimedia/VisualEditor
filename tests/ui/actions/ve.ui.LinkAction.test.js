@@ -16,7 +16,7 @@ QUnit.test( 'autolink', ( assert ) => {
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 19 ),
 			expectedOriginalRangeOrSelection: new ve.Range( 19 ),
-			expectedData: function ( data, action ) {
+			expectedData: ( data, action ) => {
 				const a = action.getLinkAnnotation( 'http://example.com' );
 				for ( let i = 1; i < 19; i++ ) {
 					data[ i ] = [ data[ i ], [ a.element ] ];
@@ -31,7 +31,7 @@ QUnit.test( 'autolink', ( assert ) => {
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 19 ),
 			expectedOriginalRangeOrSelection: new ve.Range( 19 ),
-			expectedData: function ( data, action ) {
+			expectedData: ( data, action ) => {
 				const a = action.getLinkAnnotation( 'http://example.com' );
 				for ( let i = 1; i < 19; i++ ) {
 					data[ i ] = [ data[ i ], [ a.element ] ];
@@ -46,7 +46,7 @@ QUnit.test( 'autolink', ( assert ) => {
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 19 ),
 			expectedOriginalRangeOrSelection: new ve.Range( 19 ),
-			expectedData: function ( data, action ) {
+			expectedData: ( data, action ) => {
 				const a = action.getLinkAnnotation( 'Http://Example.COm' );
 				for ( let i = 1; i < 19; i++ ) {
 					data[ i ] = [ data[ i ], [ a.element ] ];
@@ -61,7 +61,7 @@ QUnit.test( 'autolink', ( assert ) => {
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 21 ),
 			expectedOriginalRangeOrSelection: new ve.Range( 21 ),
-			expectedData: function ( data, action ) {
+			expectedData: ( data, action ) => {
 				const a = action.getLinkAnnotation( 'http://example.com' );
 				for ( let i = 1; i < 19; i++ ) {
 					data[ i ] = [ data[ i ], [ a.element ] ];
@@ -76,7 +76,7 @@ QUnit.test( 'autolink', ( assert ) => {
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 21 ),
 			expectedOriginalRangeOrSelection: new ve.Range( 21 ),
-			expectedData: function ( data, action ) {
+			expectedData: ( data, action ) => {
 				const a = action.getLinkAnnotation( 'http://example.com' );
 				for ( let i = 2; i < 20; i++ ) {
 					data[ i ] = [ data[ i ], [ a.element ] ];
@@ -90,7 +90,7 @@ QUnit.test( 'autolink', ( assert ) => {
 			rangeOrSelection: new ve.Range( 1, 19 ),
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 1, 19 ),
-			expectedData: function () {
+			expectedData: () => {
 				// No change, no link
 			},
 			msg: 'Don\'t link if followed by word characters'
@@ -100,7 +100,7 @@ QUnit.test( 'autolink', ( assert ) => {
 			rangeOrSelection: new ve.Range( 1, 10 ),
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 1, 10 ),
-			expectedData: function () {
+			expectedData: () => {
 				// No change, no link
 			},
 			msg: 'Don\'t link if stripping leaves bare protocol'

@@ -484,7 +484,7 @@ QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFro
 	assert.equalRange( surface.getRangeFromSourceOffsets( 8 ), new ve.Range( 11 ), 'Collapsed range (1 arg)' );
 } );
 
-QUnit.test( 'autosave', function ( assert ) {
+QUnit.test( 'autosave', ( assert ) => {
 	const storage = ve.init.platform.sessionStorage,
 		done = assert.async(),
 		state = {
@@ -582,7 +582,7 @@ QUnit.test( 'autosave', function ( assert ) {
 		s.undo();
 		assert.equalHash( s.getSelection(), { type: 'linear', range: { type: 'range', from: 7, to: 7 } }, 'Document selection guessed after undo' );
 		done();
-	} ).bind( this, surface ) );
+	} ).bind( null, surface ) );
 
 	ve.init.platform.storageDisabled = true;
 	assert.strictEqual( surface.restoreChanges(), false, 'restoreChanges returns false if session storage disabled' );

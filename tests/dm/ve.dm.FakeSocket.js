@@ -23,16 +23,14 @@ ve.dm.FakeSocket.static.makeServer = function () {
 	const sockets = [],
 		log = [];
 
-	const getRoom = function ( roomName ) {
-		return { emit: ( ...args ) => {
-			sockets.forEach( ( socket ) => {
-				if ( socket.rooms.has( roomName ) ) {
-					socket.emit( ...args );
-				}
-			} );
-		} };
-	};
-	const reset = function () {
+	const getRoom = ( roomName ) => ( { emit: ( ...args ) => {
+		sockets.forEach( ( socket ) => {
+			if ( socket.rooms.has( roomName ) ) {
+				socket.emit( ...args );
+			}
+		} );
+	} } );
+	const reset = () => {
 		sockets.length = 0;
 		log.length = 0;
 	};

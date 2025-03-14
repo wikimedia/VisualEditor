@@ -16,9 +16,7 @@ QUnit.test( 'rebaseTransactions', ( assert ) => {
 		insert1X = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'x' ] ),
 		insert1Y = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'y' ] ),
 		annotate12 = ve.dm.TransactionBuilder.static.newFromAnnotation( doc, new ve.Range( 1, 2 ), 'set', bold ),
-		rebasedOnto = function ( tx1, tx2 ) {
-			return ve.dm.Change.static.rebaseTransactions( tx1, tx2 )[ 0 ];
-		};
+		rebasedOnto = ( tx1, tx2 ) => ve.dm.Change.static.rebaseTransactions( tx1, tx2 )[ 0 ];
 	assert.deepEqual( rebasedOnto( replace23, replace12 ).operations, [
 		{
 			type: 'retain',
@@ -117,11 +115,9 @@ QUnit.test( 'rebaseTransactions', ( assert ) => {
 
 QUnit.test( 'Change operations', ( assert ) => {
 	const origData = [ { type: 'paragraph' }, ...'three', { type: '/paragraph' } ],
-		newSurface = function () {
-			return new ve.dm.Surface(
-				ve.dm.example.createExampleDocumentFromData( origData )
-			);
-		};
+		newSurface = () => new ve.dm.Surface(
+			ve.dm.example.createExampleDocumentFromData( origData )
+		);
 	let surface = newSurface();
 	const emptyStore = new ve.dm.HashValueStore(),
 		doc = surface.documentModel,
@@ -247,11 +243,9 @@ QUnit.test( 'Change operations', ( assert ) => {
 
 QUnit.test( 'Rebase with conflicting annotations', ( assert ) => {
 	const origData = [ { type: 'paragraph' }, 'A', { type: '/paragraph' } ],
-		newSurface = function () {
-			return new ve.dm.Surface(
-				ve.dm.example.createExampleDocumentFromData( origData )
-			);
-		},
+		newSurface = () => new ve.dm.Surface(
+			ve.dm.example.createExampleDocumentFromData( origData )
+		),
 		surface = newSurface(),
 		doc = surface.documentModel,
 		TxRemove = ve.dm.TransactionBuilder.static.newFromRemoval,
@@ -284,11 +278,9 @@ QUnit.test( 'Rebase with conflicting annotations', ( assert ) => {
 
 QUnit.test( 'toJSON/deserialize/unsafeDeserialize', ( assert ) => {
 	const origData = [ { type: 'paragraph' }, ...'Bar', { type: '/paragraph' } ],
-		newSurface = function () {
-			return new ve.dm.Surface(
-				ve.dm.example.createExampleDocumentFromData( origData )
-			);
-		},
+		newSurface = () => new ve.dm.Surface(
+			ve.dm.example.createExampleDocumentFromData( origData )
+		),
 		surface = newSurface(),
 		emptyStore = new ve.dm.HashValueStore(),
 		doc = surface.documentModel,
@@ -522,7 +514,7 @@ QUnit.test( 'Same-offset typing', ( assert ) => {
 		emptyStore = new ve.dm.HashValueStore(),
 		doc = surface.documentModel,
 		saved = doc.completeHistory.toJSON(),
-		clear = function () {
+		clear = () => {
 			doc.getChangeSince( 0 ).reversed().applyTo( surface );
 			doc.completeHistory = ve.dm.Change.static.deserialize( saved );
 			doc.store = doc.completeHistory.store;
