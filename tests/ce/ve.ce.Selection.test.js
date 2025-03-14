@@ -14,7 +14,12 @@ QUnit.test( 'Rects', ( assert ) => {
 				<div style="position: absolute; width: 150px; height: 500px;">bar</div>
 			</div>
 			<p></p>
-			<table><tr><td style="width: 200px; height: 50px; border: 0; padding: 0; line-height: 0;"></td></tr></table>
+			<table style="border-collapse: collapse;">
+				<tr>
+					<td style="width: 100px; height: 50px; border: 0; padding: 0; line-height: 0;"></td>
+					<td style="width: 100px; height: 50px; border: 0; padding: 0; line-height: 0;"></td>
+				</tr>
+			</table>
 		`,
 		view = ve.test.utils.createSurfaceViewFromHtml( html ),
 		slugHeight = view.getDocument().getDocumentNode().children[ 2 ].$element[ 0 ].childNodes[ 0 ].offsetHeight,
@@ -48,11 +53,12 @@ QUnit.test( 'Rects', ( assert ) => {
 			{
 				rangeOrSelection: {
 					type: 'table',
-					tableRange: new ve.Range( 6, 16 ),
+					tableRange: new ve.Range( 6, 20 ),
 					fromCol: 0,
 					fromRow: 0
 				},
-				expectedRects: [ { width: 200, height: 50 } ],
+				expectedRects: [ { width: 100, height: 50 } ],
+				expectedTableBoundingRect: { width: 200, height: 50 },
 				msg: 'Table selection'
 			}
 		];
@@ -97,6 +103,13 @@ QUnit.test( 'Rects', ( assert ) => {
 				{ start: caseItem.expectedRects[ 0 ], end: caseItem.expectedRects[ 0 ] },
 			caseItem.msg + ': start and end rects'
 		);
+		if ( caseItem.expectedTableBoundingRect ) {
+			assert.deepEqual(
+				ve.copy( view.getSelection().getTableBoundingRect(), null, filterProps ),
+				caseItem.expectedTableBoundingRect,
+				caseItem.msg + ': table bounding rect'
+			);
+		}
 	} );
 
 	view.destroy();
