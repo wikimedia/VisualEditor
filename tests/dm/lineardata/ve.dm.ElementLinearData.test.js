@@ -2322,10 +2322,25 @@ QUnit.test( 'compareElements and compareElementsUnannotated', ( assert ) => {
 	} );
 } );
 
-// TODO: ve.dm.ElementLinearData#setAnnotationsAtOffset
-// TODO: ve.dm.ElementLinearData#getCharacterData
-// TODO: ve.dm.ElementLinearData#getAnnotatedRangeFromSelection
-// TODO: ve.dm.ElementLinearData#getNearestContentOffset
+QUnit.test( 'setAnnotationsAtOffset', ( assert ) => {
+	const store = new ve.dm.HashValueStore();
+	const elementData = new ve.dm.ElementLinearData( store, [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ] );
+
+	elementData.setAnnotationsAtOffset( 2, ve.dm.example.createAnnotationSet( store, [ ve.dm.example.bold ] ) );
+	elementData.setAnnotationsAtOffset( 3, ve.dm.example.createAnnotationSet( store, [ ve.dm.example.italic ] ) );
+
+	assert.deepEqual(
+		elementData.getAnnotationHashesFromOffset( 2, true ),
+		[ ve.dm.example.boldHash ],
+		'Offset 2 is bold'
+	);
+	assert.deepEqual(
+		elementData.getAnnotationHashesFromOffset( 3, true ),
+		[ ve.dm.example.italicHash ],
+		'Offset 3 is italic'
+	);
+} );
+
 // TODO: ve.dm.ElementLinearData#remapInternalListIndexes
 // TODO: ve.dm.ElementLinearData#remapInternalListKeys
 // TODO: ve.dm.ElementLinearData#cloneElements
