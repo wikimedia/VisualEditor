@@ -411,10 +411,10 @@ QUnit.test( 'getInsertionAnnotationsFromRange', ( assert ) => {
 	} );
 } );
 
-QUnit.test( 'getAnnotatedRangeFromOffset', ( assert ) => {
+QUnit.test( 'getAnnotatedRangeFromOffset/getAnnotatedRangeFromRange', ( assert ) => {
 	const cases = [
 		{
-			msg: 'a bold word',
+			msg: 'a bold word (offset)',
 			data: [
 				// 0
 				'a',
@@ -425,6 +425,20 @@ QUnit.test( 'getAnnotatedRangeFromOffset', ( assert ) => {
 			],
 			annotation: { type: 'textStyle/bold' },
 			offset: 3,
+			expected: new ve.Range( 1, 5 )
+		},
+		{
+			msg: 'a bold word (range)',
+			data: [
+				// 0
+				'a',
+				// 1-4
+				...ve.dm.example.annotateText( 'bold', { type: 'textStyle/bold' } ),
+				// 5-8
+				...'word'
+			],
+			annotation: { type: 'textStyle/bold' },
+			range: new ve.Range( 2, 4 ),
 			expected: new ve.Range( 1, 5 )
 		},
 		{
@@ -470,9 +484,14 @@ QUnit.test( 'getAnnotatedRangeFromOffset', ( assert ) => {
 	cases.forEach( ( caseItem ) => {
 		const data = ve.dm.example.preprocessAnnotations( caseItem.data );
 		const doc = new ve.dm.Document( data );
+		let range;
+		if ( caseItem.range ) {
+			range = doc.data.getAnnotatedRangeFromRange( caseItem.range, ve.dm.example.createAnnotation( caseItem.annotation ) );
+		} else {
+			range = doc.data.getAnnotatedRangeFromOffset( caseItem.offset, ve.dm.example.createAnnotation( caseItem.annotation ) );
+		}
 		assert.equalRange(
-			doc.data.getAnnotatedRangeFromOffset( caseItem.offset,
-				ve.dm.example.createAnnotation( caseItem.annotation ) ),
+			range,
 			caseItem.expected,
 			caseItem.msg
 		);

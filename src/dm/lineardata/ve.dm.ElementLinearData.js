@@ -595,7 +595,7 @@ ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
  * Gets the range of content surrounding a given offset that's covered by a given annotation.
  *
  * @param {number} offset Offset to begin looking forward and backward from
- * @param {Object} annotation Annotation to test for coverage with
+ * @param {ve.dm.Annotation} annotation Annotation to test for coverage with
  * @return {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
  */
 ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
@@ -627,7 +627,7 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offse
  * @param {ve.dm.Annotation} annotation Annotation to test for coverage with
  * @return {ve.Range|null} Range of content covered by annotation, or a copy of the range
  */
-ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
+ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromRange = function ( range, annotation ) {
 	let start = range.start,
 		end = range.end;
 	while ( start > 0 ) {
@@ -645,6 +645,9 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( ra
 	}
 	return new ve.Range( start, end );
 };
+
+// Deprecated alias
+ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromRange;
 
 /**
  * Get annotations common to all content in a range.
