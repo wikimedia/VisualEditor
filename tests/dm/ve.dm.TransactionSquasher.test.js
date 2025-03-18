@@ -7,8 +7,8 @@
 QUnit.module( 've.dm.TransactionSquasher' );
 
 QUnit.test( 'squash', ( assert ) => {
-	const boldHash = 'hfbe3cfe099b83e1e',
-		italicHash = 'he4e7c54e2204d10ba';
+	const boldHash = ve.dm.example.boldHash,
+		italicHash = ve.dm.example.italicHash;
 
 	function insertionTxList( before, itemSequence, after ) {
 		return itemSequence.split( '' ).map( ( item, n ) => [ before + n, [ '', item ], after ] );
