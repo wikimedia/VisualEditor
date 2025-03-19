@@ -106,15 +106,14 @@ ve.dm.Converter.static.getDataContentFromText = function ( text, annotations ) {
  * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
  */
 ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
-	let hash, i, len;
 	// Close annotations as needed
 	// Go through annotationStack from bottom to top (low to high),
 	// and find the first annotation that's not in annotations.
 	if ( currentSet.getLength() ) {
 		const targetSetOpen = targetSet.clone();
 		let startClosingAt;
-		for ( i = 0, len = currentSet.getLength(); i < len; i++ ) {
-			hash = currentSet.getHash( i );
+		for ( let i = 0, len = currentSet.getLength(); i < len; i++ ) {
+			const hash = currentSet.getHash( i );
 			// containsComparableForSerialization is expensive,
 			// so do a simple contains check first
 			if (
@@ -130,7 +129,7 @@ ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSe
 		if ( startClosingAt !== undefined ) {
 			// Close all annotations from top to bottom (high to low)
 			// until we reach startClosingAt
-			for ( i = currentSet.getLength() - 1; i >= startClosingAt; i-- ) {
+			for ( let i = currentSet.getLength() - 1; i >= startClosingAt; i-- ) {
 				close( currentSet.get( i ) );
 				// Remove from currentClone
 				currentSet.removeAt( i );
@@ -141,8 +140,8 @@ ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSe
 	if ( targetSet.getLength() ) {
 		const currentSetOpen = currentSet.clone();
 		// Open annotations as needed
-		for ( i = 0, len = targetSet.getLength(); i < len; i++ ) {
-			hash = targetSet.getHash( i );
+		for ( let i = 0, len = targetSet.getLength(); i < len; i++ ) {
+			const hash = targetSet.getHash( i );
 			// containsComparableForSerialization is expensive,
 			// so do a simple contains check first
 			if (
