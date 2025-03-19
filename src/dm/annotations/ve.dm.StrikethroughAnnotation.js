@@ -27,7 +27,7 @@ OO.inheritClass( ve.dm.StrikethroughAnnotation, ve.dm.TextStyleAnnotation );
 
 ve.dm.StrikethroughAnnotation.static.name = 'textStyle/strikethrough';
 
-ve.dm.StrikethroughAnnotation.static.matchTagNames = [ 's', 'del' ];
+ve.dm.StrikethroughAnnotation.static.matchTagNames = [ 's' ];
 
 ve.dm.StrikethroughAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-strikethrough-tooltip' );
 
