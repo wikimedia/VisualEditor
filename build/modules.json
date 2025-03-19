@@ -772,6 +772,7 @@
 			"src/ve.DiffTreeNode.js",
 			"src/ve.DiffMatchPatch.js",
 			"src/dm/ve.dm.VisualDiff.js",
+			"src/dm/annotations/ve.dm.DiffAnnotation.js",
 			"src/ui/elements/ve.ui.DiffElement.js",
 			"src/ui/widgets/ve.ui.ChangeDescriptionsSelectWidget.js"
 		],
