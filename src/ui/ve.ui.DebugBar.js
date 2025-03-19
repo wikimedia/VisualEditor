@@ -205,12 +205,13 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 	let $chunk, prevType, prevAnnotations, $annotations;
 	data.forEach( ( element, i ) => {
 		const $label = $( '<span>' );
-		let annotations = null;
+		let annotations = null, attributes = null;
 		let text;
 		if ( element.type ) {
 			$label.addClass( 've-ui-debugBar-dump-element' );
 			text = element.type;
 			annotations = element.annotations;
+			attributes = element.attributes || null;
 		} else if ( Array.isArray( element ) ) {
 			$label.addClass( 've-ui-debugBar-dump-achar' );
 			text = element[ 0 ];
@@ -239,9 +240,15 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			// Begin a new chunk
 			$chunk = $( '<li>' ).attr( 'value', i );
 			$chunk.append( $label );
-			if ( annotations ) {
+			if ( annotations || attributes ) {
 				$annotations = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' ).text(
-					'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( ( ann ) => JSON.stringify( ann.getComparableObject() ) ).join( ', ' ) + ']'
+					( annotations ?
+						JSON.stringify(
+							this.getSurface().getModel().getDocument().getStore().values( annotations )
+								.map( ( ann ) => ann.getComparableObject() )
+						) : '' ) +
+					( attributes ?
+						JSON.stringify( attributes ) : '' )
 				);
 			}
 		}
