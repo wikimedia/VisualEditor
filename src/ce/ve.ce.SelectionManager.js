@@ -159,10 +159,10 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 		// * ve-ce-surface-selections-<name>
 		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$element );
 
-	const oldSelections = drawnSelection.selections || [];
+	const oldFragments = drawnSelection.fragments || [];
 	const oldOptions = drawnSelection.options || {};
 
-	drawnSelection.selections = selections;
+	drawnSelection.fragments = selections.map( ( selection ) => this.surface.getModel().getFragment( selection.getModel(), true, true ) );
 	drawnSelection.options = options;
 
 	// Always set the 'class' attribute to ensure previously-set classes are cleared.
@@ -218,10 +218,10 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 	} );
 
 	// Remove any selections that were not in the latest list of selections
-	oldSelections.forEach( ( oldSelection ) => {
-		const cacheKey = this.getDrawnSelectionCacheKey( name, oldSelection.getModel(), oldOptions );
+	oldFragments.forEach( ( oldFragment ) => {
+		const cacheKey = this.getDrawnSelectionCacheKey( name, oldFragment.getSelection(), oldOptions );
 		if ( !selectionsJustShown[ cacheKey ] ) {
-			const $oldSelection = this.getDrawnSelection( name, oldSelection.getModel(), oldOptions );
+			const $oldSelection = this.getDrawnSelection( name, oldFragment.getSelection(), oldOptions );
 			if ( $oldSelection ) {
 				$oldSelection.detach();
 			}
@@ -287,7 +287,8 @@ ve.ce.SelectionManager.prototype.redrawSelections = function () {
 	this.drawnSelectionCache = {};
 	Object.keys( this.drawnSelections ).forEach( ( name ) => {
 		const drawnSelection = this.drawnSelections[ name ];
-		this.drawSelections( name, drawnSelection.selections, drawnSelection.options );
+		const selections = drawnSelection.fragments.map( ( fragments ) => this.surface.getSelection( fragments.getSelection() ) );
+		this.drawSelections( name, selections, drawnSelection.options );
 	} );
 };
 
