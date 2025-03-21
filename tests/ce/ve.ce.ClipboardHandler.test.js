@@ -130,8 +130,11 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 			assert.equalHash( model.getSelection(), expectedSelection, item.msg + ': selection' );
 		}
 		if ( item.expectedHtml ) {
-			const htmlDoc = ve.dm.converter.getDomFromModel( doc );
-			assert.strictEqual( htmlDoc.body.innerHTML, item.expectedHtml, item.msg + ': HTML' );
+			assert.equalDomElement(
+				ve.dm.converter.getDomFromModel( doc ),
+				ve.createDocumentFromHtml( item.expectedHtml, item.ignoreXmlWarnings ),
+				item.msg + ': HTML'
+			);
 		}
 		assert.strictEqual( testEvent.isDefaultPrevented(), !!item.expectedDefaultPrevented, item.msg + ': default action ' + ( item.expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
 		view.destroy();
