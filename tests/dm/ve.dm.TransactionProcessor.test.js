@@ -569,21 +569,6 @@ QUnit.test( 'commit', ( assert ) => {
 			);
 			expectedDoc.buildNodeTree();
 
-			if ( 'events' in caseItem ) {
-				// Set up event handlers
-				caseItem.events.forEach( ( event ) => {
-					let node = testDoc.getDocumentNode();
-					for ( let j = 1; j < event.length; j++ ) {
-						node = node.getChildren()[ event[ j ] ];
-					}
-					node.on( event[ 0 ], ( function ( obj ) {
-						return function () {
-							obj.fired = ( obj.fired || 0 ) + 1;
-						};
-					}( event ) ) );
-				} );
-			}
-
 			// Commit
 			testDoc.commit( tx );
 			assert.isLinearDataFrozen( testDoc.data, msg + ': linear data is frozen' );
