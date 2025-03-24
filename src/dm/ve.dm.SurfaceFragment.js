@@ -341,7 +341,7 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 			}
 			break;
 		case 'annotation':
-			newRange = this.document.data.getAnnotatedRangeFromSelection( oldRange, type );
+			newRange = this.document.data.getAnnotatedRangeFromRange( oldRange, type );
 			// Adjust selection if it does not contain the annotated range
 			if ( oldRange.start > newRange.start || oldRange.end < newRange.end ) {
 				// Maintain range direction
