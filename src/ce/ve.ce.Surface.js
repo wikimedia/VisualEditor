@@ -542,6 +542,9 @@ ve.ce.Surface.prototype.setReviewMode = function ( reviewMode, highlightNodes ) 
 		this.$element.find( '.ve-ce-surface-reviewMode-highlightNode' )
 			.removeClass( 've-ce-surface-reviewMode-highlightNode' );
 	}
+	if ( this.reviewMode ) {
+		this.deactivate( false );
+	}
 };
 
 /**
