@@ -1543,12 +1543,12 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p style="text-shadow: 0 0 1px #000;">F<b style="color:blue;">o</b>o</p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', [ 'o', [ 'h49981eab0f8056ff' ] ], 'o',
+					'F', [ 'o', [ ve.dm.example.boldHash ] ], 'o',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				store: { h49981eab0f8056ff: bold },
+				store: { [ ve.dm.example.boldHash ]: bold },
 				rules: { removeOriginalDomElements: true },
 				msg: 'Original DOM elements removed'
 			},
@@ -1585,13 +1585,13 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><b>a<span rel="ve:Alien">b</span>c</b></p>',
 				data: [
 					{ type: 'paragraph' },
-					[ 'a', [ 'h49981eab0f8056ff' ] ],
+					[ 'a', [ ve.dm.example.boldHash ] ],
 					{
 						type: 'alienInline',
-						annotations: [ 'h49981eab0f8056ff' ]
+						annotations: [ ve.dm.example.boldHash ]
 					},
 					{ type: '/alienInline' },
-					[ 'c', [ 'h49981eab0f8056ff' ] ],
+					[ 'c', [ ve.dm.example.boldHash ] ],
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1606,7 +1606,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><b>a<i></i>c</b></p>',
 				data: [
 					{ type: 'paragraph' },
-					...ve.dm.example.annotateText( 'ac', 'h49981eab0f8056ff' ),
+					...ve.dm.example.annotateText( 'ac', ve.dm.example.boldHash ),
 					{ type: '/paragraph' },
 					{
 						type: 'removableAlienMeta',
@@ -1630,7 +1630,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><b>a<i></i>c</b></p>',
 				data: [
 					{ type: 'paragraph' },
-					...ve.dm.example.annotateText( 'ac', 'h49981eab0f8056ff' ),
+					...ve.dm.example.annotateText( 'ac', ve.dm.example.boldHash ),
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1766,7 +1766,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 				html: '<p><b>1<b>2</b>3</b></p>',
 				data: [
 					{ type: 'paragraph' },
-					...ve.dm.example.annotateText( '123', 'h49981eab0f8056ff' ),
+					...ve.dm.example.annotateText( '123', ve.dm.example.boldHash ),
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -2049,9 +2049,7 @@ QUnit.test( 'hasContent', ( assert ) => {
 } );
 
 QUnit.test( 'getAnnotationHashesFromOffset', ( assert ) => {
-	const boldHash = 'h49981eab0f8056ff',
-		italicHash = 'hefd27ef3bf2041dd',
-		linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
+	const linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
 		elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() ),
 		cases = [
 			{
@@ -2064,13 +2062,13 @@ QUnit.test( 'getAnnotationHashesFromOffset', ( assert ) => {
 				msg: '2 has a BoldAnnotation',
 				offset: 2,
 				ignoreClose: true,
-				expected: [ boldHash ]
+				expected: [ ve.dm.example.boldHash ]
 			},
 			{
 				msg: '3 contains an ItalicAnnotation',
 				offset: 3,
 				ignoreClose: true,
-				expected: [ italicHash ]
+				expected: [ ve.dm.example.italicHash ]
 			}
 		],
 		errorCases = [
@@ -2115,30 +2113,30 @@ QUnit.test( 'getUsedStoreValues', ( assert ) => {
 			{
 				msg: 'no range (whole document) contains everything',
 				expected: {
-					h49981eab0f8056ff: bold,
-					hefd27ef3bf2041dd: italic
+					[ ve.dm.example.boldHash ]: bold,
+					[ ve.dm.example.italicHash ]: italic
 				}
 			},
 			{
 				msg: '2-4 contains bold and italic',
 				range: new ve.Range( 2, 4 ),
 				expected: {
-					h49981eab0f8056ff: bold,
-					hefd27ef3bf2041dd: italic
+					[ ve.dm.example.boldHash ]: bold,
+					[ ve.dm.example.italicHash ]: italic
 				}
 			},
 			{
 				msg: '2-3 contains bold',
 				range: new ve.Range( 2, 3 ),
 				expected: {
-					h49981eab0f8056ff: bold
+					[ ve.dm.example.boldHash ]: bold
 				}
 			},
 			{
 				msg: '3-4 contains italic',
 				range: new ve.Range( 3, 4 ),
 				expected: {
-					hefd27ef3bf2041dd: italic
+					[ ve.dm.example.italicHash ]: italic
 				}
 			},
 			{

@@ -310,7 +310,7 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', ( assert ) => {
 			stores: [
 				{
 					hashStore: {
-						h49981eab0f8056ff: {
+						[ ve.dm.example.boldHash ]: {
 							type: 'plain',
 							value: {
 								type: 'textStyle/bold',
@@ -422,14 +422,14 @@ QUnit.test( 'Minified serialization', ( assert ) => {
 					type: 'annotate',
 					method: 'set',
 					bias: 'start',
-					index: 'he4e7c54e2204d10b'
+					index: ve.dm.example.italicHash
 				},
 				9,
 				{
 					type: 'annotate',
 					method: 'set',
 					bias: 'stop',
-					index: 'he4e7c54e2204d10b'
+					index: ve.dm.example.italicHash
 				},
 				28
 			],
@@ -438,10 +438,10 @@ QUnit.test( 'Minified serialization', ( assert ) => {
 				5,
 				[
 					[
-						...ve.dm.example.annotateText( 'red panda', 'he4e7c54e2204d10b' )
+						...ve.dm.example.annotateText( 'red panda', ve.dm.example.italicHash )
 					],
 					[
-						[ 'q', [ 'he4e7c54e2204d10b' ] ]
+						[ 'q', [ ve.dm.example.italicHash ] ]
 					]
 				],
 				28
@@ -454,14 +454,14 @@ QUnit.test( 'Minified serialization', ( assert ) => {
 					type: 'annotate',
 					method: 'set',
 					bias: 'start',
-					index: 'hfbe3cfe099b83e1e'
+					index: ve.dm.example.boldHash
 				},
 				9,
 				{
 					type: 'annotate',
 					method: 'set',
 					bias: 'stop',
-					index: 'hfbe3cfe099b83e1e'
+					index: ve.dm.example.boldHash
 				},
 				3
 			],
@@ -470,10 +470,10 @@ QUnit.test( 'Minified serialization', ( assert ) => {
 				36,
 				[
 					[
-						...ve.dm.example.annotateText( 'automaton', 'hfbe3cfe099b83e1e' )
+						...ve.dm.example.annotateText( 'automaton', ve.dm.example.boldHash )
 					],
 					[
-						[ 'l', [ 'hfbe3cfe099b83e1e' ] ]
+						[ 'l', [ ve.dm.example.boldHash ] ]
 					]
 				],
 				3
@@ -483,21 +483,21 @@ QUnit.test( 'Minified serialization', ( assert ) => {
 		stores: [
 			null, null, null, null, null, null, null, null, null,
 			{
-				hashes: [ 'he4e7c54e2204d10b' ],
+				hashes: [ ve.dm.example.italicHash ],
 				hashStore: {
-					he4e7c54e2204d10b: {
+					[ ve.dm.example.italicHash ]: {
 						type: 'annotation',
-						value: { type: 'textStyle/italic' }
+						value: ve.dm.example.italic
 					}
 				}
 			},
 			null, null, null, null, null, null, null, null, null,
 			{
-				hashes: [ 'hfbe3cfe099b83e1e' ],
+				hashes: [ ve.dm.example.boldHash ],
 				hashStore: {
-					hfbe3cfe099b83e1e: {
+					[ ve.dm.example.boldHash ]: {
 						type: 'annotation',
-						value: { type: 'textStyle/bold' }
+						value: ve.dm.example.bold
 					}
 				}
 			},

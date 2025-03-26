@@ -838,7 +838,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 					{ type: 'retain', length: 7 }
 				],
 				expectedStoreItems: {
-					h49981eab0f8056ff: bold
+					[ ve.dm.example.boldHash ]: bold
 				}
 			},
 			{
@@ -985,7 +985,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 					{ type: 'retain', length: 27 }
 				],
 				expectedStoreItems: {
-					h49981eab0f8056ff: bold
+					[ ve.dm.example.boldHash ]: bold
 				}
 			}
 		];
