@@ -20,6 +20,11 @@ ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
 
 			surfaceModel.setLinearSelection( caseItem.range );
 			const setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
+			const isMobile = OO.ui.isMobile;
+			if ( caseItem.isMobile ) {
+				// Mock isMobile
+				OO.ui.isMobile = () => true;
+			}
 			return inspector.setup( setupData ).then( () => inspector.ready( setupData ).then( () => {
 				if ( caseItem.input ) {
 					caseItem.input.call( inspector );
@@ -47,6 +52,9 @@ ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
 					}
 					// Insertion annotations are not cleared by undo
 					surfaceModel.setInsertionAnnotations( null );
+
+					// Restore isMobile
+					OO.ui.isMobile = isMobile;
 				} );
 			} ) );
 		} ) );
@@ -167,7 +175,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: () => {}
 			},
 			{
-				msg: 'Link modified',
+				msg: 'Link target modified',
 				name: 'link',
 				range: new ve.Range( 5, 8 ),
 				input: function () {
@@ -184,7 +192,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				}
 			},
 			{
-				msg: 'Link removed (clear input)',
+				msg: 'Link target removed (clear input)',
 				name: 'link',
 				range: new ve.Range( 5, 8 ),
 				input: function () {
@@ -199,7 +207,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				}
 			},
 			{
-				msg: 'Clear input & cancel is still a no-op',
+				msg: 'Link target removed input then cancel is still a no-op',
 				name: 'link',
 				range: new ve.Range( 5, 8 ),
 				input: function () {
@@ -208,6 +216,61 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedRange: new ve.Range( 5, 8 ),
 				expectedData: () => {},
 				actionData: {}
+			},
+			{
+				msg: 'Link label modified (mobile)',
+				name: 'link',
+				range: new ve.Range( 5, 8 ),
+				isMobile: true,
+				input: function () {
+					this.labelInput.setValue( 'bat' );
+				},
+				expectedRange: new ve.Range( 5, 8 ),
+				expectedData: function ( data ) {
+					data.splice(
+						5, 3,
+						[ 'b', [ barHash ] ],
+						[ 'a', [ barHash ] ],
+						[ 't', [ barHash ] ]
+					);
+				}
+			},
+			{
+				msg: 'Link label and link target (mobile)',
+				name: 'link',
+				range: new ve.Range( 5, 8 ),
+				isMobile: true,
+				input: function () {
+					this.labelInput.setValue( 'bat' );
+					this.annotationInput.getTextInputWidget().setValue( 'quux' );
+				},
+				expectedRange: new ve.Range( 5, 8 ),
+				expectedData: function ( data ) {
+					data.splice(
+						5, 3,
+						[ 'b', [ quuxHash ] ],
+						[ 'a', [ quuxHash ] ],
+						[ 't', [ quuxHash ] ]
+					);
+				}
+			},
+			{
+				msg: 'Removing link label defaults to using link target as label (mobile)',
+				name: 'link',
+				range: new ve.Range( 34 ),
+				isMobile: true,
+				input: function () {
+					this.labelInput.setValue( '' );
+				},
+				expectedRange: new ve.Range( 31, 34 ),
+				expectedData: function ( data ) {
+					data.splice(
+						31, 5,
+						[ 'b', [ barHash ] ],
+						[ 'a', [ barHash ] ],
+						[ 'r', [ barHash ] ]
+					);
+				}
 			},
 			{
 				msg: 'Comment change',
