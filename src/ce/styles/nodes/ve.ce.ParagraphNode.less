@@ -13,6 +13,7 @@
 	/* Maintain separation between wrapper paragraphs and start/end of document */
 
 	:not( .ve-ce-attachedRootNode ):not( .ve-ui-surface-placeholder ) > &,
+	/* stylelint-disable-next-line no-descending-specificity */
 	&:not( :first-child ) {
 		/*
 		   Keep top margin when:
@@ -25,6 +26,7 @@
 	}
 
 	:not( .ve-ce-attachedRootNode ):not( .ve-ui-surface-placeholder ) > &,
+	/* stylelint-disable-next-line no-descending-specificity */
 	&:not( :last-child ) {
 		/* Same for bottom margin */
 		margin-bottom: 0;
