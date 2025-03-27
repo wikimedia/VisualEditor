@@ -97,8 +97,8 @@ ve.ce.ClipboardHandler.static.pasteSourceDetectors = {
 		const html = clipboardData.getData( 'text/html' );
 		// Word365 (Desktop)
 		return html.match( /content=Word.Document/i ) ||
-			// Word365 (web)
-			// eslint-disable-next-line es-x/no-array-prototype-includes
+		// Word365 (web)
+
 			( html.match( /data-contrast=["']/i ) && html.includes( 'TextRun' ) );
 	},
 	plainText: ( clipboardData ) => clipboardData.types.length === 1 && clipboardData.types[ 0 ] === 'text/plain'
@@ -669,7 +669,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromInternal = function 
 			( ref ) => ref.registeredListGroup + '\n' + ref.registeredListKey
 		);
 		if ( pastedRefs.some(
-			( ref ) => documentRefKeys.indexOf( ref.registeredListGroup + '\n' + ref.registeredListKey ) !== -1
+			( ref ) => documentRefKeys.includes( ref.registeredListGroup + '\n' + ref.registeredListKey )
 		) ) {
 			ve.track( 'activity.clipboard', { action: 'paste-ref-internal-reuse' } );
 		} else {
@@ -1103,11 +1103,11 @@ ve.ce.ClipboardHandler.prototype.afterPasteSanitizeExternal = function ( $elemen
 		}
 		// textDecorationLine can take multiple values, e.g. "underline line-through"
 		// so use String.prototype.includes
-		// eslint-disable-next-line es-x/no-array-prototype-includes
+
 		if ( node.style.textDecorationLine.includes( 'underline' ) ) {
 			$node.wrap( '<u>' );
 		}
-		// eslint-disable-next-line es-x/no-array-prototype-includes
+
 		if ( node.style.textDecorationLine.includes( 'line-through' ) ) {
 			$node.wrap( '<s>' );
 		}

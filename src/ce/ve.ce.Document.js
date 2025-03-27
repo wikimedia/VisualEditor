@@ -242,7 +242,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 
 		const model = $.data( node, 'view' ).model;
 
-		if ( countedNodes.indexOf( model ) !== -1 ) {
+		if ( countedNodes.includes( model ) ) {
 			// This DM node is rendered as multiple DOM elements, and we have already
 			// counted it as part of an earlier element. Skip past without incrementing
 			position = { node: node.parentNode, offset: ve.parentIndex( node ) + 1 };
@@ -295,7 +295,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 			s.node.classList.contains( 've-ce-leafNode' )
 		) {
 			m = $.data( s.node, 'view' ).model;
-			if ( countedNodes.indexOf( m ) !== -1 ) {
+			if ( countedNodes.includes( m ) ) {
 				return false;
 			}
 			countedNodes.push( m );

@@ -257,7 +257,7 @@
 			const matchedModels = [],
 				models = this.modelsWithTypeRegExps[ +withFunc ];
 			models.forEach( ( name ) => {
-				if ( excludeTypes && excludeTypes.indexOf( name ) !== -1 ) {
+				if ( excludeTypes && excludeTypes.includes( name ) ) {
 					return;
 				}
 				const matchTypes = this.registry[ name ].static.getMatchRdfaTypes();
@@ -267,7 +267,7 @@
 						matchType.test( type ) &&
 						(
 							( tag === '' && this.registry[ name ].static.matchTagNames === null ) ||
-							( this.registry[ name ].static.matchTagNames || [] ).indexOf( tag ) !== -1
+							( this.registry[ name ].static.matchTagNames || [] ).includes( tag )
 						)
 					) {
 						matchedModels.push( name );

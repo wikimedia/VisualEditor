@@ -49,7 +49,7 @@ ve.ce.KeyDownHandlerFactory.prototype.register = function ( constructor ) {
 	// TODO: Clean up handlerNamesByKeys in unregister
 	for ( let i = 0, ilen = keys.length; i < ilen; i++ ) {
 		this.handlerNamesByKeys[ keys[ i ] ] = this.handlerNamesByKeys[ keys[ i ] ] || [];
-		if ( this.handlerNamesByKeys[ keys[ i ] ].indexOf( name ) === -1 ) {
+		if ( !this.handlerNamesByKeys[ keys[ i ] ].includes( name ) ) {
 			this.handlerNamesByKeys[ keys[ i ] ].push( name );
 		}
 	}
@@ -70,7 +70,7 @@ ve.ce.KeyDownHandlerFactory.prototype.lookupHandlersForKey = function ( key, sel
 	for ( let i = 0; i < names.length; i++ ) {
 		const constructor = this.registry[ names[ i ] ];
 		const supportedSelections = constructor.static.supportedSelections;
-		if ( !supportedSelections || supportedSelections.indexOf( selectionName ) !== -1 ) {
+		if ( !supportedSelections || supportedSelections.includes( selectionName ) ) {
 			constructors.push( constructor );
 		}
 	}

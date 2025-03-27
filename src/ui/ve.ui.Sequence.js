@@ -91,7 +91,7 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
 ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 	const surfaceModel = surface.getModel();
 
-	if ( surface.getCommands().indexOf( this.getCommandName() ) === -1 ) {
+	if ( !surface.getCommands().includes( this.getCommandName() ) ) {
 		return false;
 	}
 

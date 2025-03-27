@@ -47,7 +47,7 @@ ve.dm.BlockImageNode.static.name = 'blockImage';
 
 ve.dm.BlockImageNode.static.preserveHtmlAttributes = function ( attribute ) {
 	const attributes = [ 'class', 'src', 'width', 'height' ];
-	return attributes.indexOf( attribute ) === -1;
+	return !attributes.includes( attribute );
 };
 
 ve.dm.BlockImageNode.static.handlesOwnChildren = true;

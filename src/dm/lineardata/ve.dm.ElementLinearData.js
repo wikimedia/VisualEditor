@@ -823,7 +823,7 @@ ve.dm.ElementLinearData.prototype.isPlainText = function ( range, ignoreNonConte
 		} else if ( ignoreNonContentNodes || ignoredTypes ) {
 			// Element data
 			const type = this.getType( i );
-			if ( ignoredTypes && ignoredTypes.indexOf( type ) !== -1 ) {
+			if ( ignoredTypes && ignoredTypes.includes( type ) ) {
 				continue;
 			}
 			if ( ignoreNonContentNodes && !ve.dm.nodeFactory.isNodeContent( type ) ) {
@@ -1233,7 +1233,7 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
 	function remap( annotations ) {
 		let spliceAt;
 		while ( ( spliceAt = annotations.indexOf( oldHash ) ) !== -1 ) {
-			if ( annotations.indexOf( newHash ) === -1 ) {
+			if ( !annotations.includes( newHash ) ) {
 				annotations.splice( spliceAt, 1, newHash );
 			} else {
 				annotations.splice( spliceAt, 1 );
@@ -1301,7 +1301,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 					delete allAnnotations.get( i ).element.originalDomElementsHash;
 					const newHash = store.replaceHash( oldHash, ann );
 					this.remapAnnotationHash( oldHash, newHash );
-					if ( allAnnotations.storeHashes.indexOf( newHash ) !== -1 ) {
+					if ( allAnnotations.storeHashes.includes( newHash ) ) {
 						// New annotation-value was already in the set, which
 						// just reduces the effective-length of the set.
 						allAnnotations.storeHashes.splice( i, 1 );

@@ -70,7 +70,7 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
 
 	this.languageResultWidgets.forEach( ( languageResult ) => {
 		const data = languageResult.getData();
-		if ( availableLanguages.indexOf( data.code ) !== -1 ) {
+		if ( availableLanguages.includes( data.code ) ) {
 			this.filteredLanguageResultWidgets.push( languageResult );
 		}
 	} );

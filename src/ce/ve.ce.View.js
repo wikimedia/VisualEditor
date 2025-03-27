@@ -84,7 +84,7 @@ ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {
 		'resource', 'rev', 'rowspan', 'rules', 'scope', 'size', 'span', 'src', 'start', 'style',
 		'summary', 'title', 'type', 'typeof', 'valign', 'value', 'width'
 	];
-	return attributes.indexOf( attribute ) !== -1;
+	return attributes.includes( attribute );
 };
 
 /* Methods */

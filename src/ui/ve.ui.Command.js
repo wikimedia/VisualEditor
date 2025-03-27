@@ -54,7 +54,7 @@ ve.ui.Command.prototype.execute = function ( surface, args, source ) {
  */
 ve.ui.Command.prototype.isExecutable = function ( fragment ) {
 	return !this.supportedSelections ||
-		this.supportedSelections.indexOf( fragment.getSelection().getName() ) !== -1;
+		this.supportedSelections.includes( fragment.getSelection().getName() );
 };
 
 /**

@@ -221,7 +221,7 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
 		allDirections = [ 'nw', 'ne', 'sw', 'se' ];
 
 	for ( let i = 0, len = allDirections.length; i < len; i++ ) {
-		if ( handles === undefined || handles.indexOf( allDirections[ i ] ) !== -1 ) {
+		if ( handles === undefined || handles.includes( allDirections[ i ] ) ) {
 			remove.push( 've-ce-resizableNode-hide-' + allDirections[ i ] );
 		} else {
 			add.push( 've-ce-resizableNode-hide-' + allDirections[ i ] );

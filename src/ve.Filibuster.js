@@ -266,7 +266,7 @@ ve.Filibuster.prototype.wrapClass = function ( klass, nowrapList ) {
 		if ( typeof fn !== 'function' || fn.wrappedFunction ) {
 			continue;
 		}
-		if ( nowrapList && nowrapList.indexOf( fn ) !== -1 ) {
+		if ( nowrapList && nowrapList.includes( fn ) ) {
 			continue;
 		}
 		this.wrapFunction( container, klass.name, fnName );
@@ -288,7 +288,7 @@ ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, nowrapList ) {
 	for ( let i = 0, len = propNames.length; i < len; i++ ) {
 		const propName = propNames[ i ];
 		const prop = ns[ propName ];
-		if ( nowrapList && nowrapList.indexOf( prop ) !== -1 ) {
+		if ( nowrapList && nowrapList.includes( prop ) ) {
 			continue;
 		}
 		const isConstructor = (

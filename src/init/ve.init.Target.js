@@ -372,7 +372,7 @@ ve.init.Target.prototype.getDefaultMode = function () {
  * @return {boolean} Editing mode is available
  */
 ve.init.Target.prototype.isModeAvailable = function ( mode ) {
-	return this.modes.indexOf( mode ) !== -1;
+	return this.modes.includes( mode );
 };
 
 /**
@@ -645,7 +645,7 @@ ve.init.Target.prototype.setSurface = function ( surface ) {
 		}
 	}
 
-	if ( this.surfaces.indexOf( surface ) === -1 ) {
+	if ( !this.surfaces.includes( surface ) ) {
 		throw new Error( 'Active surface must have been added first' );
 	}
 	if ( surface !== this.surface ) {

@@ -652,7 +652,7 @@ ve.setDomAttributes = function ( element, attributes, allowedAttributes ) {
 		return;
 	}
 	for ( const key in attributes ) {
-		if ( allowedAttributes && allowedAttributes.indexOf( key.toLowerCase() ) === -1 ) {
+		if ( allowedAttributes && !allowedAttributes.includes( key.toLowerCase() ) ) {
 			continue;
 		}
 		if ( attributes[ key ] === undefined || attributes[ key ] === null ) {
@@ -857,7 +857,7 @@ ve.appendToRel = function ( element, value ) {
 	if ( !rel ) {
 		// Avoid all that string-creation if it's not needed
 		element.setAttribute( 'rel', value );
-	} else if ( ( ' ' + rel + ' ' ).indexOf( ' ' + value + ' ' ) === -1 ) {
+	} else if ( !( ' ' + rel + ' ' ).includes( ' ' + value + ' ' ) ) {
 		element.setAttribute( 'rel', rel + ' ' + value );
 	}
 };

@@ -1157,7 +1157,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		this.readOnly && !(
 			// Allowed keystrokes in readonly mode:
 			// Arrows, simple navigation
-			ve.ce.LinearArrowKeyDownHandler.static.keys.indexOf( e.keyCode ) !== -1 ||
+			ve.ce.LinearArrowKeyDownHandler.static.keys.includes( e.keyCode ) ||
 			// Potential commands:
 			// Function keys...
 			( e.keyCode >= 112 && e.keyCode <= 123 ) ||
@@ -1205,11 +1205,11 @@ ve.ce.Surface.prototype.isBlockedTrigger = function ( trigger ) {
 
 	// Special case: only block Tab/Shift+Tab if indentation commands are enabled on this surface,
 	// otherwise allow them to change focus
-	if ( blockedIfRegisteredTriggers.indexOf( triggerString ) !== -1 ) {
+	if ( blockedIfRegisteredTriggers.includes( triggerString ) ) {
 		return !!this.surface.triggerListener.getCommandByTrigger( triggerString );
 	}
 
-	return blockedTriggers[ platformKey ].indexOf( triggerString ) !== -1;
+	return blockedTriggers[ platformKey ].includes( triggerString );
 };
 
 /**
@@ -3470,7 +3470,7 @@ ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
 	// Iterate over previously active annotations
 	this.activeAnnotations.forEach( ( annotation ) => {
 		// If not in the new list, turn off
-		if ( activeAnnotations.indexOf( annotation ) === -1 ) {
+		if ( !activeAnnotations.includes( annotation ) ) {
 			annotation.$element.removeClass( 've-ce-annotation-active' );
 			changed = true;
 		}
@@ -3479,7 +3479,7 @@ ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
 	// Iterate over newly active annotations
 	activeAnnotations.forEach( ( annotation ) => {
 		// If not in the old list, turn on
-		if ( this.activeAnnotations.indexOf( annotation ) === -1 ) {
+		if ( !this.activeAnnotations.includes( annotation ) ) {
 			annotation.$element.addClass( 've-ce-annotation-active' );
 			changed = true;
 		}
@@ -3885,7 +3885,7 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 		return models.filter( ( annModel ) => {
 			// If the model is an annotation that can be active, only show it if it *is* active
 			if ( annModel instanceof ve.dm.Annotation && ve.ce.annotationFactory.canAnnotationBeActive( annModel.getType() ) ) {
-				return activeModels.indexOf( annModel ) !== -1;
+				return activeModels.includes( annModel );
 			}
 			return true;
 		} );

@@ -196,7 +196,7 @@ ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements,
 				( filter === true || filter( attrs[ j ].name ) )
 			) {
 				let value;
-				if ( computed && this.computedAttributes.indexOf( attrs[ j ].name ) !== -1 ) {
+				if ( computed && this.computedAttributes.includes( attrs[ j ].name ) ) {
 					value = originalDomElements[ i ][ attrs[ j ].name ];
 				} else {
 					value = attrs[ j ].value;
@@ -450,7 +450,7 @@ ve.dm.Converter.prototype.isValidChildNodeType = function ( nodeType ) {
 		return null;
 	}
 	const childTypes = this.nodeFactory.getChildNodeTypes( context.branchType );
-	return ( childTypes === null || childTypes.indexOf( nodeType ) !== -1 );
+	return ( childTypes === null || childTypes.includes( nodeType ) );
 };
 
 /**

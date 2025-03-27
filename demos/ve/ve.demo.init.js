@@ -96,7 +96,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 	updateStylesFromDir();
 
 	languageInput.on( 'change', ( lang, dir ) => {
-		if ( dir === currentDir && lang !== 'qqx' && ve.availableLanguages.indexOf( lang ) === -1 ) {
+		if ( dir === currentDir && lang !== 'qqx' && !ve.availableLanguages.includes( lang ) ) {
 			return;
 		}
 

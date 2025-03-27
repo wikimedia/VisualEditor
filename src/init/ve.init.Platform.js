@@ -302,7 +302,7 @@ ve.init.Platform.prototype.getLanguageCodes = null;
  * @return {boolean} Language code is known
  */
 ve.init.Platform.prototype.hasLanguageCode = function ( code ) {
-	return this.getLanguageCodes().indexOf( code ) !== -1;
+	return this.getLanguageCodes().includes( code );
 };
 
 /**

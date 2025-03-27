@@ -286,7 +286,7 @@ ve.ui.LinearContext.prototype.getRelatedSourcesFromModels = function ( selectedM
 		if ( !tool.model.isInspectable() ) {
 			return;
 		}
-		if ( models.indexOf( tool.model ) === -1 ) {
+		if ( !models.includes( tool.model ) ) {
 			const toolClass = ve.ui.toolFactory.lookup( tool.name );
 			relatedSources.push( {
 				type: 'tool',

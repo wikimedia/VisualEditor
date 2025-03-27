@@ -768,12 +768,12 @@ ve.ui.DiffElement.prototype.iterateDiff = function ( diff, callbacks ) {
 				callbacks.remove( diff.oldNodes[ i ], i );
 				i++;
 			}
-		} else if ( diff.remove.indexOf( i ) !== -1 ) {
+		} else if ( diff.remove.includes( i ) ) {
 			// The old node is a remove. Decrement the new node index
 			// to compare the same new node to the next old node
 			callbacks.remove( diff.oldNodes[ i ], i );
 			j--;
-		} else if ( diff.insert.indexOf( j ) !== -1 ) {
+		} else if ( diff.insert.includes( j ) ) {
 			// The new node is an insert. Decrement the old node index
 			// to compare the same old node to the next new node
 			callbacks.insert( diff.newNodes[ j ], j );
@@ -1034,7 +1034,7 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, new
 	const highlightRemovedNode = ( nodeIndex ) => {
 
 		const findRemovedAncestor = ( n ) => {
-			if ( !n.parent || structuralRemoves.indexOf( n.parent.index ) === -1 ) {
+			if ( !n.parent || !structuralRemoves.includes( n.parent.index ) ) {
 				return n.index;
 			} else {
 				return findRemovedAncestor( n.parent );

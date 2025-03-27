@@ -76,7 +76,7 @@ ve.Node.prototype.getParentNodeTypes = null;
  */
 ve.Node.prototype.isAllowedChildNodeType = function ( type ) {
 	const childTypes = this.getChildNodeTypes();
-	return childTypes === null || childTypes.indexOf( type ) !== -1;
+	return childTypes === null || childTypes.includes( type );
 };
 
 /**
@@ -87,7 +87,7 @@ ve.Node.prototype.isAllowedChildNodeType = function ( type ) {
  */
 ve.Node.prototype.isAllowedParentNodeType = function ( type ) {
 	const parentTypes = this.getParentNodeTypes();
-	return parentTypes === null || parentTypes.indexOf( type ) !== -1;
+	return parentTypes === null || parentTypes.includes( type );
 };
 
 /**

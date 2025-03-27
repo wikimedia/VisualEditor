@@ -84,7 +84,7 @@ ve.dm.TreeCursor.prototype.crossIgnoredNodes = function () {
 		this.offset === this.node.length &&
 		( parent = this.nodes[ this.nodes.length - 2 ] ) &&
 		( nextSibling = parent.children[ this.path[ this.path.length - 1 ] + 1 ] ) &&
-		this.liveIgnoreNodes.indexOf( nextSibling ) !== -1
+		this.liveIgnoreNodes.includes( nextSibling )
 	) {
 		// At the end of a text node and the next node is ignored
 		this.stepOut();
@@ -94,7 +94,7 @@ ve.dm.TreeCursor.prototype.crossIgnoredNodes = function () {
 	while (
 		this.offset < len &&
 		( item = this.node.children[ this.offset ] ) &&
-		this.liveIgnoreNodes.indexOf( item ) !== -1
+		this.liveIgnoreNodes.includes( item )
 	) {
 		this.offset++;
 		this.linearOffset += item.getOuterLength();

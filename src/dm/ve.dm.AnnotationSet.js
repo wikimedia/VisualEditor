@@ -16,7 +16,7 @@ ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeHashes ) {
 	this.store = store;
 	this.storeHashes = storeHashes || [];
 
-	if ( this.get().indexOf( undefined ) !== -1 ) {
+	if ( this.get().includes( undefined ) ) {
 		throw new Error( 'Annotation with hash ' +
 			this.storeHashes[ this.get().indexOf( undefined ) ] +
 			' not found in store'
@@ -163,7 +163,7 @@ ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
  * @return {boolean} There is an annotation in the set with this store hash
  */
 ve.dm.AnnotationSet.prototype.containsHash = function ( storeHash ) {
-	return this.getHashes().indexOf( storeHash ) !== -1;
+	return this.getHashes().includes( storeHash );
 };
 
 /**
@@ -176,7 +176,7 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
 	const setHashes = set.getHashes(),
 		thisHashes = this.getHashes();
 	for ( let i = 0, length = setHashes.length; i < length; i++ ) {
-		if ( thisHashes.indexOf( setHashes[ i ] ) !== -1 ) {
+		if ( thisHashes.includes( setHashes[ i ] ) ) {
 			return true;
 		}
 	}
@@ -193,7 +193,7 @@ ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
 	const setHashes = set.getHashes(),
 		thisHashes = this.getHashes();
 	for ( let i = 0, length = setHashes.length; i < length; i++ ) {
-		if ( thisHashes.indexOf( setHashes[ i ] ) === -1 ) {
+		if ( !thisHashes.includes( setHashes[ i ] ) ) {
 			return false;
 		}
 	}

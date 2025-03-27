@@ -50,7 +50,7 @@ ve.ce.SectionNode.static.name = 'section';
 ve.ce.SectionNode.prototype.getTagName = function () {
 	const style = this.model.getAttribute( 'style' );
 
-	if ( this.model.constructor.static.matchTagNames.indexOf( style ) === -1 ) {
+	if ( !this.model.constructor.static.matchTagNames.includes( style ) ) {
 		throw new Error( 'Invalid style' );
 	}
 	return style;

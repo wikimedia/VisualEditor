@@ -62,7 +62,7 @@ ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes
 		descriptions.push( ve.htmlMsg( 'visualeditor-changedesc-image-size', this.wrapText( 'del', sizeFrom ), this.wrapText( 'ins', sizeTo ) ) );
 	}
 	for ( const key in attributeChanges ) {
-		if ( customKeys.indexOf( key ) === -1 ) {
+		if ( !customKeys.includes( key ) ) {
 			const change = this.describeChange( key, attributeChanges[ key ] );
 			if ( change ) {
 				descriptions.push( change );

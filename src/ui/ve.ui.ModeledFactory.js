@@ -56,14 +56,14 @@ ve.ui.ModeledFactory.prototype.getRelatedItems = function ( models ) {
 				for ( let k = 0, kLen = candidates.length; k < kLen; k++ ) {
 					if (
 						candidate.prototype instanceof candidates[ k ] ||
-						( candidate.static.suppresses && candidate.static.suppresses.indexOf( candidates[ k ].static.name ) !== -1 )
+						( candidate.static.suppresses && candidate.static.suppresses.includes( candidates[ k ].static.name ) )
 					) {
 						candidates.splice( k, 1, candidate );
 						add = false;
 						break;
 					} else if (
 						candidates[ k ].prototype instanceof candidate ||
-						( candidates[ k ].static.suppresses && candidates[ k ].static.suppresses.indexOf( candidate.static.name ) !== -1 )
+						( candidates[ k ].static.suppresses && candidates[ k ].static.suppresses.includes( candidate.static.name ) )
 					) {
 						add = false;
 						break;

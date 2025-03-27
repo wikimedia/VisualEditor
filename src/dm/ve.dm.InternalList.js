@@ -335,7 +335,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 			group.firstNodes[ index ] = node;
 		}
 	}
-	if ( group.indexOrder.indexOf( index ) === -1 ) {
+	if ( !group.indexOrder.includes( index ) ) {
 		group.indexOrder.push( index );
 	}
 	this.markGroupAsChanged( groupName );
@@ -347,7 +347,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
  * @param {string} groupName Name of group which has changed
  */
 ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
-	if ( this.groupsChanged.indexOf( groupName ) === -1 ) {
+	if ( !this.groupsChanged.includes( groupName ) ) {
 		this.groupsChanged.push( groupName );
 	}
 };

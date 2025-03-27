@@ -1555,7 +1555,7 @@ ve.dm.Surface.prototype.updateExpiry = function ( skipKeys ) {
 	}
 	skipKeys = skipKeys || [];
 	[ 've-docstate', 've-dochtml', 've-selection', 've-changes' ].forEach( ( key ) => {
-		if ( skipKeys.indexOf( key ) === -1 ) {
+		if ( !skipKeys.includes( key ) ) {
 			this.storage.setExpires( this.autosavePrefix + key, this.storageExpiry );
 		}
 	} );

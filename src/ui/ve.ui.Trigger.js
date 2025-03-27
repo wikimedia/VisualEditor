@@ -46,7 +46,7 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 			if ( Object.prototype.hasOwnProperty.call( this.modifiers, key ) ) {
 				// Modifier key
 				this.modifiers[ key ] = true;
-			} else if ( primaryKeys.indexOf( key ) !== -1 || allowInvalidPrimary ) {
+			} else if ( primaryKeys.includes( key ) || allowInvalidPrimary ) {
 				// WARNING: Only the last primary key will be used
 				this.primary = key;
 			}
@@ -451,7 +451,7 @@ ve.ui.Trigger.prototype.getMessage = function ( explode ) {
 	// * visualeditor-key-space
 	// * visualeditor-key-tab
 	// * visualeditor-key-up
-	keys = keys.map( ( key ) => translatableKeys.indexOf( key ) !== -1 ? ve.msg( 'visualeditor-key-' + key ) : key.toUpperCase() );
+	keys = keys.map( ( key ) => translatableKeys.includes( key ) ? ve.msg( 'visualeditor-key-' + key ) : key.toUpperCase() );
 
 	// Concatenation
 	if ( explode ) {
