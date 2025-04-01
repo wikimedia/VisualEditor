@@ -40,6 +40,15 @@
 
 	&-invisibleIcon {
 		opacity: 0.5;
+		position: relative;
+
+		&-selectionMask {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
 
 		> .oo-ui-buttonElement-button {
 			/* Button can sometimes be exposed (T198912), but it shouldn't interact like one */

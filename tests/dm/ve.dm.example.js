@@ -187,7 +187,11 @@ ve.dm.example.commentNodePreview = function ( text ) {
 			framed: false,
 			tabIndex: null,
 			icon: ve.ce.CommentNode.static.iconWhenInvisible
-		} ).setLabel( text ) ).$element[ 0 ].outerHTML +
+		} ).setLabel( text ) ).$element.append(
+			$( '<img>' )
+				.addClass( 've-ce-focusableNode-invisibleIcon-selectionMask' )
+				.attr( 'src', ve.ce.minImgDataUri )
+		)[ 0 ].outerHTML +
 	'</span>';
 };
 

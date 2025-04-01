@@ -365,6 +365,13 @@ ve.ce.FocusableNode.prototype.createInvisibleIcon = function () {
 		tabIndex: null,
 		icon: this.constructor.static.iconWhenInvisible
 	} );
+	// Add an invisible image to the button, which is expanded to cover the
+	// whole area, so that when selected the element is highlighted (T390733).
+	this.icon.$element.append(
+		$( '<img>' )
+			.addClass( 've-ce-focusableNode-invisibleIcon-selectionMask' )
+			.attr( 'src', ve.ce.minImgDataUri )
+	);
 	this.updateInvisibleIconLabel();
 };
 
