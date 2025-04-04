@@ -118,9 +118,11 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 		opening: 'onInspectorOrDialogOpeningOrClosing',
 		closing: 'onInspectorOrDialogOpeningOrClosing'
 	} );
-	this.getSurface().getToolbarDialogs().connect( this, {
-		opening: 'onInspectorOrDialogOpeningOrClosing',
-		closing: 'onInspectorOrDialogOpeningOrClosing'
+	ve.ui.ToolbarDialogWindowManager.static.positions.forEach( ( position ) => {
+		this.getSurface().getToolbarDialogs( position ).connect( this, {
+			opening: 'onInspectorOrDialogOpeningOrClosing',
+			closing: 'onInspectorOrDialogOpeningOrClosing'
+		} );
 	} );
 	this.getSurface().getContext().getInspectors().connect( this, {
 		opening: 'onInspectorOrDialogOpeningOrClosing',
@@ -227,7 +229,9 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 	const activeDialogs = [
 		this.surface.getDialogs(),
 		this.surface.getContext().getInspectors(),
-		this.surface.getToolbarDialogs()
+		...ve.ui.ToolbarDialogWindowManager.static.positions.map(
+			( positon ) => this.surface.getToolbarDialogs( positon )
+		)
 	].map( ( windowManager ) => {
 		if ( windowManager.getCurrentWindow() ) {
 			return windowManager.getCurrentWindow().constructor.static.name;

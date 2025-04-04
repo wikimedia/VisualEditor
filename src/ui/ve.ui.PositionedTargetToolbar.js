@@ -54,7 +54,7 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
 	ve.ui.PositionedTargetToolbar.super.prototype.setup.apply( this, arguments );
 
 	if ( this.attachToolbarDialogs ) {
-		[ 'above', 'below', 'side', 'inline' ].forEach( ( dialogPosition ) => {
+		ve.ui.ToolbarDialogWindowManager.static.positions.forEach( ( dialogPosition ) => {
 			const toolbarDialogs = surface.getToolbarDialogs( dialogPosition );
 			if ( this.position === 'bottom' ) {
 				this.$bar.prepend( toolbarDialogs.$element );
@@ -78,7 +78,7 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
 ve.ui.PositionedTargetToolbar.prototype.detach = function () {
 	// Events
 	if ( this.getSurface() ) {
-		[ 'above', 'below', 'side', 'inline' ].forEach( ( dialogPosition ) => {
+		ve.ui.ToolbarDialogWindowManager.static.positions.forEach( ( dialogPosition ) => {
 			this.getSurface().getToolbarDialogs( dialogPosition ).disconnect( this );
 			this.getSurface().getToolbarDialogs( dialogPosition ).clearWindows();
 		} );

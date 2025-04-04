@@ -42,6 +42,14 @@ ve.ui.ToolbarDialogWindowManager.static.sizes = {
 	}
 };
 
+/**
+ * All possible toolbar positions.
+ *
+ * @static
+ * @type {string[]}
+ */
+ve.ui.ToolbarDialogWindowManager.static.positions = [ 'above', 'below', 'side', 'inline' ];
+
 /* Methods */
 
 /**
