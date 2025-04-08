@@ -37,8 +37,20 @@
 		position: fixed;
 	}
 
-	&-embedded > .oo-ui-popupWidget > .oo-ui-popupWidget-popup {
-		margin-top: 0.25em;
-		margin-right: 0.25em;
+	&-embedded {
+		/* Delay enabling of pointer events for 500ms to allow double click on the FocusableNode to happen (T391399) */
+		pointer-events: none;
+		animation: enablePointerEvents 0s 500ms forwards;
+
+		& > .oo-ui-popupWidget > .oo-ui-popupWidget-popup {
+			margin-top: 0.25em;
+			margin-right: 0.25em;
+		}
+	}
+}
+
+@keyframes enablePointerEvents {
+	to {
+		pointer-events: auto;
 	}
 }
