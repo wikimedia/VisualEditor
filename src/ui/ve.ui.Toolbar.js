@@ -271,6 +271,19 @@ ve.ui.Toolbar.prototype.getToolAccelerator = function ( name ) {
 };
 
 /**
+ * @inheritdoc
+ */
+ve.ui.Toolbar.prototype.setNarrow = function ( narrow ) {
+	if ( OO.ui.isMobile() ) {
+		// Always use narrow mode on mobile.
+		// TODO: Be responsive like desktop, but that would require supporting
+		// things like label + indicator tools.
+		narrow = true;
+	}
+	return ve.ui.Toolbar.super.prototype.setNarrow.call( this, narrow );
+};
+
+/**
  * Gets the surface which the toolbar controls.
  *
  * Returns null if the toolbar hasn't been set up yet.
