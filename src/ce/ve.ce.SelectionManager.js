@@ -17,11 +17,19 @@
  *   FindAndReplaceDialog can highlight matched text, by calling
  *   #drawSelections directly.
  *
+ * @class
+ * @extends OO.ui.Element
+ * @mixes OO.EventEmitter
+ *
+ * @constructor
  * @param {ve.ce.Surface} surface
  */
 ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	// Parent constructor
 	ve.ce.SelectionManager.super.call( this );
+
+	// Mixin constructors
+	OO.EventEmitter.call( this );
 
 	this.surface = surface;
 
@@ -49,6 +57,15 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 /* Inheritance */
 
 OO.inheritClass( ve.ce.SelectionManager, OO.ui.Element );
+
+OO.mixinClass( ve.ce.SelectionManager, OO.EventEmitter );
+
+/* Events */
+
+/**
+ * @event ve.ce.SelectionManager#update
+ * @param {boolean} hasSelections The selection manager has some non-collapsed selections
+ */
 
 /* Methods */
 
@@ -227,6 +244,12 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 			}
 		}
 	} );
+	const hasSelections = Object.keys( this.drawnSelections ).some(
+		( n ) => this.drawnSelections[ n ].fragments.some(
+			( fragment ) => !fragment.getSelection().isCollapsed()
+		)
+	);
+	this.emit( 'update', hasSelections );
 };
 
 /**

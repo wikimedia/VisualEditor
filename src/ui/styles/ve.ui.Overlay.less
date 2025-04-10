@@ -33,4 +33,11 @@
 			}
 		}
 	}
+
+	&-local-selections-hasSelections {
+		mix-blend-mode: multiply;
+		// Support: Safari
+		// Safari doesn't blend this overlay with the text unless GPU rendering is forced.
+		transform: translateZ( 0 );
+	}
 }

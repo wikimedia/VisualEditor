@@ -55,6 +55,8 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 	// * ve-ui-overlay-global-desktop
 	this.globalOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global', 've-ui-overlay-global-' + ( OO.ui.isMobile() ? 'mobile' : 'desktop' ) ] } );
 	this.localOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-local' ] } );
+	// Selection highlights should appear under text, so need their own overlay for CSS
+	this.localOverlaySelections = new ve.ui.Overlay( { classes: [ 've-ui-overlay-local ve-ui-overlay-local-selections' ] } );
 	this.$selections = $( '<div>' ).addClass( 've-ui-surface-selections' );
 	this.$blockers = $( '<div>' );
 	this.$controls = $( '<div>' );
@@ -126,6 +128,9 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 		activation: 'onViewActivation'
 	} );
 	this.getContext().connect( this, { resize: ve.debounce( this.onContextResize.bind( this ) ) } );
+	this.getView().getSelectionManager().on( 'update', ( hasSelections ) => {
+		this.localOverlaySelections.$element.toggleClass( 've-ui-overlay-local-selections-hasSelections', hasSelections );
+	} );
 
 	// Initialization
 	if ( OO.ui.isMobile() ) {
@@ -146,8 +151,9 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 		this.getView().$element.add( this.$placeholder )
 			.addClass( 've-ui-surface-source-font' );
 	}
-	this.view.$element.after( this.localOverlay.$element );
-	this.localOverlay.$element.append( this.$selections, this.$blockers, this.$controls, this.$menus );
+	this.view.$element.after( this.localOverlay.$element, this.localOverlaySelections.$element );
+	this.localOverlay.$element.append( this.$blockers, this.$controls, this.$menus );
+	this.localOverlaySelections.$element.append( this.$selections );
 	this.globalOverlay.$element.append( this.dialogs.$element );
 };
 
