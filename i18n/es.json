@@ -187,7 +187,6 @@
 	"visualeditor-key-space": "Espacio",
 	"visualeditor-key-up": "↑",
 	"visualeditor-language-search-input-placeholder": "Buscar por nombre del idioma o código",
-	"visualeditor-languageannotation-description-with-dir": "$1 ($2)",
 	"visualeditor-languagecontext-remove": "Quitar idioma",
 	"visualeditor-languageinspector-title": "Idioma",
 	"visualeditor-languageinspector-widget-changelang": "Seleccionar idioma",
