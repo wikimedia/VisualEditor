@@ -819,7 +819,7 @@ ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
 			if ( range ) {
 				const offset = doc.getNearestCursorOffset( range.end, -1 );
 				if ( offset !== -1 ) {
-					surface.setSelection( new ve.dm.LinearSelection( new ve.Range( offset ) ) );
+					surface.setLinearSelection( new ve.Range( offset ) );
 				}
 			}
 		}

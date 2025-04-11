@@ -581,7 +581,7 @@ QUnit.test( 'Same-offset typing', ( assert ) => {
 	const expected = [ { type: 'paragraph' }, ...'abcd', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ];
 
 	clear();
-	surface.setSelection( new ve.dm.LinearSelection( new ve.Range( 1 ) ) );
+	surface.setLinearSelection( new ve.Range( 1 ) );
 	a.applyTo( surface );
 	b.applyTo( surface );
 	c.rebasedOnto( a.concat( b ) ).applyTo( surface );

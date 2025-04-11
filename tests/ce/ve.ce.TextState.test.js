@@ -334,10 +334,10 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 			$( '<div>' ).html( caseItem.oldInnerHtml )[ 0 ],
 			caseItem.msg + ' (oldInnerHtml)'
 		);
-		view.model.setSelection( new ve.dm.LinearSelection( new ve.Range( 1 ) ) );
+		view.model.setLinearSelection( new ve.Range( 1 ) );
 		const oldState = new ve.ce.RangeState( null, documentNode, false );
 		contentNode.$element.html( caseItem.newInnerHtml );
-		view.model.setSelection( new ve.dm.LinearSelection( new ve.Range( 1 ) ) );
+		view.model.setLinearSelection( new ve.Range( 1 ) );
 		const newState = new ve.ce.RangeState( oldState, documentNode, false );
 		const change = newState.textState.getChangeTransaction(
 			oldState.textState,
