@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Nachi kim",
+			"Neme244",
 			"Olugold",
 			"Ukabia"
 		]
@@ -27,6 +28,16 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Debanye aha",
 	"visualeditor-annotationbutton-superscript-tooltip": "Ebube",
 	"visualeditor-annotationbutton-underline-tooltip": "Ikaihe n'okpuru",
+	"visualeditor-changedesc-align": "Nhazi gbanwere site na $1 ruo $2",
+	"visualeditor-changedesc-changed": "$1 gbanwere site na $2 gaa $3",
+	"visualeditor-changedesc-changed-diff": "$1 gbanwere: $2",
+	"visualeditor-changedesc-comment": "Nkwupụta gbanwere site na $1 gaa na $2",
+	"visualeditor-changedesc-comment-diff": "Nkwupụta gbanwere: $1",
+	"visualeditor-changedesc-direction": "Ntugharị ntụzịaka gbanwere site na $1 ruo $2",
+	"visualeditor-changedesc-language": "Asụsụ gbanwere site na $1 gaa $2",
+	"visualeditor-changedesc-link-added": "Njikọ agbakwunyere: $1",
+	"visualeditor-changedesc-link-href": "Ebumnuche njikọ gbanwere site na $1 gaa $2",
+	"visualeditor-changedesc-link-href-diff": "Ebumnuche njikọ gbanwere: $1",
 	"visualeditor-changedesc-list-indent": "Ntinye ndetu abawanyela",
 	"visualeditor-changedesc-list-outdent": "Ntinye ndetu ebelatala",
 	"visualeditor-changedesc-list-style-indent": "Tụ atụ",
@@ -52,6 +63,8 @@
 	"visualeditor-collab-url-mismatch": "URL nnọkọ adabaghị na ibe a",
 	"visualeditor-collab-url-placeholder": "[Ngalaba URL]",
 	"visualeditor-collab-url-prompt": "Tinye URL nnọkọ iji sonyere",
+	"visualeditor-command-dialog-confirm": "Kwenye mgbanwe",
+	"visualeditor-command-dialog-focus-context": "Bugharịa uche gaa na mpụta ihe gbasara ọnọdụ",
 	"visualeditor-commentinspector-tooltip": "Nkwute",
 	"visualeditor-completionwidget-noresults": "Mpụtara adịghị",
 	"visualeditor-content-select-all": "Họrọ ha niile",
