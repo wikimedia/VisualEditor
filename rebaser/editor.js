@@ -28,7 +28,7 @@
 		}
 	);
 
-	new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
+	new ve.init.sa.Platform( ve.messagePaths ).initialize().then( () => {
 		const progressDeferred = ve.createDeferred(),
 			panel = new OO.ui.PanelLayout( {
 				// eslint-disable-next-line no-jquery/no-global-selector
@@ -46,10 +46,7 @@
 
 		// TODO: Create the correct model surface type (ve.ui.Surface#createModel)
 		const surfaceModel = new ve.dm.Surface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
-		surfaceModel.createSynchronizer(
-			ve.docName,
-			{ server: this.rebaserUrl }
-		);
+		surfaceModel.createSynchronizer( ve.docName );
 
 		dummySurface.createProgress( progressDeferred.promise(), ve.msg( 'visualeditor-rebase-client-connecting' ), true );
 
