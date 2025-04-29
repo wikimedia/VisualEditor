@@ -832,7 +832,7 @@
 		"dependencies": [
 			"visualEditor.build",
 			"visualEditor.rebase",
-			"visualEditor.theme.apex"
+			"visualEditor.theme.wikimediaui"
 		]
 	},
 	"visualEditor.test": {
@@ -986,7 +986,7 @@
 		"dependencies": [
 			"jsdifflib",
 			"qunit",
-			"visualEditor.desktop.standalone.apex",
+			"visualEditor.desktop.standalone.wikimediaui",
 			"visualEditor.rebase",
 			"visualEditor.collab"
 		]
