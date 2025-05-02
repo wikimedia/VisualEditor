@@ -4068,6 +4068,131 @@ ve.dm.example.domToDataCases = {
 			${ ve.dm.example.blockSlug }
 		`
 	},
+	'table cells with alignment': {
+		body: ve.dm.example.singleLine`
+		<table>
+			<thead>
+				<tr>
+					<th>year</th>
+					<th>passengers diesel</th>
+					<th>passengers steam</th>
+					<th>freight</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>2000</td>
+					<td style="text-align:right">1.7 M</td>
+					<td style="text-align:right">97,345</td>
+					<td style="text-align:right">442,273</td>
+				</tr>
+			</tbody>
+		</table>
+		`,
+		data: [
+			{ type: 'table' },
+			{
+				attributes: { style: 'header' },
+				type: 'tableSection'
+			},
+			{ type: 'tableRow' },
+			{
+				attributes: { style: 'header' },
+				type: 'tableCell'
+			},
+			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
+			...'year',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				attributes: { style: 'header' },
+				type: 'tableCell'
+			},
+			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
+			...'passengers diesel',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				attributes: { style: 'header' },
+				type: 'tableCell'
+			},
+			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
+			...'passengers steam',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				attributes: { style: 'header' },
+				type: 'tableCell'
+			},
+			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
+			...'freight',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{ type: '/tableRow' },
+			{ type: '/tableSection' },
+			{
+				attributes: {
+					style: 'body'
+				},
+				type: 'tableSection'
+			},
+			{ type: 'tableRow' },
+			{
+				attributes: {
+					style: 'data'
+				},
+				type: 'tableCell'
+			},
+			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
+			...'2000',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				attributes: {
+					originalTextAlign: 'right',
+					style: 'data',
+					textAlign: 'right'
+				},
+				originalDomElements: $.parseHTML( '<td style=\'text-align:right\'>1.7 M</td>' ),
+				type: 'tableCell'
+			},
+			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
+			...'1.7 M',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				attributes: {
+					originalTextAlign: 'right',
+					style: 'data',
+					textAlign: 'right'
+				},
+				originalDomElements: $.parseHTML( '<td style="text-align:right">97,345</td>' ),
+				type: 'tableCell'
+			},
+			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
+			...'97,345',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{
+				attributes: {
+					originalTextAlign: 'right',
+					style: 'data',
+					textAlign: 'right'
+				},
+				originalDomElements: $.parseHTML( '<td style="text-align:right">442,273</td>' ),
+				type: 'tableCell'
+			},
+			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
+			...'442,273',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{ type: '/tableRow' },
+			{ type: '/tableSection' },
+			{ type: '/table' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
 	'alien table cells': {
 		body: ve.dm.example.singleLine`
 			<table>
