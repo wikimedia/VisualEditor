@@ -44,6 +44,7 @@ ve.dm.TableRowNode.static.matchTagNames = [ 'tr' ];
  * @param {Object} [options] Creation options
  * @param {string|string[]} [options.style='data'] Cell style; 'data' or 'header', or array of styles
  * @param {number} [options.cellCount=1] Number of cells to create
+ * @param {ve.dm.TableCellNode[]} [options.clonedCells] Copy certain attributes from these cells (the array needs to be of size cellCount)
  * @return {Array} Model data for a new table row
  */
 ve.dm.TableRowNode.static.createData = function ( options ) {
@@ -55,6 +56,7 @@ ve.dm.TableRowNode.static.createData = function ( options ) {
 	data.push( { type: 'tableRow' } );
 	for ( let i = 0; i < cellCount; i++ ) {
 		ve.batchPush( data, ve.dm.TableCellNode.static.createData( {
+			clonedCell: Array.isArray( options.clonedCells ) ? options.clonedCells[ i ] : undefined,
 			style: Array.isArray( options.style ) ? options.style[ i ] : options.style
 		} ) );
 	}

@@ -399,6 +399,61 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				msg: 'insert row of mixed styles'
 			},
 			{
+				html: '<table><tr><th style="text-align:left">a</th><th align="center">b</th><th style="text-align : right">c</th></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 16 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				method: 'insert',
+				args: [ 'row', 'after' ],
+				expectedData: ( data ) => {
+					const insertedRow = data.slice( 2, 19 )
+						.filter( ( d ) => ![ 'a', 'b', 'c' ].includes( d ) )
+						.map( ( d ) => {
+							if ( d.type === 'tableCell' ) {
+								// possibly unexpected behaviour: the new row also has <th> elements; are <td> preferred instead?
+								const attributes = { ...d.attributes, colspan: 1, rowspan: 1 };
+								delete attributes.originalTextAlign;
+								d = { ...d, attributes };
+							}
+							return d;
+						} );
+					data.splice( 19, 0, ...insertedRow );
+				},
+				msg: 'insert row of mixed text alignment on th'
+			},
+			{
+				html: '<table><tr><td style="text-align:left">a</td><td align="center">b</td><td style="text-align : right">c</td></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 16 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				method: 'insert',
+				args: [ 'row', 'after' ],
+				expectedData: ( data ) => {
+					const insertedRow = data.slice( 2, 19 )
+						.filter( ( d ) => ![ 'a', 'b', 'c' ].includes( d ) )
+						.map( ( d ) => {
+							if ( d.type === 'tableCell' ) {
+								const attributes = { ...d.attributes, colspan: 1, rowspan: 1 };
+								delete attributes.originalTextAlign;
+								d = { ...d, attributes };
+							}
+							return d;
+						} );
+					data.splice( 19, 0, ...insertedRow );
+				},
+				msg: 'insert row of mixed text alignment on td'
+			},
+			{
 				html: ve.dm.example.mergedCellsHtml,
 				rangeOrSelection: {
 					type: 'table',

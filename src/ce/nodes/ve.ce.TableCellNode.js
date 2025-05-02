@@ -59,6 +59,8 @@ ve.ce.TableCellNode.prototype.initialize = function () {
 
 	const rowspan = this.model.getRowspan();
 	const colspan = this.model.getColspan();
+	const align = this.model.getAttribute( 'align' );
+	const textAlign = this.model.getAttribute( 'textAlign' );
 
 	// DOM changes
 	this.$element
@@ -73,6 +75,13 @@ ve.ce.TableCellNode.prototype.initialize = function () {
 	}
 	if ( colspan > 1 ) {
 		this.$element.attr( 'colspan', colspan );
+	}
+
+	if ( align ) {
+		this.$element.attr( 'align', align );
+	}
+	if ( textAlign ) {
+		this.$element.css( 'textAlign', textAlign );
 	}
 
 	// Add tooltip

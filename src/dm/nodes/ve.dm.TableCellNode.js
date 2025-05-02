@@ -78,6 +78,7 @@ ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
  * @param {string} [options.style='data'] Either 'header' or 'data'
  * @param {number} [options.rowspan=1] Number of rows the cell spans
  * @param {number} [options.colspan=1] Number of columns the cell spans
+ * @param {ve.dm.TableCellNode} [options.clonedCell] Copy certain attributes from this cell
  * @param {Array} [options.content] Linear model data, defaults to empty wrapper paragraph
  * @return {Array} Model data for a new table cell
  */
@@ -91,6 +92,16 @@ ve.dm.TableCellNode.static.createData = function ( options ) {
 			colspan: options.colspan || 1
 		}
 	};
+	if ( options.clonedCell ) {
+		const align = options.clonedCell.getAttribute( 'align' );
+		const textAlign = options.clonedCell.getAttribute( 'textAlign' );
+		if ( align ) {
+			opening.attributes.align = align;
+		}
+		if ( textAlign ) {
+			opening.attributes.textAlign = textAlign;
+		}
+	}
 	const content = options.content || [
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },
 		{ type: '/paragraph' }

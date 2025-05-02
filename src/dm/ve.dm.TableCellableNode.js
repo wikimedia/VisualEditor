@@ -39,6 +39,23 @@ ve.dm.TableCellableNode.static.areNodesCellable = function ( domNodes ) {
 	);
 };
 
+/**
+ * @typedef {Object} ve.dm.TableCellableNode.TableAttributes
+ * @property {string} style 'header' or 'data'
+ * @property {number} [rowspan]
+ * @property {string} [originalRowspan]
+ * @property {number} [colspan]
+ * @property {string} [originalColspan]
+ * @property {string} [align] DOM attribute align
+ * @property {string} [textAlign] CSS property text-align
+ * @property {string} [originalTextAlign] CSS property text-align (original value)
+ */
+
+/**
+ * @param {ve.dm.TableCellableNode.TableAttributes} attributes
+ * @param {HTMLElement[]} domElements
+ * @param {boolean} isAlien
+ */
 ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElements, isAlien ) {
 	if ( isAlien ) {
 		// For alienTableCells, we only need the colspan and rowspan, which
@@ -61,6 +78,8 @@ ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElement
 		const style = domElements[ 0 ].nodeName.toLowerCase() === 'th' ? 'header' : 'data';
 		const colspan = domElements[ 0 ].getAttribute( 'colspan' );
 		const rowspan = domElements[ 0 ].getAttribute( 'rowspan' );
+		const align = domElements[ 0 ].getAttribute( 'align' );
+		const textAlign = domElements[ 0 ].style.textAlign;
 
 		attributes.style = style;
 
@@ -77,9 +96,21 @@ ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElement
 				attributes.rowspan = Number( rowspan );
 			}
 		}
+
+		if ( align ) {
+			attributes.align = align;
+		}
+
+		if ( textAlign ) {
+			attributes.textAlign = attributes.originalTextAlign = textAlign;
+		}
 	}
 };
 
+/**
+ * @param {ve.dm.TableCellableNode.TableAttributes} attributes
+ * @param {HTMLElement} domElement
+ */
 ve.dm.TableCellableNode.static.applyAttributes = function ( attributes, domElement ) {
 	const spans = {
 		colspan: attributes.colspan,
@@ -105,6 +136,13 @@ ve.dm.TableCellableNode.static.applyAttributes = function ( attributes, domEleme
 	}
 
 	ve.setDomAttributes( domElement, spans );
+
+	if ( attributes.align ) {
+		domElement.setAttribute( 'align', attributes.align );
+	}
+	if ( attributes.textAlign !== attributes.originalTextAlign ) {
+		domElement.style.textAlign = attributes.textAlign;
+	}
 };
 
 /* Methods */
