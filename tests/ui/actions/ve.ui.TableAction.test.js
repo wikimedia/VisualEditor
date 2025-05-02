@@ -427,7 +427,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				msg: 'insert row of mixed text alignment on th'
 			},
 			{
-				html: '<table><tr><td style="text-align:left">a</td><td align="center">b</td><td style="text-align : right">c</td></tr></table>',
+				html: '<table><tr style="text-align:center"><td style="text-align:left">a</td><td align="center">b</td><td style="text-align : right">c</td></tr></table>',
 				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 16 ),
@@ -446,12 +446,16 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 								const attributes = { ...d.attributes, colspan: 1, rowspan: 1 };
 								delete attributes.originalTextAlign;
 								d = { ...d, attributes };
+							} else if ( d.type === 'tableRow' ) {
+								const attributes = { ...d.attributes };
+								delete attributes.originalTextAlign;
+								d = { ...d, attributes };
 							}
 							return d;
 						} );
 					data.splice( 19, 0, ...insertedRow );
 				},
-				msg: 'insert row of mixed text alignment on td'
+				msg: 'insert row of mixed text alignment on tr and td'
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,

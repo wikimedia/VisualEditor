@@ -59,8 +59,6 @@ ve.ce.TableCellNode.prototype.initialize = function () {
 
 	const rowspan = this.model.getRowspan();
 	const colspan = this.model.getColspan();
-	const align = this.model.getAttribute( 'align' );
-	const textAlign = this.model.getAttribute( 'textAlign' );
 
 	// DOM changes
 	this.$element
@@ -77,15 +75,28 @@ ve.ce.TableCellNode.prototype.initialize = function () {
 		this.$element.attr( 'colspan', colspan );
 	}
 
-	if ( align ) {
-		this.$element.attr( 'align', align );
-	}
-	if ( textAlign ) {
-		this.$element.css( 'textAlign', textAlign );
-	}
+	ve.ce.TableCellNode.static.updateStyles( this.$element, this.model );
 
 	// Add tooltip
 	this.$element.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) );
+};
+
+/**
+ * Update the DOM element styles from the data model.
+ *
+ * @param {HTMLElement} $element DOM element
+ * @param {ve.dm.TableCellNode|ve.dm.TableRowNode} model Data model
+ */
+ve.ce.TableCellNode.static.updateStyles = function ( $element, model ) {
+	const align = model.getAttribute( 'align' );
+	const textAlign = model.getAttribute( 'textAlign' );
+
+	if ( align ) {
+		$element.attr( 'align', align );
+	}
+	if ( textAlign ) {
+		$element.css( 'textAlign', textAlign );
+	}
 };
 
 /**

@@ -54,6 +54,7 @@ ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
 	const attributes = {};
 
 	ve.dm.TableCellableNode.static.setAttributes( attributes, domElements );
+	ve.dm.TableCellNode.static.setAlignmentAttributes( attributes, domElements );
 
 	return {
 		type: this.name,
@@ -67,8 +68,58 @@ ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
 		attributes = dataElement.attributes;
 
 	ve.dm.TableCellableNode.static.applyAttributes( attributes, domElement );
+	ve.dm.TableCellNode.static.applyAlignmentAttributes( attributes, domElement );
 
 	return [ domElement ];
+};
+
+/**
+ * Sets align and textAlign from the DOM element onto model data (via toDataElement).
+ *
+ * @param {ve.dm.TableCellableNode.TableAttributes} attributes Attributes of model data
+ * @param {HTMLElement[]} domElements DOM elements
+ */
+ve.dm.TableCellNode.static.setAlignmentAttributes = function ( attributes, domElements ) {
+	const align = domElements[ 0 ].getAttribute( 'align' );
+	const textAlign = domElements[ 0 ].style.textAlign;
+	if ( align ) {
+		attributes.align = align;
+	}
+	if ( textAlign ) {
+		attributes.textAlign = attributes.originalTextAlign = textAlign;
+	}
+};
+
+/**
+ * Apply alignment attributes from model data onto the DOM element (via toDomElements).
+ *
+ * @param {ve.dm.TableCellableNode.TableAttributes} attributes Attributes of model data
+ * @param {HTMLElement} domElement DOM element
+ */
+ve.dm.TableCellNode.static.applyAlignmentAttributes = function ( attributes, domElement ) {
+	if ( attributes.align ) {
+		domElement.setAttribute( 'align', attributes.align );
+	}
+	if ( attributes.textAlign !== attributes.originalTextAlign ) {
+		domElement.style.textAlign = attributes.textAlign;
+	}
+};
+
+/**
+ * Copies align and textAlign from one model data onto another model data (via createData).
+ *
+ * @param {ve.dm.TableCellNode|ve.dm.TableRowNode} clonedCell Copy certain attributes from this cell
+ * @param {ve.dm.TableCellableNode.TableAttributes} attributes Attributes of model data
+ */
+ve.dm.TableCellNode.static.copyAlignmentData = function ( clonedCell, attributes ) {
+	const align = clonedCell.getAttribute( 'align' );
+	const textAlign = clonedCell.getAttribute( 'textAlign' );
+	if ( align ) {
+		attributes.align = align;
+	}
+	if ( textAlign ) {
+		attributes.textAlign = textAlign;
+	}
 };
 
 /**
@@ -93,14 +144,7 @@ ve.dm.TableCellNode.static.createData = function ( options ) {
 		}
 	};
 	if ( options.clonedCell ) {
-		const align = options.clonedCell.getAttribute( 'align' );
-		const textAlign = options.clonedCell.getAttribute( 'textAlign' );
-		if ( align ) {
-			opening.attributes.align = align;
-		}
-		if ( textAlign ) {
-			opening.attributes.textAlign = textAlign;
-		}
+		this.copyAlignmentData( options.clonedCell, opening.attributes );
 	}
 	const content = options.content || [
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },

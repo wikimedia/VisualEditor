@@ -714,6 +714,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		if ( !dataMatrixLine ) {
 			insertData = ve.dm.TableRowNode.static.createData( {
 				cellCount: inserts.length,
+				clonedRow: matrix.getRowNode( index ),
 				clonedCells: cells.map( ( c ) => c.node ),
 				style: cells.map( ( c ) => c.node.getStyle() )
 			} );

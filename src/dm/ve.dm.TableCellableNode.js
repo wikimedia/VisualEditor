@@ -78,8 +78,6 @@ ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElement
 		const style = domElements[ 0 ].nodeName.toLowerCase() === 'th' ? 'header' : 'data';
 		const colspan = domElements[ 0 ].getAttribute( 'colspan' );
 		const rowspan = domElements[ 0 ].getAttribute( 'rowspan' );
-		const align = domElements[ 0 ].getAttribute( 'align' );
-		const textAlign = domElements[ 0 ].style.textAlign;
 
 		attributes.style = style;
 
@@ -95,14 +93,6 @@ ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElement
 			if ( rowspan !== '' && !isNaN( Number( rowspan ) ) ) {
 				attributes.rowspan = Number( rowspan );
 			}
-		}
-
-		if ( align ) {
-			attributes.align = align;
-		}
-
-		if ( textAlign ) {
-			attributes.textAlign = attributes.originalTextAlign = textAlign;
 		}
 	}
 };
@@ -136,13 +126,6 @@ ve.dm.TableCellableNode.static.applyAttributes = function ( attributes, domEleme
 	}
 
 	ve.setDomAttributes( domElement, spans );
-
-	if ( attributes.align ) {
-		domElement.setAttribute( 'align', attributes.align );
-	}
-	if ( attributes.textAlign !== attributes.originalTextAlign ) {
-		domElement.style.textAlign = attributes.textAlign;
-	}
 };
 
 /* Methods */

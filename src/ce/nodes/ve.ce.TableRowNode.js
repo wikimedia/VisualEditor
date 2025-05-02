@@ -35,6 +35,16 @@ ve.ce.TableRowNode.static.tagName = 'tr';
 /**
  * @inheritdoc
  */
+ve.ce.TableRowNode.prototype.initialize = function () {
+	// Parent method
+	ve.ce.TableRowNode.super.prototype.initialize.call( this );
+
+	ve.ce.TableCellNode.static.updateStyles( this.$element, this.model );
+};
+
+/**
+ * @inheritdoc
+ */
 ve.ce.TableRowNode.prototype.onSetup = function () {
 	// Parent method
 	ve.ce.TableRowNode.super.prototype.onSetup.apply( this, arguments );

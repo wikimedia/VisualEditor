@@ -4080,7 +4080,7 @@ ve.dm.example.domToDataCases = {
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr style="text-align:center">
 					<td>2000</td>
 					<td style="text-align:right">1.7 M</td>
 					<td style="text-align:right">97,345</td>
@@ -4136,7 +4136,13 @@ ve.dm.example.domToDataCases = {
 				},
 				type: 'tableSection'
 			},
-			{ type: 'tableRow' },
+			{
+				attributes: {
+					originalTextAlign: 'center',
+					textAlign: 'center'
+				},
+				originalDomElements: $.parseHTML( '<tr style="text-align:center"><td>2000</td><td style="text-align:right">1.7 M</td><td style="text-align:right">97,345</td><td style="text-align:right">442,273</td></tr>' ),
+				type: 'tableRow' },
 			{
 				attributes: {
 					style: 'data'
@@ -4153,7 +4159,7 @@ ve.dm.example.domToDataCases = {
 					style: 'data',
 					textAlign: 'right'
 				},
-				originalDomElements: $.parseHTML( '<td style=\'text-align:right\'>1.7 M</td>' ),
+				originalDomElements: $.parseHTML( '<td style="text-align:right">1.7 M</td>' ),
 				type: 'tableCell'
 			},
 			{ internal: { generated: 'wrapper' }, type: 'paragraph' },
