@@ -46,9 +46,12 @@ ve.dm.TableCellableNode.static.areNodesCellable = function ( domNodes ) {
  * @property {string} [originalRowspan]
  * @property {number} [colspan]
  * @property {string} [originalColspan]
- * @property {string} [align] DOM attribute align
+ * @property {string} [align] DOM attribute align (deprecated)
+ * @property {string} [valign] DOM attribute valign (deprecated)
  * @property {string} [textAlign] CSS property text-align
+ * @property {string} [verticalAlign] CSS property vertical-align
  * @property {string} [originalTextAlign] CSS property text-align (original value)
+ * @property {string} [originalVerticalAlign] CSS property vertical-align (original value)
  */
 
 /**

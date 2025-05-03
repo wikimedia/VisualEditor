@@ -81,12 +81,20 @@ ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
  */
 ve.dm.TableCellNode.static.setAlignmentAttributes = function ( attributes, domElements ) {
 	const align = domElements[ 0 ].getAttribute( 'align' );
+	const valign = domElements[ 0 ].getAttribute( 'valign' );
 	const textAlign = domElements[ 0 ].style.textAlign;
+	const verticalAlign = domElements[ 0 ].style.verticalAlign;
 	if ( align ) {
 		attributes.align = align;
 	}
+	if ( valign ) {
+		attributes.valign = valign;
+	}
 	if ( textAlign ) {
 		attributes.textAlign = attributes.originalTextAlign = textAlign;
+	}
+	if ( verticalAlign ) {
+		attributes.verticalAlign = attributes.originalVerticalAlign = verticalAlign;
 	}
 };
 
@@ -100,8 +108,14 @@ ve.dm.TableCellNode.static.applyAlignmentAttributes = function ( attributes, dom
 	if ( attributes.align ) {
 		domElement.setAttribute( 'align', attributes.align );
 	}
+	if ( attributes.valign ) {
+		domElement.setAttribute( 'valign', attributes.valign );
+	}
 	if ( attributes.textAlign !== attributes.originalTextAlign ) {
 		domElement.style.textAlign = attributes.textAlign;
+	}
+	if ( attributes.verticalAlign !== attributes.originalVerticalAlign ) {
+		domElement.style.verticalAlign = attributes.verticalAlign;
 	}
 };
 
@@ -113,12 +127,20 @@ ve.dm.TableCellNode.static.applyAlignmentAttributes = function ( attributes, dom
  */
 ve.dm.TableCellNode.static.copyAlignmentData = function ( clonedCell, attributes ) {
 	const align = clonedCell.getAttribute( 'align' );
+	const valign = clonedCell.getAttribute( 'valign' );
 	const textAlign = clonedCell.getAttribute( 'textAlign' );
+	const verticalAlign = clonedCell.getAttribute( 'verticalAlign' );
 	if ( align ) {
 		attributes.align = align;
 	}
+	if ( valign ) {
+		attributes.valign = valign;
+	}
 	if ( textAlign ) {
 		attributes.textAlign = textAlign;
+	}
+	if ( verticalAlign ) {
+		attributes.verticalAlign = verticalAlign;
 	}
 };
 

@@ -89,13 +89,20 @@ ve.ce.TableCellNode.prototype.initialize = function () {
  */
 ve.ce.TableCellNode.static.updateStyles = function ( $element, model ) {
 	const align = model.getAttribute( 'align' );
+	const valign = model.getAttribute( 'valign' );
 	const textAlign = model.getAttribute( 'textAlign' );
-
+	const verticalAlign = model.getAttribute( 'verticalAlign' );
 	if ( align ) {
 		$element.attr( 'align', align );
 	}
+	if ( valign ) {
+		$element.attr( 'valign', valign );
+	}
 	if ( textAlign ) {
 		$element.css( 'textAlign', textAlign );
+	}
+	if ( verticalAlign ) {
+		$element.css( 'verticalAlign', verticalAlign );
 	}
 };
 
