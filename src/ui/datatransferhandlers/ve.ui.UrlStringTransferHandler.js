@@ -34,6 +34,9 @@ ve.ui.UrlStringTransferHandler.static.types = [
 	// Support: Firefox
 	// Firefox type, preserves title
 	'text/x-moz-url',
+	// Support: Edge
+	// Format used by Microsoft Edge when copying from the address bar (T341281)
+	'text/link-preview',
 	// Used in GNOME drag-and-drop
 	'text/x-uri',
 	// Identify links in pasted plain text as well
@@ -115,6 +118,18 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 				return { href: item[ 0 ], title: item[ 1 ] };
 			} );
 			break;
+
+		case 'text/link-preview': {
+			// data is a JSON string
+			try {
+				const parsed = JSON.parse( data );
+				if ( parsed.url && parsed.title ) {
+					links = [ { href: parsed.url, title: parsed.title } ];
+				}
+			} catch ( err ) {
+			}
+			break;
+		}
 
 		default:
 			// A single URL

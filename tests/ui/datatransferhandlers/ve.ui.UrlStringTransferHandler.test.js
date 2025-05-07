@@ -125,6 +125,30 @@ QUnit.test( 'paste', ( assert ) => {
 					[ 'r', [ a2 ] ]
 				];
 			}
+		},
+		{
+			msg: 'Microsoft Edge, format used when copying from the address bar',
+			pasteString: '{"description":"","domain":"example.com","filtered_terms":["exampl","exampl","domain"],"image_url":"","keywords":"","preferred_format":"text/html;content=titled-hyperlink","title":"Example Domain","type":"website","url":"https://example.com/"}',
+			pasteType: 'text/link-preview',
+			expectedData: ( makeAnnotation ) => {
+				const a = makeAnnotation( 'https://example.com/' );
+				return [
+					[ 'E', [ a ] ],
+					[ 'x', [ a ] ],
+					[ 'a', [ a ] ],
+					[ 'm', [ a ] ],
+					[ 'p', [ a ] ],
+					[ 'l', [ a ] ],
+					[ 'e', [ a ] ],
+					[ ' ', [ a ] ],
+					[ 'D', [ a ] ],
+					[ 'o', [ a ] ],
+					[ 'm', [ a ] ],
+					[ 'a', [ a ] ],
+					[ 'i', [ a ] ],
+					[ 'n', [ a ] ]
+				];
+			}
 		}
 	];
 
