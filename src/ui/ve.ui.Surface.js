@@ -151,7 +151,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 		this.getView().$element.add( this.$placeholder )
 			.addClass( 've-ui-surface-source-font' );
 	}
-	this.view.$element.after( this.localOverlay.$element, this.localOverlaySelections.$element );
+	this.view.$element.after( this.localOverlaySelections.$element, this.localOverlay.$element );
 	this.localOverlay.$element.append( this.$blockers, this.$controls, this.$menus );
 	this.localOverlaySelections.$element.append( this.$selections );
 	this.globalOverlay.$element.append( this.dialogs.$element );
