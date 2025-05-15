@@ -375,7 +375,7 @@ ve.ui.Surface.prototype.getBoundingClientRect = function () {
 };
 
 /**
- * Get vertical measurements of the visible area of the surface viewport
+ * Get measurements of the visible area of the surface viewport
  *
  * @return {Object|null} Object with top, bottom, left, right, width and height properties. Null if the surface is not attached.
  */

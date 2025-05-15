@@ -273,9 +273,12 @@ ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
 	if ( sideWindow ) {
 		const viewportDimensions = surface.getViewportDimensions();
 		if ( viewportDimensions ) {
-			sideWindow.$frame.css(
-				'height', Math.min( surface.getBoundingClientRect().height, viewportDimensions.height )
-			);
+			// TODO: Add on the gap between the surface and the bottom of the toolbar
+			// (e.g. as used by #siteSub) as the sidebar moves up into this space.
+			// It is only usually about 20px, so not a big issue for now.
+			const surfaceRect = surface.getBoundingClientRect();
+			const sideWindowRect = sideWindow.$frame[ 0 ].getBoundingClientRect();
+			sideWindow.$frame.css( 'height', Math.min( surfaceRect.bottom - sideWindowRect.top, viewportDimensions.height ) );
 		}
 	}
 };
@@ -284,7 +287,5 @@ ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
  * Handle window scroll events
  */
 ve.ui.PositionedTargetToolbar.prototype.onWindowScroll = function () {
-	if ( !this.floating ) {
-		this.onViewportResize();
-	}
+	this.onViewportResize();
 };
