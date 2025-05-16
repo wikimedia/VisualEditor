@@ -379,6 +379,7 @@ module.exports = function ( grunt ) {
 		},
 		stylelint: {
 			options: {
+				cache: true,
 				reportNeedlessDisables: true
 			},
 			all: fg.globSync( [
