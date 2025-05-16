@@ -255,7 +255,7 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
 					// Is an element
 					typeof left.type === 'string' &&
 					// Is a closing
-					left.type.charAt( 0 ) === '/' &&
+					left.type.startsWith( '/' ) &&
 					// Is a leaf
 					factory.isNodeContent( left.type.slice( 1 ) )
 				) ||
@@ -265,7 +265,7 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
 					// Is an element
 					typeof right.type === 'string' &&
 					// Is not a closing
-					right.type.charAt( 0 ) !== '/' &&
+					!right.type.startsWith( '/' ) &&
 					// Is a leaf
 					factory.isNodeContent( right.type )
 				) ||

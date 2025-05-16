@@ -58,7 +58,7 @@
 	 * @inheritdoc
 	 */
 	ve.init.sa.SafeStorage.prototype.set = function ( key, value, expiry ) {
-		if ( key.slice( 0, EXPIRY_PREFIX.length ) === EXPIRY_PREFIX ) {
+		if ( key.startsWith( EXPIRY_PREFIX ) ) {
 			throw new Error( 'Key can\'t have a prefix of ' + EXPIRY_PREFIX );
 		}
 		try {
@@ -181,7 +181,7 @@
 					try {
 						key = store.key( i );
 					} catch ( e ) {}
-					if ( key !== null && key.slice( 0, prefixLength ) === EXPIRY_PREFIX ) {
+					if ( key !== null && key.startsWith( EXPIRY_PREFIX ) ) {
 						keys.push( key.slice( prefixLength ) );
 					}
 				}
