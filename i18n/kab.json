@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Belkacem77",
+			"ButterflyOfFire",
 			"K Messaoudi"
 		]
 	},
@@ -94,6 +95,7 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Senɣeṣ arigel",
 	"visualeditor-inspector-remove-tooltip": "Kkes",
 	"visualeditor-language-search-input-placeholder": "Nadi isem neɣ tangalt n tutlayt",
+	"visualeditor-languagecontext-remove": "Kkes tutlayt",
 	"visualeditor-languageinspector-title": "Tutlayt",
 	"visualeditor-languageinspector-widget-changelang": "Af-d tutlayt",
 	"visualeditor-languageinspector-widget-label-direction": "Tanila",
