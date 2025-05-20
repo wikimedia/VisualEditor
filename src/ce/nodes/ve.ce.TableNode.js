@@ -26,6 +26,8 @@ ve.ce.TableNode = function VeCeTableNode() {
 	// a fragment when entering cell edit mode
 	this.editingFragment = null;
 
+	this.onWindowScrollThrottled = ve.throttle( this.onWindowScroll.bind( this ), 250 );
+
 	// DOM changes
 	this.$element
 		.addClass( 've-ce-tableNode' )
@@ -98,6 +100,7 @@ ve.ce.TableNode.prototype.onSetup = function () {
 		position: this.updateOverlayDebounced,
 		activation: 'onSurfaceActivation'
 	} );
+	this.surface.getSurface().$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollThrottled, { passive: true } );
 };
 
 /**
@@ -118,6 +121,7 @@ ve.ce.TableNode.prototype.onTeardown = function () {
 	this.surface.getModel().disconnect( this );
 	this.surface.disconnect( this );
 	this.$overlay.remove();
+	this.surface.getSurface().$scrollListener[ 0 ].removeEventListener( 'scroll', this.onWindowScrollThrottled );
 
 	this.surface = null;
 };
@@ -459,10 +463,16 @@ ve.ce.TableNode.prototype.onSurfaceActivation = function () {
 	this.$overlay.toggleClass( 've-ce-tableNodeOverlay-deactivated', !!this.surface.isShownAsDeactivated() );
 };
 
+ve.ce.TableNode.prototype.onWindowScroll = function () {
+	this.updateOverlay( true );
+};
+
 /**
  * Update the overlay positions
+ *
+ * @param {boolean} [fromScroll=false] Update triggered by a scroll event
  */
-ve.ce.TableNode.prototype.updateOverlay = function () {
+ve.ce.TableNode.prototype.updateOverlay = function ( fromScroll ) {
 	if (
 		!this.active || !this.root ||
 		!this.surface ||
@@ -475,9 +485,6 @@ ve.ce.TableNode.prototype.updateOverlay = function () {
 	const selection = this.editingFragment ?
 		this.editingFragment.getSelection() :
 		this.surface.getModel().getSelection();
-	const documentModel = this.editingFragment ?
-		this.editingFragment.getDocument() :
-		this.surface.getModel().getDocument();
 	// getBoundingClientRect is more accurate but must be used consistently
 	// due to the iOS7 bug where it is relative to the document.
 	const tableOffset = this.getFirstSectionNode().$element[ 0 ].getBoundingClientRect();
@@ -499,55 +506,87 @@ ve.ce.TableNode.prototype.updateOverlay = function () {
 		surfaceOffset.left - tableOffset.left, surfaceOffset.top - tableOffset.top
 	);
 
-	let anchorOffset;
-	if ( selection.isSingleCell( documentModel ) ) {
-		// Optimization, use same rects as whole selection
-		anchorOffset = selectionOffset;
-	} else {
-		anchorOffset = ve.translateRect(
-			this.surface.getSelection( selection.collapseToFrom() ).getSelectionBoundingRect(),
-			surfaceOffset.left - tableOffset.left, surfaceOffset.top - tableOffset.top
-		);
-	}
+	const viewportOffset = ve.translateRect(
+		this.surface.getSurface().getViewportDimensions(),
+		surfaceOffset.left - tableOffset.left, surfaceOffset.top - tableOffset.top
+	);
 
-	// Resize controls
-	this.$selectionBox.css( {
-		top: selectionOffset.top,
-		left: selectionOffset.left,
-		width: selectionOffset.width,
-		height: selectionOffset.height
-	} );
-	this.$selectionBoxAnchor.css( {
-		top: anchorOffset.top,
-		left: anchorOffset.left,
-		width: anchorOffset.width,
-		height: anchorOffset.height
-	} );
-
-	// Position controls
-	this.$overlay.css( {
-		top: tableOffset.top - surfaceOffset.top,
-		left: tableOffset.left - surfaceOffset.left,
-		width: tableOffset.width
-	} );
+	// Controls
 	// this.nodeContext doesn't need to adjust to the line
-	this.colContext.icon.$element.css( {
-		left: selectionOffset.left,
-		width: selectionOffset.width
-	} );
-	this.rowContext.icon.$element.css( {
-		top: selectionOffset.top,
-		height: selectionOffset.height
-	} );
-
-	if ( this.nodeContext ) {
-		this.nodeContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
+	const iconSize = 20;
+	const colLeft = Math.max( selectionOffset.left, viewportOffset.left );
+	const colRight = Math.min( selectionOffset.right, viewportOffset.right );
+	if ( colRight >= colLeft + iconSize ) {
+		// Constrain to viewport width
+		this.colContext.icon.$element.css( {
+			left: colLeft,
+			width: colRight - colLeft
+		} );
+	} else {
+		this.colContext.icon.$element.css( {
+			left: selectionOffset.left,
+			width: selectionOffset.width
+		} );
 	}
-	this.colContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
-	this.rowContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
+	const rowTop = Math.max( selectionOffset.top, viewportOffset.top );
+	const rowBottom = Math.min( selectionOffset.bottom, viewportOffset.bottom );
+	if ( rowBottom >= rowTop + iconSize ) {
+		// Constrain to viewport height
+		this.rowContext.icon.$element.css( {
+			top: rowTop,
+			height: rowBottom - rowTop
+		} );
+	} else {
+		this.rowContext.icon.$element.css( {
+			top: selectionOffset.top,
+			height: selectionOffset.height
+		} );
+	}
 
-	// Classes
-	this.$selectionBox.toggleClass( 've-ce-tableNodeOverlay-selection-box-notEditable', !selection.isEditable( documentModel ) );
+	if ( !fromScroll ) {
+		const documentModel = this.editingFragment ?
+			this.editingFragment.getDocument() :
+			this.surface.getModel().getDocument();
+
+		let anchorOffset;
+		if ( selection.isSingleCell( documentModel ) ) {
+			// Optimization, use same rects as whole selection
+			anchorOffset = selectionOffset;
+		} else {
+			anchorOffset = ve.translateRect(
+				this.surface.getSelection( selection.collapseToFrom() ).getSelectionBoundingRect(),
+				surfaceOffset.left - tableOffset.left, surfaceOffset.top - tableOffset.top
+			);
+		}
+
+		// Container
+		this.$overlay.css( {
+			top: tableOffset.top - surfaceOffset.top,
+			left: tableOffset.left - surfaceOffset.left,
+			width: tableOffset.width
+		} );
+		// Selection
+		this.$selectionBox.css( {
+			top: selectionOffset.top,
+			left: selectionOffset.left,
+			width: selectionOffset.width,
+			height: selectionOffset.height
+		} );
+		this.$selectionBoxAnchor.css( {
+			top: anchorOffset.top,
+			left: anchorOffset.left,
+			width: anchorOffset.width,
+			height: anchorOffset.height
+		} );
+		if ( this.nodeContext ) {
+			this.nodeContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
+		}
+		this.colContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
+		this.rowContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
+
+		// Classes
+		this.$selectionBox.toggleClass( 've-ce-tableNodeOverlay-selection-box-notEditable', !selection.isEditable( documentModel ) );
+	}
 };
 
 /**
