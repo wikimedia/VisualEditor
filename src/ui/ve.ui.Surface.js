@@ -377,7 +377,7 @@ ve.ui.Surface.prototype.getBoundingClientRect = function () {
 /**
  * Get vertical measurements of the visible area of the surface viewport
  *
- * @return {Object|null} Object with top, left, bottom, and height properties. Null if the surface is not attached.
+ * @return {Object|null} Object with top, bottom, left, right, width and height properties. Null if the surface is not attached.
  */
 ve.ui.Surface.prototype.getViewportDimensions = function () {
 	const rect = this.getBoundingClientRect();
@@ -386,14 +386,21 @@ ve.ui.Surface.prototype.getViewportDimensions = function () {
 		return null;
 	}
 
-	const top = Math.max( this.getPadding().top - rect.top, 0 );
-	const bottom = $( this.getElementWindow() ).height() - rect.top;
+	const padding = this.getPadding();
+	const $window = $( this.getElementWindow() );
+
+	const top = Math.max( ( padding.top || 0 ) - rect.top, 0 );
+	const bottom = $window.height() - rect.top;
+	const left = Math.max( ( padding.left || 0 ) - rect.left, 0 );
+	const right = $window.width() - rect.left;
 
 	return {
-		top: top,
-		left: rect.left,
-		bottom: bottom,
-		height: bottom - top
+		top,
+		bottom,
+		left,
+		right,
+		height: bottom - top,
+		width: right - left
 	};
 };
 
