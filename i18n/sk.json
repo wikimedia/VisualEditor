@@ -154,6 +154,7 @@
 	"visualeditor-shortcuts-text-style": "Formátovanie textu",
 	"visualeditor-slug-insert": "Vložiť odsek",
 	"visualeditor-specialcharacter-button-tooltip": "Špeciálny znak",
+	"visualeditor-specialcharacter-recentlyused": "Nedávno použité",
 	"visualeditor-table-contextitem-properties": "Vlastnosti",
 	"visualeditor-table-contextitem-selectionmode-cells": "Vybrať bunky",
 	"visualeditor-table-delete-col": "Odstrániť {{PLURAL:$1|stĺpec|stĺpce}}",
