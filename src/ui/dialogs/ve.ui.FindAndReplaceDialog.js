@@ -13,7 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.FindAndReplaceDialog = function VeUiFindAndReplaceDialog( config ) {
+ve.ui.FindAndReplaceDialog = function VeUiFindAndReplaceDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.FindAndReplaceDialog.super.call( this, config );
 

@@ -17,7 +17,7 @@
  * @param {jQuery} [$image] Actual image element, if $figure is just a container
  * @param {Object} [config] Configuration options
  */
-ve.ce.ImageNode = function VeCeImageNode( $figure, $image, config ) {
+ve.ce.ImageNode = function VeCeImageNode( $figure, $image, config = {} ) {
 	config = ve.extendObject( {
 		enforceMax: false,
 		minDimensions: { width: 1, height: 1 },

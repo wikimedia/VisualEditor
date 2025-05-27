@@ -16,7 +16,7 @@
  * @param {ve.dm.BlockImageNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
+ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config = {} ) {
 	config = ve.extendObject( {
 		minDimensions: { width: 1, height: 1 }
 	}, config );

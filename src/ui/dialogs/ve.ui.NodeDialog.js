@@ -14,7 +14,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.NodeDialog = function VeUiNodeDialog( config ) {
+ve.ui.NodeDialog = function VeUiNodeDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.NodeDialog.super.call( this, config );
 

@@ -14,7 +14,7 @@
  * @param {ve.dm.Model} model Model the item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageContextItem = function VeUiLanguageContextItem( context, model, config ) {
+ve.ui.LanguageContextItem = function VeUiLanguageContextItem( context, model, config = {} ) {
 	// Parent constructor
 	ve.ui.LanguageContextItem.super.call( this, context, model, config );
 

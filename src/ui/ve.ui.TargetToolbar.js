@@ -14,7 +14,7 @@
  * @param {ve.init.Target} target Target to control
  * @param {Object} [config] Configuration options
  */
-ve.ui.TargetToolbar = function VeUiTargetToolbar( target, config ) {
+ve.ui.TargetToolbar = function VeUiTargetToolbar( target, config = {} ) {
 	// Parent constructor
 	ve.ui.TargetToolbar.super.call( this, config );
 

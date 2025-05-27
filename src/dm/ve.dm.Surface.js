@@ -225,7 +225,7 @@ ve.dm.Surface.prototype.isMultiUser = function () {
  * @param {string} documentId Document ID
  * @param {Object} [config] Configuration options
  */
-ve.dm.Surface.prototype.createSynchronizer = function ( documentId, config ) {
+ve.dm.Surface.prototype.createSynchronizer = function ( documentId, config = {} ) {
 	if ( this.synchronizer ) {
 		throw new Error( 'Synchronizer already set' );
 	}

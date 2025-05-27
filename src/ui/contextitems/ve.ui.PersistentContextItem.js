@@ -14,7 +14,7 @@
  * @param {Object} [data] Extra data
  * @param {Object} [config] Configuration options
  */
-ve.ui.PersistentContextItem = function VeUiPersistentContextItem( context, data, config ) {
+ve.ui.PersistentContextItem = function VeUiPersistentContextItem( context, data, config = {} ) {
 	// Parent constructor
 	ve.ui.PersistentContextItem.super.call( this, context, undefined, config );
 

@@ -16,7 +16,7 @@
  * @param {Object} [config.validate] Validation pattern passed to TextInputWidgets
  * @param {boolean} [config.readOnly=false] Prevent changes to the value of the widget.
  */
-ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
+ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config = {} ) {
 	this.surface = surface;
 	this.surfaceModel = surface.getModel();
 

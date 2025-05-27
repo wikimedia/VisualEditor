@@ -16,7 +16,7 @@
  * @param {ve.ui.Surface} ui Surface user interface
  * @param {Object} [config] Configuration options
  */
-ve.ce.Surface = function VeCeSurface( model, ui, config ) {
+ve.ce.Surface = function VeCeSurface( model, ui, config = {} ) {
 	// Parent constructor
 	ve.ce.Surface.super.call( this, config );
 

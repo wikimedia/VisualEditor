@@ -15,7 +15,7 @@
  * @param {Object} [config] Configuration options
  * @param {ve.ui.Overlay} [config.overlay] Overlay to use for menus
  */
-ve.ui.SidebarDialogWindowManager = function VeUiSidebarDialogWindowManager( surface, config ) {
+ve.ui.SidebarDialogWindowManager = function VeUiSidebarDialogWindowManager( surface, config = {} ) {
 	// Parent constructor
 	ve.ui.SidebarDialogWindowManager.super.call( this, surface, ve.extendObject( { modal: false }, config ) );
 

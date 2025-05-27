@@ -14,7 +14,7 @@
  * @param {jQuery} [config.root] Initial root element to scope tabIndex within
  * @param {boolean} [config.skipAriaDisabled] Whether to skip elements that are just aria-disabled from the order
  */
-ve.ui.TabIndexScope = function VeUiTabIndexScope( config ) {
+ve.ui.TabIndexScope = function VeUiTabIndexScope( config = {} ) {
 	config = ve.extendObject( {
 		root: false,
 		skipAriaDisabled: true,

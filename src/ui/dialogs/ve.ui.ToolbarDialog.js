@@ -14,7 +14,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.ToolbarDialog = function VeUiToolbarDialog( config ) {
+ve.ui.ToolbarDialog = function VeUiToolbarDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.ToolbarDialog.super.call( this, config );
 

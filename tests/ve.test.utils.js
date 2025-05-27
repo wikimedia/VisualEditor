@@ -592,7 +592,7 @@
 	 * @param {Object} config Surface config
 	 * @return {ve.ui.Surface}
 	 */
-	ve.test.utils.createSurfaceFromHtml = function ( html, config ) {
+	ve.test.utils.createSurfaceFromHtml = function ( html, config = {} ) {
 		return this.createSurfaceFromDocument(
 			ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( html ) ),
 			config
@@ -608,7 +608,7 @@
 	 * @param {Object} [config] Surface config
 	 * @return {ve.ui.Surface}
 	 */
-	ve.test.utils.createSurfaceFromDocument = function ( doc, config ) {
+	ve.test.utils.createSurfaceFromDocument = function ( doc, config = {} ) {
 		return ve.init.target.addSurface( doc, config );
 	};
 
@@ -619,7 +619,7 @@
 	 * @param {Object} config Surface config
 	 * @return {ve.ce.Surface}
 	 */
-	ve.test.utils.createSurfaceViewFromHtml = function ( html, config ) {
+	ve.test.utils.createSurfaceViewFromHtml = function ( html, config = {} ) {
 		return this.createSurfaceViewFromDocument(
 			ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( html ) ),
 			config
@@ -635,7 +635,7 @@
 	 * @param {Object} config Surface config
 	 * @return {ve.ce.Surface}
 	 */
-	ve.test.utils.createSurfaceViewFromDocument = function ( docOrSurface, config ) {
+	ve.test.utils.createSurfaceViewFromDocument = function ( docOrSurface, config = {} ) {
 		config = ve.init.target.getSurfaceConfig( config );
 
 		let model = null, view = null;
@@ -737,7 +737,7 @@
 	 * @param {Object} config Surface config
 	 * @return {Object} Mock UI surface which only returns a real view (and its model)
 	 */
-	ve.test.utils.createViewOnlySurfaceFromHtml = function ( html, config ) {
+	ve.test.utils.createViewOnlySurfaceFromHtml = function ( html, config = {} ) {
 		const surfaceView = ve.test.utils.createSurfaceViewFromDocument(
 			ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( html ) ),
 			config
@@ -753,7 +753,7 @@
 	 * @param {Object} config Surface config
 	 * @return {Object} Mock UI surface which only returns a real model
 	 */
-	ve.test.utils.createModelOnlySurfaceFromHtml = function ( html, config ) {
+	ve.test.utils.createModelOnlySurfaceFromHtml = function ( html, config = {} ) {
 		const model = new ve.dm.Surface(
 			ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( html ) ),
 			null,

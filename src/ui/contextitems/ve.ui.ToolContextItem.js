@@ -15,7 +15,7 @@
  * @param {Function} tool Tool class the item is based on
  * @param {Object} [config] Configuration options
  */
-ve.ui.ToolContextItem = function VeUiToolContextItem( context, model, tool, config ) {
+ve.ui.ToolContextItem = function VeUiToolContextItem( context, model, tool, config = {} ) {
 	// Parent constructor
 	ve.ui.ToolContextItem.super.call( this, context, model, config );
 

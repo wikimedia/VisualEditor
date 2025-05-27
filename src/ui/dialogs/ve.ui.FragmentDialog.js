@@ -15,7 +15,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.FragmentDialog = function VeUiFragmentDialog( config ) {
+ve.ui.FragmentDialog = function VeUiFragmentDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.FragmentDialog.super.call( this, config );
 
@@ -70,7 +70,7 @@ ve.ui.FragmentDialog.prototype.initialize = function ( data ) {
 /**
  * @inheritdoc
  */
-ve.ui.FragmentDialog.prototype.getActionWidgetConfig = function ( config ) {
+ve.ui.FragmentDialog.prototype.getActionWidgetConfig = function ( config = {} ) {
 	// Mixin method
 	config = ve.ui.FragmentWindow.prototype.getActionWidgetConfig.call( this, config );
 	// Parent method

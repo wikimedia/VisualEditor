@@ -18,7 +18,7 @@
  * @param {Object} [config.symbols] Symbol set
  * @param {Object} [config.attributes] Extra attributes for the group, e.g. `lang` & `dir`
  */
-ve.ui.SymbolListPage = function VeUiSymbolListPage( name, config ) {
+ve.ui.SymbolListPage = function VeUiSymbolListPage( name, config = {} ) {
 	// Parent constructor
 	ve.ui.SymbolListPage.super.apply( this, arguments );
 

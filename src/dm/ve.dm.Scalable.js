@@ -22,7 +22,7 @@
  * @param {boolean} [config.enforceMin=true] Enforce the minimum dimensions
  * @param {boolean} [config.enforceMax=true] Enforce the maximum dimensions
  */
-ve.dm.Scalable = function VeDmScalable( config ) {
+ve.dm.Scalable = function VeDmScalable( config = {} ) {
 	config = ve.extendObject( {
 		fixedRatio: true,
 		enforceMin: true,

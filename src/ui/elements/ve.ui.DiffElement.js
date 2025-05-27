@@ -15,7 +15,7 @@
  * @param {ve.dm.VisualDiff} [visualDiff] Diff to visualize
  * @param {Object} [config]
  */
-ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
+ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config = {} ) {
 	const diff = visualDiff.diff;
 
 	// Parent constructor

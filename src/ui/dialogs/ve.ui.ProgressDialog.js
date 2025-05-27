@@ -13,7 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.ProgressDialog = function VeUiProgressDialog( config ) {
+ve.ui.ProgressDialog = function VeUiProgressDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.ProgressDialog.super.call( this, config );
 };

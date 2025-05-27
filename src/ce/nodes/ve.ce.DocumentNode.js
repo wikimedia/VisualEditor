@@ -15,7 +15,7 @@
  * @param {ve.ce.Surface} surface Surface document is part of
  * @param {Object} [config] Configuration options
  */
-ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
+ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config = {} ) {
 	// Properties
 	this.surface = surface;
 

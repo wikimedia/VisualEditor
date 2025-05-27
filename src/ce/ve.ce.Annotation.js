@@ -20,7 +20,7 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.Annotation = function VeCeAnnotation( model, parentNode, config ) {
+ve.ce.Annotation = function VeCeAnnotation( model, parentNode, config = {} ) {
 	// Parent constructor
 	ve.ce.Annotation.super.call( this, model, config );
 

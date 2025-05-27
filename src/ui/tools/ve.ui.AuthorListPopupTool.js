@@ -15,7 +15,7 @@
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config]
  */
-ve.ui.AuthorListPopupTool = function VeUiAuthorListPopupTool( toolGroup, config ) {
+ve.ui.AuthorListPopupTool = function VeUiAuthorListPopupTool( toolGroup, config = {} ) {
 	this.$authorList = $( '<div>' );
 
 	// Parent constructor

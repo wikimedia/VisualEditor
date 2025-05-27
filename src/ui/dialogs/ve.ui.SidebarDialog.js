@@ -14,7 +14,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.SidebarDialog = function VeUiSidebarDialog( config ) {
+ve.ui.SidebarDialog = function VeUiSidebarDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.SidebarDialog.super.call( this, config );
 

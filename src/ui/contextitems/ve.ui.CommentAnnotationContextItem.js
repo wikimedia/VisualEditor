@@ -14,7 +14,7 @@
  * @param {ve.dm.Model} model Model the item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.CommentAnnotationContextItem = function VeUiCommentAnnotationContextItem( context, model, config ) {
+ve.ui.CommentAnnotationContextItem = function VeUiCommentAnnotationContextItem( context, model, config = {} ) {
 	// Parent constructor
 	ve.ui.CommentAnnotationContextItem.super.call( this, context, model, config );
 

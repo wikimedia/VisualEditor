@@ -13,7 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageSearchDialog = function VeUiLanguageSearchDialog( config ) {
+ve.ui.LanguageSearchDialog = function VeUiLanguageSearchDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.LanguageSearchDialog.super.call( this, config );
 };

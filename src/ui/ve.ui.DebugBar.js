@@ -14,7 +14,7 @@
  * @param {ve.ui.Surface} surface Surface to debug
  * @param {Object} [config] Configuration options
  */
-ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
+ve.ui.DebugBar = function VeUiDebugBar( surface, config = {} ) {
 	// Parent constructor
 	ve.ui.DebugBar.super.call( this, config );
 

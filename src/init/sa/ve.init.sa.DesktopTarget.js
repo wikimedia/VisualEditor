@@ -14,7 +14,7 @@
  * @param {Object} [config] Configuration options
  * @param {Object} [config.toolbarConfig] Configuration options for the toolbar
  */
-ve.init.sa.DesktopTarget = function VeInitSaDesktopTarget( config ) {
+ve.init.sa.DesktopTarget = function VeInitSaDesktopTarget( config = {} ) {
 	// Parent constructor
 	ve.init.sa.DesktopTarget.super.call( this, config );
 

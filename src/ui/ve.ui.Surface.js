@@ -302,7 +302,7 @@ ve.ui.Surface.prototype.getMode = function () {
  * @param {Object} config Configuration options
  * @return {ve.ui.LinearContext}
  */
-ve.ui.Surface.prototype.createContext = function ( config ) {
+ve.ui.Surface.prototype.createContext = function ( config = {} ) {
 	return OO.ui.isMobile() ? new ve.ui.MobileContext( this, config ) : new ve.ui.DesktopContext( this, config );
 };
 

@@ -17,7 +17,7 @@
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
  */
-ve.ui.Context = function VeUiContext( surface, config ) {
+ve.ui.Context = function VeUiContext( surface, config = {} ) {
 	// Parent constructor
 	ve.ui.Context.super.call( this, config );
 

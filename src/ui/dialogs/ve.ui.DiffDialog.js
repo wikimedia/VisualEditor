@@ -13,7 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.DiffDialog = function VeUiDiffDialog( config ) {
+ve.ui.DiffDialog = function VeUiDiffDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.DiffDialog.super.call( this, config );
 };

@@ -117,7 +117,7 @@ ve.ui.FragmentInspector.prototype.getActionProcess = function ( action ) {
 /**
  * @inheritdoc
  */
-ve.ui.FragmentInspector.prototype.getActionWidgetConfig = function ( config ) {
+ve.ui.FragmentInspector.prototype.getActionWidgetConfig = function ( config = {} ) {
 	// Mixin method
 	config = ve.ui.FragmentWindow.prototype.getActionWidgetConfig.call( this, config );
 	// Parent method

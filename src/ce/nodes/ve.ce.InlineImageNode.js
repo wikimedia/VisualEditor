@@ -16,7 +16,7 @@
  * @param {ve.dm.InlineImageNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.InlineImageNode = function VeCeInlineImageNode( model, config ) {
+ve.ce.InlineImageNode = function VeCeInlineImageNode( model, config = {} ) {
 	config = ve.extendObject( {
 		minDimensions: { width: 1, height: 1 }
 	}, config );

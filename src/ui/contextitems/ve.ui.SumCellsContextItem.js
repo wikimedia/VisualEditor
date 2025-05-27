@@ -14,7 +14,7 @@
  * @param {ve.dm.Model} model Model the item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.SumCellsContextItem = function VeUiSumCellsContextItem( context, model, config ) {
+ve.ui.SumCellsContextItem = function VeUiSumCellsContextItem( context, model, config = {} ) {
 	// Parent constructor
 	ve.ui.SumCellsContextItem.super.call( this, context, model, config );
 

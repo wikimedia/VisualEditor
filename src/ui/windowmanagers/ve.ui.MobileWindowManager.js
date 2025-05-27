@@ -15,7 +15,7 @@
  * @param {Object} [config] Configuration options
  * @param {ve.ui.Overlay} [config.overlay] Overlay to use for menus
  */
-ve.ui.MobileWindowManager = function VeUiMobileWindowManager( surface, config ) {
+ve.ui.MobileWindowManager = function VeUiMobileWindowManager( surface, config = {} ) {
 	// Parent constructor
 	ve.ui.MobileWindowManager.super.call( this, surface, config );
 

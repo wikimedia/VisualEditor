@@ -14,7 +14,7 @@
  * @constructor
  * @param {Object} config Configuration options
  */
-ve.ui.ChangeDescriptionsSelectWidget = function VeUiChangeDescriptionsSelectWidget( config ) {
+ve.ui.ChangeDescriptionsSelectWidget = function VeUiChangeDescriptionsSelectWidget( config = {} ) {
 	// Parent constructor
 	ve.ui.ChangeDescriptionsSelectWidget.super.call( this, config );
 

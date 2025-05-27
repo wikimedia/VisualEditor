@@ -14,7 +14,7 @@
  * @param {ve.dm.Model} model Model the item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.AlignableContextItem = function VeUiAlignableContextItem( context, model, config ) {
+ve.ui.AlignableContextItem = function VeUiAlignableContextItem( context, model, config = {} ) {
 	// Parent constructor
 	ve.ui.AlignableContextItem.super.call( this, context, model, config );
 

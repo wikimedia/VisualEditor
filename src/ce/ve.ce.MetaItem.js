@@ -13,7 +13,7 @@
  * @param {ve.dm.MetaItem} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.MetaItem = function VeCeMetaItem( model, config ) {
+ve.ce.MetaItem = function VeCeMetaItem( model, config = {} ) {
 	// Call parent constructor with explicit DOM node-less $element
 	ve.ce.MetaItem.super.call( this, model, ve.extendObject( {}, config, { $element: $() } ) );
 };

@@ -14,7 +14,7 @@
  * @param {ve.dm.Model} model Model the item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinkContextItem = function VeUiLinkContextItem( context, model, config ) {
+ve.ui.LinkContextItem = function VeUiLinkContextItem( context, model, config = {} ) {
 	// Parent constructor
 	ve.ui.LinkContextItem.super.call( this, context, model, config );
 

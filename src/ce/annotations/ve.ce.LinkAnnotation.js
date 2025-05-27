@@ -15,7 +15,7 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config ) {
+ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config = {} ) {
 	// Parent constructor
 	ve.ce.LinkAnnotation.super.call( this, model, parentNode, ve.extendObject( { $element: $( '<a>' ) }, config ) );
 

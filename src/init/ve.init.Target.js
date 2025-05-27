@@ -546,7 +546,7 @@ ve.init.Target.prototype.onToolbarResize = function () {
  * @param {Object} [config] Configuration options
  * @return {ve.ui.TargetWidget}
  */
-ve.init.Target.prototype.createTargetWidget = function ( config ) {
+ve.init.Target.prototype.createTargetWidget = function ( config = {} ) {
 	return new ve.ui.TargetWidget( ve.extendObject( {
 		toolbarGroups: this.toolbarGroups
 	}, config ) );
@@ -559,7 +559,7 @@ ve.init.Target.prototype.createTargetWidget = function ( config ) {
  * @param {Object} [config] Configuration options
  * @return {ve.ui.Surface}
  */
-ve.init.Target.prototype.createSurface = function ( dmDocOrSurface, config ) {
+ve.init.Target.prototype.createSurface = function ( dmDocOrSurface, config = {} ) {
 	return new ve.ui.Surface( this, dmDocOrSurface, this.getSurfaceConfig( config ) );
 };
 
@@ -569,7 +569,7 @@ ve.init.Target.prototype.createSurface = function ( dmDocOrSurface, config ) {
  * @param {Object} config Configuration option overrides
  * @return {Object} Surface configuration options
  */
-ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
+ve.init.Target.prototype.getSurfaceConfig = function ( config = {} ) {
 	return ve.extendObject( {
 		$scrollContainer: this.$scrollContainer,
 		$scrollListener: this.$scrollListener,
@@ -594,7 +594,7 @@ ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
  * @param {Object} [config] Configuration options
  * @return {ve.ui.Surface}
  */
-ve.init.Target.prototype.addSurface = function ( dmDocOrSurface, config ) {
+ve.init.Target.prototype.addSurface = function ( dmDocOrSurface, config = {} ) {
 	const surface = this.createSurface( dmDocOrSurface, ve.extendObject( { mode: this.getDefaultMode() }, config ) );
 	this.surfaces.push( surface );
 	surface.getView().connect( this, {

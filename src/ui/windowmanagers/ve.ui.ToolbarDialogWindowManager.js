@@ -15,7 +15,7 @@
  * @param {Object} [config] Configuration options
  * @param {ve.ui.Overlay} [config.overlay] Overlay to use for menus
  */
-ve.ui.ToolbarDialogWindowManager = function VeUiToolbarDialogWindowManager( surface, config ) {
+ve.ui.ToolbarDialogWindowManager = function VeUiToolbarDialogWindowManager( surface, config = {} ) {
 	// Parent constructor
 	ve.ui.ToolbarDialogWindowManager.super.call( this, surface, ve.extendObject( { modal: false }, config ) );
 };

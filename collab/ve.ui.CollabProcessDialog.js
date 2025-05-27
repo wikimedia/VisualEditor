@@ -3,7 +3,7 @@
  *
  * @param {Object} [config] Configuration options
  */
-ve.ui.CollabProcessDialog = function VeUiCollabProcessDialog( config ) {
+ve.ui.CollabProcessDialog = function VeUiCollabProcessDialog( config = {} ) {
 	ve.ui.CollabProcessDialog.super.call( this, config );
 };
 
@@ -101,7 +101,7 @@ ve.ui.CollabProcessDialog.prototype.getReadyProcess = function ( data ) {
  *
  * @param {Object} [config] Configuration options
  */
-ve.ui.HostCollabProcessDialog = function VeUiHostCollabProcessDialog( config ) {
+ve.ui.HostCollabProcessDialog = function VeUiHostCollabProcessDialog( config = {} ) {
 	ve.ui.HostCollabProcessDialog.super.call( this, config );
 };
 
@@ -165,7 +165,7 @@ ve.ui.windowFactory.register( ve.ui.HostCollabProcessDialog );
  *
  * @param {Object} [config] Configuration options
  */
-ve.ui.JoinCollabProcessDialog = function VeUiJoinCollabProcessDialog( config ) {
+ve.ui.JoinCollabProcessDialog = function VeUiJoinCollabProcessDialog( config = {} ) {
 	ve.ui.JoinCollabProcessDialog.super.call( this, config );
 };
 

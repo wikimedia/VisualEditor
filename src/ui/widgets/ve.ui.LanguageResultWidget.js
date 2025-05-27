@@ -13,7 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageResultWidget = function VeUiLanguageResultWidget( config ) {
+ve.ui.LanguageResultWidget = function VeUiLanguageResultWidget( config = {} ) {
 	// Parent constructor
 	ve.ui.LanguageResultWidget.super.call( this, config );
 

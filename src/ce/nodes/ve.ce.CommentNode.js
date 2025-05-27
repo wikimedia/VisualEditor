@@ -15,7 +15,7 @@
  * @param {ve.dm.CommentNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.CommentNode = function VeCeCommentNode( model, config ) {
+ve.ce.CommentNode = function VeCeCommentNode( model, config = {} ) {
 	// Parent constructor
 	ve.ce.CommentNode.super.call( this, model, config );
 

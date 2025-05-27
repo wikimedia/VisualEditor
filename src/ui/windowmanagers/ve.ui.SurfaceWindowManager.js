@@ -15,7 +15,7 @@
  * @param {Object} [config] Configuration options
  * @param {ve.ui.Overlay} [config.overlay] Overlay to use for menus
  */
-ve.ui.SurfaceWindowManager = function VeUiSurfaceWindowManager( surface, config ) {
+ve.ui.SurfaceWindowManager = function VeUiSurfaceWindowManager( surface, config = {} ) {
 	// Properties
 	// Set up surface before calling the parent so we can request
 	// specific surface-related details from within the constructor.

@@ -13,7 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinkAnnotationWidget = function VeUiLinkAnnotationWidget( config ) {
+ve.ui.LinkAnnotationWidget = function VeUiLinkAnnotationWidget( config = {} ) {
 	// Properties
 	this.annotation = null;
 	this.input = this.createInputWidget( config );
@@ -88,7 +88,7 @@ ve.ui.LinkAnnotationWidget.static.getTextFromAnnotation = function ( annotation 
  * @param {Object} [config] Configuration options
  * @return {OO.ui.Widget} Text input widget
  */
-ve.ui.LinkAnnotationWidget.prototype.createInputWidget = function ( config ) {
+ve.ui.LinkAnnotationWidget.prototype.createInputWidget = function ( config = {} ) {
 	return new OO.ui.TextInputWidget( ve.extendObject( { validate: 'non-empty' }, config ) );
 };
 

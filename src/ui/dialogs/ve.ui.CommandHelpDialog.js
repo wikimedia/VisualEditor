@@ -13,7 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.CommandHelpDialog = function VeUiCommandHelpDialog( config ) {
+ve.ui.CommandHelpDialog = function VeUiCommandHelpDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.CommandHelpDialog.super.call( this, config );
 };

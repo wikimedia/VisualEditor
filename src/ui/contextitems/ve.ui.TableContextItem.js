@@ -14,7 +14,7 @@
  * @param {ve.dm.Model} model Model the item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.TableContextItem = function VeUiTableContextItem( context, model, config ) {
+ve.ui.TableContextItem = function VeUiTableContextItem( context, model, config = {} ) {
 	// Parent constructor
 	ve.ui.TableContextItem.super.call( this, context, model, config );
 

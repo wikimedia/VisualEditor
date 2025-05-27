@@ -38,7 +38,7 @@ ve.ui.FragmentWindow.prototype.getFragment = function () {
 /**
  * @see OO.ui.Dialog
  */
-ve.ui.FragmentWindow.prototype.getActionWidgetConfig = function ( config ) {
+ve.ui.FragmentWindow.prototype.getActionWidgetConfig = function ( config = {} ) {
 	if ( config.action === 'done' && OO.ui.isMobile() ) {
 		// Use label-less check icon on mobile (T228230)
 		config = ve.extendObject( {

@@ -13,7 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.TableDialog = function VeUiTableDialog( config ) {
+ve.ui.TableDialog = function VeUiTableDialog( config = {} ) {
 	// Parent constructor
 	ve.ui.TableDialog.super.call( this, config );
 
