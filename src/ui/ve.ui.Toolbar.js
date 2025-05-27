@@ -13,9 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.Toolbar = function VeUiToolbar( config ) {
-	config = config || {};
-
+ve.ui.Toolbar = function VeUiToolbar( config = {} ) {
 	// Parent constructor
 	ve.ui.Toolbar.super.call( this, ve.ui.toolFactory, ve.ui.toolGroupFactory, config );
 

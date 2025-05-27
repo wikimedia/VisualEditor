@@ -99,7 +99,7 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		const doc = ve.dm.example.createExampleDocumentFromData( caseItem.data || [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] ),
-			surface = new ve.dm.Surface( doc, { sourceMode: true } ),
+			surface = new ve.dm.Surface( doc, null, { sourceMode: true } ),
 			fragment = surface.getLinearFragment( caseItem.range || new ve.Range( 1 ) ),
 			done = assert.async();
 

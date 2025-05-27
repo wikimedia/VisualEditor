@@ -471,6 +471,7 @@ module.exports = function ( grunt ) {
 								'src/ui/datatransferhandlers/*.js',
 								'src/ui/dialogs/*.js',
 								'src/ui/inspectors/ve.ui.CommentAnnotationInspector.js',
+								'src/ui/inspectors/ve.ui.FragmentInspector.js',
 								'src/ui/layouts/*.js',
 								'src/ui/pages/*.js',
 								'src/ui/tools/*.js',

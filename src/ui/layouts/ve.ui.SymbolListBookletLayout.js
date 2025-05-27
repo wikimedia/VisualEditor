@@ -13,9 +13,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.SymbolListBookletLayout = function VeUiSymbolListBookletLayout( config ) {
-	config = config || {};
-
+ve.ui.SymbolListBookletLayout = function VeUiSymbolListBookletLayout( config = {} ) {
 	// Parent constructor
 	ve.ui.SymbolListBookletLayout.super.call( this, ve.extendObject( {
 		outlined: true,

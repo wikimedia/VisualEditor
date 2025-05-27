@@ -31,10 +31,7 @@
  * @param {boolean} [config.readOnly] Surface is read-only
  * @param {string} [config.inDialog] The name of the dialog this surface widget is in
  */
-ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
-	// Config initialization
-	config = config || {};
-
+ve.ui.TargetWidget = function VeUiTargetWidget( config = {} ) {
 	// Parent constructor
 	ve.ui.TargetWidget.super.call( this, config );
 

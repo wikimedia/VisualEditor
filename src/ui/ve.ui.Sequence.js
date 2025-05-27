@@ -27,24 +27,15 @@
  * @param {boolean} [config.checkOnPaste=false] Whether the sequence should also be matched after paste.
  * @param {boolean} [config.checkOnDelete=false] Whether the sequence should also be matched after delete.
  */
-ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, config ) {
+ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, config = {} ) {
 	this.name = name;
 	this.commandName = commandName;
 	this.data = data;
 	this.strip = strip || 0;
-	if ( typeof config === 'object' ) {
-		// TODO: Add `config = config || {};` when variadic fallback is dropped.
-		this.setSelection = !!config.setSelection;
-		this.delayed = !!config.delayed;
-		this.checkOnPaste = !!config.checkOnPaste;
-		this.checkOnDelete = !!config.checkOnDelete;
-	} else {
-		// Backwards compatibility with variadic arguments
-		this.setSelection = !!arguments[ 4 ];
-		this.delayed = !!arguments[ 5 ];
-		this.checkOnPaste = !!arguments[ 6 ];
-		this.checkOnDelete = !!arguments[ 7 ];
-	}
+	this.setSelection = !!config.setSelection;
+	this.delayed = !!config.delayed;
+	this.checkOnPaste = !!config.checkOnPaste;
+	this.checkOnDelete = !!config.checkOnDelete;
 };
 
 /* Inheritance */

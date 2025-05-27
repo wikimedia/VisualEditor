@@ -15,10 +15,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.ContextSelectWidget = function VeUiContextSelectWidget( config ) {
-	// Config initialization
-	config = config || {};
-
+ve.ui.ContextSelectWidget = function VeUiContextSelectWidget( config = {} ) {
 	// Parent constructor
 	ve.ui.ContextSelectWidget.super.call( this, config );
 

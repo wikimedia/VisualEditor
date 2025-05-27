@@ -28,12 +28,11 @@
  * @param {Object} [config] Configuration options
  * @param {Object} [config.toolbarConfig] Configuration options for the toolbar
  */
-ve.init.sa.Target = function VeInitSaTarget( config ) {
-	config = config || {};
+ve.init.sa.Target = function VeInitSaTarget( config = {} ) {
 	config.toolbarConfig = ve.extendObject( { shadow: true, floatable: true }, config.toolbarConfig );
 
 	// Parent constructor
-	ve.init.sa.Target.super.call( this, config );
+	ve.init.sa.Target.super.call( this );
 
 	this.$element
 		.addClass( 've-init-sa-target' )

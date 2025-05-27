@@ -16,9 +16,7 @@
  * @param {boolean} [config.padded=true] Inspector form area has padding,
  *      set to false for edge-to-edge layouts, e.g. IndexLayout
  */
-ve.ui.FragmentInspector = function VeUiFragmentInspector( config ) {
-	config = config || {};
-
+ve.ui.FragmentInspector = function VeUiFragmentInspector( config = {} ) {
 	// Parent constructor
 	ve.ui.FragmentInspector.super.call( this, config );
 

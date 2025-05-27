@@ -35,9 +35,7 @@
  * @param {boolean} [config.inTargetWidget=false] The surface is in a target widget
  * @param {boolean} [config.allowTabFocusChange=false] Allow changing focus from target surfaces with tab/shift+tab
  */
-ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
-	config = config || {};
-
+ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) {
 	// Parent constructor
 	ve.ui.Surface.super.call( this, config );
 

@@ -16,9 +16,7 @@
  * @param {ve.dm.Model} [model] Model the item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config ) {
-	config = config || {};
-
+ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config = {} ) {
 	// Parent constructor
 	ve.ui.LinearContextItem.super.apply( this, arguments );
 

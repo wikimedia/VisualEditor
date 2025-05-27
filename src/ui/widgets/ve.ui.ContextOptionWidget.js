@@ -17,10 +17,7 @@
  * @param {ve.dm.Node|ve.dm.Annotation} model Node or annotation item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.ContextOptionWidget = function VeUiContextOptionWidget( tool, model, config ) {
-	// Config initialization
-	config = config || {};
-
+ve.ui.ContextOptionWidget = function VeUiContextOptionWidget( tool, model, config = {} ) {
 	// Parent constructor
 	ve.ui.ContextOptionWidget.super.call( this, config );
 

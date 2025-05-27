@@ -17,10 +17,7 @@
  * @param {boolean} [config.noDefaultDimensions] The item being sized doesn't have default dimensions
  * @param {string} [config.dimensionsAlign] Alignment for the dimensions widget
  */
-ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
-	// Configuration
-	config = config || {};
-
+ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config = {} ) {
 	this.scalable = scalable;
 
 	// Parent constructor

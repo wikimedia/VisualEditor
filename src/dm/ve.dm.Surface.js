@@ -18,15 +18,13 @@
  * @param {Object} [config] Configuration options
  * @param {boolean} [config.sourceMode=false] Source editing mode
  */
-ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
+ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config = {} ) {
 	// Support old (doc, config) argument order
 	// TODO: Remove this once all callers are updated
-	if ( !config && ve.isPlainObject( attachedRoot ) ) {
+	if ( ve.isPlainObject( attachedRoot ) ) {
 		config = attachedRoot;
 		attachedRoot = undefined;
 	}
-
-	config = config || {};
 
 	attachedRoot = attachedRoot || doc.getDocumentNode();
 	if ( !( attachedRoot instanceof ve.dm.BranchNode ) ) {

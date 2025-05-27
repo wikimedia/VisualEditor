@@ -27,9 +27,7 @@
  *   attaching inspectors)
  * @param {string[]} [config.classes] CSS classes to be added to the highlight container
  */
-ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
-	config = config || {};
-
+ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config = {} ) {
 	// Properties
 	this.focused = false;
 	this.highlighted = false;

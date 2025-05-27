@@ -20,9 +20,7 @@
  * @param {string} [config.server] IO server
  * @param {string} [config.defaultName] Default username
  */
-ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentId, config ) {
-	config = config || {};
-
+ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentId, config = {} ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 	ve.dm.RebaseClient.call( this );

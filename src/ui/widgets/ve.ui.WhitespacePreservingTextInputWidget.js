@@ -15,10 +15,7 @@
  * @param {string} [config.valueAndWhitespace=''] Initial value and whitespace
  * @param {number} [config.limit] Maximum number of characters to preserve at each end
  */
-ve.ui.WhitespacePreservingTextInputWidget = function VeUiWhitespacePreservingTextInputWidget( config ) {
-	// Configuration
-	config = config || {};
-
+ve.ui.WhitespacePreservingTextInputWidget = function VeUiWhitespacePreservingTextInputWidget( config = {} ) {
 	// Parent constructor
 	ve.ui.WhitespacePreservingTextInputWidget.super.call( this, config );
 

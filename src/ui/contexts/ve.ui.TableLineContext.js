@@ -17,9 +17,7 @@
  * @param {string} itemGroup Tool group to use, 'col', 'row', or 'table'
  * @param {Object} [config] Configuration options
  */
-ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, config ) {
-	config = config || {};
-
+ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, config = {} ) {
 	// Parent constructor
 	ve.ui.TableLineContext.super.call( this, tableNode.surface.getSurface(), config );
 

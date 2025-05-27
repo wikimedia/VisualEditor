@@ -16,9 +16,7 @@
  * @param {boolean} [config.floatable] Toolbar can float when scrolled off the page
  * @param {boolean} [config.attachToolbarDialogs=true]
  */
-ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, config ) {
-	config = config || {};
-
+ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, config = {} ) {
 	// Parent constructor
 	ve.ui.PositionedTargetToolbar.super.apply( this, arguments );
 

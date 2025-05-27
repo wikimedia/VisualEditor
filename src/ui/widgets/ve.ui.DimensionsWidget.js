@@ -17,10 +17,7 @@
  * @param {Object} [config.validate] Validation pattern passed to TextInputWidgets
  * @param {boolean} [config.readOnly=false] Prevent changes to the value of the widget.
  */
-ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
-	// Configuration
-	config = config || {};
-
+ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config = {} ) {
 	// Parent constructor
 	ve.ui.DimensionsWidget.super.call( this, config );
 

@@ -21,9 +21,7 @@
  * @param {string} [config.defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
  * @param {boolean} [register=true] Register the target at ve.init.target
  */
-ve.init.Target = function VeInitTarget( config ) {
-	config = config || {};
-
+ve.init.Target = function VeInitTarget( config = {} ) {
 	// Parent constructor
 	ve.init.Target.super.call( this, config );
 

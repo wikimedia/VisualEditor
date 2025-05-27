@@ -22,10 +22,7 @@
  * @param {ve.ui.WindowManager} [config.dialogManager] Window manager to launch the language search dialog in
  * @param {string[]} [config.availableLanguages] Available language codes to show in search dialog
  */
-ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
-	// Configuration initialization
-	config = config || {};
-
+ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config = {} ) {
 	// Parent constructor
 	ve.ui.LanguageInputWidget.super.call( this, config );
 

@@ -18,9 +18,7 @@
  * @param {boolean} [config.showSizeLabel=true] Show a label with the current dimensions while resizing
  * @param {boolean} [config.showScaleLabel=true] Show a label with the current scale while resizing
  */
-ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
-	config = config || {};
-
+ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config = {} ) {
 	// Properties
 	this.$resizable = $resizable || this.$element;
 	this.resizing = false;
