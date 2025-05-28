@@ -13,12 +13,12 @@
  * @constructor
  * @param {number} [length=0] Length of content data in document
  */
-ve.dm.TextNode = function VeDmTextNode( length ) {
+ve.dm.TextNode = function VeDmTextNode( length = 0 ) {
 	// Parent constructor
 	ve.dm.TextNode.super.call( this );
 
 	// TODO: length is only set on construction in tests
-	this.length = length || 0;
+	this.length = length;
 };
 
 /* Inheritance */

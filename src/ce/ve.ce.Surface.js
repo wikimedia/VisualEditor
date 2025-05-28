@@ -717,7 +717,7 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  * @param {boolean} [hideSelection=false] Completely hide the selection
  * @fires ve.ce.Surface#activation
  */
-ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange, hideSelection ) {
+ve.ce.Surface.prototype.deactivate = function ( showAsActivated = true, noSelectionChange = false, hideSelection = false ) {
 	if ( !this.deactivated ) {
 		// Disable the surface observer, there can be no observable changes
 		// until the surface is activated
@@ -3111,7 +3111,7 @@ ve.ce.Surface.prototype.selectLastSelectableContentOffset = function () {
  * @param {number} [padding=0] Increase computed size of viewport by this amount at the top and bottom
  * @return {ve.Range|null} Range covering data visible in the viewport, null if the surface is not attached
  */
-ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
+ve.ce.Surface.prototype.getViewportRange = function ( covering, padding = 0 ) {
 	const documentModel = this.getModel().getDocument(),
 		data = documentModel.data,
 		dimensions = this.surface.getViewportDimensions();
@@ -3121,7 +3121,6 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 		return null;
 	}
 
-	padding = padding || 0;
 	const top = Math.max( 0, dimensions.top - padding );
 	const bottom = dimensions.bottom + ( padding * 2 );
 	const documentRange = this.attachedRoot === this.getDocument().getDocumentNode() ?

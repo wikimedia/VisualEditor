@@ -1416,7 +1416,7 @@ ve.ui.DiffElement.prototype.addAttributesToElement = function ( data, offset, at
  * @param {HTMLElement|Array} elementOrData Linear data or HTMLElement
  * @param {number} [offset=0] Linear mode offset
  */
-ve.ui.DiffElement.prototype.markMove = function ( move, elementOrData, offset ) {
+ve.ui.DiffElement.prototype.markMove = function ( move, elementOrData, offset = 0 ) {
 	if ( !move ) {
 		return;
 	}
@@ -1428,7 +1428,7 @@ ve.ui.DiffElement.prototype.markMove = function ( move, elementOrData, offset ) 
 	// * ve-ui-diffElement-moved-down
 	const item = this.getChangeDescriptionItem( [ ve.msg( 'visualeditor-diff-moved-' + move ) ], [ 've-ui-diffElement-moved-' + move ] );
 	if ( Array.isArray( elementOrData ) ) {
-		this.addAttributesToElement( elementOrData, offset || 0, { 'data-diff-move': move, 'data-diff-id': item.getData() } );
+		this.addAttributesToElement( elementOrData, offset, { 'data-diff-move': move, 'data-diff-id': item.getData() } );
 	} else {
 		elementOrData.setAttribute( 'data-diff-move', move );
 		elementOrData.setAttribute( 'data-diff-id', item.getData() );

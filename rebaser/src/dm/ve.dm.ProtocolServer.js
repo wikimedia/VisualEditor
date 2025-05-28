@@ -119,14 +119,11 @@ ve.dm.ProtocolServer.prototype.onLogEvent = function ( context, event ) {
  * @param {number} [startLength=0] The length of the common history
  * @param {Function} [usernameGenerator] Function which returns a username, with an authorID argument
  */
-ve.dm.ProtocolServer.prototype.welcomeClient = function ( context, startLength, usernameGenerator ) {
+ve.dm.ProtocolServer.prototype.welcomeClient = function ( context, startLength = 0, usernameGenerator = undefined ) {
 	const docName = context.docName,
 		serverId = context.serverId,
 		authorId = context.authorId;
 
-	if ( !startLength ) {
-		startLength = 0;
-	}
 	this.rebaseServer.updateDocState( docName, authorId, null, {
 		name: usernameGenerator ? usernameGenerator( authorId ) : 'User ' + authorId,
 		color: this.constructor.static.palette[

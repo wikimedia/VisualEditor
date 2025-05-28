@@ -260,8 +260,8 @@ ve.fixupPreBug = function ( element ) {
  * @param {string} [nodeName='div'] Element name
  * @return {string} Normalized attribute value
  */
-ve.normalizeAttributeValue = function ( name, value, nodeName ) {
-	const node = document.createElement( nodeName || 'div' );
+ve.normalizeAttributeValue = function ( name, value, nodeName = 'div' ) {
+	const node = document.createElement( nodeName );
 	node.setAttribute( name, value );
 	return node.getAttribute( name );
 };

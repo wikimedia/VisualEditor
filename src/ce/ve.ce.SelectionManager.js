@@ -94,9 +94,9 @@ ve.ce.SelectionManager.prototype.getSurface = function () {
  *
  * @param {boolean} [showAsActivated=true] Selection should still show as activated
  */
-ve.ce.SelectionManager.prototype.showDeactivatedSelection = function ( showAsActivated ) {
+ve.ce.SelectionManager.prototype.showDeactivatedSelection = function ( showAsActivated = true ) {
 	this.deactivatedSelectionVisible = true;
-	this.showDeactivatedAsActivated = showAsActivated === undefined || !!showAsActivated;
+	this.showDeactivatedAsActivated = !!showAsActivated;
 
 	this.updateDeactivatedSelection();
 };

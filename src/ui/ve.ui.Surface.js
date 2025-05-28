@@ -442,8 +442,7 @@ ve.ui.Surface.prototype.getDialogs = function () {
  * @param {string} [position='side'] Get the toolbar dialogs window set for a specific position
  * @return {ve.ui.WindowManager} Toolbar dialogs window set
  */
-ve.ui.Surface.prototype.getToolbarDialogs = function ( position ) {
-	position = position || 'side';
+ve.ui.Surface.prototype.getToolbarDialogs = function ( position = 'side' ) {
 	this.toolbarDialogs[ position ] = this.toolbarDialogs[ position ] ||
 		new ve.ui.ToolbarDialogWindowManager( this, { factory: ve.ui.windowFactory } );
 	return this.toolbarDialogs[ position ];

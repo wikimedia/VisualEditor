@@ -104,7 +104,7 @@ ve.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
  * @throws {Error} Invalid end offset
  * @throws {Error} Failed to select any nodes
  */
-ve.Document.prototype.selectNodes = function ( range, mode ) {
+ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 	const doc = this.getDocumentNode(),
 		start = range.start,
 		end = range.end,
@@ -121,7 +121,6 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		currentFrame = stack[ 0 ],
 		startFound = false;
 
-	mode = mode || 'leaves';
 	if ( mode !== 'leaves' && mode !== 'branches' && mode !== 'covered' && mode !== 'siblings' ) {
 		throw new Error( 'Invalid mode: ' + mode );
 	}

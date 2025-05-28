@@ -319,7 +319,7 @@ ve.dm.SurfaceFragment.prototype.trimLinearSelection = function () {
  * @param {ve.dm.Annotation|ve.dm.Node} [type] Parameter to use with scope method if needed
  * @return {ve.dm.SurfaceFragment} Expanded fragment
  */
-ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type ) {
+ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope = 'parent', type = null ) {
 	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
 		return this.clone();
 	}
@@ -328,7 +328,7 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 	let newRange;
 	let nodes, node, parent;
 
-	switch ( scope || 'parent' ) {
+	switch ( scope ) {
 		case 'word':
 			if ( !oldRange.isCollapsed() ) {
 				newRange = ve.Range.static.newCoveringRange( [
@@ -975,7 +975,7 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
+ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete = -1 ) {
 	const rangeToRemove = this.getSelection().getCoveringRange();
 
 	if ( !rangeToRemove || rangeToRemove.isCollapsed() ) {
@@ -1063,7 +1063,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 	const nearestOffset = this.document.data.getNearestContentOffset(
 		rangeAfterRemove.start,
 		// If undefined (e.g. cut), default to backwards movement
-		directionAfterDelete || -1
+		directionAfterDelete
 	);
 	if ( nearestOffset > -1 ) {
 		rangeAfterRemove = new ve.Range( nearestOffset );

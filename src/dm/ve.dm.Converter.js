@@ -106,8 +106,8 @@ ve.dm.Converter.static.getDataContentFromText = function ( text, annotations ) {
  * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
  * @param {boolean} [forSerialization=true] Compare annotations for serialization
  */
-ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSet, open, close, forSerialization ) {
-	const comparisonMethod = forSerialization !== false ? 'containsComparableForSerialization' : 'containsComparable';
+ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSet, open, close, forSerialization = true ) {
+	const comparisonMethod = forSerialization ? 'containsComparableForSerialization' : 'containsComparable';
 	// Close annotations as needed
 	// Go through annotationStack from bottom to top (low to high),
 	// and find the first annotation that's not in annotations.
@@ -173,7 +173,7 @@ ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSe
  * @param {boolean} [computed=false] If true, use the computed values of attributes where available
  * @param {boolean} [deep=false] Recurse into child nodes
  */
-ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements, targetDomElements, filter, computed, deep ) {
+ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements, targetDomElements, filter = true, computed = false, deep = false ) {
 	if ( filter === undefined ) {
 		filter = true;
 	}

@@ -113,11 +113,7 @@ ve.getStartAndEndRects = function ( rects ) {
  *  used in coordinate comparisons.
  * @return {Object[]} Minimized list of rectangles
  */
-ve.minimizeRects = function ( rects, allowedErrorOffset ) {
-	if ( allowedErrorOffset === undefined ) {
-		allowedErrorOffset = 3;
-	}
-
+ve.minimizeRects = function ( rects, allowedErrorOffset = 3 ) {
 	// Check if rect1 contains rect2
 	function contains( rect1, rect2 ) {
 		return rect2.left >= rect1.left - allowedErrorOffset &&

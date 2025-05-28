@@ -173,10 +173,8 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, rep
  * @param {string} [paragraphType='empty'] Paragraph type: 'empty', 'wrapper' or null for a regular paragraph
  * @return {ve.dm.Document}
  */
-ve.dm.Document.static.newBlankDocument = function ( paragraphType ) {
+ve.dm.Document.static.newBlankDocument = function ( paragraphType = 'empty' ) {
 	const paragraph = { type: 'paragraph' };
-
-	paragraphType = paragraphType === undefined ? 'empty' : paragraphType;
 
 	if ( paragraphType ) {
 		ve.setProp( paragraph, 'internal', 'generated', paragraphType );
@@ -1056,7 +1054,7 @@ ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction,
  * @return {number} Nearest offset a cursor can be placed at, or -1 if there are no valid offsets in
  *     data
  */
-ve.dm.Document.prototype.getNearestCursorOffset = function ( offset, direction ) {
+ve.dm.Document.prototype.getNearestCursorOffset = function ( offset, direction = -1 ) {
 	if ( direction === 0 ) {
 		const left = this.getNearestCursorOffset( offset, -1 );
 		const right = this.getNearestCursorOffset( offset, 1 );
@@ -1070,7 +1068,6 @@ ve.dm.Document.prototype.getNearestCursorOffset = function ( offset, direction )
 		return offset - left < right - offset ? left : right;
 	}
 
-	direction = direction > 0 ? 1 : -1;
 	if (
 		this.data.isContentOffset( offset ) ||
 		this.hasSlugAtOffset( offset )

@@ -17,7 +17,7 @@
  * @param {ve.dm.Document|ve.dm.BranchNode} newDocOrNode
  * @param {number} [timeout=1000] Timeout after which to stop performing linear diffs (in ms)
  */
-ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout ) {
+ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout = 1000 ) {
 	const oldDoc = oldDocOrNode instanceof ve.dm.Document ? oldDocOrNode : oldDocOrNode.getDocument(),
 		newDoc = newDocOrNode instanceof ve.dm.Document ? newDocOrNode : newDocOrNode.getDocument();
 
@@ -51,7 +51,7 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout 
 	// Minimum ratio of content (same : different) allowed between two corresponding nodes
 	this.diffThreshold = 0.5;
 
-	this.endTime = Date.now() + ( timeout || 1000 );
+	this.endTime = Date.now() + timeout;
 	this.timedOut = false;
 
 	// Calling getDocumentNode triggers the DM node tree to be built

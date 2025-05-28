@@ -45,8 +45,7 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 	 * @param {string} text Plain text
 	 * @param {string} [type="text"] If this is a unicorn then 'unicorn', else 'text' (default)
 	 */
-	function add( text, type ) {
-		type = type || 'text';
+	function add( text, type = 'text' ) {
 		const last = chunks[ chunks.length - 1 ];
 		if ( last &&
 			last.elements === elementListStack[ stackTop ] &&
