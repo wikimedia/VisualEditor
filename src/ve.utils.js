@@ -1290,5 +1290,4 @@ ve.countEdgeMatches = function ( before, after, equals ) {
  * @param {Object} ob The object
  * @return {Array[]} Entries, in the form [string, any]
  */
-// eslint-disable-next-line es-x/no-object-entries
 ve.entries = Object.entries || ( ( ob ) => Object.keys( ob ).map( ( k ) => [ k, ob[ k ] ] ) );

@@ -23,7 +23,7 @@
 		}
 	],
 	"devDependencies": {
-		"eslint-config-wikimedia": "0.29.1",
+		"eslint-config-wikimedia": "0.30.0",
 		"eslint-plugin-html": "8.1.1",
 		"fast-glob": "3.3.2",
 		"grunt": "1.6.1",
