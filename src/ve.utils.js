@@ -1284,12 +1284,3 @@ ve.countEdgeMatches = function ( before, after, equals ) {
 	}
 	return { start: start, end: end };
 };
-
-/**
- * Same as Object.entries, from when we didn't yet presume ES2017
- *
- * @param {Object} ob The object
- * @return {Array[]} Entries, in the form [string, any]
- * @deprecated
- */
-ve.entries = Object.entries || ( ( ob ) => Object.keys( ob ).map( ( k ) => [ k, ob[ k ] ] ) );
