@@ -19,7 +19,7 @@
  * @param {Object} [config.actionGroups] Toolbar groups, defaults to this.constructor.static.actionGroups
  * @param {string[]} [config.modes] Available editing modes. Defaults to static.modes
  * @param {string} [config.defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
- * @param {boolean} [register=true] Register the target at ve.init.target
+ * @param {boolean} [config.register=true] Register the target at ve.init.target
  */
 ve.init.Target = function VeInitTarget( config = {} ) {
 	// Parent constructor

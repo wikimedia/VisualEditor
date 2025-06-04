@@ -19,16 +19,16 @@
  * @extends ve.init.Platform
  *
  * @constructor
- * @param {string[]} [messagePaths] Message folder paths
+ * @param {string[]} [messagePaths=[]] Message folder paths
  */
-ve.init.sa.Platform = function VeInitSaPlatform( messagePaths ) {
+ve.init.sa.Platform = function VeInitSaPlatform( messagePaths = [] ) {
 	// Parent constructor
 	ve.init.Platform.call( this );
 
 	// Properties
 	this.externalLinkUrlProtocolsRegExp = /^https?:\/\//i;
 	this.unanchoredExternalLinkUrlProtocolsRegExp = /https?:\/\//i;
-	this.messagePaths = messagePaths || [];
+	this.messagePaths = messagePaths;
 	this.parsedMessages = {};
 	this.userLanguages = [ 'en' ];
 };

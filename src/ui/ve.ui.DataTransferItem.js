@@ -13,10 +13,10 @@
  * @param {DataTransferItem} [data.item] Native data transfer item
  * @param {string} [name] Item's name, for types which support it, e.g. File
  */
-ve.ui.DataTransferItem = function VeUiDataTransferItem( kind, type, data, name ) {
+ve.ui.DataTransferItem = function VeUiDataTransferItem( kind, type, data = {}, name = null ) {
 	this.kind = kind;
 	this.type = type;
-	this.data = data || {};
+	this.data = data;
 	this.blob = this.data.blob || null;
 	this.stringData = this.data.stringData || ve.getProp( this.blob, 'name' ) || '';
 	this.name = name;

@@ -11,10 +11,10 @@
  * @param {ve.dm.HashValueStore} store
  * @param {string[]} [storeHashes=[]]
  */
-ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeHashes ) {
+ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeHashes = [] ) {
 	// Parent constructor
 	this.store = store;
-	this.storeHashes = storeHashes || [];
+	this.storeHashes = storeHashes;
 
 	if ( this.get().includes( undefined ) ) {
 		throw new Error( 'Annotation with hash ' +

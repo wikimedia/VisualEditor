@@ -11,7 +11,7 @@
  * @abstract
  *
  * @constructor
- * @param {Object} element Reference to plain object in linear model
+ * @param {Object} [element] Reference to plain object in linear model
  */
 ve.dm.Model = function VeDmModel( element ) {
 	// Properties

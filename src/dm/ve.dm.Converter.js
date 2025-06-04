@@ -606,15 +606,12 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @param {boolean} [options.fromClipboard=false] Conversion is from clipboard
  * @param {string} [options.lang] Document language code
  * @param {string} [options.dir] Document directionality (ltr/rtl)
- * @param {ve.dm.HashValueStore} [store] Hash value store
+ * @param {ve.dm.HashValueStore} [store=new ve.dm.HashValueStore()] Hash value store
  * @return {ve.dm.Document} Document model
  */
-ve.dm.Converter.prototype.getModelFromDom = function ( doc, options, store ) {
+ve.dm.Converter.prototype.getModelFromDom = function ( doc, options = {}, store = new ve.dm.HashValueStore() ) {
 	const tmpDoc = new ve.dm.Document();
 	const internalList = new ve.dm.InternalList( tmpDoc );
-
-	store = store || new ve.dm.HashValueStore();
-	options = options || {};
 
 	// Set up the converter state
 	this.doc = doc;
@@ -1232,12 +1229,11 @@ ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {
  * @param {number} [mode=PARSER_MODE] Conversion mode, defaults to PARSER_MODE
  * @return {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromModel = function ( model, mode ) {
+ve.dm.Converter.prototype.getDomFromModel = function ( model, mode = ve.dm.Converter.static.PARSER_MODE ) {
 	// Backwards compatibility with 'forClipboard' argument
 	if ( typeof mode === 'boolean' ) {
 		mode = mode ? this.constructor.static.CLIPBOARD_MODE : this.constructor.static.PARSER_MODE;
 	}
-	mode = mode || this.constructor.static.PARSER_MODE;
 
 	const doc = ve.createDocumentFromHtml( '' );
 	this.getDomSubtreeFromModel( model, doc.body, mode );
@@ -1252,12 +1248,11 @@ ve.dm.Converter.prototype.getDomFromModel = function ( model, mode ) {
  * @param {number} [mode=PARSER_MODE] Conversion mode, defaults to PARSER_MODE
  * @return {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromNode = function ( node, mode ) {
+ve.dm.Converter.prototype.getDomFromNode = function ( node, mode = ve.dm.Converter.static.PARSER_MODE ) {
 	// Backwards compatibility with 'forClipboard' argument
 	if ( typeof mode === 'boolean' ) {
 		mode = mode ? this.constructor.static.CLIPBOARD_MODE : this.constructor.static.PARSER_MODE;
 	}
-	mode = mode || this.constructor.static.PARSER_MODE;
 	return this.getDomFromModel(
 		node.getDocument().shallowCloneFromRange( node.isInternal() ? node.getRange() : node.getOuterRange() ),
 		mode
@@ -1271,11 +1266,10 @@ ve.dm.Converter.prototype.getDomFromNode = function ( node, mode ) {
  * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
  * @param {number} [mode=PARSER_MODE] Conversion mode, defaults to PARSER_MODE
  */
-ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, mode ) {
+ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, mode = ve.dm.Converter.static.PARSER_MODE ) {
 	if ( typeof mode === 'boolean' ) {
 		mode = mode ? this.constructor.static.CLIPBOARD_MODE : this.constructor.static.PARSER_MODE;
 	}
-	mode = mode || this.constructor.static.PARSER_MODE;
 	// Set up the converter state
 	this.documentData = model.getFullData( undefined, 'roundTrip' );
 	this.store = model.getStore();

@@ -1214,11 +1214,9 @@ ve.dm.Surface.prototype.onDocumentPreCommit = function ( tx ) {
  * @param {boolean} [options.excludeAttributes] Exclude attribute changes
  * @return {ve.Range[]} Modified ranges
  */
-ve.dm.Surface.prototype.getModifiedRanges = function ( options ) {
+ve.dm.Surface.prototype.getModifiedRanges = function ( options = {} ) {
 	const doc = this.getDocument();
 	const ranges = [];
-
-	options = options || {};
 
 	this.getHistory().forEach( ( stackItem ) => {
 		stackItem.transactions.forEach( ( tx ) => {
@@ -1545,13 +1543,12 @@ ve.dm.Surface.prototype.updateDocState = function ( state ) {
 /**
  * Update the expiry value of keys in use
  *
- * @param {string[]} [skipKeys] Keys to skip (because they have just been updated)
+ * @param {string[]} [skipKeys=[]] Keys to skip (because they have just been updated)
  */
-ve.dm.Surface.prototype.updateExpiry = function ( skipKeys ) {
+ve.dm.Surface.prototype.updateExpiry = function ( skipKeys = [] ) {
 	if ( !this.storageExpiry ) {
 		return;
 	}
-	skipKeys = skipKeys || [];
 	[ 've-docstate', 've-dochtml', 've-selection', 've-changes' ].forEach( ( key ) => {
 		if ( !skipKeys.includes( key ) ) {
 			this.storage.setExpires( this.autosavePrefix + key, this.storageExpiry );

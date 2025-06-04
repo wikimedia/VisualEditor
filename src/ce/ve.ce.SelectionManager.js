@@ -162,9 +162,7 @@ ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
  *  mapped to the same index.
  * @param {string} options.label Label shown above each selection
  */
-ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options ) {
-	options = options || {};
-
+ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options = {} ) {
 	if ( !Object.prototype.hasOwnProperty.call( this.drawnSelections, name ) ) {
 		this.drawnSelections[ name ] = {};
 	}
@@ -260,8 +258,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
  * @param {Object} [options] Selection options
  * @return {string} Cache key
  */
-ve.ce.SelectionManager.prototype.getDrawnSelectionCacheKey = function ( name, selection, options ) {
-	options = options || {};
+ve.ce.SelectionManager.prototype.getDrawnSelectionCacheKey = function ( name, selection, options = {} ) {
 	return name + '-' + JSON.stringify( selection ) + '-' + ( options.color || '' ) + '-' + ( options.label || '' );
 };
 

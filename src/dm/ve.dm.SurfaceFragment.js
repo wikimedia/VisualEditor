@@ -183,7 +183,7 @@ ve.dm.SurfaceFragment.prototype.willAutoSelect = function () {
 /**
  * Change whether to automatically update the surface selection when making changes.
  *
- * @param {boolean} [autoSelect=true] Automatically update surface selection
+ * @param {boolean} autoSelect Automatically update surface selection
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */

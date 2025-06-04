@@ -40,7 +40,7 @@ ve.dm.example.singleLine = function ( strings, ...values ) {
  * @return {ve.dm.ElementLinearData} Linear data store
  * @throws {Error} Example data passed to preprocessAnnotations by reference
  */
-ve.dm.example.preprocessAnnotations = function ( data, store ) {
+ve.dm.example.preprocessAnnotations = function ( data, store = new ve.dm.HashValueStore() ) {
 	let i;
 
 	// Sanity check to make sure ve.dm.example data has not been passed in
@@ -59,7 +59,6 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 		}
 	}
 
-	store = store || new ve.dm.HashValueStore();
 	for ( i = 0; i < data.length; i++ ) {
 		const key = data[ i ].annotations ? 'annotations' : 1;
 		// Check for shorthand annotation objects in array
@@ -208,36 +207,39 @@ ve.dm.example.commentNodePreview = function ( text ) {
  * Defaults to ve.dm.example.data if no name is supplied.
  *
  * @param {string} [name='data'] Named element of ve.dm.example
- * @param {ve.dm.HashValueStore} [store] A specific hash-value store to use, optionally.
+ * @param {ve.dm.HashValueStore} [store=new ve.dm.HashValueStore()] A specific hash-value store to use, optionally.
  * @param {string} [base=ve.dm.example.baseUri] Base URL to use for the document
  * @return {ve.dm.Document}
  * @throws {Error} Example data not found
  */
-ve.dm.example.createExampleDocument = function ( name, store, base ) {
+ve.dm.example.createExampleDocument = function ( name = 'data', store = new ve.dm.HashValueStore(), base = ve.dm.example.baseUri ) {
 	return ve.dm.example.createExampleDocumentFromObject( name, store, ve.dm.example, base );
 };
 
 /**
  * Helper function for ve.dm.createExampleDocument.
  *
- * @param {string} [name='data'] Named element of ve.dm.example
- * @param {ve.dm.HashValueStore} [store] A specific hash-value store to use, optionally.
+ * @param {string} name Named element of ve.dm.example
+ * @param {ve.dm.HashValueStore} store A specific hash-value store to use, optionally.
  * @param {Object} object Collection of test documents, keyed by name
- * @param {string} [base=ve.dm.example.baseUri] Base URL to use for the document
+ * @param {string} base Base URL to use for the document
  * @return {ve.dm.Document}
  * @throws {Error} Example data not found
  */
 ve.dm.example.createExampleDocumentFromObject = function ( name, store, object, base ) {
-	name = name || 'data';
 	if ( object[ name ] === undefined ) {
 		throw new Error( 'Example data \'' + name + '\' not found' );
 	}
 	return ve.dm.example.createExampleDocumentFromData( object[ name ], store, base );
 };
 
-ve.dm.example.createExampleDocumentFromData = function ( data, store, base ) {
-	store = store || new ve.dm.HashValueStore();
-	base = base || ve.dm.example.baseUri;
+/**
+ * @param {Array} data
+ * @param {ve.dm.HashValueStore} [store=new ve.dm.HashValueStore()] A specific hash-value store to use, optionally.
+ * @param {string} [base=ve.dm.example.baseUri] Base URL to use for the document
+ * @return {ve.dm.Document}
+ */
+ve.dm.example.createExampleDocumentFromData = function ( data, store = new ve.dm.HashValueStore(), base = ve.dm.example.baseUri ) {
 	const doc = new ve.dm.Document(
 		ve.dm.example.preprocessAnnotations( ve.copy( data ), store )
 	);

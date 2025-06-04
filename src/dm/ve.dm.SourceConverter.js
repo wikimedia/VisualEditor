@@ -18,10 +18,8 @@ ve.dm.SourceConverter = function VeDmSourceConverter() {
  * @param {string} [options.dir] Document directionality (ltr/rtl)
  * @return {ve.dm.Document} Document model
  */
-ve.dm.SourceConverter.prototype.getModelFromSourceText = function ( sourceText, options ) {
+ve.dm.SourceConverter.prototype.getModelFromSourceText = function ( sourceText, options = {} ) {
 	const data = this.getDataFromSourceText( sourceText );
-
-	options = options || {};
 
 	// TODO: Internal lists are completely unused in source mode
 	data.push( { type: 'internalList' }, { type: '/internalList' } );

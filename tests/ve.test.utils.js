@@ -347,7 +347,7 @@
 				msg: arguments[ 5 ]
 			};
 		}
-		const doc = ve.dm.example.createExampleDocument( 'isolationData', null, caseItem.base ),
+		const doc = ve.dm.example.createExampleDocument( 'isolationData', undefined, caseItem.base ),
 			surface = new ve.dm.Surface( doc ),
 			fragment = surface.getLinearFragment( caseItem.range );
 

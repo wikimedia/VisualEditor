@@ -11,8 +11,7 @@
 
 	QUnit.dump.maxDepth = 10;
 
-	QUnit.module = function ( name, localEnv ) {
-		localEnv = localEnv || {};
+	QUnit.module = function ( name, localEnv = {} ) {
 		origModule( name, {
 			beforeEach: function () {
 				this.fixture = document.createElement( 'div' );

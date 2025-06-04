@@ -17,8 +17,7 @@
  * @param {string[]|null} [options.supportedSelections] List of supported selection types, or null for all
  * @param {Array} [options.args] Additional arguments to pass to the action when executing
  */
-ve.ui.Command = function VeUiCommand( name, action, method, options ) {
-	options = options || {};
+ve.ui.Command = function VeUiCommand( name, action, method, options = {} ) {
 	this.name = name;
 	this.action = action;
 	this.method = method;

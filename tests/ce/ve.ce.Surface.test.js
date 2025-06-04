@@ -591,7 +591,7 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 				...ve.dm.example.blockImage.data,
 				{ type: 'internalList' },
 				{ type: '/internalList' }
-			], null, ve.dm.example.baseUri ),
+			], undefined, ve.dm.example.baseUri ),
 			firstRange: new ve.Range( 14 ),
 			lastRange: new ve.Range( 17 )
 		},
@@ -603,7 +603,7 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 				...ve.dm.example.complexTable.slice( 0, -2 ),
 				{ type: 'internalList' },
 				{ type: '/internalList' }
-			], null, ve.dm.example.baseUri ),
+			], undefined, ve.dm.example.baseUri ),
 			firstRange: new ve.Range( 52 ),
 			lastRange: new ve.Range( 55 )
 		},
@@ -614,7 +614,7 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 				...ve.dm.example.blockImage.data,
 				{ type: 'internalList' },
 				{ type: '/internalList' }
-			], null, ve.dm.example.baseUri ),
+			], undefined, ve.dm.example.baseUri ),
 			firstRange: null,
 			lastRange: null
 		},
@@ -622,7 +622,7 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 			msg: 'Sections (ve.ce.ActiveNode) can take focus',
 			htmlOrDoc: ve.dm.example.createExampleDocumentFromData(
 				ve.dm.example.domToDataCases[ 'article and sections' ].data,
-				null, ve.dm.example.baseUri
+				undefined, ve.dm.example.baseUri
 			),
 			firstRange: new ve.Range( 3 ),
 			lastRange: new ve.Range( 20 )

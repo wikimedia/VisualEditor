@@ -28,7 +28,10 @@
  * @param {boolean} [sourceMode=false] Document is in source mode
  * @param {Object} [persistentStorage={}] Persistent storage object
  */
-ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir, originalDocument, sourceMode, persistentStorage ) {
+ve.dm.Document = function VeDmDocument(
+	data, htmlDocument = ve.createDocumentFromHtml( '' ), parentDocument = null, internalList = null,
+	innerWhitespace = null, lang = 'en', dir = 'ltr', originalDocument = null, sourceMode = false, persistentStorage = {}
+) {
 	// Parent constructor
 	ve.dm.Document.super.call( this, new ve.dm.DocumentNode() );
 
@@ -36,10 +39,10 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	const doc = parentDocument || this;
 	const root = this.documentNode;
 
-	this.lang = lang || 'en';
-	this.dir = dir || 'ltr';
+	this.lang = lang;
+	this.dir = dir;
 
-	this.sourceMode = !!sourceMode;
+	this.sourceMode = sourceMode;
 
 	this.documentNode.setRoot( root );
 	// ve.Document already called setDocument(), but it could be that doc !== this
@@ -50,8 +53,8 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.metaList = new ve.dm.MetaList( this );
 
 	// Properties
-	this.parentDocument = parentDocument || null;
-	this.originalDocument = originalDocument || null;
+	this.parentDocument = parentDocument;
+	this.originalDocument = originalDocument;
 	this.nodesByType = {};
 	this.origInternalListLength = null;
 	this.readOnly = false;
@@ -82,8 +85,8 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		} ] ) );
 		this.completeHistory.storeLengthAtTransaction.push( this.store.getLength() );
 	}
-	this.htmlDocument = htmlDocument || ve.createDocumentFromHtml( '' );
-	this.persistentStorage = persistentStorage || {};
+	this.htmlDocument = htmlDocument;
+	this.persistentStorage = persistentStorage;
 };
 
 /* Inheritance */
@@ -1639,9 +1642,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @param {boolean} [options.wholeWord] Only match whole-word occurrences
  * @return {ve.Range[]} List of ranges where the string was found
  */
-ve.dm.Document.prototype.findText = function ( query, options ) {
-	options = options || {};
-
+ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 	const data = this.data,
 		searchRange = options.searchRange || this.getAttachedRootRange();
 	let ranges = [];

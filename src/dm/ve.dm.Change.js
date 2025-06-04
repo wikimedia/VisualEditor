@@ -72,18 +72,16 @@
  * @param {ve.dm.HashValueStore[]} [stores] For each transaction, a collection of new store items
  * @param {Object} [selections={}] For each author ID (key), latest ve.dm.Selection
  */
-ve.dm.Change = function VeDmChange( start, transactions, stores, selections ) {
-	this.start = start || 0;
-	this.transactions = transactions || [];
+ve.dm.Change = function VeDmChange( start = 0, transactions = [], stores = [], selections = {} ) {
+	this.start = start;
+	this.transactions = transactions;
 	this.store = new ve.dm.HashValueStore();
 	this.storeLengthAtTransaction = [];
-	if ( stores ) {
-		stores.forEach( ( store ) => {
-			this.store.merge( store );
-			this.storeLengthAtTransaction.push( this.store.getLength() );
-		} );
-	}
-	this.selections = selections || {};
+	stores.forEach( ( store ) => {
+		this.store.merge( store );
+		this.storeLengthAtTransaction.push( this.store.getLength() );
+	} );
+	this.selections = selections;
 };
 
 /* Static methods */

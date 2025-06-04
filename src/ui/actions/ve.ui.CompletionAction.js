@@ -74,7 +74,6 @@ ve.ui.CompletionAction.prototype.open = function ( isolateInput ) {
  *
  * @abstract
  * @param {string} input
- * @param {number} [limit=20] Maximum number of results
  * @return {jQuery.Promise} Promise that resolves with list of suggestions.
  *  Suggestions are converted to menu itmes by getMenuItemForSuggestion.
  */
