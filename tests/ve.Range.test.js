@@ -11,54 +11,54 @@ QUnit.module( 've.Range' );
 QUnit.test( 'Basic usage (isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange, touchesRange)', ( assert ) => {
 	let range = new ve.Range( 100, 200 );
 
-	assert.strictEqual( range.isCollapsed(), false, 'forwards range is not collapsed' );
-	assert.strictEqual( range.isBackwards(), false, 'forwards range is not backwards' );
+	assert.false( range.isCollapsed(), 'forwards range is not collapsed' );
+	assert.false( range.isBackwards(), 'forwards range is not backwards' );
 	assert.strictEqual( range.getLength(), 100, 'forwards range has length 100' );
-	assert.strictEqual( range.equals( new ve.Range( 100, 200 ) ), true, 'equals matches identical range' );
-	assert.strictEqual( range.equals( new ve.Range( 200, 100 ) ), false, 'equals doesn\'t match reverse range' );
-	assert.strictEqual( range.equalsSelection( new ve.Range( 200, 100 ) ), true, 'equalsSelection matches reverse range' );
-	assert.strictEqual( range.containsOffset( 99 ), false, 'doesn\'t contain 99' );
-	assert.strictEqual( range.containsOffset( 100 ), true, 'contains 100' );
-	assert.strictEqual( range.containsOffset( 199 ), true, 'contains 199' );
-	assert.strictEqual( range.containsOffset( 200 ), false, 'doesn\'t contain 200' );
-	assert.strictEqual( range.containsRange( new ve.Range( 99, 100 ) ), false, 'doesn\'t contain 99, 100' );
-	assert.strictEqual( range.containsRange( new ve.Range( 100, 199 ) ), true, 'contains 101, 199' );
-	assert.strictEqual( range.containsRange( range ), true, 'contains itself' );
-	assert.strictEqual( range.containsRange( new ve.Range( 100, 201 ) ), false, 'doesn\'t contain 100, 201' );
+	assert.true( range.equals( new ve.Range( 100, 200 ) ), 'equals matches identical range' );
+	assert.false( range.equals( new ve.Range( 200, 100 ) ), 'equals doesn\'t match reverse range' );
+	assert.true( range.equalsSelection( new ve.Range( 200, 100 ) ), 'equalsSelection matches reverse range' );
+	assert.false( range.containsOffset( 99 ), 'doesn\'t contain 99' );
+	assert.true( range.containsOffset( 100 ), 'contains 100' );
+	assert.true( range.containsOffset( 199 ), 'contains 199' );
+	assert.false( range.containsOffset( 200 ), 'doesn\'t contain 200' );
+	assert.false( range.containsRange( new ve.Range( 99, 100 ) ), 'doesn\'t contain 99, 100' );
+	assert.true( range.containsRange( new ve.Range( 100, 199 ) ), 'contains 101, 199' );
+	assert.true( range.containsRange( range ), 'contains itself' );
+	assert.false( range.containsRange( new ve.Range( 100, 201 ) ), 'doesn\'t contain 100, 201' );
 
 	range = new ve.Range( 200, 100 );
-	assert.strictEqual( range.isCollapsed(), false, 'backwards range is not collapsed' );
-	assert.strictEqual( range.isBackwards(), true, 'backwards range is backwards' );
+	assert.false( range.isCollapsed(), 'backwards range is not collapsed' );
+	assert.true( range.isBackwards(), 'backwards range is backwards' );
 	assert.strictEqual( range.getLength(), 100, 'backwards range has length 100' );
-	assert.strictEqual( range.containsOffset( 99 ), false, 'doesn\'t contain 99' );
-	assert.strictEqual( range.containsOffset( 100 ), true, 'contains 100' );
-	assert.strictEqual( range.containsOffset( 199 ), true, 'contains 199' );
-	assert.strictEqual( range.containsOffset( 200 ), false, 'doesn\'t contain 200' );
+	assert.false( range.containsOffset( 99 ), 'doesn\'t contain 99' );
+	assert.true( range.containsOffset( 100 ), 'contains 100' );
+	assert.true( range.containsOffset( 199 ), 'contains 199' );
+	assert.false( range.containsOffset( 200 ), 'doesn\'t contain 200' );
 
-	assert.strictEqual( range.containsRange( new ve.Range( 99, 100 ) ), false, 'doesn\'t contain 99, 100' );
-	assert.strictEqual( range.containsRange( new ve.Range( 100, 199 ) ), true, 'contains 101, 199' );
-	assert.strictEqual( range.containsRange( range ), true, 'contains itself' );
-	assert.strictEqual( range.containsRange( new ve.Range( 100, 201 ) ), false, 'doesn\'t contain 100, 201' );
+	assert.false( range.containsRange( new ve.Range( 99, 100 ) ), 'doesn\'t contain 99, 100' );
+	assert.true( range.containsRange( new ve.Range( 100, 199 ) ), 'contains 101, 199' );
+	assert.true( range.containsRange( range ), 'contains itself' );
+	assert.false( range.containsRange( new ve.Range( 100, 201 ) ), 'doesn\'t contain 100, 201' );
 
-	assert.strictEqual( range.touchesRange( new ve.Range( 98, 99 ) ), false, 'doesn\'t touch 98, 99' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 203, 201 ) ), false, 'doesn\'t touch 203, 201' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 98, 100 ) ), true, 'touches 98, 100' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 200, 201 ) ), true, 'touches 200, 201' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 150, 98 ) ), true, 'touches 150, 98' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 0, 300 ) ), true, 'touches 0, 300' );
-	assert.strictEqual( range.touchesRange( range ), true, 'returns true when passed itself' );
+	assert.false( range.touchesRange( new ve.Range( 98, 99 ) ), 'doesn\'t touch 98, 99' );
+	assert.false( range.touchesRange( new ve.Range( 203, 201 ) ), 'doesn\'t touch 203, 201' );
+	assert.true( range.touchesRange( new ve.Range( 98, 100 ) ), 'touches 98, 100' );
+	assert.true( range.touchesRange( new ve.Range( 200, 201 ) ), 'touches 200, 201' );
+	assert.true( range.touchesRange( new ve.Range( 150, 98 ) ), 'touches 150, 98' );
+	assert.true( range.touchesRange( new ve.Range( 0, 300 ) ), 'touches 0, 300' );
+	assert.true( range.touchesRange( range ), 'returns true when passed itself' );
 
-	assert.strictEqual( range.overlapsRange( new ve.Range( 99, 100 ) ), false, 'doesn\'t overlap 99, 100' );
-	assert.strictEqual( range.overlapsRange( new ve.Range( 202, 200 ) ), false, 'doesn\'t overlap 202, 200' );
-	assert.strictEqual( range.overlapsRange( new ve.Range( 99, 101 ) ), true, 'overlaps 99, 101' );
-	assert.strictEqual( range.overlapsRange( new ve.Range( 199, 201 ) ), true, 'overlaps 199, 201' );
-	assert.strictEqual( range.overlapsRange( new ve.Range( 150, 98 ) ), true, 'overlaps 150, 98' );
-	assert.strictEqual( range.overlapsRange( new ve.Range( 0, 300 ) ), true, 'overlaps 0, 300' );
-	assert.strictEqual( range.overlapsRange( range ), true, 'returns true when passed itself' );
+	assert.false( range.overlapsRange( new ve.Range( 99, 100 ) ), 'doesn\'t overlap 99, 100' );
+	assert.false( range.overlapsRange( new ve.Range( 202, 200 ) ), 'doesn\'t overlap 202, 200' );
+	assert.true( range.overlapsRange( new ve.Range( 99, 101 ) ), 'overlaps 99, 101' );
+	assert.true( range.overlapsRange( new ve.Range( 199, 201 ) ), 'overlaps 199, 201' );
+	assert.true( range.overlapsRange( new ve.Range( 150, 98 ) ), 'overlaps 150, 98' );
+	assert.true( range.overlapsRange( new ve.Range( 0, 300 ) ), 'overlaps 0, 300' );
+	assert.true( range.overlapsRange( range ), 'returns true when passed itself' );
 
 	range = new ve.Range( 100 );
-	assert.strictEqual( range.isCollapsed(), true, 'collapsed range is collapsed' );
-	assert.strictEqual( range.isBackwards(), false, 'collapsed range is not backwards' );
+	assert.true( range.isCollapsed(), 'collapsed range is collapsed' );
+	assert.false( range.isBackwards(), 'collapsed range is not backwards' );
 	assert.strictEqual( range.getLength(), 0, 'collapsed range has zero length' );
 
 } );
@@ -84,7 +84,7 @@ QUnit.test( 'Modification (flip, truncate, expand, translate)', ( assert ) => {
 	assert.equalRange( range.translate( 10 ), new ve.Range( 110, 210 ), 'translate 10' );
 	assert.equalRange( range.translate( -10 ), new ve.Range( 90, 190 ), 'translate -10' );
 
-	assert.strictEqual( range.flip().expand( new ve.Range( 250 ) ).isBackwards(), true, 'expands preserves backwards' );
+	assert.true( range.flip().expand( new ve.Range( 250 ) ).isBackwards(), 'expands preserves backwards' );
 
 } );
 

@@ -262,9 +262,9 @@ QUnit.test( 'getOffset', ( assert ) => {
 // TODO: ve.ce.getOffsetOfSlug
 
 QUnit.test( 'isShortcutKey', ( assert ) => {
-	assert.strictEqual( ve.ce.isShortcutKey( { ctrlKey: true } ), true, 'ctrlKey' );
-	assert.strictEqual( ve.ce.isShortcutKey( { metaKey: true } ), true, 'metaKey' );
-	assert.strictEqual( ve.ce.isShortcutKey( {} ), false, 'Not set' );
+	assert.true( ve.ce.isShortcutKey( { ctrlKey: true } ), 'ctrlKey' );
+	assert.true( ve.ce.isShortcutKey( { metaKey: true } ), 'metaKey' );
+	assert.false( ve.ce.isShortcutKey( {} ), 'Not set' );
 } );
 
 QUnit.test( 'nextCursorOffset', ( assert ) => {
@@ -397,7 +397,7 @@ QUnit.test( 'fakeImes', ( assert ) => {
 			}
 		}
 		// Test that there is at least one endLoop
-		assert.strictEqual( foundEndLoop, true, testName + ' found at least one endLoop' );
+		assert.true( foundEndLoop, testName + ' found at least one endLoop' );
 		view.destroy();
 	} );
 } );

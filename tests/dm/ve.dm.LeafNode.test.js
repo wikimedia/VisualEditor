@@ -25,12 +25,12 @@ ve.dm.nodeFactory.register( ve.dm.LeafNodeStub );
 
 QUnit.test( 'canHaveChildren', ( assert ) => {
 	const node = new ve.dm.LeafNodeStub();
-	assert.strictEqual( node.canHaveChildren(), false );
+	assert.false( node.canHaveChildren() );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', ( assert ) => {
 	const node = new ve.dm.LeafNodeStub();
-	assert.strictEqual( node.canHaveChildrenNotContent(), false );
+	assert.false( node.canHaveChildrenNotContent() );
 } );
 
 QUnit.test( 'getAnnotations', ( assert ) => {

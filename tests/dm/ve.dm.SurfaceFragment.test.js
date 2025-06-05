@@ -19,10 +19,10 @@ QUnit.test( 'constructor', ( assert ) => {
 	assert.strictEqual( fragment.getSurface(), surface, 'surface reference is stored' );
 	assert.strictEqual( fragment.getDocument(), doc, 'document reference is stored' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 1 ), 'range is taken from surface' );
-	assert.strictEqual( fragment.willAutoSelect(), true, 'auto select by default' );
+	assert.true( fragment.willAutoSelect(), 'auto select by default' );
 	// AutoSelect
 	fragment = new ve.dm.SurfaceFragment( surface, null, 'truthy' );
-	assert.strictEqual( fragment.willAutoSelect(), false, 'noAutoSelect values are boolean' );
+	assert.false( fragment.willAutoSelect(), 'noAutoSelect values are boolean' );
 } );
 
 QUnit.test( 'update', ( assert ) => {
@@ -119,8 +119,8 @@ QUnit.test( 'hasAnnotations', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
 
-	assert.strictEqual( surface.getLinearFragment( new ve.Range( 1, 2 ) ).hasAnnotations(), false, 'Plain text has none' );
-	assert.strictEqual( surface.getLinearFragment( new ve.Range( 2, 3 ) ).hasAnnotations(), true, 'Bold text has some' );
+	assert.false( surface.getLinearFragment( new ve.Range( 1, 2 ) ).hasAnnotations(), 'Plain text has none' );
+	assert.true( surface.getLinearFragment( new ve.Range( 2, 3 ) ).hasAnnotations(), 'Bold text has some' );
 } );
 
 QUnit.test( 'adjustLinearSelection', ( assert ) => {

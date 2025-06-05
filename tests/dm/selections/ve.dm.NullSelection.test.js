@@ -22,9 +22,9 @@ QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', ( assert ) 
 	assert.deepEqual( selection.collapseToEnd(), selection, 'collapseToEnd' );
 	assert.deepEqual( selection.collapseToFrom(), selection, 'collapseToFrom' );
 	assert.deepEqual( selection.collapseToTo(), selection, 'collapseToTo' );
-	assert.strictEqual( selection.isCollapsed(), true, 'isCollapsed' );
-	assert.strictEqual( selection.equals( selection ), true, 'equals' );
-	assert.strictEqual( selection.isNull(), true, 'null' );
+	assert.true( selection.isCollapsed(), 'isCollapsed' );
+	assert.true( selection.equals( selection ), 'equals' );
+	assert.true( selection.isNull(), 'null' );
 } );
 
 QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', ( assert ) => {

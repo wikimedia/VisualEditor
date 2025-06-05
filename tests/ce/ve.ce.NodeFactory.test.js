@@ -43,9 +43,8 @@ QUnit.test( 'splitNodeOnEnter/getDescription', ( assert ) => {
 
 	factory.register( ve.ce.NodeFactoryNodeStub );
 
-	assert.strictEqual(
+	assert.true(
 		factory.splitNodeOnEnter( 'node-factory-node-stub' ),
-		true,
 		'splitNodeOnEnter'
 	);
 

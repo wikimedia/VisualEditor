@@ -108,45 +108,38 @@ QUnit.test( 'isInstanceOfAny', ( assert ) => {
 	function VerySpecialFoo() {}
 	OO.inheritClass( VerySpecialFoo, SpecialFoo );
 
-	assert.strictEqual(
+	assert.true(
 		ve.isInstanceOfAny( new Foo(), [ Foo ] ),
-		true,
 		'Foo is an instance of Foo'
 	);
 
-	assert.strictEqual(
+	assert.true(
 		ve.isInstanceOfAny( new SpecialFoo(), [ Foo ] ),
-		true,
 		'SpecialFoo is an instance of Foo'
 	);
 
-	assert.strictEqual(
+	assert.false(
 		ve.isInstanceOfAny( new SpecialFoo(), [ Bar ] ),
-		false,
 		'SpecialFoo is not an instance of Bar'
 	);
 
-	assert.strictEqual(
+	assert.true(
 		ve.isInstanceOfAny( new SpecialFoo(), [ Bar, Foo ] ),
-		true,
 		'SpecialFoo is an instance of Bar or Foo'
 	);
 
-	assert.strictEqual(
+	assert.true(
 		ve.isInstanceOfAny( new VerySpecialFoo(), [ Bar, Foo ] ),
-		true,
 		'VerySpecialFoo is an instance of Bar or Foo'
 	);
 
-	assert.strictEqual(
+	assert.true(
 		ve.isInstanceOfAny( new VerySpecialFoo(), [ Foo, SpecialFoo ] ),
-		true,
 		'VerySpecialFoo is an instance of Foo or SpecialFoo'
 	);
 
-	assert.strictEqual(
+	assert.false(
 		ve.isInstanceOfAny( new VerySpecialFoo(), [] ),
-		false,
 		'VerySpecialFoo is not an instance of nothing'
 	);
 } );
@@ -184,7 +177,7 @@ QUnit.test( 'setDomAttributes', ( assert ) => {
 
 	target = sample.cloneNode();
 	ve.setDomAttributes( target, { onclick: 'alert(1);', foo: 'update', add: 'whee' }, [ 'foo', 'add' ] );
-	assert.strictEqual( target.hasAttribute( 'onclick' ), false, 'allow list affects creating attributes' );
+	assert.false( target.hasAttribute( 'onclick' ), 'allow list affects creating attributes' );
 	assert.deepEqual(
 		ve.getDomAttributes( target ),
 		{ foo: 'update', bar: 'two', baz: 'three', add: 'whee' },
@@ -576,9 +569,9 @@ QUnit.test( 'fixBase', ( assert ) => {
 } );
 
 QUnit.test( 'isUriComponentValid', ( assert ) => {
-	assert.strictEqual( ve.isUriComponentValid( 'Foo' ), true, '"Foo" is a valid URI component' );
-	assert.strictEqual( ve.isUriComponentValid( 'Foo%20Bar' ), true, '"Foo%20Bar" is a valid URI component' );
-	assert.strictEqual( ve.isUriComponentValid( '%E0%A4%A' ), false, '"%E0%A4%A" is an invalid URI component' );
+	assert.true( ve.isUriComponentValid( 'Foo' ), '"Foo" is a valid URI component' );
+	assert.true( ve.isUriComponentValid( 'Foo%20Bar' ), '"Foo%20Bar" is a valid URI component' );
+	assert.false( ve.isUriComponentValid( '%E0%A4%A' ), '"%E0%A4%A" is an invalid URI component' );
 } );
 
 QUnit.test( 'safeDecodeURIComponent', ( assert ) => {
@@ -588,17 +581,17 @@ QUnit.test( 'safeDecodeURIComponent', ( assert ) => {
 } );
 
 QUnit.test( 'isBlockElement/isVoidElement', ( assert ) => {
-	assert.strictEqual( ve.isBlockElement( 'div' ), true, '"div" is a block element' );
-	assert.strictEqual( ve.isBlockElement( 'SPAN' ), false, '"SPAN" is not a block element' );
-	assert.strictEqual( ve.isBlockElement( 'a' ), false, '"a" is not a block element' );
-	assert.strictEqual( ve.isBlockElement( document.createElement( 'div' ) ), true, '<div> is a block element' );
-	assert.strictEqual( ve.isBlockElement( document.createElement( 'span' ) ), false, '<span> is not a block element' );
+	assert.true( ve.isBlockElement( 'div' ), '"div" is a block element' );
+	assert.false( ve.isBlockElement( 'SPAN' ), '"SPAN" is not a block element' );
+	assert.false( ve.isBlockElement( 'a' ), '"a" is not a block element' );
+	assert.true( ve.isBlockElement( document.createElement( 'div' ) ), '<div> is a block element' );
+	assert.false( ve.isBlockElement( document.createElement( 'span' ) ), '<span> is not a block element' );
 
-	assert.strictEqual( ve.isVoidElement( 'img' ), true, '"img" is a void element' );
-	assert.strictEqual( ve.isVoidElement( 'DIV' ), false, '"DIV" is not a void element' );
-	assert.strictEqual( ve.isVoidElement( 'span' ), false, '"span" is not a void element' );
-	assert.strictEqual( ve.isVoidElement( document.createElement( 'img' ) ), true, '<img> is a void element' );
-	assert.strictEqual( ve.isVoidElement( document.createElement( 'div' ) ), false, '<div> is not a void element' );
+	assert.true( ve.isVoidElement( 'img' ), '"img" is a void element' );
+	assert.false( ve.isVoidElement( 'DIV' ), '"DIV" is not a void element' );
+	assert.false( ve.isVoidElement( 'span' ), '"span" is not a void element' );
+	assert.true( ve.isVoidElement( document.createElement( 'img' ) ), '<img> is a void element' );
+	assert.false( ve.isVoidElement( document.createElement( 'div' ) ), '<div> is not a void element' );
 } );
 
 // TODO: ve.getByteOffset

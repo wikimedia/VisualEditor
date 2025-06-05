@@ -17,7 +17,7 @@ QUnit.test( 'Basic tests', ( assert ) => {
 	assert.deepEqual( simplePreview.isGenerating(), false, 'not isGenerating if constructed without model' );
 	simplePreview.setModel( modelNode );
 	assert.strictEqual( simplePreview.model, modelNode, 'setModel' );
-	assert.strictEqual( simplePreview.isGenerating(), true, 'isGenerating after setModel' );
+	assert.true( simplePreview.isGenerating(), 'isGenerating after setModel' );
 
 	simplePreview.once( 'render', () => {
 		assert.deepEqual( simplePreview.isGenerating(), false, 'not isGenerating after render' );
@@ -30,7 +30,7 @@ QUnit.test( 'Basic tests', ( assert ) => {
 	} );
 
 	const useViewPreview = new ve.ui.PreviewElement( modelNode, { useView: true } );
-	assert.strictEqual( useViewPreview.isGenerating(), true, 'isGenerating after construction with model' );
+	assert.true( useViewPreview.isGenerating(), 'isGenerating after construction with model' );
 	useViewPreview.once( 'render', () => {
 		assert.deepEqual( simplePreview.isGenerating(), false, 'not isGenerating after useView render' );
 		assert.equalDomElement(

@@ -747,13 +747,13 @@ QUnit.test( 'getCharacterData', ( assert ) => {
 QUnit.test( 'isPlainText', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument();
 
-	assert.strictEqual( doc.data.isPlainText( new ve.Range( 1, 2 ), false ), true, 'Plain text' );
-	assert.strictEqual( doc.data.isPlainText( new ve.Range( 1, 3 ), true ), false, 'Annotated text' );
-	assert.strictEqual( doc.data.isPlainText( new ve.Range( 2, 3 ), true, undefined, true ), true, 'Annotated text, ignoring covering annotations' );
-	assert.strictEqual( doc.data.isPlainText( new ve.Range( 9, 11 ), false ), false, 'Paragraph and text (no content nodes)' );
-	assert.strictEqual( doc.data.isPlainText( new ve.Range( 9, 11 ), true ), true, 'Paragraph and text (content nodes allowed)' );
-	assert.strictEqual( doc.data.isPlainText( new ve.Range( 12, 26 ), false ), false, 'List (no content nodes)' );
-	assert.strictEqual( doc.data.isPlainText( new ve.Range( 12, 26 ), true ), true, 'List (content nodes allowed)' );
+	assert.true( doc.data.isPlainText( new ve.Range( 1, 2 ), false ), 'Plain text' );
+	assert.false( doc.data.isPlainText( new ve.Range( 1, 3 ), true ), 'Annotated text' );
+	assert.true( doc.data.isPlainText( new ve.Range( 2, 3 ), true, undefined, true ), 'Annotated text, ignoring covering annotations' );
+	assert.false( doc.data.isPlainText( new ve.Range( 9, 11 ), false ), 'Paragraph and text (no content nodes)' );
+	assert.true( doc.data.isPlainText( new ve.Range( 9, 11 ), true ), 'Paragraph and text (content nodes allowed)' );
+	assert.false( doc.data.isPlainText( new ve.Range( 12, 26 ), false ), 'List (no content nodes)' );
+	assert.true( doc.data.isPlainText( new ve.Range( 12, 26 ), true ), 'List (content nodes allowed)' );
 } );
 
 QUnit.test( 'getText', ( assert ) => {

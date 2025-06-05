@@ -34,12 +34,12 @@ new ve.dm.FakeCommentNode();
 
 QUnit.test( 'canHaveChildren', ( assert ) => {
 	const node = new ve.dm.NodeStub();
-	assert.strictEqual( node.canHaveChildren(), false );
+	assert.false( node.canHaveChildren() );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', ( assert ) => {
 	const node = new ve.dm.NodeStub();
-	assert.strictEqual( node.canHaveChildrenNotContent(), false );
+	assert.false( node.canHaveChildrenNotContent() );
 } );
 
 QUnit.test( 'getLength', ( assert ) => {
@@ -122,12 +122,12 @@ QUnit.test( 'canBeMergedWith', ( assert ) => {
 		heading1 = new ve.dm.HeadingNode( { type: 'heading', attributes: { level: 1 } } ),
 		heading2 = new ve.dm.HeadingNode( { type: 'heading', attributes: { level: 2 } } );
 
-	assert.strictEqual( node3.canBeMergedWith( node5 ), true, 'same level, same type' );
-	assert.strictEqual( node2.canBeMergedWith( node5 ), false, 'different level, same type' );
-	assert.strictEqual( node2.canBeMergedWith( node1 ), false, 'different level, different type' );
-	assert.strictEqual( node2.canBeMergedWith( node4 ), false, 'same level, different type' );
-	assert.strictEqual( heading1.canBeMergedWith( heading2 ), false, 'headings of different levels can\'t be merged' );
-	assert.strictEqual( heading1.canBeMergedWith( heading1 ), true, 'headings of samve level can be merged' );
+	assert.true( node3.canBeMergedWith( node5 ), 'same level, same type' );
+	assert.false( node2.canBeMergedWith( node5 ), 'different level, same type' );
+	assert.false( node2.canBeMergedWith( node1 ), 'different level, different type' );
+	assert.false( node2.canBeMergedWith( node4 ), 'same level, different type' );
+	assert.false( heading1.canBeMergedWith( heading2 ), 'headings of different levels can\'t be merged' );
+	assert.true( heading1.canBeMergedWith( heading1 ), 'headings of samve level can be merged' );
 } );
 
 QUnit.test( 'getClonedElement', ( assert ) => {

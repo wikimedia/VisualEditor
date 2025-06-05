@@ -1412,14 +1412,14 @@ QUnit.test( 'read-only and offset caching', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
 
-	assert.strictEqual( doc.isReadOnly(), false, 'New document is not read-only' );
+	assert.false( doc.isReadOnly(), 'New document is not read-only' );
 
 	// Set up offset caching test
 	assert.strictEqual( doc.getDocumentNode().children[ 1 ].getOffset(), 5, 'Second child node has offset 6' );
 	surface.getLinearFragment( new ve.Range( 1 ) ).insertContent( 'Test' );
 
 	doc.setReadOnly( true );
-	assert.strictEqual( doc.isReadOnly(), true, 'Document is read-only' );
+	assert.true( doc.isReadOnly(), 'Document is read-only' );
 
 	// Offset caching test
 	assert.strictEqual( doc.getDocumentNode().children[ 1 ].getOffset(), 9, 'Second child node offset has been translated, not cached from before' );

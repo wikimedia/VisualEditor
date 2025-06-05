@@ -190,14 +190,14 @@ QUnit.test( 'breakpoint/undo/redo', ( assert ) => {
 		selection = new ve.dm.LinearSelection( range ),
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'x' ] );
 
-	assert.strictEqual( surface.breakpoint(), false, 'Returns false if no transactions applied' );
+	assert.false( surface.breakpoint(), 'Returns false if no transactions applied' );
 
 	surface.change( tx );
 	assert.deepEqual( surface.undoStack, [], 'Undo stack data matches before breakpoint' );
 	assert.deepEqual( surface.newTransactions, [ tx ], 'New transactions match before breakpoint' );
 
-	assert.strictEqual( surface.breakpoint(), true, 'Returns true after transaction applied' );
-	assert.strictEqual( surface.breakpoint(), false, 'Returns false if no transactions applied since last breakpoint' );
+	assert.true( surface.breakpoint(), 'Returns true after transaction applied' );
+	assert.false( surface.breakpoint(), 'Returns false if no transactions applied since last breakpoint' );
 
 	assert.deepEqual(
 		surface.undoStack, [ {
@@ -275,7 +275,7 @@ QUnit.test( 'multi-user undo', ( assert ) => {
 			{ type: 'internalList' }, { type: '/internalList' }
 		]
 	);
-	assert.strictEqual( surfaces[ 0 ].canUndo(), false, 'No more steps for user on surface 1 to undo' );
+	assert.false( surfaces[ 0 ].canUndo(), 'No more steps for user on surface 1 to undo' );
 
 	// User on surface 2 presses undo twice, reverting only their changes
 	surfaces[ 1 ].undo();
@@ -289,9 +289,9 @@ QUnit.test( 'multi-user undo', ( assert ) => {
 		]
 	);
 	// TODO: We should disable undo as soon as the user runs out of transactions of their own
-	assert.strictEqual( surfaces[ 1 ].canUndo(), true, 'User on surface 2 thinks they can still undo' );
+	assert.true( surfaces[ 1 ].canUndo(), 'User on surface 2 thinks they can still undo' );
 	surfaces[ 1 ].undo();
-	assert.strictEqual( surfaces[ 1 ].canUndo(), false, 'User on surface 2 realises they can\'t undo' );
+	assert.false( surfaces[ 1 ].canUndo(), 'User on surface 2 realises they can\'t undo' );
 	// Count complete history: 4 transactions + 2 undos
 	assert.strictEqual( surfaces[ 1 ].getDocument().getCompleteHistoryLength(), 6, 'Final undo was a no-op' );
 
@@ -311,7 +311,7 @@ QUnit.test( 'change rollback', ( assert ) => {
 		'Transaction throws an exception'
 	);
 
-	assert.strictEqual( surface.canUndo(), false, 'No history to undo after failed change' );
+	assert.false( surface.canUndo(), 'No history to undo after failed change' );
 } );
 
 QUnit.test( 'range translation', ( assert ) => {
@@ -329,7 +329,7 @@ QUnit.test( 'staging', ( assert ) => {
 		fragment = surface.getFragment(),
 		doc = surface.getDocument();
 
-	assert.strictEqual( surface.isStaging(), false, 'isStaging false when not staging' );
+	assert.false( surface.isStaging(), 'isStaging false when not staging' );
 	assert.strictEqual( surface.getStagingTransactions(), undefined, 'getStagingTransactions undefined when not staging' );
 	assert.strictEqual( surface.doesStagingAllowUndo(), undefined, 'doesStagingAllowUndo undefined when not staging' );
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface range matches fragment range' );
@@ -337,9 +337,9 @@ QUnit.test( 'staging', ( assert ) => {
 	surface.change( ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'a' ] ) );
 
 	surface.pushStaging();
-	assert.strictEqual( surface.isStaging(), true, 'isStaging true after pushStaging' );
+	assert.true( surface.isStaging(), 'isStaging true after pushStaging' );
 	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after pushStaging' );
-	assert.strictEqual( surface.doesStagingAllowUndo(), false, 'doesStagingAllowUndo false when staging without undo' );
+	assert.false( surface.doesStagingAllowUndo(), 'doesStagingAllowUndo false when staging without undo' );
 
 	let tx1 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 2, [ 'b' ] );
 	surface.change( tx1 );
@@ -349,9 +349,9 @@ QUnit.test( 'staging', ( assert ) => {
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging( true );
-	assert.strictEqual( surface.isStaging(), true, 'isStaging true after nested pushStaging' );
+	assert.true( surface.isStaging(), 'isStaging true after nested pushStaging' );
 	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after nested pushStaging' );
-	assert.strictEqual( surface.doesStagingAllowUndo(), true, 'doesStagingAllowUndo true when staging with undo' );
+	assert.true( surface.doesStagingAllowUndo(), 'doesStagingAllowUndo true when staging with undo' );
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
 	let tx2 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 3, [ 'c' ] );
@@ -361,12 +361,12 @@ QUnit.test( 'staging', ( assert ) => {
 	assert.deepEqual( surface.getStagingTransactions(), [ tx2 ], 'getStagingTransactions contains second transaction after change in nested staging' );
 
 	assert.deepEqual( surface.popStaging(), [ tx2 ], 'popStaging returns second transaction list' );
-	assert.strictEqual( surface.isStaging(), true, 'isStaging true after nested popStaging' );
+	assert.true( surface.isStaging(), 'isStaging true after nested popStaging' );
 	assert.strictEqual( fragment.getText(), 'abhi', 'document contents match after nested popStaging' );
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
 	assert.deepEqual( surface.popStaging(), [ tx1 ], 'popStaging returns first transaction list' );
-	assert.strictEqual( surface.isStaging(), false, 'isStaging false after outer popStaging' );
+	assert.false( surface.isStaging(), 'isStaging false after outer popStaging' );
 	assert.strictEqual( fragment.getText(), 'ahi', 'document contents match after outer popStaging' );
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
@@ -394,7 +394,7 @@ QUnit.test( 'staging', ( assert ) => {
 	assert.deepEqual( surface.getStagingTransactions(), [ tx1, tx2 ], 'applyStaging merges transactions' );
 
 	surface.applyStaging();
-	assert.strictEqual( surface.isStaging(), false, 'isStaging false after outer applyStaging' );
+	assert.false( surface.isStaging(), 'isStaging false after outer applyStaging' );
 	assert.strictEqual( fragment.getText(), 'abchi', 'document contents changed after applyStaging' );
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
@@ -407,7 +407,7 @@ QUnit.test( 'staging', ( assert ) => {
 	surface.change( tx2 );
 
 	surface.applyAllStaging();
-	assert.strictEqual( surface.isStaging(), false, 'isStaging false after outer applyAllStaging' );
+	assert.false( surface.isStaging(), 'isStaging false after outer applyAllStaging' );
 	assert.strictEqual( fragment.getText(), 'abcdehi', 'document contents changed after applyAllStaging' );
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
@@ -496,8 +496,8 @@ QUnit.test( 'autosave', ( assert ) => {
 		fragment = surface.getLinearFragment( new ve.Range( 3 ) ),
 		autosaveFailed = 0;
 
-	assert.strictEqual( surface.restoreChanges(), false, 'restoreChanges returns false when nothing to restore' );
-	assert.strictEqual( surface.storeDocState( state, '<p>foo</p>' ), true, 'storeDocState returns true' );
+	assert.false( surface.restoreChanges(), 'restoreChanges returns false when nothing to restore' );
+	assert.true( surface.storeDocState( state, '<p>foo</p>' ), 'storeDocState returns true' );
 	assert.deepEqual( storage.getObject( 've-docstate' ), state, 'storeDocState writes doc state to session storage' );
 	assert.strictEqual( storage.get( 've-dochtml' ), '<p>foo</p>', 'storeDocState writes custom HTML to session storage' );
 	surface.storeDocState( state, '' );
@@ -574,7 +574,7 @@ QUnit.test( 'autosave', ( assert ) => {
 	surface = new ve.dm.SurfaceStub();
 	fragment = null;
 	assert.strictEqual( surface.getHtml(), '<p>hi</p>', 'Document HTML before restoreChanges' );
-	assert.strictEqual( surface.restoreChanges(), true, 'restoreChanges returns true on success' );
+	assert.true( surface.restoreChanges(), 'restoreChanges returns true on success' );
 	assert.strictEqual( surface.getHtml(), '<h1>hi bar baz</h1>', 'Document HTML restored' );
 	assert.strictEqual( surface.getDocument().getCompleteHistoryLength(), 3, 'Document history restored' );
 	setTimeout( ( ( s ) => {
@@ -585,7 +585,7 @@ QUnit.test( 'autosave', ( assert ) => {
 	} ).bind( null, surface ) );
 
 	ve.init.platform.storageDisabled = true;
-	assert.strictEqual( surface.restoreChanges(), false, 'restoreChanges returns false if session storage disabled' );
+	assert.false( surface.restoreChanges(), 'restoreChanges returns false if session storage disabled' );
 	ve.init.platform.storageDisabled = false;
 
 	surface.removeDocStateAndChanges();
@@ -597,17 +597,17 @@ QUnit.test( 'autosave', ( assert ) => {
 	fragment = surface.getLinearFragment( new ve.Range( 3 ) );
 	surface.startStoringChanges();
 	// Pass magic string to only fail when writing HTML
-	assert.strictEqual( surface.storeDocState( state, '__FAIL__' ), false, 'storeDocState returns false when HTML can\'t be stored' );
+	assert.false( surface.storeDocState( state, '__FAIL__' ), 'storeDocState returns false when HTML can\'t be stored' );
 	assert.strictEqual( storage.getObject( 've-docstate' ), null, 'docstate is wiped if HTML storage failed' );
 
 	ve.init.platform.storageDisabled = true;
 	surface = new ve.dm.SurfaceStub();
 	fragment = surface.getLinearFragment( new ve.Range( 3 ) );
 	surface.startStoringChanges();
-	assert.strictEqual( surface.storeDocState( state ), false, 'storeDocState returns false when sessionStorage disabled' );
+	assert.false( surface.storeDocState( state ), 'storeDocState returns false when sessionStorage disabled' );
 	fragment.insertContent( ' bar' );
 	surface.breakpoint();
-	assert.strictEqual( storage.getObject( 've-changes' ), false, 'No changes recorded' );
+	assert.false( storage.getObject( 've-changes' ), 'No changes recorded' );
 	ve.init.platform.storageDisabled = false;
 
 	surface.on( 'autosaveFailed', () => {
@@ -623,7 +623,7 @@ QUnit.test( 'autosave', ( assert ) => {
 	fragment.insertContent( ' baz' );
 	surface.breakpoint();
 	assert.strictEqual( autosaveFailed, 1, 'Subsequent failures don\'t fire autosaveFailed again' );
-	assert.strictEqual( storage.getObject( 've-changes' ), false, 'No changes recorded' );
+	assert.false( storage.getObject( 've-changes' ), 'No changes recorded' );
 	ve.init.platform.storageDisabled = false;
 
 	surface.storeDocState( state, '<p>foo</p>' );

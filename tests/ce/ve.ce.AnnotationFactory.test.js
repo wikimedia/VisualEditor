@@ -49,9 +49,8 @@ QUnit.test( 'canAnnotationBeActive/getDescription', ( assert ) => {
 
 	factory.register( ve.ce.AnnotationFactoryAnnotationStub );
 
-	assert.strictEqual(
+	assert.true(
 		factory.canAnnotationBeActive( 'annotation-factory-annotation-stub' ),
-		true,
 		'canAnnotationBeActive'
 	);
 

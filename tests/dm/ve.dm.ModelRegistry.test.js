@@ -245,25 +245,23 @@ QUnit.test( 'isAnnotation', ( assert ) => {
 
 	for ( let i = 0, len = allAnnotationTags.length; i < len; i++ ) {
 		const node = document.createElement( allAnnotationTags[ i ] );
-		assert.strictEqual(
+		assert.true(
 			ve.dm.modelRegistry.isAnnotation( node ),
-			true,
 			allAnnotationTags[ i ] + ' annotation'
 		);
 	}
 
 	for ( let i = 0, len = nonAnnotationTags.length; i < len; i++ ) {
 		const node = document.createElement( nonAnnotationTags[ i ] );
-		assert.strictEqual(
+		assert.false(
 			ve.dm.modelRegistry.isAnnotation( node ),
-			false,
 			allAnnotationTags[ i ] + ' non-annotation'
 		);
 	}
 
 	const node = document.createElement( 'span' );
 	node.setAttribute( 'rel', 've:Alien' );
-	assert.strictEqual( ve.dm.modelRegistry.isAnnotation( node ), false, 'alien span' );
+	assert.false( ve.dm.modelRegistry.isAnnotation( node ), 'alien span' );
 	node.removeAttribute( 'rel' );
-	assert.strictEqual( ve.dm.modelRegistry.isAnnotation( node ), true, 'non-alien span' );
+	assert.true( ve.dm.modelRegistry.isAnnotation( node ), 'non-alien span' );
 } );

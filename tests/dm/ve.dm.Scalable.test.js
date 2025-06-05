@@ -63,7 +63,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', ( asser
 	eventEmitted = false;
 	scalable.clearDefaultDimensions();
 	scalable.off( 'defaultSizeChange' );
-	assert.strictEqual( eventEmitted, false, 'clearDefaultDimensions doesn\'t re-run' );
+	assert.false( eventEmitted, 'clearDefaultDimensions doesn\'t re-run' );
 
 	scalable.clearOriginalDimensions();
 	assert.strictEqual( scalable.getOriginalDimensions(), null, 'clearOriginalDimensions' );
@@ -74,7 +74,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', ( asser
 	eventEmitted = false;
 	scalable.clearOriginalDimensions();
 	scalable.off( 'originalSizeChange' );
-	assert.strictEqual( eventEmitted, false, 'clearOriginalDimensions doesn\'t re-run' );
+	assert.false( eventEmitted, 'clearOriginalDimensions doesn\'t re-run' );
 
 	scalable.clearMinDimensions();
 	assert.strictEqual( scalable.getMinDimensions(), null, 'clearMinDimensions' );
@@ -85,7 +85,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', ( asser
 	eventEmitted = false;
 	scalable.clearMinDimensions();
 	scalable.off( 'minSizeChange' );
-	assert.strictEqual( eventEmitted, false, 'clearMinDimensions doesn\'t re-run' );
+	assert.false( eventEmitted, 'clearMinDimensions doesn\'t re-run' );
 
 	scalable.clearMaxDimensions();
 	assert.strictEqual( scalable.getMaxDimensions(), null, 'clearMaxDimensions' );
@@ -96,7 +96,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', ( asser
 	eventEmitted = false;
 	scalable.clearMaxDimensions();
 	scalable.off( 'maxSizeChange' );
-	assert.strictEqual( eventEmitted, false, 'clearMaxDimensions doesn\'t re-run' );
+	assert.false( eventEmitted, 'clearMaxDimensions doesn\'t re-run' );
 
 	assert.deepEqual( scalable.getBoundedDimensions( { width: 448, height: 317 }, 10 ), { width: 450, height: 300 }, 'getBoundedDimensions without bounds snapped to 10px grid' );
 
@@ -173,21 +173,21 @@ QUnit.test( 'getBoundedDimensions/getCurrentScale/isCurrentDimensionsValid/isToo
 
 	scalable.fixedRatio = true;
 
-	assert.strictEqual( scalable.isCurrentDimensionsValid(), true, '300x200 are valid dimensions' );
+	assert.true( scalable.isCurrentDimensionsValid(), '300x200 are valid dimensions' );
 	assert.strictEqual( scalable.getCurrentScale(), 0.5, '300x200 is scale of 0.5' );
 
 	scalable.setCurrentDimensions( { width: 1200, height: 800 } );
 	assert.strictEqual( scalable.getCurrentScale(), 2, '1200x800 is scale of 2' );
 
 	scalable.setCurrentDimensions( { width: 1300, height: 810 } );
-	assert.strictEqual( scalable.isCurrentDimensionsValid(), false, 'Too large dimensions are not valid' );
-	assert.strictEqual( scalable.isTooSmall(), false, 'Too large dimensions are not too small' );
-	assert.strictEqual( scalable.isTooLarge(), true, 'Too large dimensions are too large' );
+	assert.false( scalable.isCurrentDimensionsValid(), 'Too large dimensions are not valid' );
+	assert.false( scalable.isTooSmall(), 'Too large dimensions are not too small' );
+	assert.true( scalable.isTooLarge(), 'Too large dimensions are too large' );
 
 	scalable.setCurrentDimensions( { width: 30, height: 20 } );
-	assert.strictEqual( scalable.isCurrentDimensionsValid(), false, 'Too small dimensions are not valid' );
-	assert.strictEqual( scalable.isTooSmall(), true, 'Too large dimensions are too small' );
-	assert.strictEqual( scalable.isTooLarge(), false, 'Too large dimensions are not too large' );
+	assert.false( scalable.isCurrentDimensionsValid(), 'Too small dimensions are not valid' );
+	assert.true( scalable.isTooSmall(), 'Too large dimensions are too small' );
+	assert.false( scalable.isTooLarge(), 'Too large dimensions are not too large' );
 
 } );
 
@@ -199,11 +199,11 @@ QUnit.test( 'isDefault/toggleDefault', ( assert ) => {
 
 	assert.deepEqual( scalable, clone, 'Clone is deepEqual even when config is sparse' );
 
-	assert.strictEqual( scalable.isDefault(), true, 'isDefault' );
+	assert.true( scalable.isDefault(), 'isDefault' );
 	scalable.toggleDefault();
-	assert.strictEqual( scalable.isDefault(), false, 'toggleDefault changes true to false' );
+	assert.false( scalable.isDefault(), 'toggleDefault changes true to false' );
 	scalable.toggleDefault();
-	assert.strictEqual( scalable.isDefault(), true, 'toggleDefault changes false to true' );
+	assert.true( scalable.isDefault(), 'toggleDefault changes false to true' );
 } );
 
 QUnit.test( 'isDimensionsObjectValid', ( assert ) => {

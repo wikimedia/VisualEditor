@@ -1864,35 +1864,35 @@ QUnit.test( 'isNoOp', ( assert ) => {
 		let tx = ve.dm.TransactionBuilder.static.newFromReplacement(
 			d, new ve.Range( 1 ), [], false
 		);
-		assert.strictEqual( tx.isNoOp(), true );
+		assert.true( tx.isNoOp() );
 
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion(
 			d, 1, []
 		);
-		assert.strictEqual( tx.isNoOp(), true );
+		assert.true( tx.isNoOp() );
 
 		tx = ve.dm.TransactionBuilder.static.newFromRemoval(
 			d, new ve.Range( 1 ), false
 		);
-		assert.strictEqual( tx.isNoOp(), true );
+		assert.true( tx.isNoOp() );
 
 		if ( !isListMetaDoc ) {
 			tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion(
 				d, 1,
 				ve.dm.example.createExampleDocument(), new ve.Range( 0 )
 			);
-			assert.strictEqual( tx.isNoOp(), true );
+			assert.true( tx.isNoOp() );
 		}
 
 		tx = ve.dm.TransactionBuilder.static.newFromAttributeChanges(
 			d, isListMetaDoc ? 5 : 0, {}
 		);
-		assert.strictEqual( tx.isNoOp(), true );
+		assert.true( tx.isNoOp() );
 
 		tx = ve.dm.TransactionBuilder.static.newFromAnnotation(
 			d, new ve.Range( 1 ), 'set', new ve.dm.ItalicAnnotation()
 		);
-		assert.strictEqual( tx.isNoOp(), true );
+		assert.true( tx.isNoOp() );
 	} );
 } );
 

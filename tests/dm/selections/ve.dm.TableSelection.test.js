@@ -123,22 +123,22 @@ QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingle
 	assert.deepEqual( selection.collapseToEnd(), endSelection, 'collapseToEnd' );
 	assert.deepEqual( selection.collapseToFrom(), endSelection, 'collapseToFrom' );
 	assert.deepEqual( selection.collapseToTo(), startSelection, 'collapseToTo' );
-	assert.strictEqual( selection.isCollapsed(), false, 'multi cell is not collapsed' );
-	assert.strictEqual( startSelection.isCollapsed(), false, 'single cell is not collapsed' );
-	assert.strictEqual( selection.isSingleCell( doc ), false, 'multi cell selection is not a single cell' );
-	assert.strictEqual( startSelection.isSingleCell( doc ), true, 'single cell selection is a single cell' );
-	assert.strictEqual( mergedSingleCell.isSingleCell( doc ), true, 'merged single cell selection is a single cell' );
-	assert.strictEqual( selection.equals( selection ), true, 'equals' );
-	assert.strictEqual( selection.isNull(), false, 'not null' );
+	assert.false( selection.isCollapsed(), 'multi cell is not collapsed' );
+	assert.false( startSelection.isCollapsed(), 'single cell is not collapsed' );
+	assert.false( selection.isSingleCell( doc ), 'multi cell selection is not a single cell' );
+	assert.true( startSelection.isSingleCell( doc ), 'single cell selection is a single cell' );
+	assert.true( mergedSingleCell.isSingleCell( doc ), 'merged single cell selection is a single cell' );
+	assert.true( selection.equals( selection ), 'equals' );
+	assert.false( selection.isNull(), 'not null' );
 	assert.strictEqual( largeSelection.getColCount(), 4, 'getColCount' );
 	assert.strictEqual( largeSelection.getRowCount(), 7, 'getRowCount' );
-	assert.strictEqual( largeSelection.isFullCol( doc ), true, 'isFullCol' );
-	assert.strictEqual( largeSelection.isFullRow( doc ), false, 'isFullRow' );
+	assert.true( largeSelection.isFullCol( doc ), 'isFullCol' );
+	assert.false( largeSelection.isFullRow( doc ), 'isFullRow' );
 
 	const matrixCell = startSelection.getMatrixCells( doc )[ 0 ];
-	assert.strictEqual( largeSelection.containsCell( matrixCell ), true, '[1,3;3,5] contains [0,1]' );
-	assert.strictEqual( endSelection.containsCell( matrixCell ), false, '[2,2] doesn\'t contain [0,1]' );
-	assert.strictEqual( otherTableSelection.containsCell( matrixCell ), false, 'Selection in other table doesn\'t contain cell' );
+	assert.true( largeSelection.containsCell( matrixCell ), '[1,3;3,5] contains [0,1]' );
+	assert.false( endSelection.containsCell( matrixCell ), '[2,2] doesn\'t contain [0,1]' );
+	assert.false( otherTableSelection.containsCell( matrixCell ), 'Selection in other table doesn\'t contain cell' );
 } );
 
 QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', ( assert ) => {

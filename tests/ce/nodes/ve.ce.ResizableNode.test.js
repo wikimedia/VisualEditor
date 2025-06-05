@@ -74,8 +74,8 @@ QUnit.test( 'resize events', ( assert ) => {
 		},
 		'resizeInfo calculated'
 	);
-	assert.strictEqual( resizableNode.resizing, true, 'node is resizing' );
-	assert.strictEqual( resizableNode.root.getSurface().resizing, true, 'surface is resizing' );
+	assert.true( resizableNode.resizing, 'node is resizing' );
+	assert.true( resizableNode.root.getSurface().resizing, 'surface is resizing' );
 
 	resizableNode.onDocumentMouseMove( ve.extendObject( mockEvent, {
 		screenX: 100, // +20
@@ -93,8 +93,8 @@ QUnit.test( 'resize events', ( assert ) => {
 		shiftKey: false
 	} ) );
 
-	assert.strictEqual( resizableNode.resizing, false, 'node is no longer resizing' );
-	assert.strictEqual( resizableNode.root.getSurface().resizing, false, 'surface is no longer resizing' );
+	assert.false( resizableNode.resizing, 'node is no longer resizing' );
+	assert.false( resizableNode.root.getSurface().resizing, 'surface is no longer resizing' );
 
 	assert.deepEqual(
 		resizableNode.getModel().getCurrentDimensions(),
@@ -117,7 +117,7 @@ QUnit.test( 'notResizable', ( assert ) => {
 		return true;
 	};
 
-	assert.strictEqual( resizableNode.isResizable(), false, 'Not resizable' );
+	assert.false( resizableNode.isResizable(), 'Not resizable' );
 
 	resizableNode.updateSizeLabel();
 
@@ -128,7 +128,7 @@ QUnit.test( 'notResizable', ( assert ) => {
 	);
 
 	resizableNode.hideSizeLabel();
-	assert.strictEqual( resizableNode.$sizeLabel.hasClass( 'oo-ui-element-hidden' ), false, 'Hiding size label doesn\'t apply hidden class' );
+	assert.false( resizableNode.$sizeLabel.hasClass( 'oo-ui-element-hidden' ), 'Hiding size label doesn\'t apply hidden class' );
 
 	resizableNode.showHandles( [ 'nw' ] );
 	assert.strictEqual( resizableNode.$resizeHandles[ 0 ].className, 've-ce-resizableNode-handles', 'No resize handles hidden' );

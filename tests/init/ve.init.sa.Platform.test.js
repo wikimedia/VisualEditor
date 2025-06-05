@@ -50,12 +50,11 @@ QUnit.test( 'getUserConfig', ( assert ) => {
 QUnit.test( 'setUserConfig', ( assert ) => {
 	const platform = new ve.init.sa.Platform();
 
-	assert.strictEqual( platform.setUserConfig( 'test-1', 'one' ), true, 'set key' );
+	assert.true( platform.setUserConfig( 'test-1', 'one' ), 'set key' );
 	assert.strictEqual( platform.getUserConfig( 'test-1' ), 'one', 'value persists' );
 
-	assert.strictEqual(
+	assert.true(
 		platform.setUserConfig( { 'test-1': 'one more', 'test-2': 'two' } ),
-		true,
 		'set multiple keys'
 	);
 	assert.propEqual(

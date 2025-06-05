@@ -542,7 +542,7 @@ QUnit.test( 'getSelectionState', ( assert ) => {
 		for ( let i = 0, l = internalListNode.getOuterRange().start; i < l; i++ ) {
 			const node = view.getDocument().getDocumentNode().getNodeFromOffset( i );
 			if ( caseItem.expected[ i ] === null ) {
-				assert.strictEqual( node.isFocusable(), true, 'Focusable node at ' + i );
+				assert.true( node.isFocusable(), 'Focusable node at ' + i );
 			} else {
 				const selection = view.getSelectionState( new ve.Range( i ) );
 				if ( caseItem.expected[ i ] === false ) {

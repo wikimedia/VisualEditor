@@ -33,12 +33,12 @@ ve.dm.nodeFactory.register( ve.dm.BranchNodeStub );
 
 QUnit.test( 'canHaveChildren', ( assert ) => {
 	const node = new ve.dm.BranchNodeStub();
-	assert.strictEqual( node.canHaveChildren(), true );
+	assert.true( node.canHaveChildren() );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', ( assert ) => {
 	const node = new ve.dm.BranchNodeStub();
-	assert.strictEqual( node.canHaveChildrenNotContent(), true );
+	assert.true( node.canHaveChildrenNotContent() );
 } );
 
 QUnit.test( 'setRoot', ( assert ) => {

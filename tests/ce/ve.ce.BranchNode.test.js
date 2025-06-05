@@ -33,19 +33,19 @@ ve.ce.nodeFactory.register( ve.ce.BranchNodeStub );
 QUnit.test( 'splitOnEnter', ( assert ) => {
 	const node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
-	assert.strictEqual( node.splitOnEnter(), true );
+	assert.true( node.splitOnEnter() );
 } );
 
 QUnit.test( 'canHaveChildren', ( assert ) => {
 	const node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
-	assert.strictEqual( node.canHaveChildren(), true );
+	assert.true( node.canHaveChildren() );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', ( assert ) => {
 	const node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
-	assert.strictEqual( node.canHaveChildrenNotContent(), true );
+	assert.true( node.canHaveChildrenNotContent() );
 } );
 
 QUnit.test( 'updateTagName', ( assert ) => {
@@ -63,8 +63,8 @@ QUnit.test( 'updateTagName', ( assert ) => {
 	node.updateTagName();
 
 	assert.strictEqual( node.$element.get( 0 ).nodeName.toLowerCase(), 'b', 'DOM element type gets converted' );
-	assert.strictEqual( node.$element.hasClass( 've-ce-branchNode' ), true, 'old classes are added to new wrapper' );
-	assert.strictEqual( !!node.$element.data( 'view' ), true, 'data added to new wrapper' );
+	assert.true( node.$element.hasClass( 've-ce-branchNode' ), 'old classes are added to new wrapper' );
+	assert.true( !!node.$element.data( 'view' ), 'data added to new wrapper' );
 	assert.strictEqual( node.$element.text(), 'hello', 'contents are added to new wrapper' );
 } );
 
@@ -127,12 +127,12 @@ QUnit.test( 'onSplice', ( assert ) => {
 	modelA.splice( 0, 1 );
 	assert.strictEqual( viewA.getChildren().length, 1 );
 	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelC, 'Only view child matches model tree' );
-	assert.strictEqual( !viewB.getModel(), true, 'Removed view node was destroyed' );
+	assert.true( !viewB.getModel(), 'Removed view node was destroyed' );
 
 	// Removal and insertion tests
 	modelA.splice( 0, 1, modelB );
 
 	assert.strictEqual( viewA.getChildren().length, 1 );
 	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelB, 'Replaced view child matches model tree' );
-	assert.strictEqual( !viewC.getModel(), true, 'Replaced view node was destroyed' );
+	assert.true( !viewC.getModel(), 'Replaced view node was destroyed' );
 } );
