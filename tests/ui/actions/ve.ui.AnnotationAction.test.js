@@ -20,9 +20,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				args: [ 'textStyle/bold' ],
 				expectedData: ( data ) => {
 					data.splice( 1, 3,
-						[ 'F', [ newBold ] ],
-						[ 'o', [ newBold ] ],
-						[ 'o', [ newBold ] ]
+						...ve.dm.example.annotateText( 'Foo', newBold )
 					);
 				},
 				msg: 'toggle bold on plain text'
@@ -54,15 +52,10 @@ QUnit.test( 'toggle', ( assert ) => {
 				args: [ 'textStyle/bold' ],
 				expectedData: ( data ) => {
 					data.splice( 1, 3,
-						[ 'F', [ newBold ] ],
-						[ 'o', [ newBold ] ],
-						[ 'o', [ newBold ] ]
+						...ve.dm.example.annotateText( 'Foo', newBold )
 					);
 					data.splice( 10, 4,
-						[ 'q', [ ve.dm.example.italic, newBold ] ],
-						[ 'u', [ ve.dm.example.italic, newBold ] ],
-						[ 'u', [ ve.dm.example.italic, newBold ] ],
-						[ 'x', [ ve.dm.example.italic, newBold ] ]
+						...ve.dm.example.annotateText( 'quux', [ ve.dm.example.italic, newBold ] )
 					);
 				},
 				msg: 'toggle bold on plain, bold, strong then underlined text'
@@ -74,11 +67,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				args: [ 'textStyle/bold' ],
 				expectedData: ( data ) => {
 					data.splice( 15, 5,
-						[ 'w', [ newBold ] ],
-						[ 'h', [ newBold ] ],
-						[ 'i', [ newBold ] ],
-						[ 't', [ newBold ] ],
-						[ 'e', [ newBold ] ]
+						...ve.dm.example.annotateText( 'white', newBold )
 					);
 				},
 				msg: 'trailing whitespace is not annotated'
@@ -188,9 +177,7 @@ QUnit.test( 'set and clear', ( assert ) => {
 				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
 					data.splice( 5, 3,
-						[ 'b', [ ve.dm.example.italic, newBold ] ],
-						[ 'a', [ ve.dm.example.italic, newBold ] ],
-						[ 'r', [ ve.dm.example.italic, newBold ] ]
+						...ve.dm.example.annotateText( 'bar', [ ve.dm.example.italic, newBold ] )
 					);
 				},
 				msg: 'Set bold'
@@ -212,10 +199,7 @@ QUnit.test( 'set and clear', ( assert ) => {
 				args: [ 'textStyle/italic' ],
 				expectedData: function ( data ) {
 					data.splice( 8, 4,
-						[ ' ', [ newItalic ] ],
-						[ 'b', [ newItalic ] ],
-						[ 'a', [ newItalic ] ],
-						[ 'z', [ newItalic ] ]
+						...ve.dm.example.annotateText( ' baz', newItalic )
 					);
 				},
 				msg: 'Set italics'
@@ -227,9 +211,7 @@ QUnit.test( 'set and clear', ( assert ) => {
 				args: [ 'textStyle/big' ],
 				expectedData: function ( data ) {
 					data.splice( 5, 3,
-						[ 'b', [ newBig ] ],
-						[ 'a', [ newBig ] ],
-						[ 'r', [ newBig ] ]
+						...ve.dm.example.annotateText( 'bar', newBig )
 					);
 				},
 				msg: 'Adding big removes small'

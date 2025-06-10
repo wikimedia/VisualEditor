@@ -21,29 +21,25 @@ QUnit.test( 'getAnnotatedHtml', ( assert ) => {
 		{
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/bold' } ] ],
-				[ 'b', [ { type: 'textStyle/bold' } ] ],
-				[ 'c', [ { type: 'textStyle/bold' } ] ],
+				...ve.dm.example.annotateText( 'abc', ve.dm.example.bold ),
 				{ type: '/paragraph' }
 			],
 			html: [
-				[ 'a', [ { type: 'textStyle/bold' } ] ],
-				[ 'b', [ { type: 'textStyle/bold' } ] ],
-				[ 'c', [ { type: 'textStyle/bold' } ] ]
+				...ve.dm.example.annotateText( 'abc', ve.dm.example.bold )
 			]
 		},
 		{
 			data: [
 				{ type: 'paragraph' },
-				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'a', [ ve.dm.example.bold ] ],
 				'b',
-				[ 'c', [ { type: 'textStyle/italic' } ] ],
+				[ 'c', [ ve.dm.example.italic ] ],
 				{ type: '/paragraph' }
 			],
 			html: [
-				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'a', [ ve.dm.example.bold ] ],
 				'b',
-				[ 'c', [ { type: 'textStyle/italic' } ] ]
+				[ 'c', [ ve.dm.example.italic ] ]
 			]
 		},
 		{

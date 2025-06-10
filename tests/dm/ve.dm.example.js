@@ -130,6 +130,13 @@ ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 	return new ve.dm.AnnotationSet( store, store.hashAll( annotations ) );
 };
 
+/**
+ * Apply annotation(s) to a text string
+ *
+ * @param {string} text Text to annotate
+ * @param {Object|Object[]} annotationOrAnnotations Annotation data
+ * @return {Array} Annotated linear data
+ */
 ve.dm.example.annotateText = function ( text, annotationOrAnnotations ) {
 	if ( !Array.isArray( annotationOrAnnotations ) ) {
 		annotationOrAnnotations = [ annotationOrAnnotations ];

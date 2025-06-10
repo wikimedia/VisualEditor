@@ -81,9 +81,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: ( data ) => {
 					data.splice(
 						1, 3,
-						[ 'F', [ fooHash ] ],
-						[ 'o', [ fooHash ] ],
-						[ 'o', [ fooHash ] ]
+						...ve.dm.example.annotateText( 'Foo', fooHash )
 					);
 				}
 			},
@@ -125,8 +123,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: ( data ) => {
 					data.splice(
 						8, 2,
-						[ ' ', [ barHash ] ],
-						[ 'b', [ barHash ] ]
+						...ve.dm.example.annotateText( ' b', barHash )
 					);
 				}
 			},
@@ -138,8 +135,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: ( data ) => {
 					data.splice(
 						29, 2,
-						[ 'F', [ barHash ] ],
-						[ 'o', [ barHash ] ]
+						...ve.dm.example.annotateText( 'Fo', barHash )
 					);
 				}
 			},
@@ -160,10 +156,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: ( data ) => {
 					data.splice(
 						13, 0,
-						[ 'q', [ quuxHash ] ],
-						[ 'u', [ quuxHash ] ],
-						[ 'u', [ quuxHash ] ],
-						[ 'x', [ quuxHash ] ]
+						...ve.dm.example.annotateText( 'quux', quuxHash )
 					);
 				}
 			},
@@ -185,9 +178,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: ( data ) => {
 					data.splice(
 						5, 3,
-						[ 'b', [ quuxHash ] ],
-						[ 'a', [ quuxHash ] ],
-						[ 'r', [ quuxHash ] ]
+						...ve.dm.example.annotateText( 'bar', quuxHash )
 					);
 				}
 			},
@@ -229,9 +220,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: function ( data ) {
 					data.splice(
 						5, 3,
-						[ 'b', [ barHash ] ],
-						[ 'a', [ barHash ] ],
-						[ 't', [ barHash ] ]
+						...ve.dm.example.annotateText( 'bat', barHash )
 					);
 				}
 			},
@@ -248,9 +237,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: function ( data ) {
 					data.splice(
 						5, 3,
-						[ 'b', [ quuxHash ] ],
-						[ 'a', [ quuxHash ] ],
-						[ 't', [ quuxHash ] ]
+						...ve.dm.example.annotateText( 'bat', quuxHash )
 					);
 				}
 			},
@@ -266,9 +253,7 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				expectedData: function ( data ) {
 					data.splice(
 						31, 5,
-						[ 'b', [ barHash ] ],
-						[ 'a', [ barHash ] ],
-						[ 'r', [ barHash ] ]
+						...ve.dm.example.annotateText( 'bar', barHash )
 					);
 				}
 			},

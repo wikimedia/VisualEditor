@@ -50,14 +50,8 @@ QUnit.test( 'contextChange events', ( assert ) => {
 	const surface = new ve.dm.SurfaceStub( ve.dm.example.preprocessAnnotations( [
 		{ type: 'paragraph' },
 		...'Foo',
-		// Bold "bar"
-		[ 'b', [ ve.dm.example.bold ] ],
-		[ 'a', [ ve.dm.example.bold ] ],
-		[ 'r', [ ve.dm.example.bold ] ],
-		// Italic "baz"
-		[ 'b', [ ve.dm.example.italic ] ],
-		[ 'a', [ ve.dm.example.italic ] ],
-		[ 'z', [ ve.dm.example.italic ] ],
+		...ve.dm.example.annotateText( 'bar', ve.dm.example.bold ),
+		...ve.dm.example.annotateText( 'baz', ve.dm.example.italic ),
 		...'Foo',
 		{ type: '/paragraph' },
 		{ type: 'list', attributes: { style: 'bullet' } },

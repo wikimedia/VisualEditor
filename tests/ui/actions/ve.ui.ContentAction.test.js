@@ -29,9 +29,7 @@ QUnit.test( 'insert/remove/select/selectAll', ( assert ) => {
 			args: [ 'Foo', true ],
 			expectedData: ( data ) => {
 				data.splice( 3, 1,
-					[ 'F', [ ve.dm.example.italic ] ],
-					[ 'o', [ ve.dm.example.italic ] ],
-					[ 'o', [ ve.dm.example.italic ] ]
+					...ve.dm.example.annotateText( 'Foo', ve.dm.example.italic )
 				);
 			},
 			expectedRangeOrSelection: new ve.Range( 3, 6 ),

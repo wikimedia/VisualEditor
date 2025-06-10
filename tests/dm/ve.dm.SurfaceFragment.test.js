@@ -171,12 +171,8 @@ QUnit.test( 'expandLinearSelection (annotation)', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'paragraph' },
 			...'Foo',
-			[ 'b', [ ve.dm.example.bold ] ],
-			[ 'a', [ ve.dm.example.bold ] ],
-			[ 'r', [ ve.dm.example.bold ] ],
-			[ 'b', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ 'a', [ ve.dm.example.bold, ve.dm.example.italic ] ],
-			[ 'z', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			...ve.dm.example.annotateText( 'bar', ve.dm.example.bold ),
+			...ve.dm.example.annotateText( 'baz', [ ve.dm.example.bold, ve.dm.example.italic ] ),
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -652,9 +648,7 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 
 	doc = ve.dm.example.createExampleDocumentFromData( [
 		{ type: 'paragraph' },
-		[ 'F', [ ve.dm.example.bold ] ],
-		[ 'o', [ ve.dm.example.bold ] ],
-		[ 'o', [ ve.dm.example.bold ] ],
+		...ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
 		{ type: '/paragraph' },
 		{ type: 'internalList' },
 		{ type: '/internalList' }
@@ -678,9 +672,7 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 
 	doc = ve.dm.example.createExampleDocumentFromData( [
 		{ type: 'paragraph' },
-		[ 'F', [ ve.dm.example.bold ] ],
-		[ 'o', [ ve.dm.example.bold ] ],
-		[ 'o', [ ve.dm.example.bold ] ],
+		...ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
 		{ type: '/paragraph' },
 		{ type: 'internalList' },
 		{ type: '/internalList' }

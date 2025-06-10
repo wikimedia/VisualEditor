@@ -38,117 +38,36 @@ QUnit.test( 'paste', ( assert ) => {
 			msg: 'Simple external link',
 			pasteString: 'http://example.com',
 			pasteType: 'text/plain',
-			expectedData: ( makeAnnotation ) => {
-				const a = makeAnnotation( 'http://example.com' );
-				return [
-					[ 'h', [ a ] ],
-					[ 't', [ a ] ],
-					[ 't', [ a ] ],
-					[ 'p', [ a ] ],
-					[ ':', [ a ] ],
-					[ '/', [ a ] ],
-					[ '/', [ a ] ],
-					[ 'e', [ a ] ],
-					[ 'x', [ a ] ],
-					[ 'a', [ a ] ],
-					[ 'm', [ a ] ],
-					[ 'p', [ a ] ],
-					[ 'l', [ a ] ],
-					[ 'e', [ a ] ],
-					[ '.', [ a ] ],
-					[ 'c', [ a ] ],
-					[ 'o', [ a ] ],
-					[ 'm', [ a ] ]
-				];
-			}
+			expectedData: ( makeAnnotation ) => ve.dm.example.annotateText( 'http://example.com', makeAnnotation( 'http://example.com' ) )
 		},
 		{
 			msg: 'DnD standard URI list without HTML',
 			pasteString: '#comment\nhttp://example.com\n',
 			pasteType: 'text/uri-list',
-			expectedData: ( makeAnnotation ) => {
-				const a = makeAnnotation( 'http://example.com' );
-				return [
-					[ 'h', [ a ] ],
-					[ 't', [ a ] ],
-					[ 't', [ a ] ],
-					[ 'p', [ a ] ],
-					[ ':', [ a ] ],
-					[ '/', [ a ] ],
-					[ '/', [ a ] ],
-					[ 'e', [ a ] ],
-					[ 'x', [ a ] ],
-					[ 'a', [ a ] ],
-					[ 'm', [ a ] ],
-					[ 'p', [ a ] ],
-					[ 'l', [ a ] ],
-					[ 'e', [ a ] ],
-					[ '.', [ a ] ],
-					[ 'c', [ a ] ],
-					[ 'o', [ a ] ],
-					[ 'm', [ a ] ]
-				];
-			}
+			expectedData: ( makeAnnotation ) => ve.dm.example.annotateText( 'http://example.com', makeAnnotation( 'http://example.com' ) )
 		},
 		{
 			msg: 'DnD standard URI list with HTML',
 			pasteString: '#comment\nhttp://example.com\n',
 			pasteType: 'text/uri-list',
 			pasteHtml: '<a href="http://example.com/foo">Foo</a>',
-			expectedData: ( makeAnnotation ) => {
-				const a = makeAnnotation( 'http://example.com/foo' );
-				return [
-					[ 'F', [ a ] ],
-					[ 'o', [ a ] ],
-					[ 'o', [ a ] ]
-				];
-			}
+			expectedData: ( makeAnnotation ) => ve.dm.example.annotateText( 'Foo', makeAnnotation( 'http://example.com/foo' ) )
 		},
 		{
 			msg: 'Mozilla URI list',
 			pasteString: 'http://example.com\n[[Foo]]\nhttp://example.org\nBar',
 			pasteType: 'text/x-moz-url',
-			expectedData: ( makeAnnotation ) => {
-				const a1 = makeAnnotation( 'http://example.com' ),
-					a2 = makeAnnotation( 'http://example.org' );
-				return [
-					[ '[', [ a1 ] ],
-					[ '[', [ a1 ] ],
-					[ 'F', [ a1 ] ],
-					[ 'o', [ a1 ] ],
-					[ 'o', [ a1 ] ],
-					[ ']', [ a1 ] ],
-					[ ']', [ a1 ] ],
-					' ',
-					[ 'B', [ a2 ] ],
-					[ 'a', [ a2 ] ],
-					[ 'r', [ a2 ] ]
-				];
-			}
+			expectedData: ( makeAnnotation ) => [
+				...ve.dm.example.annotateText( '[[Foo]]', makeAnnotation( 'http://example.com' ) ),
+				' ',
+				...ve.dm.example.annotateText( 'Bar', makeAnnotation( 'http://example.org' ) )
+			]
 		},
 		{
 			msg: 'Microsoft Edge, format used when copying from the address bar',
 			pasteString: '{"description":"","domain":"example.com","filtered_terms":["exampl","exampl","domain"],"image_url":"","keywords":"","preferred_format":"text/html;content=titled-hyperlink","title":"Example Domain","type":"website","url":"https://example.com/"}',
 			pasteType: 'text/link-preview',
-			expectedData: ( makeAnnotation ) => {
-				const a = makeAnnotation( 'https://example.com/' );
-				return [
-					[ 'E', [ a ] ],
-					[ 'x', [ a ] ],
-					[ 'a', [ a ] ],
-					[ 'm', [ a ] ],
-					[ 'p', [ a ] ],
-					[ 'l', [ a ] ],
-					[ 'e', [ a ] ],
-					[ ' ', [ a ] ],
-					[ 'D', [ a ] ],
-					[ 'o', [ a ] ],
-					[ 'm', [ a ] ],
-					[ 'a', [ a ] ],
-					[ 'i', [ a ] ],
-					[ 'n', [ a ] ]
-				];
-			}
+			expectedData: ( makeAnnotation ) => ve.dm.example.annotateText( 'Example Domain', makeAnnotation( 'https://example.com/' ) )
 		}
 	];
 
