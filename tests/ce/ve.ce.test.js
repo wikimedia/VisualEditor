@@ -367,7 +367,7 @@ QUnit.test( 'fakeImes', ( assert ) => {
 					args[ 1 ].isDefaultPrevented = fakeIsPreventDefault;
 				}
 				try {
-					testRunner[ action ].apply( testRunner, args );
+					testRunner[ action ]( ...args );
 				} catch ( ex ) {
 					died = ex;
 				}

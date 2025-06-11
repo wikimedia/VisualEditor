@@ -551,10 +551,10 @@ QUnit.test( 'commit', ( assert ) => {
 			}
 			// Special case static methods of TransactionBuilder
 			if ( /^new/.test( caseItem.calls[ i ][ 0 ] ) ) {
-				tx = ve.dm.TransactionBuilder.static[ caseItem.calls[ i ][ 0 ] ].apply( null, caseItem.calls[ i ].slice( 1 ) );
+				tx = ve.dm.TransactionBuilder.static[ caseItem.calls[ i ][ 0 ] ]( ...caseItem.calls[ i ].slice( 1 ) );
 				break;
 			}
-			txBuilder[ caseItem.calls[ i ][ 0 ] ].apply( txBuilder, caseItem.calls[ i ].slice( 1 ) );
+			txBuilder[ caseItem.calls[ i ][ 0 ] ]( ...caseItem.calls[ i ].slice( 1 ) );
 		}
 		if ( tx === null ) {
 			tx = txBuilder.getTransaction();

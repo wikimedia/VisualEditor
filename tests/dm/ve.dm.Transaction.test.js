@@ -216,7 +216,7 @@ QUnit.test( 'getModifiedRange', ( assert ) => {
 	cases.forEach( ( caseItem ) => {
 		const txBuilder = new ve.dm.TransactionBuilder();
 		for ( let j = 0; j < caseItem.calls.length; j++ ) {
-			txBuilder[ caseItem.calls[ j ][ 0 ] ].apply( txBuilder, caseItem.calls[ j ].slice( 1 ) );
+			txBuilder[ caseItem.calls[ j ][ 0 ] ]( ...caseItem.calls[ j ].slice( 1 ) );
 		}
 		assert.equalRange( txBuilder.getTransaction().getModifiedRange( doc ), caseItem.range, caseItem.msg );
 	} );

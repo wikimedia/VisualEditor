@@ -12,7 +12,7 @@ ve.test.utils.runTransactionBuilderTests = function ( assert, cases ) {
 	for ( const msg in cases ) {
 		const txBuilder = new ve.dm.TransactionBuilder();
 		for ( let i = 0; i < cases[ msg ].calls.length; i++ ) {
-			txBuilder[ cases[ msg ].calls[ i ][ 0 ] ].apply( txBuilder, cases[ msg ].calls[ i ].slice( 1 ) );
+			txBuilder[ cases[ msg ].calls[ i ][ 0 ] ]( ...cases[ msg ].calls[ i ].slice( 1 ) );
 		}
 		assert.deepEqualWithDomElements( txBuilder.getTransaction().getOperations(), cases[ msg ].ops, msg + ': operations match' );
 	}
@@ -23,7 +23,7 @@ ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, c
 		const doc = cases[ msg ].args[ 0 ];
 		const args = cases[ msg ].args;
 		if ( cases[ msg ].ops ) {
-			const tx = constructor.apply( null, args );
+			const tx = constructor( ...args );
 			assert.equalLinearDataWithDom( doc.getStore(), tx.getOperations(), cases[ msg ].ops, msg + ': operations match' );
 			if ( testRange ) {
 				assert.equalRange(
@@ -34,7 +34,7 @@ ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, c
 			}
 		} else if ( cases[ msg ].exception ) {
 			assert.throws( () => {
-				constructor.apply( ve.dm.Transaction, args );
+				constructor( ...args );
 			}, cases[ msg ].exception, msg + ': throw exception' );
 		}
 	}
@@ -1967,11 +1967,11 @@ QUnit.test( 'operations/build from operations', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		let tx = TBstatic[ caseItem.method ].apply( TBstatic, caseItem.args );
+		let tx = TBstatic[ caseItem.method ]( ...caseItem.args );
 		const ops = ve.copy( tx.operations );
 		assert.deepEqual( ops, caseItem.expected, caseItem.msg + ': operations' );
 		if ( caseItem.roundTripArgs ) {
-			tx = TBstatic[ caseItem.method ].apply( TBstatic, caseItem.roundTripArgs );
+			tx = TBstatic[ caseItem.method ]( ...caseItem.roundTripArgs );
 		}
 		assert.deepEqual( new ve.dm.Transaction( ops ), tx, caseItem.msg + ': build from operations' );
 	} );

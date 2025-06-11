@@ -419,7 +419,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 		}
 		for ( let i = 0; i < data.length; i++ ) {
 			const method = data[ i ].shift();
-			builder[ method ].apply( builder, data[ i ] );
+			builder[ method ]( ...data[ i ] );
 		}
 		return builder.getTransaction();
 	}
