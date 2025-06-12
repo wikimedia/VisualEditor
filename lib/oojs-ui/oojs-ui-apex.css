@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.51.7
+ * OOUI v0.52.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-03-11T00:03:34Z
+ * Date: 2025-06-12T12:46:39Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -669,6 +669,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   top: 0;
   height: 100%;
 }
+.oo-ui-decoratedOptionWidget .oo-ui-buttonWidget .oo-ui-iconElement-icon,
+.oo-ui-decoratedOptionWidget .oo-ui-buttonWidget .oo-ui-indicatorElement-indicator {
+  position: static;
+}
 .oo-ui-decoratedOptionWidget .oo-ui-iconElement-icon {
   left: 0.5em;
   margin: 0;
@@ -1107,25 +1111,38 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   width: 100%;
   max-width: 50em;
 }
-.oo-ui-dropdownInputWidget .oo-ui-dropdownWidget,
-.oo-ui-dropdownInputWidget.oo-ui-dropdownInputWidget-php select,
-.oo-ui-dropdownInputWidget.oo-ui-isMobile select {
+.oo-ui-dropdownInputWidget .oo-ui-dropdownWidget {
   display: block;
 }
-.oo-ui-dropdownInputWidget.oo-ui-isMobile .oo-ui-dropdownWidget {
+.oo-ui-dropdownInputWidget select,
+.oo-ui-dropdownInputWidget > .oo-ui-indicatorWidget {
   display: none;
 }
-.oo-ui-dropdownInputWidget select {
+.oo-ui-dropdownInputWidget.oo-ui-isMobile .oo-ui-dropdownWidget,
+.oo-ui-dropdownInputWidget.oo-ui-dropdownInputWidget-php .oo-ui-dropdownWidget {
   display: none;
-  background-position: -9999em 0;
-  background-repeat: no-repeat;
+}
+.oo-ui-dropdownInputWidget.oo-ui-isMobile select,
+.oo-ui-dropdownInputWidget.oo-ui-dropdownInputWidget-php select,
+.oo-ui-dropdownInputWidget.oo-ui-isMobile > .oo-ui-indicatorWidget,
+.oo-ui-dropdownInputWidget.oo-ui-dropdownInputWidget-php > .oo-ui-indicatorWidget {
+  display: block;
+}
+.oo-ui-dropdownInputWidget select {
   width: 100%;
   box-sizing: border-box;
+}
+.oo-ui-dropdownInputWidget > .oo-ui-indicatorWidget {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
 }
 .oo-ui-dropdownInputWidget.oo-ui-widget-enabled select {
   cursor: pointer;
 }
 .oo-ui-dropdownInputWidget select {
+  color: #333;
   background-color: #fff;
   height: 2.5em;
   padding: 0.5em;
@@ -1133,6 +1150,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   font-family: inherit;
   border: 1px solid #ccc;
   border-radius: 3px;
+}
+.oo-ui-dropdownInputWidget > .oo-ui-indicatorWidget {
+  /* stylelint-disable declaration-no-important */
+  display: none !important;
+  /* stylelint-enable declaration-no-important */
 }
 .oo-ui-dropdownInputWidget option {
   font-size: inherit;
@@ -1894,14 +1916,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.7
+ * OOUI v0.52.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-03-11T00:03:34Z
+ * Date: 2025-06-12T12:46:39Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -2242,7 +2264,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   width: 2.5em;
   /* There's a lot of weird specific margins with weird specific selectors */
   margin: 0 !important;
-  /* stylelint-disable-line declaration-no-important */
 }
 
 .oo-ui-tabSelectWidget {
@@ -2270,10 +2291,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   pointer-events: none;
 }
 .oo-ui-tabSelectWidget-mobile.oo-ui-tabSelectWidget-framed::after {
-  background-image: linear-gradient(to right, rgba(238, 238, 238, 0), #eee);
+  background-image: linear-gradient(to right, transparent, #eee);
 }
 .oo-ui-tabSelectWidget-mobile.oo-ui-tabSelectWidget-frameless::after {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), #fff);
+  background-image: linear-gradient(to right, transparent, #fff);
   height: 2.421875em;
 }
 .oo-ui-tabSelectWidget.oo-ui-widget-enabled:focus {
@@ -2594,14 +2615,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.7
+ * OOUI v0.52.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-03-11T00:03:34Z
+ * Date: 2025-06-12T12:46:39Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3101,14 +3122,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.51.7
+ * OOUI v0.52.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-03-11T00:03:34Z
+ * Date: 2025-06-12T12:46:39Z
  */
 
 .oo-ui-window {
@@ -3516,14 +3537,14 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 /*!
- * OOUI v0.51.7
+ * OOUI v0.52.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-03-11T00:03:34Z
+ * Date: 2025-06-12T12:46:39Z
  */
 .oo-ui-icon-arrowDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
@@ -4492,6 +4513,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-userTemporary {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userTemporary-ltr.svg);
 }
+.oo-ui-icon-userTemporaryLocation {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userTemporaryLocation-ltr.svg);
+}
 .oo-ui-icon-watchlist {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/watchlist-ltr.svg);
 }
@@ -4548,6 +4572,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 
 .oo-ui-icon-logoCC {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logo-CC.svg);
+}
+.oo-ui-icon-logoCodex {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/logo-Codex.svg);
 }
 .oo-ui-icon-logoMediaWiki {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logo-MediaWiki.svg);

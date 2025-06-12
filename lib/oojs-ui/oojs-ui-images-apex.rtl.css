@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.51.7
+ * OOUI v0.52.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-03-11T00:03:34Z
+ * Date: 2025-06-12T12:46:39Z
  */
 .oo-ui-icon-arrowDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
@@ -975,6 +975,9 @@
 .oo-ui-icon-userTemporary {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userTemporary-rtl.svg);
 }
+.oo-ui-icon-userTemporaryLocation {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userTemporaryLocation-rtl.svg);
+}
 .oo-ui-icon-watchlist {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/watchlist-rtl.svg);
 }
@@ -1031,6 +1034,9 @@
 
 .oo-ui-icon-logoCC {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logo-CC.svg);
+}
+.oo-ui-icon-logoCodex {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/logo-Codex.svg);
 }
 .oo-ui-icon-logoMediaWiki {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logo-MediaWiki.svg);
