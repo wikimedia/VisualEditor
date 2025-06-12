@@ -382,23 +382,33 @@ QUnit.test( 'removeContent', ( assert ) => {
 	);
 } );
 
-ve.test.utils.runSurfaceFragmentDeleteTest = function ( assert, html, range, directionAfterRemove, expectedData, expectedRange, msg ) {
+/**
+ * @param {QUnit.Assert} assert
+ * @param {Object} caseItem
+ * @param {string} caseItem.html
+ * @param {ve.Range} caseItem.range
+ * @param {number} caseItem.directionAfterRemove
+ * @param {Function} caseItem.expectedData
+ * @param {ve.Range} caseItem.expectedRange
+ * @param {string} caseItem.msg
+ */
+ve.test.utils.runSurfaceFragmentDeleteTest = function ( assert, caseItem ) {
 	let doc;
-	if ( html ) {
-		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
+	if ( caseItem.html ) {
+		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.html ) );
 	} else {
 		doc = ve.dm.example.createExampleDocument();
 	}
 	const surface = new ve.dm.Surface( doc );
-	const fragment = surface.getLinearFragment( range );
+	const fragment = surface.getLinearFragment( caseItem.range );
 
 	const data = ve.copy( fragment.getDocument().getFullData() );
-	expectedData( data );
+	caseItem.expectedData( data );
 
-	fragment.delete( directionAfterRemove );
+	fragment.delete( caseItem.directionAfterRemove );
 
-	assert.deepEqualWithDomElements( fragment.getDocument().getFullData(), data, msg + ': data' );
-	assert.equalRange( fragment.getSelection().getRange(), expectedRange, msg + ': range' );
+	assert.deepEqualWithDomElements( fragment.getDocument().getFullData(), data, caseItem.msg + ': data' );
+	assert.equalRange( fragment.getSelection().getRange(), caseItem.expectedRange, caseItem.msg + ': range' );
 };
 
 QUnit.test( 'delete', ( assert ) => {
@@ -511,10 +521,7 @@ QUnit.test( 'delete', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		ve.test.utils.runSurfaceFragmentDeleteTest(
-			assert, caseItem.html, caseItem.range, caseItem.directionAfterRemove,
-			caseItem.expectedData, caseItem.expectedRange, caseItem.msg
-		);
+		ve.test.utils.runSurfaceFragmentDeleteTest( assert, caseItem );
 	} );
 } );
 
