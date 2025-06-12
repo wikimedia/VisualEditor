@@ -8,10 +8,30 @@ QUnit.module( 've.ui.UrlStringTransferHandler' );
 
 /* Tests */
 
-ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, mimeType, expectedDataFunc, base, msg ) {
+/**
+ * @param {QUnit.Assert} assert
+ * @param {Object} caseItem
+ * @param {string} caseItem.pasteString
+ * @param {string} caseItem.pasteHtml
+ * @param {string} caseItem.pasteType
+ * @param {Function} caseItem.expectedData
+ * @param {string} caseItem.base
+ * @param {string} caseItem.msg
+ */
+ve.test.utils.runUrlStringHandlerTest = function ( assert, caseItem ) {
+	if ( arguments.length > 2 ) {
+		caseItem = {
+			pasteString: arguments[ 1 ],
+			pasteHtml: arguments[ 2 ],
+			pasteType: arguments[ 3 ],
+			expectedData: arguments[ 4 ],
+			base: arguments[ 5 ],
+			msg: arguments[ 6 ]
+		};
+	}
 	const done = assert.async(),
-		item = ve.ui.DataTransferItem.static.newFromString( string, mimeType, htmlString ),
-		doc = ve.dm.example.createExampleDocument( null, null, base ),
+		item = ve.ui.DataTransferItem.static.newFromString( caseItem.pasteString, caseItem.pasteType, caseItem.pasteHtml ),
+		doc = ve.dm.example.createExampleDocument( null, null, caseItem.base ),
 		mockSurface = {
 			getModel: () => ( {
 				getDocument: () => doc
@@ -27,7 +47,7 @@ ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, m
 
 	handler.getInsertableData().done( ( actualData ) => {
 		ve.dm.example.postprocessAnnotations( actualData, doc.getStore() );
-		assert.equalLinearData( actualData, expectedDataFunc( makeLinkAnnotation ), msg + ': data match' );
+		assert.equalLinearData( actualData, caseItem.expectedData( makeLinkAnnotation ), caseItem.msg + ': data match' );
 		done();
 	} );
 };
@@ -72,6 +92,12 @@ QUnit.test( 'paste', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		ve.test.utils.runUrlStringHandlerTest( assert, caseItem.pasteString, caseItem.pasteHtml, caseItem.pasteType, caseItem.expectedData, ve.dm.example.baseUri, caseItem.msg );
+		ve.test.utils.runUrlStringHandlerTest(
+			assert,
+			{
+				base: ve.dm.example.baseUri,
+				...caseItem
+			}
+		);
 	} );
 } );
