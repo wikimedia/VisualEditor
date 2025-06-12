@@ -228,11 +228,10 @@
 	};
 
 	const voidGroup = '(' + ve.elementTypes.void.join( '|' ) + ')';
-
 	const voidRegexp = new RegExp( '(<' + voidGroup + '[^>]*?(/?))>', 'g' );
 	const originalCreateDocumentFromHtml = ve.createDocumentFromHtml;
 	/**
-	 * Override ve.createDocumentFromHtml to validate HTML structure using an XML parser
+	 * Wraps ve.createDocumentFromHtml to validate HTML structure using an XML parser.
 	 *
 	 * Some automatic fixes are applied to HTML to make it parseable,
 	 * but some errors will still be thrown, for example:
@@ -245,7 +244,7 @@
 	 * @param {boolean} ignoreXmlWarnings Skip validation
 	 * @return {HTMLDocument}
 	 */
-	ve.createDocumentFromHtml = function ( html, ignoreXmlWarnings ) {
+	ve.test.utils.createDocumentFromHtml = function ( html, ignoreXmlWarnings ) {
 		if ( html && !ignoreXmlWarnings ) {
 			const xml = '<xml>' +
 				html
@@ -277,9 +276,26 @@
 				}
 			}
 		}
-
 		return originalCreateDocumentFromHtml( html );
 	};
+
+	/**
+	 * Override ve.createDocumentFromHtml to validate HTML structure using an XML parser
+	 * when the original function is called, then restore it when it returns.
+	 *
+	 * @param {Function} originalFunc
+	 * @return {Function}
+	 */
+	function withCreateDocumentFromHtmlValidation( originalFunc ) {
+		return function ( ...params ) {
+			ve.createDocumentFromHtml = ve.test.utils.createDocumentFromHtml;
+			try {
+				return originalFunc( ...params );
+			} finally {
+				ve.createDocumentFromHtml = originalCreateDocumentFromHtml;
+			}
+		};
+	}
 
 	function getSerializableData( model ) {
 		return model.getFullData( undefined, 'roundTrip' );
@@ -494,6 +510,7 @@
 			assert.equalDomElement( actualRtDoc.body, expectedRtDoc.body, msg + ': round-trip' );
 		}
 	};
+	ve.test.utils.runGetModelFromDomTest = withCreateDocumentFromHtmlValidation( ve.test.utils.runGetModelFromDomTest );
 
 	ve.test.utils.getModelFromTestCase = function ( caseItem ) {
 		const store = new ve.dm.HashValueStore();
@@ -542,6 +559,7 @@
 		}
 		assert.deepEqualWithDomElements( getSerializableData( model ), originalData, msg + ' (data hasn\'t changed)' );
 	};
+	ve.test.utils.runGetDomFromModelTest = withCreateDocumentFromHtmlValidation( ve.test.utils.runGetDomFromModelTest );
 
 	ve.test.utils.runDiffElementTest = function ( assert, caseItem ) {
 		const oldDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.oldDoc ) ),
@@ -562,6 +580,7 @@
 			'Timeout message ' + ( caseItem.forceTimeout ? 'shown' : 'not shown' )
 		);
 	};
+	ve.test.utils.runDiffElementTest = withCreateDocumentFromHtmlValidation( ve.test.utils.runDiffElementTest );
 
 	/**
 	 * Create a UI surface from some HTML
@@ -575,7 +594,7 @@
 	 */
 	ve.test.utils.createSurfaceFromHtml = function ( html, config ) {
 		return this.createSurfaceFromDocument(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) ),
+			ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( html ) ),
 			config
 		);
 	};
@@ -602,7 +621,7 @@
 	 */
 	ve.test.utils.createSurfaceViewFromHtml = function ( html, config ) {
 		return this.createSurfaceViewFromDocument(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) ),
+			ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( html ) ),
 			config
 		);
 	};
@@ -720,7 +739,7 @@
 	 */
 	ve.test.utils.createViewOnlySurfaceFromHtml = function ( html, config ) {
 		const surfaceView = ve.test.utils.createSurfaceViewFromDocument(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) ),
+			ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( html ) ),
 			config
 		);
 
@@ -736,7 +755,7 @@
 	 */
 	ve.test.utils.createModelOnlySurfaceFromHtml = function ( html, config ) {
 		const model = new ve.dm.Surface(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) ),
+			ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( html ) ),
 			null,
 			config
 		);
