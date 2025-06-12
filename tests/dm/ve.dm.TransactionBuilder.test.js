@@ -9,35 +9,43 @@ QUnit.module( 've.dm.TransactionBuilder' );
 /* Helper methods */
 
 ve.test.utils.runTransactionBuilderTests = function ( assert, cases ) {
-	for ( const msg in cases ) {
+	cases.forEach( ( caseItem ) => {
 		const txBuilder = new ve.dm.TransactionBuilder();
-		for ( let i = 0; i < cases[ msg ].calls.length; i++ ) {
-			txBuilder[ cases[ msg ].calls[ i ][ 0 ] ]( ...cases[ msg ].calls[ i ].slice( 1 ) );
+		for ( let i = 0; i < caseItem.calls.length; i++ ) {
+			txBuilder[ caseItem.calls[ i ][ 0 ] ]( ...caseItem.calls[ i ].slice( 1 ) );
 		}
-		assert.deepEqualWithDomElements( txBuilder.getTransaction().getOperations(), cases[ msg ].ops, msg + ': operations match' );
-	}
+		assert.deepEqualWithDomElements( txBuilder.getTransaction().getOperations(), caseItem.ops, caseItem.msg + ': operations match' );
+	} );
 };
 
 ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, cases, testRange ) {
-	for ( const msg in cases ) {
-		const doc = cases[ msg ].args[ 0 ];
-		const args = cases[ msg ].args;
-		if ( cases[ msg ].ops ) {
+	cases.forEach( ( caseItem ) => {
+		const doc = caseItem.args[ 0 ];
+		const args = caseItem.args;
+		if ( caseItem.ops ) {
+			caseItem.ops.forEach( ( op ) => {
+				if ( op.remove ) {
+					ve.dm.example.preprocessAnnotations( op.remove, doc.getStore() );
+				}
+				if ( op.insert ) {
+					ve.dm.example.preprocessAnnotations( op.insert, doc.getStore() );
+				}
+			} );
 			const tx = constructor( ...args );
-			assert.equalLinearDataWithDom( doc.getStore(), tx.getOperations(), cases[ msg ].ops, msg + ': operations match' );
+			assert.equalLinearDataWithDom( doc.getStore(), tx.getOperations(), caseItem.ops, caseItem.msg + ': operations match' );
 			if ( testRange ) {
 				assert.equalRange(
 					tx.getModifiedRange( doc ),
-					cases[ msg ].range || new ve.Range( args[ 1 ], args[ 1 ] + args[ 2 ].length ),
-					msg + ': range matches'
+					caseItem.range || new ve.Range( args[ 1 ], args[ 1 ] + args[ 2 ].length ),
+					caseItem.msg + ': range matches'
 				);
 			}
-		} else if ( cases[ msg ].exception ) {
+		} else if ( caseItem.exception ) {
 			assert.throws( () => {
 				constructor( ...args );
-			}, cases[ msg ].exception, msg + ': throw exception' );
+			}, caseItem.exception, caseItem.msg + ': throw exception' );
 		}
-	}
+	} );
 };
 
 /* Tests */
@@ -52,8 +60,9 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 		doc3 = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( [ { type: 'paragraph' }, ...'Foo', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] )
 		),
-		cases = {
-			'paragraph before first element': {
+		cases = [
+			{
+				msg: 'paragraph before first element',
 				args: [ doc, 0, [ { type: 'paragraph' }, '1', { type: '/paragraph' } ] ],
 				ops: [
 					{
@@ -64,7 +73,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 					{ type: 'retain', length: 63 }
 				]
 			},
-			'paragraph after last element': {
+			{
+				msg: 'paragraph after last element',
 				args: [ doc, 61, [ { type: 'paragraph' }, '1', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 61 },
@@ -76,7 +86,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'split paragraph': {
+			{
+				msg: 'split paragraph',
 				args: [ doc, 10, [ '1', { type: '/paragraph' }, { type: 'paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 10 },
@@ -88,7 +99,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 					{ type: 'retain', length: 53 }
 				]
 			},
-			'paragraph inside a heading closes and reopens heading': {
+			{
+				msg: 'paragraph inside a heading closes and reopens heading',
 				args: [ doc, 2, [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 2 },
@@ -103,7 +115,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 3, 8 )
 			},
-			'paragraph inside a list moves in front of list': {
+			{
+				msg: 'paragraph inside a list moves in front of list',
 				args: [ doc, 13, [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 12 },
@@ -116,7 +129,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 12, 17 )
 			},
-			'tableCell inside the document is wrapped in a table, tableSection and tableRow': {
+			{
+				msg: 'tableCell inside the document is wrapped in a table, tableSection and tableRow',
 				args: [ doc, 43, [ { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: '/tableCell' } ] ],
 				ops: [
 					{ type: 'retain', length: 43 },
@@ -131,7 +145,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 46, 53 )
 			},
-			'tableCell inside a paragraph is wrapped in a table, tableSection and tableRow and moves outside of paragraph': {
+			{
+				msg: 'tableCell inside a paragraph is wrapped in a table, tableSection and tableRow and moves outside of paragraph',
 				args: [ doc, 52, [ { type: 'tableCell', attributes: { style: 'data' } }, { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: '/tableCell' } ] ],
 				ops: [
 					{ type: 'retain', length: 53 },
@@ -146,7 +161,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 56, 63 )
 			},
-			'text at a structural location in the document is wrapped in a paragraph': {
+			{
+				msg: 'text at a structural location in the document is wrapped in a paragraph',
 				args: [ doc, 0, [ ...'FOO' ] ],
 				ops: [
 					{
@@ -164,7 +180,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 1, 4 )
 			},
-			'text inside a paragraph is not wrapped in a paragraph': {
+			{
+				msg: 'text inside a paragraph is not wrapped in a paragraph',
 				args: [ doc, 16, [ ...'FOO' ] ],
 				ops: [
 					{ type: 'retain', length: 16 },
@@ -176,7 +193,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 					{ type: 'retain', length: 47 }
 				]
 			},
-			'text inside a heading is not wrapped in a paragraph': {
+			{
+				msg: 'text inside a heading is not wrapped in a paragraph',
 				args: [ doc, 2, [ ...'FOO' ] ],
 				ops: [
 					{ type: 'retain', length: 2 },
@@ -188,7 +206,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 					{ type: 'retain', length: 61 }
 				]
 			},
-			'paragraph in the middle of an insertion is balanced': {
+			{
+				msg: 'paragraph in the middle of an insertion is balanced',
 				args: [ doc, 16, [ 'F', { type: 'paragraph' }, 'O', { type: '/paragraph' }, 'O' ] ],
 				ops: [
 					{ type: 'retain', length: 16 },
@@ -205,7 +224,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 16, 23 )
 			},
-			'text inside a tableSection moves all the way to the end of the table and is wrapped in a paragraph': {
+			{
+				msg: 'text inside a tableSection moves all the way to the end of the table and is wrapped in a paragraph',
 				args: [ doc, 34, [ ...'FOO' ] ],
 				ops: [
 					{ type: 'retain', length: 37 },
@@ -220,7 +240,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 38, 41 )
 			},
-			'insert two complete paragraphs into start of paragraph moves insertion point left': {
+			{
+				msg: 'insert two complete paragraphs into start of paragraph moves insertion point left',
 				args: [ doc, 10, [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 9 },
@@ -233,7 +254,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 9, 19 )
 			},
-			'insert text, close paragraph and open heading into end of paragraph moves insertion point right': {
+			{
+				msg: 'insert text, close paragraph and open heading into end of paragraph moves insertion point right',
 				args: [ doc, 57, [ ...'FOO', { type: '/paragraph' }, { type: 'heading', attributes: { level: 1 } }, ...'BAR' ] ],
 				ops: [
 					{ type: 'retain', length: 58 },
@@ -251,7 +273,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 59, 67 )
 			},
-			'insert heading and incomplete paragraph into heading': {
+			{
+				msg: 'insert heading and incomplete paragraph into heading',
 				args: [ doc, 2, [ { type: 'heading', attributes: { level: 1 } }, ...'FOO', { type: '/heading' }, { type: 'paragraph' }, ...'BAR' ] ],
 				ops: [
 					{ type: 'retain', length: 2 },
@@ -270,7 +293,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 3, 12 )
 			},
-			'inserting two paragraphs into a document with just an empty paragraph': {
+			{
+				msg: 'inserting two paragraphs into a document with just an empty paragraph',
 				args: [ doc2, 1, [ ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR' ] ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -282,7 +306,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 					{ type: 'retain', length: 3 }
 				]
 			},
-			'inserting three paragraphs into a document with just an empty paragraph': {
+			{
+				msg: 'inserting three paragraphs into a document with just an empty paragraph',
 				args: [ doc2, 1, [ ...'FOO', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAR', { type: '/paragraph' }, { type: 'paragraph' }, ...'BAZ' ] ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -294,7 +319,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 					{ type: 'retain', length: 3 }
 				]
 			},
-			'inserting one paragraph into empty paragraph replaces it': {
+			{
+				msg: 'inserting one paragraph into empty paragraph replaces it',
 				args: [ doc2, 1, [ { type: 'paragraph' }, ...'FOO', { type: '/paragraph' } ] ],
 				ops: [
 					{
@@ -306,7 +332,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 0, 5 )
 			},
-			'inserting paragraph at end of paragraph moves insertion point forward': {
+			{
+				msg: 'inserting paragraph at end of paragraph moves insertion point forward',
 				args: [ doc3, 4, [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 5 },
@@ -319,7 +346,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 5, 10 )
 			},
-			'inserting paragraph into middle of paragraph splits paragraph': {
+			{
+				msg: 'inserting paragraph into middle of paragraph splits paragraph',
 				args: [ doc3, 2, [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 2 },
@@ -334,7 +362,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 3, 8 )
 			},
-			'inserting paragraph into middle of list splits list': {
+			{
+				msg: 'inserting paragraph into middle of list splits list',
 				args: [ isolationDoc, 11, [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 11 },
@@ -349,7 +378,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 				],
 				range: new ve.Range( 12, 17 )
 			},
-			'inserting paragraph between table cells splits table, tableSection and tableRow': {
+			{
+				msg: 'inserting paragraph between table cells splits table, tableSection and tableRow',
 				args: [ complexTableDoc, 40, [ { type: 'paragraph' }, ...'BAR', { type: '/paragraph' } ] ],
 				ops: [
 					{ type: 'retain', length: 40 },
@@ -371,18 +401,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 			// TODO test cases for unclosed openings
 			// TODO test cases for (currently failing) unopened closings use case
 			// TODO analyze other possible cases (substrings of linmod data)
-		};
+		];
 
-	for ( const key in cases ) {
-		for ( let i = 0; i < cases[ key ].ops.length; i++ ) {
-			if ( cases[ key ].ops[ i ].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
-			}
-			if ( cases[ key ].ops[ i ].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, doc.getStore() );
-			}
-		}
-	}
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromInsertion, cases, true );
 } );
 
@@ -391,8 +411,9 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
 		alienWithEmptyDoc = ve.dm.example.createExampleDocument( 'alienWithEmptyData' ),
 		internalDoc = ve.dm.example.createExampleDocument( 'internalData' ),
-		cases = {
-			'content in first element': {
+		cases = [
+			{
+				msg: 'content in first element',
 				args: [ doc, new ve.Range( 1, 3 ) ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -407,7 +428,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 60 }
 				]
 			},
-			'content in last element': {
+			{
+				msg: 'content in last element',
 				args: [ doc, new ve.Range( 59, 60 ) ],
 				ops: [
 					{ type: 'retain', length: 59 },
@@ -419,7 +441,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 3 }
 				]
 			},
-			'first element': {
+			{
+				msg: 'first element',
 				args: [ doc, new ve.Range( 0, 5 ) ],
 				ops: [
 					{
@@ -436,7 +459,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 58 }
 				]
 			},
-			'middle element with image': {
+			{
+				msg: 'middle element with image',
 				args: [ doc, new ve.Range( 38, 42 ) ],
 				ops: [
 					{ type: 'retain', length: 38 },
@@ -453,7 +477,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 21 }
 				]
 			},
-			'extra openings': {
+			{
+				msg: 'extra openings',
 				args: [ doc, new ve.Range( 0, 7 ) ],
 				ops: [
 					{
@@ -470,7 +495,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 58 }
 				]
 			},
-			'last element': {
+			{
+				msg: 'last element',
 				args: [ doc, new ve.Range( 58, 61 ) ],
 				ops: [
 					{ type: 'retain', length: 58 },
@@ -482,7 +508,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'extra closings': {
+			{
+				msg: 'extra closings',
 				args: [ doc, new ve.Range( 31, 39 ) ],
 				ops: [
 					{ type: 'retain', length: 38 },
@@ -494,7 +521,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 24 }
 				]
 			},
-			'merge last two elements': {
+			{
+				msg: 'merge last two elements',
 				args: [ doc, new ve.Range( 57, 59 ) ],
 				ops: [
 					{ type: 'retain', length: 57 },
@@ -506,7 +534,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 4 }
 				]
 			},
-			'strip out of paragraph in tableCell and paragraph in listItem': {
+			{
+				msg: 'strip out of paragraph in tableCell and paragraph in listItem',
 				args: [ doc, new ve.Range( 10, 16 ) ],
 				ops: [
 					{ type: 'retain', length: 10 },
@@ -524,7 +553,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 47 }
 				]
 			},
-			'over first alien into paragraph': {
+			{
+				msg: 'over first alien into paragraph',
 				args: [ alienDoc, new ve.Range( 0, 4 ) ],
 				ops: [
 					{
@@ -541,7 +571,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: alienDoc.data.getLength() - 4 }
 				]
 			},
-			'out of paragraph over last alien': {
+			{
+				msg: 'out of paragraph over last alien',
 				args: [ alienDoc, new ve.Range( 6, 10 ) ],
 				ops: [
 					{ type: 'retain', length: 6 },
@@ -559,7 +590,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: alienDoc.data.getLength() - 10 }
 				]
 			},
-			'out of empty paragraph over last alien': {
+			{
+				msg: 'out of empty paragraph over last alien',
 				args: [ alienWithEmptyDoc, new ve.Range( 1, 6 ) ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -571,7 +603,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: alienWithEmptyDoc.data.getLength() - 6 }
 				]
 			},
-			'merging two paragraphs inside definitionListItems': {
+			{
+				msg: 'merging two paragraphs inside definitionListItems',
 				args: [ doc, new ve.Range( 47, 51 ) ],
 				ops: [
 					{ type: 'retain', length: 47 },
@@ -583,7 +616,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 12 }
 				]
 			},
-			'merging two paragraphs while also deleting some content': {
+			{
+				msg: 'merging two paragraphs while also deleting some content',
 				args: [ doc, new ve.Range( 56, 59 ) ],
 				ops: [
 					{ type: 'retain', length: 56 },
@@ -595,7 +629,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 4 }
 				]
 			},
-			'removing from a heading into a paragraph': {
+			{
+				msg: 'removing from a heading into a paragraph',
 				args: [ doc, new ve.Range( 2, 57 ) ],
 				ops: [
 					{ type: 'retain', length: 2 },
@@ -619,7 +654,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 6 }
 				]
 			},
-			'removing content from a paragraph in the middle': {
+			{
+				msg: 'removing content from a paragraph in the middle',
 				args: [ doc, new ve.Range( 56, 57 ) ],
 				ops: [
 					{ type: 'retain', length: 56 },
@@ -631,7 +667,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 6 }
 				]
 			},
-			'selection including internal nodes doesn\'t remove them': {
+			{
+				msg: 'selection including internal nodes doesn\'t remove them',
 				args: [ internalDoc, new ve.Range( 2, 24 ) ],
 				ops: [
 					{ type: 'retain', length: 2 },
@@ -655,7 +692,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 3 }
 				]
 			},
-			'selection ending with internal nodes': {
+			{
+				msg: 'selection ending with internal nodes',
 				args: [ internalDoc, new ve.Range( 2, 21 ) ],
 				ops: [
 					{ type: 'retain', length: 2 },
@@ -669,7 +707,8 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 23 }
 				]
 			},
-			'selection starting with internal nodes': {
+			{
+				msg: 'selection starting with internal nodes',
 				args: [ internalDoc, new ve.Range( 5, 24 ) ],
 				ops: [
 					{ type: 'retain', length: 22 },
@@ -683,34 +722,24 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 					{ type: 'retain', length: 3 }
 				]
 			},
-			'selection of just internal nodes returns a no-op transaction': {
+			{
+				msg: 'selection of just internal nodes returns a no-op transaction',
 				args: [ internalDoc, new ve.Range( 5, 21 ) ],
 				ops: [
 					{ type: 'retain', length: 27 }
 				]
 			}
-		};
+		];
 
-	for ( const key in cases ) {
-		for ( let i = 0; i < cases[ key ].ops.length; i++ ) {
-			const store = cases[ key ].args[ 0 ].getStore();
-			if ( cases[ key ].ops[ i ].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, store );
-			}
-			if ( cases[ key ].ops[ i ].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, store );
-			}
-		}
-	}
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromRemoval, cases );
 } );
 
 QUnit.test( 'newFromReplacement', ( assert ) => {
-	const doc = ve.dm.example.createExampleDocument(),
-		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
+	const metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 
-		cases = {
-			'replace, preserving metadata': {
+		cases = [
+			{
+				msg: 'replace, preserving metadata',
 				args: [ metaDoc, new ve.Range( 6, 21 ), [ ...'XY' ] ],
 				ops: [
 					{ type: 'retain', length: 4 },
@@ -730,7 +759,8 @@ QUnit.test( 'newFromReplacement', ( assert ) => {
 					{ type: 'retain', length: 14 }
 				]
 			},
-			'replace, removing metadata': {
+			{
+				msg: 'replace, removing metadata',
 				args: [ metaDoc, new ve.Range( 6, 21 ), [ ...'XY' ], true ],
 				ops: [
 					{ type: 'retain', length: 6 },
@@ -742,18 +772,8 @@ QUnit.test( 'newFromReplacement', ( assert ) => {
 					{ type: 'retain', length: 14 }
 				]
 			}
-		};
+		];
 
-	for ( const key in cases ) {
-		for ( let i = 0; i < cases[ key ].ops.length; i++ ) {
-			if ( cases[ key ].ops[ i ].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
-			}
-			if ( cases[ key ].ops[ i ].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, doc.getStore() );
-			}
-		}
-	}
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromReplacement, cases, false );
 } );
 
@@ -1022,8 +1042,9 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 
 QUnit.test( 'newFromAttributeChanges', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument(),
-		cases = {
-			'first element': {
+		cases = [
+			{
+				msg: 'first element',
 				args: [ doc, 0, { level: 2 } ],
 				ops: [
 					{
@@ -1035,7 +1056,8 @@ QUnit.test( 'newFromAttributeChanges', ( assert ) => {
 					{ type: 'retain', length: 63 }
 				]
 			},
-			'middle element': {
+			{
+				msg: 'middle element',
 				args: [ doc, 17, { style: 'number' } ],
 				ops: [
 					{ type: 'retain', length: 17 },
@@ -1048,7 +1070,8 @@ QUnit.test( 'newFromAttributeChanges', ( assert ) => {
 					{ type: 'retain', length: 46 }
 				]
 			},
-			'multiple attributes': {
+			{
+				msg: 'multiple attributes',
 				args: [ doc, 17, { style: 'number', level: 1 } ],
 				ops: [
 					{ type: 'retain', length: 17 },
@@ -1067,15 +1090,17 @@ QUnit.test( 'newFromAttributeChanges', ( assert ) => {
 					{ type: 'retain', length: 46 }
 				]
 			},
-			'non-element': {
+			{
+				msg: 'non-element',
 				args: [ doc, 1, { level: 2 } ],
 				exception: Error
 			},
-			'closing element': {
+			{
+				msg: 'closing element',
 				args: [ doc, 4, { level: 2 } ],
 				exception: Error
 			}
-		};
+		];
 
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAttributeChanges, cases );
 
@@ -1106,8 +1131,9 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 			{ type: '/internalList' }
 		] ),
 		annotationDoc = ve.dm.example.createExampleDocument( 'annotationData' ),
-		cases = {
-			'over plain text': {
+		cases = [
+			{
+				msg: 'over plain text',
 				args: [ doc, new ve.Range( 1, 2 ), 'set', boldAnnotation ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -1119,7 +1145,8 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 61 }
 				]
 			},
-			'over partially annotated text': {
+			{
+				msg: 'over partially annotated text',
 				args: [ doc, new ve.Range( 1, 4 ), 'set', boldAnnotation ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -1137,7 +1164,8 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 59 }
 				]
 			},
-			'comparable annotation over partially annotated text': {
+			{
+				msg: 'comparable annotation over partially annotated text',
 				args: [ doc, new ve.Range( 1, 4 ), 'set', strongAnnotation ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -1155,7 +1183,8 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 59 }
 				]
 			},
-			'adjacent comparable annotations not cleared together': {
+			{
+				msg: 'adjacent comparable annotations not cleared together',
 				args: [ doc2, new ve.Range( 1, 7 ), 'clear', strongAnnotation ],
 				ops: [
 					{ type: 'retain', length: 4 },
@@ -1169,13 +1198,15 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 3 }
 				]
 			},
-			'over elements': {
+			{
+				msg: 'over elements',
 				args: [ doc, new ve.Range( 4, 9 ), 'set', boldAnnotation ],
 				ops: [
 					{ type: 'retain', length: 63 }
 				]
 			},
-			'over elements and content': {
+			{
+				msg: 'over elements and content',
 				args: [ doc, new ve.Range( 3, 11 ), 'set', boldAnnotation ],
 				ops: [
 					{ type: 'retain', length: 3 },
@@ -1193,7 +1224,8 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 52 }
 				]
 			},
-			'over content and content element (image)': {
+			{
+				msg: 'over content and content element (image)',
 				args: [ doc, new ve.Range( 38, 42 ), 'set', boldAnnotation ],
 				ops: [
 					{ type: 'retain', length: 38 },
@@ -1225,7 +1257,8 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 21 }
 				]
 			},
-			'over content and unannotatable content element (unboldable node)': {
+			{
+				msg: 'over content and unannotatable content element (unboldable node)',
 				args: [ annotationDoc, new ve.Range( 1, 9 ), 'set', boldAnnotation ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -1247,7 +1280,8 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 21 }
 				]
 			},
-			'over handles own children nodes': {
+			{
+				msg: 'over handles own children nodes',
 				args: [ annotationDoc, new ve.Range( 1, 27 ), 'set', boldAnnotation ],
 				ops: [
 					{ type: 'retain', length: 1 },
@@ -1277,7 +1311,7 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 					{ type: 'retain', length: 3 }
 				]
 			}
-		};
+		];
 
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAnnotation, cases );
 } );
@@ -1285,8 +1319,9 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument(),
 		doc2 = ve.dm.example.createExampleDocument( 'inlineAtEdges' ),
-		cases = {
-			'range inside a heading, convert to paragraph': {
+		cases = [
+			{
+				msg: 'range inside a heading, convert to paragraph',
 				args: [ doc, new ve.Range( 1, 2 ), 'paragraph' ],
 				ops: [
 					{
@@ -1303,7 +1338,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 58 }
 				]
 			},
-			'range inside a heading 1, convert to heading 2': {
+			{
+				msg: 'range inside a heading 1, convert to heading 2',
 				args: [ doc, new ve.Range( 1, 2 ), 'heading', { level: 2 } ],
 				ops: [
 					{
@@ -1315,7 +1351,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 63 }
 				]
 			},
-			'range around 2 paragraphs, convert to preformatted': {
+			{
+				msg: 'range around 2 paragraphs, convert to preformatted',
 				args: [ doc, new ve.Range( 50, 58 ), 'preformatted' ],
 				ops: [
 					{ type: 'retain', length: 50 },
@@ -1345,7 +1382,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 5 }
 				]
 			},
-			'zero-length range before inline node at the start': {
+			{
+				msg: 'zero-length range before inline node at the start',
 				args: [ doc2, new ve.Range( 1 ), 'heading', { level: 2 } ],
 				ops: [
 					{
@@ -1362,7 +1400,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'zero-length range inside inline node at the start': {
+			{
+				msg: 'zero-length range inside inline node at the start',
 				args: [ doc2, new ve.Range( 2 ), 'heading', { level: 2 } ],
 				ops: [
 					{
@@ -1379,7 +1418,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'zero-length range after inline node at the start': {
+			{
+				msg: 'zero-length range after inline node at the start',
 				args: [ doc2, new ve.Range( 3 ), 'heading', { level: 2 } ],
 				ops: [
 					{
@@ -1396,7 +1436,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'zero-length range before inline node at the end': {
+			{
+				msg: 'zero-length range before inline node at the end',
 				args: [ doc2, new ve.Range( 6 ), 'heading', { level: 2 } ],
 				ops: [
 					{
@@ -1413,7 +1454,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'zero-length range inside inline node at the end': {
+			{
+				msg: 'zero-length range inside inline node at the end',
 				args: [ doc2, new ve.Range( 7 ), 'heading', { level: 2 } ],
 				ops: [
 					{
@@ -1430,7 +1472,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'zero-length range after inline node at the end': {
+			{
+				msg: 'zero-length range after inline node at the end',
 				args: [ doc2, new ve.Range( 8 ), 'heading', { level: 2 } ],
 				ops: [
 					{
@@ -1447,19 +1490,8 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			}
-		};
+		];
 
-	for ( const key in cases ) {
-		for ( let i = 0; i < cases[ key ].ops.length; i++ ) {
-			const store = cases[ key ].args[ 0 ].getStore();
-			if ( cases[ key ].ops[ i ].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, store );
-			}
-			if ( cases[ key ].ops[ i ].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, store );
-			}
-		}
-	}
 	ve.test.utils.runTransactionConstructorTests(
 		assert,
 		ve.dm.TransactionBuilder.static.newFromContentBranchConversion,
@@ -1475,8 +1507,9 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 			listMetaDoc.getData().filter( ( item ) => item.type !== 'alienMeta' &&
 					item.type !== '/alienMeta' )
 		),
-		cases = {
-			'changes a heading to a paragraph': {
+		cases = [
+			{
+				msg: 'changes a heading to a paragraph',
 				args: [ doc, new ve.Range( 1, 4 ), [ { type: 'heading', attributes: { level: 1 } } ], [ { type: 'paragraph' } ], [], [] ],
 				ops: [
 					{ type: 'replace', remove: [ { type: 'heading', attributes: { level: 1 } } ], insert: [ { type: 'paragraph' } ] },
@@ -1485,7 +1518,8 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 					{ type: 'retain', length: 58 }
 				]
 			},
-			'unwraps a list': {
+			{
+				msg: 'unwraps a list',
 				args: [ doc, new ve.Range( 13, 25 ), [ { type: 'list' } ], [], [ { type: 'listItem' } ], [] ],
 				ops: [
 					{ type: 'retain', length: 12 },
@@ -1499,7 +1533,8 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 					{ type: 'retain', length: 37 }
 				]
 			},
-			'unwraps a multiple-item list': {
+			{
+				msg: 'unwraps a multiple-item list',
 				args: [ listDoc, new ve.Range( 1, 11 ), [ { type: 'list' } ], [], [ { type: 'listItem', attributes: { styles: [ 'bullet' ] } } ], [] ],
 				ops: [
 					{ type: 'replace',
@@ -1519,7 +1554,8 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'replaces a table with a list': {
+			{
+				msg: 'replaces a table with a list',
 				args: [ doc, new ve.Range( 9, 33 ), [ { type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }, { type: 'tableCell', attributes: { style: 'data' } } ], [ { type: 'list' }, { type: 'listItem' } ], [], [] ],
 				ops: [
 					{ type: 'retain', length: 5 },
@@ -1529,7 +1565,8 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 					{ type: 'retain', length: 26 }
 				]
 			},
-			'wraps two adjacent paragraphs in a list': {
+			{
+				msg: 'wraps two adjacent paragraphs in a list',
 				args: [ doc, new ve.Range( 55, 61 ), [], [ { type: 'list', attributes: { style: 'number' } } ], [], [ { type: 'listItem' } ] ],
 				ops: [
 					{ type: 'retain', length: 55 },
@@ -1545,7 +1582,8 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'wraps two adjacent paragraphs in a definitionList': {
+			{
+				msg: 'wraps two adjacent paragraphs in a definitionList',
 				args: [ doc, new ve.Range( 55, 61 ), [], [ { type: 'definitionList' } ], [], [ { type: 'definitionListItem', attributes: { style: 'term' } } ] ],
 				ops: [
 					{ type: 'retain', length: 55 },
@@ -1565,7 +1603,8 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 					{ type: 'retain', length: 2 }
 				]
 			},
-			'metadata is preserved on wrap': {
+			{
+				msg: 'metadata is preserved on wrap',
 				args: [
 					metaDoc,
 					new ve.Range( 4, 23 ),
@@ -1634,7 +1673,8 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 					{ type: 'retain', length: 12 }
 				]
 			},
-			'metadata is preserved on unwrap': {
+			{
+				msg: 'metadata is preserved on unwrap',
 				args: [ listMetaDoc, new ve.Range( 3, 35 ), [ { type: 'list' } ], [], [ { type: 'listItem', attributes: { styles: [ 'bullet' ] } } ], [] ],
 				ops: [
 					{ type: 'retain', length: 2 },
@@ -1652,30 +1692,23 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 					{ type: 'retain', length: 4 }
 				]
 			},
-			'checks integrity of unwrapOuter parameter': {
+			{
+				msg: 'checks integrity of unwrapOuter parameter',
 				args: [ doc, new ve.Range( 13, 32 ), [ { type: 'table' } ], [], [], [] ],
 				exception: Error
 			},
-			'checks integrity of unwrapEach parameter': {
+			{
+				msg: 'checks integrity of unwrapEach parameter',
 				args: [ doc, new ve.Range( 13, 32 ), [ { type: 'list' } ], [], [ { type: 'paragraph' } ], [] ],
 				exception: Error
 			},
-			'checks that unwrapOuter fits before the range': {
+			{
+				msg: 'checks that unwrapOuter fits before the range',
 				args: [ doc, new ve.Range( 1, 4 ), [ { type: 'listItem' }, { type: 'paragraph' } ], [], [], [] ],
 				exception: Error
 			}
-		};
+		];
 
-	for ( const key in cases ) {
-		for ( let i = 0; cases[ key ].ops && i < cases[ key ].ops.length; i++ ) {
-			if ( cases[ key ].ops[ i ].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
-			}
-			if ( cases[ key ].ops[ i ].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, doc.getStore() );
-			}
-		}
-	}
 	ve.test.utils.runTransactionConstructorTests(
 		assert,
 		ve.dm.TransactionBuilder.static.newFromWrap,
@@ -1684,26 +1717,29 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 } );
 
 QUnit.test( 'pushRetain', ( assert ) => {
-	const cases = {
-		retain: {
+	const cases = [
+		{
+			msg: 'retain',
 			calls: [ [ 'pushRetain', 5 ] ],
 			ops: [ { type: 'retain', length: 5 } ],
 			diff: 0
 		},
-		'multiple retain': {
+		{
+			msg: 'multiple retain',
 			calls: [ [ 'pushRetain', 5 ], [ 'pushRetain', 3 ] ],
 			ops: [ { type: 'retain', length: 8 } ],
 			diff: 0
 		}
-	};
+	];
 	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
 QUnit.test( 'pushReplacement', ( assert ) => {
 	const doc = new ve.dm.Document( [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ] ),
 		doc2 = new ve.dm.Document( [ { type: 'paragraph' }, ...'abcghi', { type: '/paragraph' } ] ),
-		cases = {
-			insert: {
+		cases = [
+			{
+				msg: 'insert',
 				calls: [
 					[ 'pushReplacement', doc, 0, 0, [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ] ]
 				],
@@ -1716,7 +1752,8 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				diff: 5
 			},
-			'multiple insert': {
+			{
+				msg: 'multiple insert',
 				calls: [
 					[ 'pushReplacement', doc, 0, 0, [ { type: 'paragraph' }, ...'ab' ] ],
 					[ 'pushReplacement', doc, 0, 0, [ 'c', { type: '/paragraph' } ] ]
@@ -1730,7 +1767,8 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				diff: 5
 			},
-			'insert and retain': {
+			{
+				msg: 'insert and retain',
 				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', doc, 0, 0, [ ...'abc' ] ]
@@ -1741,7 +1779,8 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				diff: 3
 			},
-			remove: {
+			{
+				msg: 'remove',
 				calls: [
 					[ 'pushReplacement', doc, 0, 5, [] ]
 				],
@@ -1754,7 +1793,8 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				diff: -5
 			},
-			'multiple remove': {
+			{
+				msg: 'multiple remove',
 				calls: [
 					[ 'pushReplacement', doc, 0, 3, [] ],
 					[ 'pushReplacement', doc, 3, 2, [] ]
@@ -1768,7 +1808,8 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				diff: -5
 			},
-			'retain and remove': {
+			{
+				msg: 'retain and remove',
 				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', doc, 1, 3, [] ]
@@ -1779,7 +1820,8 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				diff: -3
 			},
-			replace: {
+			{
+				msg: 'replace',
 				calls: [
 					[ 'pushReplacement', doc, 1, 3, [ ...'def' ] ]
 				],
@@ -1792,7 +1834,8 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				diff: 0
 			},
-			'multiple replace': {
+			{
+				msg: 'multiple replace',
 				calls: [
 					[ 'pushReplacement', doc2, 1, 3, [ ...'def' ] ],
 					[ 'pushReplacement', doc2, 4, 3, [ ...'jkl' ] ]
@@ -1806,14 +1849,15 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 				],
 				diff: 0
 			}
-		};
+		];
 
 	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
 QUnit.test( 'pushReplaceElementAttribute', ( assert ) => {
-	const cases = {
-		'replace element attribute': {
+	const cases = [
+		{
+			msg: 'replace element attribute',
 			calls: [
 				[ 'pushReplaceElementAttribute', 'style', 'bullet', 'number' ]
 			],
@@ -1827,7 +1871,8 @@ QUnit.test( 'pushReplaceElementAttribute', ( assert ) => {
 			],
 			diff: 0
 		},
-		'replace multiple element attributes': {
+		{
+			msg: 'replace multiple element attributes',
 			calls: [
 				[ 'pushReplaceElementAttribute', 'style', 'bullet', 'number' ],
 				[ 'pushReplaceElementAttribute', 'level', 1, 2 ]
@@ -1848,7 +1893,7 @@ QUnit.test( 'pushReplaceElementAttribute', ( assert ) => {
 			],
 			diff: 0
 		}
-	};
+	];
 
 	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );

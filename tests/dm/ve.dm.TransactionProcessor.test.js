@@ -10,16 +10,19 @@ QUnit.module( 've.dm.TransactionProcessor' );
 
 QUnit.test( 'commit', ( assert ) => {
 	const store = ve.dm.example.createExampleDocument().getStore(),
-		cases = {
-			'no operations': {
+		cases = [
+			{
+				msg: 'no operations',
 				calls: [],
 				expected: () => {}
 			},
-			retaining: {
+			{
+				msg: 'retaining',
 				calls: [ [ 'pushRetain', 38 ] ],
 				expected: () => {}
 			},
-			'changing, removing and adding attributes': {
+			{
+				msg: 'changing, removing and adding attributes',
 				calls: [
 					[ 'pushReplaceElementAttribute', 'level', 1, 2 ],
 					[ 'pushRetain', 12 ],
@@ -35,14 +38,16 @@ QUnit.test( 'commit', ( assert ) => {
 					delete data[ 39 ].attributes.src;
 				}
 			},
-			'changing attributes on non-element data throws an exception': {
+			{
+				msg: 'changing attributes on non-element data throws an exception',
 				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplaceElementAttribute', 'foo', 23, 42 ]
 				],
 				exception: /Invalid element error, cannot set attributes on non-element data/
 			},
-			'inserting text': {
+			{
+				msg: 'inserting text',
 				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 0, [ ...'Foo' ] ]
@@ -51,7 +56,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 1, 0, ...'Foo' );
 				}
 			},
-			'removing text': {
+			{
+				msg: 'removing text',
 				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 1, [] ]
@@ -60,7 +66,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 1, 1 );
 				}
 			},
-			'replacing text': {
+			{
+				msg: 'replacing text',
 				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 1, [ ...'Foo' ] ]
@@ -69,7 +76,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 1, 1, ...'Foo' );
 				}
 			},
-			'emptying text': {
+			{
+				msg: 'emptying text',
 				calls: [
 					[ 'pushRetain', 10 ],
 					[ 'pushReplacement', 10, 1, [] ]
@@ -78,7 +86,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 10, 1 );
 				}
 			},
-			'inserting mixed content': {
+			{
+				msg: 'inserting mixed content',
 				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 1, [ ...'Foo', { type: 'inlineImage' }, { type: '/inlineImage' }, ...'Bar' ] ]
@@ -87,20 +96,23 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 1, 1, ...'Foo', { type: 'inlineImage' }, { type: '/inlineImage' }, ...'Bar' );
 				}
 			},
-			'inserting unbalanced data': {
+			{
+				msg: 'inserting unbalanced data',
 				calls: [
 					[ 'pushReplacement', 0, 0, [ { type: 'table' } ] ]
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
-			'inserting unclosed inline node': {
+			{
+				msg: 'inserting unclosed inline node',
 				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 1, [ 'F', { type: 'inlineImage' }, ...'OO' ] ]
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
-			'inserting an inline node in a structure position': {
+			{
+				msg: 'inserting an inline node in a structure position',
 				calls: [
 					[ 'pushReplacement', 0, 0, [
 						{ type: 'inlineImage' },
@@ -109,7 +121,8 @@ QUnit.test( 'commit', ( assert ) => {
 				],
 				exception: /Cannot add content node \(inlineImage\) to a document node/
 			},
-			'wrapping a heading in an inline node': {
+			{
+				msg: 'wrapping a heading in an inline node',
 				calls: [
 					[ 'pushRetain', 39 ],
 					[ 'pushReplacement', 39, 0, [ { type: 'inlineImage' } ] ],
@@ -118,7 +131,8 @@ QUnit.test( 'commit', ( assert ) => {
 				],
 				exception: /Cannot add a child to inlineImage node/
 			},
-			'converting an element': {
+			{
+				msg: 'converting an element',
 				calls: [
 					[ 'pushReplacement', 0, 1, [ { type: 'paragraph' } ] ],
 					[ 'pushRetain', 3 ],
@@ -130,7 +144,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data[ 4 ].type = '/paragraph';
 				}
 			},
-			'conversion with wrong closing': {
+			{
+				msg: 'conversion with wrong closing',
 				calls: [
 					[ 'pushReplacement', 0, 1, [ { type: 'paragraph' } ] ],
 					[ 'pushRetain', 3 ],
@@ -138,7 +153,8 @@ QUnit.test( 'commit', ( assert ) => {
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
-			'splitting an element': {
+			{
+				msg: 'splitting an element',
 				calls: [
 					[ 'pushRetain', 2 ],
 					[
@@ -155,7 +171,8 @@ QUnit.test( 'commit', ( assert ) => {
 					);
 				}
 			},
-			'merging an element': {
+			{
+				msg: 'merging an element',
 				calls: [
 					[ 'pushRetain', 57 ],
 					[ 'pushReplacement', 57, 2, [] ]
@@ -164,7 +181,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 57, 2 );
 				}
 			},
-			'stripping elements': {
+			{
+				msg: 'stripping elements',
 				calls: [
 					[ 'pushRetain', 3 ],
 					[ 'pushReplacement', 3, 1, [] ],
@@ -176,7 +194,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 3, 1 );
 				}
 			},
-			'wrapping elements': {
+			{
+				msg: 'wrapping elements',
 				calls: [
 					[ 'pushRetain', 55 ],
 					[ 'pushReplacement', 55, 0, [ { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } ] ],
@@ -191,7 +210,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 55, 0, { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } );
 				}
 			},
-			'unwrapping elements': {
+			{
+				msg: 'unwrapping elements',
 				calls: [
 					[ 'pushRetain', 43 ],
 					[ 'pushReplacement', 43, 2, [] ],
@@ -206,7 +226,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 43, 2 );
 				}
 			},
-			'rewrapping elements': {
+			{
+				msg: 'rewrapping elements',
 				calls: [
 					[ 'pushRetain', 43 ],
 					[ 'pushReplacement', 43, 2, [ { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } ] ],
@@ -221,7 +242,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 43, 2, { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } );
 				}
 			},
-			'merging a nested element': {
+			{
+				msg: 'merging a nested element',
 				calls: [
 					[ 'pushRetain', 47 ],
 					[ 'pushReplacement', 47, 4, [] ]
@@ -230,7 +252,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 47, 4 );
 				}
 			},
-			'merging an element that also has a content insertion': {
+			{
+				msg: 'merging an element that also has a content insertion',
 				calls: [
 					[ 'pushRetain', 56 ],
 					[ 'pushReplacement', 56, 0, [ 'x' ] ],
@@ -242,7 +265,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 56, 0, 'x' );
 				}
 			},
-			'merging a nested element that also has a structural insertion': {
+			{
+				msg: 'merging a nested element that also has a structural insertion',
 				calls: [
 					[ 'pushRetain', 45 ],
 					[ 'pushReplacement', 45, 0, [ { type: 'paragraph' }, 'x', { type: '/paragraph' } ] ],
@@ -254,7 +278,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 45, 0, { type: 'paragraph' }, 'x', { type: '/paragraph' } );
 				}
 			},
-			'merging the same element from both sides at once': {
+			{
+				msg: 'merging the same element from both sides at once',
 				data: [
 					{ type: 'paragraph' },
 					'a',
@@ -280,7 +305,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 2, 2 );
 				}
 			},
-			'deleting images on both sides of a text node at once': {
+			{
+				msg: 'deleting images on both sides of a text node at once',
 				data: [
 					{ type: 'paragraph' },
 					'a',
@@ -303,7 +329,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 2, 2 );
 				}
 			},
-			'unwrap inside of a split inside of a wrap': {
+			{
+				msg: 'unwrap inside of a split inside of a wrap',
 				data: [
 					{ type: 'list', attributes: { style: 'bullet' } },
 					{ type: 'listItem' },
@@ -340,7 +367,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 0, 0, { type: 'div' } );
 				}
 			},
-			'inserting text after alien node at the end': {
+			{
+				msg: 'inserting text after alien node at the end',
 				data: [
 					{ type: 'paragraph' },
 					'a',
@@ -356,7 +384,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 4, 0, 'b' );
 				}
 			},
-			'structural replacement starting at an offset without metadata': {
+			{
+				msg: 'structural replacement starting at an offset without metadata',
 				data: [
 					{ type: 'paragraph' },
 					'F',
@@ -378,7 +407,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 2, 4, { type: 'table' }, { type: '/table' } );
 				}
 			},
-			'structural replacement starting at an offset with metadata': {
+			{
+				msg: 'structural replacement starting at an offset with metadata',
 				data: [
 					{
 						type: 'alienMeta',
@@ -407,7 +437,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 4, 3, { type: 'table' }, { type: '/table' } );
 				}
 			},
-			'structural replacement ending at an offset with metadata': {
+			{
+				msg: 'structural replacement ending at an offset with metadata',
 				data: [
 					{
 						type: 'alienMeta',
@@ -445,7 +476,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 4, 3, { type: 'table' }, { type: '/table' } );
 				}
 			},
-			'structural deletion ending at an offset with metadata': {
+			{
+				msg: 'structural deletion ending at an offset with metadata',
 				data: [
 					{
 						type: 'alienMeta',
@@ -483,7 +515,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 4, 3 );
 				}
 			},
-			'preserves surrounding metadata on unwrap': {
+			{
+				msg: 'preserves surrounding metadata on unwrap',
 				data: ve.dm.example.listWithMeta,
 				calls: [
 					[ 'newFromWrap', new ve.Range( 5, 33 ),
@@ -500,7 +533,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 2, 1 ); // Remove 'list'
 				}
 			},
-			'preserves interleaved metadata on unwrap': {
+			{
+				msg: 'preserves interleaved metadata on unwrap',
 				data: ve.dm.example.listWithMeta,
 				calls: [
 					[ 'newFromWrap', new ve.Range( 5, 35 ),
@@ -517,7 +551,8 @@ QUnit.test( 'commit', ( assert ) => {
 					data.splice( 2, 1 ); // Remove 'list'
 				}
 			},
-			'preserves trailing metadata': {
+			{
+				msg: 'preserves trailing metadata',
 				data: ve.dm.example.listWithMeta,
 				calls: [
 					[ 'newFromInsertion', 12, [ 'b' ] ]
@@ -526,11 +561,10 @@ QUnit.test( 'commit', ( assert ) => {
 					ve.batchSplice( data, 12, 0, [ 'b' ] );
 				}
 			}
-		};
+		];
 
 	// Run tests
-	for ( const msg in cases ) {
-		const caseItem = cases[ msg ];
+	cases.forEach( ( caseItem ) => {
 		// Generate original document
 		const originalData = caseItem.data || ve.dm.example.data;
 		const originalDoc = new ve.dm.Document(
@@ -571,12 +605,12 @@ QUnit.test( 'commit', ( assert ) => {
 
 			// Commit
 			testDoc.commit( tx );
-			assert.isLinearDataFrozen( testDoc.data, msg + ': linear data is frozen' );
-			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
+			assert.isLinearDataFrozen( testDoc.data, caseItem.msg + ': linear data is frozen' );
+			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + caseItem.msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),
 				expectedDoc.getDocumentNode(),
-				'commit (tree): ' + msg
+				'commit (tree): ' + caseItem.msg
 			);
 			if ( 'events' in caseItem ) {
 				caseItem.events.forEach( ( event ) => {
@@ -584,17 +618,17 @@ QUnit.test( 'commit', ( assert ) => {
 						event.fired,
 						1,
 						'event ' + event[ 0 ] + ' on ' +
-							event.slice( 1 ).join( ',' ) + ': ' + msg
+							event.slice( 1 ).join( ',' ) + ': ' + caseItem.msg
 					);
 				} );
 			}
 			// Rollback
 			testDoc.commit( tx.reversed() );
-			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), originalDoc.getFullData(), 'rollback (data): ' + msg );
+			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), originalDoc.getFullData(), 'rollback (data): ' + caseItem.msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),
 				originalDoc.getDocumentNode(),
-				'rollback (tree): ' + msg
+				'rollback (tree): ' + caseItem.msg
 			);
 		} else if ( 'exception' in caseItem ) {
 			assert.throws(
@@ -602,16 +636,16 @@ QUnit.test( 'commit', ( assert ) => {
 					testDoc.commit( tx );
 				},
 				caseItem.exception,
-				'exception thrown: ' + msg
+				'exception thrown: ' + caseItem.msg
 			);
-			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), originalDoc.getFullData(), 'data unmodified: ' + msg );
+			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), originalDoc.getFullData(), 'data unmodified: ' + caseItem.msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),
 				originalDoc.getDocumentNode(),
-				'tree unmodified: ' + msg
+				'tree unmodified: ' + caseItem.msg
 			);
 		}
-	}
+	} );
 } );
 
 // TODO: Fix the code so undoing unbold roundtrips properly, then fix this test to reflect that
