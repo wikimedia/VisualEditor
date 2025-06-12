@@ -491,10 +491,10 @@ ve.deepFreeze = ve.deepFreeze || function ( obj ) {
  * @param {...any} [params] Message parameters
  * @return {string} Localized message
  */
-ve.msg = function () {
+ve.msg = function ( key, ...params ) {
 	// Avoid using bind because ve.init.platform doesn't exist yet.
 	// TODO: Fix dependency issues between ve.js and ve.init.platform
-	return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
+	return ve.init.platform.getMessage( key, ...params );
 };
 
 /**
@@ -504,20 +504,21 @@ ve.msg = function () {
  * @param {...any} [params] Message parameters
  * @return {Node[]} Localized message
  */
-ve.htmlMsg = function () {
+ve.htmlMsg = function ( key, ...params ) {
 	// Avoid using bind because ve.init.platform doesn't exist yet.
 	// TODO: Fix dependency issues between ve.js and ve.init.platform
-	return ve.init.platform.getHtmlMessage.apply( ve.init.platform, arguments );
+	return ve.init.platform.getHtmlMessage( key, ...params );
 };
 
 /**
  * Get platform config value(s)
  *
- * @param {string|string[]} key Config key, or list of keys
+ * @param {string|string[]} keys Config key, or list of keys
+ * @param {any} [fallback=null] Value for keys that don't exist
  * @return {any|Object} Config value, or keyed object of config values if list of keys provided
  */
-ve.config = function () {
-	return ve.init.platform.getConfig.apply( ve.init.platform, arguments );
+ve.config = function ( keys, fallback ) {
+	return ve.init.platform.getConfig( keys, fallback );
 };
 
 /**
@@ -528,15 +529,15 @@ ve.config = function () {
  * @return {any|Object|boolean} Config value, keyed object of config values if list of keys provided,
  *  or success boolean if setting.
  */
-ve.userConfig = function ( key ) {
+ve.userConfig = function ( key, value ) {
 	if ( arguments.length <= 1 && ( typeof key === 'string' || Array.isArray( key ) ) ) {
 		// get( string key )
 		// get( Array keys )
-		return ve.init.platform.getUserConfig.apply( ve.init.platform, arguments );
+		return ve.init.platform.getUserConfig( key );
 	} else {
 		// set( Object values )
 		// set( key, value )
-		return ve.init.platform.setUserConfig.apply( ve.init.platform, arguments );
+		return ve.init.platform.setUserConfig( key, value );
 	}
 };
 

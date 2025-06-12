@@ -384,7 +384,7 @@ ve.EventSequencer.prototype.runPendingCalls = function ( eventName ) {
 	}
 	// This is safe: we only ever appended to the list, so it's definitely exhausted now.
 	this.pendingCalls.length = 0;
-	this.pendingCalls.push.apply( this.pendingCalls, afterKeyDownCalls );
+	this.pendingCalls.push( ...afterKeyDownCalls );
 };
 
 /**

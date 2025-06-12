@@ -404,7 +404,7 @@
 			} );
 		}
 
-		action[ caseItem.method ].apply( action, caseItem.args || [] );
+		action[ caseItem.method ]( ...( caseItem.args || [] ) );
 
 		const afterApply = () => {
 			const actualData = getSerializableData( surface.getModel().getDocument() );

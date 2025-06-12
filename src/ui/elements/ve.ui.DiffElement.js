@@ -1253,7 +1253,7 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, new
  */
 ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListContainer, action, move, items ) {
 	this.markMove( move, referencesListContainer );
-	this.descriptionItemsStack.push.apply( this.descriptionItemsStack, items );
+	this.descriptionItemsStack.push( ...items );
 
 	return [ referencesListContainer ];
 };
@@ -1548,7 +1548,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 		}
 		start = end;
 	}
-	this.descriptionItemsStack.push.apply( this.descriptionItemsStack, items );
+	this.descriptionItemsStack.push( ...items );
 
 	// Merge the stores and get the data
 	newDoc.getStore().merge( diffDoc.getStore() );

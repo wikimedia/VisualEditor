@@ -91,7 +91,7 @@ QUnit.test( 'compareClassLists', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		assert.strictEqual( ve.compareClassLists.apply( ve, caseItem.args ), caseItem.expected );
+		assert.strictEqual( ve.compareClassLists( ...caseItem.args ), caseItem.expected );
 	} );
 } );
 
@@ -260,7 +260,7 @@ QUnit.test( 'sparseSplice', ( assert ) => {
 		'holes look different to undefined'
 	);
 	cases.forEach( ( caseItem ) => {
-		runTest.apply( null, caseItem );
+		runTest( ...caseItem );
 	} );
 } );
 
@@ -688,7 +688,7 @@ QUnit.test( 'getCommonAncestor', ( assert ) => {
 		const testNodes = caseItem.nodes.split( /\s+/ ).map( getNode );
 		const ancestorNode = nodes[ caseItem.ancestor ];
 		assert.strictEqual(
-			ve.getCommonAncestor.apply( null, testNodes ),
+			ve.getCommonAncestor( ...testNodes ),
 			ancestorNode,
 			caseItem.nodes + ' -> ' + caseItem.ancestor
 		);
@@ -895,9 +895,9 @@ QUnit.test( 'deepFreeze (on cyclic structure)', ( assert ) => {
 
 	let count;
 
-	ve.deepFreeze = function () {
+	ve.deepFreeze = function ( ...args ) {
 		count++;
-		return realFreeze.apply( ve, arguments );
+		return realFreeze( ...args );
 	};
 	try {
 		count = 0;

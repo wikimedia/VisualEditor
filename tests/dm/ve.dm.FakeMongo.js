@@ -43,8 +43,8 @@ ve.dm.FakeMongo.prototype.updateOne = function ( search, update ) {
 	const docName = search.docName,
 		transactions = this.dataForDoc[ docName ].transactions,
 		stores = this.dataForDoc[ docName ].stores;
-	transactions.push.apply( transactions, update.$push.transactions.$each );
-	stores.push.apply( stores, update.$push.stores.$each );
+	transactions.push( ...update.$push.transactions.$each );
+	stores.push( ...update.$push.stores.$each );
 	return Promise.resolve();
 };
 
