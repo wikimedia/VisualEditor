@@ -63,7 +63,7 @@
 	"visualeditor-changedesc-link-added": "Lisätty linkki: $1",
 	"visualeditor-changedesc-link-href": "Muutettu linkin kohdetta: $1 → $2",
 	"visualeditor-changedesc-link-href-diff": "Muutettu linkin kohdetta: $1",
-	"visualeditor-changedesc-link-removed": "Linkki poistettu: $1",
+	"visualeditor-changedesc-link-removed": "Poistettu linkki: $1",
 	"visualeditor-changedesc-list-indent": "Luettelokohteen sisennystä lisätty",
 	"visualeditor-changedesc-list-outdent": "Luettelokohteen sisennystä pienennetty",
 	"visualeditor-changedesc-list-style-indent": "Sisennys",
