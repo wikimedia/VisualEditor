@@ -170,7 +170,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 
 	function createSurfacesFromHash( hash ) {
 		let pages = [];
-		if ( hash.slice( 0, 2 ) === '#!' ) {
+		if ( hash.startsWith( '#!' ) ) {
 			pages = hash.slice( 2 ).split( ',' ).map( decodeURIComponent );
 		}
 		if ( pages.length ) {

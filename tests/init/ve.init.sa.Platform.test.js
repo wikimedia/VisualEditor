@@ -14,7 +14,7 @@ QUnit.module( 've.init.sa.Platform', {
 			// Loop backwards since removal affects the key index
 			while ( i-- ) {
 				const key = localStorage.key( i );
-				if ( key.indexOf( 've-test-' ) === 0 ) {
+				if ( key.startsWith( 've-test-' ) ) {
 					localStorage.removeItem( key );
 				}
 			}

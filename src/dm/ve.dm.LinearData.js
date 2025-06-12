@@ -62,7 +62,7 @@ ve.dm.LinearData.static.isElementData = function ( item ) {
  * @return {boolean} Item is an open element
  */
 ve.dm.LinearData.static.isOpenElementData = function ( item ) {
-	return this.isElementData( item ) && item.type.charAt( 0 ) !== '/';
+	return this.isElementData( item ) && !item.type.startsWith( '/' );
 };
 
 /**
@@ -72,7 +72,7 @@ ve.dm.LinearData.static.isOpenElementData = function ( item ) {
  * @return {boolean} Item is a close element
  */
 ve.dm.LinearData.static.isCloseElementData = function ( item ) {
-	return this.isElementData( item ) && item.type.charAt( 0 ) === '/';
+	return this.isElementData( item ) && item.type.startsWith( '/' );
 };
 
 /* Methods */

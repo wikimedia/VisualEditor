@@ -213,7 +213,7 @@ ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggesti
 ve.ui.CompletionAction.prototype.compareSuggestionToInput = function ( suggestion, normalizedInput ) {
 	const normalizedSuggestion = suggestion.toLowerCase();
 	return {
-		isMatch: normalizedSuggestion.slice( 0, normalizedInput.length ) === normalizedInput,
+		isMatch: normalizedSuggestion.startsWith( normalizedInput ),
 		isExact: normalizedSuggestion === normalizedInput
 	};
 };

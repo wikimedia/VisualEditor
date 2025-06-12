@@ -315,7 +315,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		}
 	}
 
-	const isTextOp = treeOp.type.slice( -4 ) === 'Text';
+	const isTextOp = treeOp.type.endsWith( 'Text' );
 	const f = treeOp.from && prepareSplice( treeOp.from, treeOp.isContent, isTextOp );
 	const t = treeOp.to && prepareSplice( treeOp.to, treeOp.isContent, isTextOp );
 	// eslint-disable-next-line es-x/no-array-string-prototype-at

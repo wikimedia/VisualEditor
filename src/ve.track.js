@@ -44,7 +44,7 @@
 			let event;
 			for ( ; seen < q.length; seen++ ) {
 				event = q[ seen ];
-				if ( event.topic.indexOf( topic ) === 0 ) {
+				if ( event.topic.startsWith( topic ) ) {
 					callback( event.topic, event.data, event.timeStamp );
 				}
 			}

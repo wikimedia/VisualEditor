@@ -438,7 +438,7 @@ ve.dm.Model.prototype.getAttributes = function ( prefix ) {
 	if ( prefix ) {
 		const filtered = {};
 		for ( const key in attributes ) {
-			if ( key.indexOf( prefix ) === 0 ) {
+			if ( key.startsWith( prefix ) ) {
 				filtered[ key.slice( prefix.length ) ] = attributes[ key ];
 			}
 		}
