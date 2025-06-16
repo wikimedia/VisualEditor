@@ -18,8 +18,25 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	OO.EventEmitter.call( this );
 
 	// Properties
+	/**
+	 * @private Please use {@link getDocument} instead
+	 * @property {ve.dm.Document} document The document this internal list is in a 1:1 relationship
+	 * with
+	 */
 	this.document = doc;
+
+	/**
+	 * @private See {@link queueItemHtml}
+	 * @property {string[]} itemHtmlQueue Array of HTML strings. Emptied after {@link convertToData}
+	 * is called.
+	 */
 	this.itemHtmlQueue = [];
+
+	/**
+	 * @private See {@link getListNode}
+	 * @property {ve.dm.InternalListNode|null} listNode The corresponding data model node this meta
+	 * item belongs to. Lazy-initialized via {@link getListNode}.
+	 */
 	this.listNode = null;
 
 	/**
@@ -28,8 +45,22 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	 */
 	this.nodes = {};
 
+	/**
+	 * @private See {@link markGroupAsChanged}
+	 * @property {string[]} groupsChanged Array of group names; array index is meaningless
+	 */
 	this.groupsChanged = [];
+
+	/**
+	 * @private Please use {@link getKeyIndex} instead
+	 * @property {Object.<string,number>} keyIndexes Internal item index, keyed by "groupName/key"
+	 */
 	this.keyIndexes = {};
+
+	/**
+	 * @property {string[]} keys Array index is meaningful and identical to the numbers in the
+	 * `firstNodes` and `indexOrder` properties of {@link nodes} elements.
+	 */
 	this.keys = [];
 
 	// Event handlers
@@ -58,7 +89,7 @@ OO.mixinClass( ve.dm.InternalList, OO.EventEmitter );
  * @param {string} groupName Item group
  * @param {string} key Item key
  * @param {string} html Item contents
- * @return {Object} Object containing index of the item in the index-value store
+ * @return {{index: number, isNew: boolean}} Object containing index of the item in the index-value store
  * (and also its index in the internal list node), and a flag indicating if it is a new item.
  */
 ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
@@ -121,7 +152,7 @@ ve.dm.InternalList.prototype.getItemNodeCount = function () {
 /**
  * Get the item node from a specific index.
  *
- * @param {number} index Item index
+ * @param {number} index Item index, use {@link getKeyIndex} to map group and key to an index
  * @return {ve.dm.InternalItemNode} Item node
  */
 ve.dm.InternalList.prototype.getItemNode = function ( index ) {
@@ -239,6 +270,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
 /**
  * Get the internal item index of a group key if it already exists
  *
+ * @private
  * @param {string} groupName Item group
  * @param {string} key Item name
  * @return {number|undefined} The index of the group key, or undefined if it doesn't exist yet
@@ -252,8 +284,8 @@ ve.dm.InternalList.prototype.getKeyIndex = function ( groupName, key ) {
  *
  * @param {string} groupName Item group
  * @param {string} key Item name
- * @param {number} index Item index
- * @param {ve.dm.Node} node Item node
+ * @param {number} index New item index, or an existing one to replace an item
+ * @param {ve.dm.Node} node Item node to add
  */
 ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) {
 	let group = this.nodes[ groupName ];
@@ -289,6 +321,7 @@ ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
 /**
  * Handle document transaction events
  *
+ * @private
  * @fires ve.dm.InternalList#update
  */
 ve.dm.InternalList.prototype.onTransact = function () {
@@ -338,8 +371,9 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
  *
  * @param {ve.dm.InternalList} list Internal list to merge into this list
  * @param {number} commonLength The number of elements, counted from the beginning, that the lists have in common
- * @return {Object} 'mapping' is an object mapping indexes in list to indexes in this; newItemRanges is an array
- *  of ranges of internal nodes in list's document that should be copied into our document
+ * @return {{mapping: Object.<number,number>, newItemRanges: ve.Range[]}} mapping is an object
+ *  mapping indexes in list to indexes in this; newItemRanges is an array of ranges of internal
+ *  nodes in list's document that should be copied into our document
  */
 ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
 	const listLen = list.getItemNodeCount(),
