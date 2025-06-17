@@ -3124,7 +3124,9 @@ ve.ce.Surface.prototype.afterPasteSanitizeExternal = function ( $element ) {
 			// Invalid JSON
 			return;
 		}
-		$( el ).attr( attrs );
+		Object.keys( attrs ).forEach( ( attr ) => {
+			ve.setAttributeSafe( el, attr, attrs[ attr ] );
+		} );
 	} );
 };
 
