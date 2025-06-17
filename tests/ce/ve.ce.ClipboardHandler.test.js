@@ -1952,6 +1952,66 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 				msg: 'Text into empty paragraph (annotateImportedData)'
 			},
 			{
+				rangeOrSelection: new ve.Range( 3, 6 ),
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 6 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 3 },
+						{
+							type: 'replace',
+							insert: [],
+							remove: [ ...'Foo' ]
+						},
+						{ type: 'retain', length: docLen - 6 }
+					],
+					[
+						{ type: 'retain', length: 3 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', imported( null ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 6 }
+					]
+				],
+				msg: 'Text over non-empty paragraph (annotateImportedData)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 23, 27 ),
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 26 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 23 },
+						{
+							type: 'replace',
+							insert: [],
+							remove: [
+								...ve.dm.example.annotateText( 'Quux', bold )
+							]
+						},
+						{ type: 'retain', length: docLen - 27 }
+					],
+					[
+						{ type: 'retain', length: 23 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', [ bold, imported( null ) ] )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 27 }
+					]
+				],
+				msg: 'Text over annotated paragraph (annotateImportedData)'
+			},
+			{
 				rangeOrSelection: new ve.Range( 1 ),
 				pasteHtml: '<span id="docs-internal-guid-111-111-111">Foo</span>',
 				expectedRangeOrSelection: new ve.Range( 4 ),

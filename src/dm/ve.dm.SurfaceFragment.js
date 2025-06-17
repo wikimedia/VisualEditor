@@ -785,7 +785,9 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  * in a paragraph.
  *
  * @param {string|Array} content Content to insert, can be either a string or array of data
- * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated to match surrounding content,
+ * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated
+ *  with annotations covering the selection / annotations at the current offset, or a set of
+ *  annotations to annotate the content with.
  *  or an AnnotationSet from the current offset (calculated from the view)
  * @return {ve.dm.SurfaceFragment}
  * @chainable
@@ -807,7 +809,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotateOrSe
 	}
 
 	if ( !range.isCollapsed() ) {
-		if ( annotate ) {
+		if ( annotate && !annotations ) {
 			// If we're replacing content, use the annotations selected
 			// instead of continuing from the left
 			annotations = this.getAnnotations();
@@ -887,7 +889,9 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  *
  * @param {ve.dm.Document} newDoc Document to insert
  * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
- * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated to match surrounding content,
+ * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated
+ *  with annotations covering the selection / annotations at the current offset, or a set of
+ *  annotations to annotate the content with.
  *  or an AnnotationSet from the current offset (calculated from the view)
  * @return {ve.dm.SurfaceFragment}
  * @chainable
@@ -909,7 +913,7 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 	}
 
 	if ( !range.isCollapsed() ) {
-		if ( annotate ) {
+		if ( annotate && !annotations ) {
 			// If we're replacing content, use the annotations selected
 			// instead of continuing from the left
 			annotations = this.getAnnotations();

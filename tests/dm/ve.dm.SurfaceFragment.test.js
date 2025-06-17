@@ -697,6 +697,41 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 		],
 		'inserting document (annotate=true) reuses comparable annotations on existing content'
 	);
+
+	doc = ve.dm.example.createExampleDocument();
+	surface = new ve.dm.Surface( doc );
+	fragment = surface.getLinearFragment( new ve.Range( 1, 2 ) );
+	fragment.insertContent( 'Foo', ve.dm.example.createAnnotationSet( doc.getStore(), [ ve.dm.example.bold ] ) );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 1, 4 ) ),
+		ve.dm.example.preprocessAnnotations(
+			ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
+			doc.getStore()
+		).data,
+		'inserting content over selection (annotate=[bold])'
+	);
+
+	doc = ve.dm.example.createExampleDocument();
+	surface = new ve.dm.Surface( doc );
+	fragment = surface.getLinearFragment( new ve.Range( 1, 2 ) );
+	fragment.insertDocument(
+		ve.dm.example.createExampleDocumentFromData( [
+			{ type: 'paragraph' },
+			...'Foo',
+			{ type: '/paragraph' },
+			{ type: 'internalList' }, { type: '/internalList' }
+		] ),
+		new ve.Range( 1, 4 ),
+		ve.dm.example.createAnnotationSet( doc.getStore(), [ ve.dm.example.bold ] )
+	);
+	assert.deepEqual(
+		doc.getData( new ve.Range( 1, 4 ) ),
+		ve.dm.example.preprocessAnnotations(
+			ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
+			doc.getStore()
+		).data,
+		'inserting document over selection (annotate=[bold])'
+	);
 } );
 
 QUnit.test( 'changeAttributes', ( assert ) => {
