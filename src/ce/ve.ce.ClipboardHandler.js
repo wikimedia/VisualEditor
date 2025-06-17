@@ -1160,7 +1160,9 @@ ve.ce.ClipboardHandler.prototype.afterPasteSanitizeExternal = function ( $elemen
 			// Invalid JSON
 			return;
 		}
-		$( el ).attr( attrs );
+		Object.keys( attrs ).forEach( ( attr ) => {
+			ve.setAttributeSafe( el, attr, attrs[ attr ] );
+		} );
 	} );
 };
 
