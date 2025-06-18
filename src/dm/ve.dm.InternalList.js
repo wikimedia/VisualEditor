@@ -325,14 +325,15 @@ ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
  * @fires ve.dm.InternalList#update
  */
 ve.dm.InternalList.prototype.onTransact = function () {
-	if ( this.groupsChanged.length ) {
-		// length will almost always be 1, so probably better to not cache it
-		this.groupsChanged.forEach( ( groupName ) => {
-			this.getNodeGroup( groupName ).sortGroupIndexes();
-		} );
-		this.emit( 'update', this.groupsChanged );
-		this.groupsChanged = [];
+	if ( !this.groupsChanged.length ) {
+		return;
 	}
+
+	this.groupsChanged
+		.map( ( groupName ) => this.getNodeGroup( groupName ) )
+		.forEach( ( nodeGroup ) => nodeGroup.sortGroupIndexes() );
+	this.emit( 'update', this.groupsChanged );
+	this.groupsChanged = [];
 };
 
 /**
