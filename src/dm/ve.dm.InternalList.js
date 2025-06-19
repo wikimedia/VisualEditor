@@ -21,7 +21,13 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	this.document = doc;
 	this.itemHtmlQueue = [];
 	this.listNode = null;
+
+	/**
+	 * @private Please use {@link getNodeGroups} instead
+	 * @property {Object.<string,ve.dm.InternalListNodeGroup>} nodes Keyed by group name
+	 */
 	this.nodes = {};
+
 	this.groupsChanged = [];
 	this.keyIndexes = {};
 	this.keys = [];
@@ -134,7 +140,7 @@ ve.dm.InternalList.prototype.getItemNode = function ( index ) {
 /**
  * Get all node groups.
  *
- * @return {Object.<string,Object>} Node groups, keyed by group name
+ * @return {Object.<string,ve.dm.InternalListNodeGroup>} Node groups, keyed by group name
  */
 ve.dm.InternalList.prototype.getNodeGroups = function () {
 	return this.nodes;
@@ -144,7 +150,7 @@ ve.dm.InternalList.prototype.getNodeGroups = function () {
  * Get the node group object for a specified group name.
  *
  * @param {string} groupName Name of the group
- * @return {Object|undefined} Node group object, containing nodes and key order array
+ * @return {ve.dm.InternalListNodeGroup|undefined} Node group object, containing nodes and key order array
  */
 ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
 	return this.nodes[ groupName ];
@@ -286,15 +292,10 @@ ve.dm.InternalList.prototype.getKeyIndex = function ( groupName, key ) {
 ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) {
 	let group = this.nodes[ groupName ];
 	// The group may not exist yet
-	if ( group === undefined ) {
-		group = this.nodes[ groupName ] = {
-			keyedNodes: {},
-			firstNodes: [],
-			indexOrder: [],
-			uniqueListKeys: {},
-			uniqueListKeysInUse: {}
-		};
+	if ( !group ) {
+		group = this.nodes[ groupName ] = new ve.dm.InternalListNodeGroup();
 	}
+
 	let keyedNodes = group.keyedNodes[ key ];
 	this.keys[ index ] = key;
 	// The key may not exist yet
@@ -395,7 +396,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
  * has the 'placeholder' attribute, in which case it moved to the end of the
  * list, where it should be ignored.
  *
- * @param {Object} group
+ * @param {ve.dm.InternalListNodeGroup} group
  */
 ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {
 	// Sort indexOrder

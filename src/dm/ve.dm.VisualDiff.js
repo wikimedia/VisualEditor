@@ -133,15 +133,14 @@ ve.dm.VisualDiff.static.compareNodes = function ( oldNode, newNode ) {
  * @param {ve.dm.Document} doc
  */
 ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
-	const nodes = doc.getInternalList().nodes,
-		internalListGroups = doc.getInternalList().getNodeGroups();
+	const internalListGroups = doc.getInternalList().getNodeGroups();
 
 	for ( const groupName in internalListGroups ) {
 		const group = internalListGroups[ groupName ];
 		const groupIndexOrder = group.indexOrder;
 		for ( let i = 0, ilen = groupIndexOrder.length; i < ilen; i++ ) {
 			const nodeIndex = groupIndexOrder[ i ];
-			const refNodes = nodes[ groupName ].keyedNodes[ nodes[ groupName ].firstNodes[ nodeIndex ].registeredListKey ];
+			const refNodes = group.keyedNodes[ group.firstNodes[ nodeIndex ].registeredListKey ];
 			for ( let j = 0, jlen = refNodes.length; j < jlen; j++ ) {
 				doc.data.modifyData( refNodes[ j ].getOffset(), ( item ) => {
 					ve.setProp( item, 'internal', 'overrideIndex', i + 1 );
