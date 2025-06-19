@@ -40,17 +40,43 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	this.indexOrder = [];
 
 	/**
-	 * @internal private to {@link ve.dm.InternalList.getUniqueListKey}, do not use!
+	 * @private
 	 * @property {Object.<string,string>} uniqueListKeys Internal cache for previously generated
-	 * listKeys to make sure the same {@link ve.dm.InternalList.getUniqueListKey} call always
-	 * returns the same value
+	 * listKeys to make sure the same {@link getUniqueListKey} call always returns the same value
 	 */
 	this.uniqueListKeys = {};
 
 	/**
-	 * @internal private to {@link ve.dm.InternalList.getUniqueListKey}, do not use!
+	 * @private
 	 * @property {Object.<string,boolean>} uniqueListKeysInUse Internal cache to mark listKeys as
 	 * used. The values are meaningless.
 	 */
 	this.uniqueListKeysInUse = {};
+};
+
+/**
+ * Get a unique list key for this group.
+ *
+ * The returned list key is added to the list of unique list keys used in this group so that it
+ * won't be allocated again. It will also be associated to oldListKey so that if the same oldListKey
+ * is passed in again later, the previously allocated name will be returned.
+ *
+ * @param {string} oldListKey Current list key to associate the generated list key with
+ * @param {string} prefix Prefix to distinguish generated keys from non-generated ones
+ * @return {string} Generated unique list key, or existing unique key associated with oldListKey
+ */
+ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, prefix ) {
+	if ( oldListKey in this.uniqueListKeys ) {
+		return this.uniqueListKeys[ oldListKey ];
+	}
+
+	let num = 0;
+	while ( this.keyedNodes[ prefix + num ] || this.uniqueListKeysInUse[ prefix + num ] ) {
+		num++;
+	}
+
+	this.uniqueListKeys[ oldListKey ] = prefix + num;
+	// FIXME: We can as well store the last number instead of this list, reducing the footprint
+	this.uniqueListKeysInUse[ prefix + num ] = true;
+	return prefix + num;
 };

@@ -148,32 +148,10 @@ ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
 };
 
 /**
- * Get a unique list key for a given group.
- *
- * The returned list key is added to the list of unique list keys used in this group so that it
- * won't be allocated again. It will also be associated to oldListKey so that if the same oldListKey
- * is passed in again later, the previously allocated name will be returned.
- *
- * @param {string} groupName Name of the group
- * @param {string} oldListKey Current list key to associate the generated list key with
- * @param {string} prefix Prefix to distinguish generated keys from non-generated ones
- * @return {string} Generated unique list key, or existing unique key associated with oldListKey
+ * @deprecated please use `.getNodeGroup( … ).getUniqueListKey( … )` instead
  */
 ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName, oldListKey, prefix ) {
-	const group = this.getNodeGroup( groupName );
-
-	if ( group.uniqueListKeys[ oldListKey ] !== undefined ) {
-		return group.uniqueListKeys[ oldListKey ];
-	}
-
-	let num = 0;
-	while ( group.keyedNodes[ prefix + num ] || group.uniqueListKeysInUse[ prefix + num ] ) {
-		num++;
-	}
-
-	group.uniqueListKeys[ oldListKey ] = prefix + num;
-	group.uniqueListKeysInUse[ prefix + num ] = true;
-	return prefix + num;
+	return this.getNodeGroup( groupName ).getUniqueListKey( oldListKey, prefix );
 };
 
 /**
