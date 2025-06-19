@@ -105,8 +105,6 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 	this.nullSelectionOnBlur = config.nullSelectionOnBlur !== false;
 	this.completion = new ve.ui.CompletionWidget( this );
 
-	// Deprecated, use this.padding.top
-	this.toolbarHeight = 0;
 	this.padding = {
 		top: 0,
 		right: 0,
@@ -784,11 +782,6 @@ ve.ui.Surface.prototype.executeCommand = function ( commandName ) {
 	return false;
 };
 
-// Deprecated, use #setPadding
-ve.ui.Surface.prototype.setToolbarHeight = function ( toolbarHeight ) {
-	this.setPadding( { top: toolbarHeight } );
-};
-
 /**
  * @typedef {Object} Padding
  * @memberof ve.ui.Surface
@@ -809,8 +802,6 @@ ve.ui.Surface.prototype.setToolbarHeight = function ( toolbarHeight ) {
  */
 ve.ui.Surface.prototype.setPadding = function ( padding ) {
 	ve.extendObject( this.padding, padding );
-	// Deprecated, use this.padding.top
-	this.toolbarHeight = this.padding.top;
 };
 
 /**
