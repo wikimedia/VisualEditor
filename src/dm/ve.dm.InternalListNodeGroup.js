@@ -55,10 +55,9 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 
 	/**
 	 * @private
-	 * @property {Object.<string,boolean>} uniqueListKeysInUse Internal cache to mark listKeys as
-	 * used. The values are meaningless.
+	 * @property {number} uniqueNameSequence
 	 */
-	this.uniqueListKeysInUse = {};
+	this.uniqueNameSequence = 0;
 };
 
 /**
@@ -246,14 +245,16 @@ ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( key, node ) {
 };
 
 /**
- * Get a unique list key for this group.
+ * Generate a unique, human-readable list key that can be used instead of an item's internal list
+ * key. Calls with the same oldListKey will return the same value again.
  *
- * The returned list key is added to the list of unique list keys used in this group so that it
- * won't be allocated again. It will also be associated to oldListKey so that if the same oldListKey
- * is passed in again later, the previously allocated name will be returned.
+ * Practically, this is used to auto-generate unique names for previously unnamed references,
+ * e.g. `name=":0"` and so on.
  *
- * @param {string} oldListKey Current list key to associate the generated list key with
- * @param {string} prefix Prefix to distinguish generated keys from non-generated ones
+ * @param {string} oldListKey Current list key (typically something like "auto/0") to associate the
+ *  generated list key with
+ * @param {string} prefix Prefix for the generated key. Must match the prefix used in
+ *  {@link keyedNodes} (typically "literal/") for the duplicate detection to work.
  * @return {string} Generated unique list key, or existing unique key associated with oldListKey
  */
 ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, prefix ) {
@@ -261,13 +262,12 @@ ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, 
 		return this.uniqueListKeys[ oldListKey ];
 	}
 
-	let num = 0;
-	while ( this.keyedNodes[ prefix + num ] || this.uniqueListKeysInUse[ prefix + num ] ) {
-		num++;
-	}
+	let result;
+	do {
+		result = prefix + this.uniqueNameSequence++;
+		// Skip values that already appear in the document, e.g. from previous edits
+	} while ( this.keyedNodes[ result ] );
 
-	this.uniqueListKeys[ oldListKey ] = prefix + num;
-	// FIXME: We can as well store the last number instead of this list, reducing the footprint
-	this.uniqueListKeysInUse[ prefix + num ] = true;
-	return prefix + num;
+	this.uniqueListKeys[ oldListKey ] = result;
+	return result;
 };
