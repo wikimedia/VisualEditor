@@ -694,21 +694,13 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 /**
  * Handle position events from the view
  *
- * @param {boolean} [wasSynchronizing=false]
+ * @param {boolean} [passive=false]
  */
-ve.ui.Surface.prototype.onViewPosition = function ( wasSynchronizing ) {
-	const padding = {};
-	for ( const side in this.toolbarDialogs ) {
-		ve.extendObject( padding, this.toolbarDialogs[ side ].getSurfacePadding() );
-	}
-	if ( Object.keys( padding ).length ) {
-		this.setPadding( padding );
-		this.adjustVisiblePadding();
-		// Don't scroll to this user's cursor due to another user's changes being applied
-		if ( !wasSynchronizing ) {
-			this.scrollSelectionIntoView();
-		}
-	}
+ve.ui.Surface.prototype.onViewPosition = function ( passive ) {
+	this.recalculatePadding(
+		// Don't scroll to this user's cursor if event is marked as passive
+		!passive
+	);
 	if ( this.placeholderVisible ) {
 		this.getView().$element.css( 'min-height', this.$placeholder.outerHeight() );
 	}
@@ -796,6 +788,7 @@ ve.ui.Surface.prototype.executeCommand = function ( commandName ) {
  * scroll-into-view calculations can be adjusted.
  *
  * @param {ve.ui.Surface.Padding} padding Padding object. Omit properties to leave unchanged.
+ * @deprecated The surface should calculate its own padding in recalculatePadding
  */
 ve.ui.Surface.prototype.setPadding = function ( padding ) {
 	ve.extendObject( this.padding, padding );
@@ -818,16 +811,34 @@ ve.ui.Surface.prototype.getPadding = function () {
 	return this.padding;
 };
 
+ve.ui.Surface.prototype.recalculatePadding = function ( scrollSelection ) {
+	const oldPadding = this.padding;
+	this.padding = ve.extendObject(
+		{
+			top: 0,
+			right: 0,
+			bottom: 0,
+			left: 0
+		},
+		this.getTarget().getToolbarSurfacePadding(),
+		this.context.getSurfacePadding()
+	);
+	for ( const side in this.toolbarDialogs ) {
+		ve.extendObject( this.padding, this.toolbarDialogs[ side ].getSurfacePadding() );
+	}
+	// Scroll selection into view if padding changed
+	if ( scrollSelection && !OO.compare( oldPadding, this.padding ) ) {
+		this.scrollSelectionIntoView();
+	}
+	this.adjustVisiblePadding();
+};
+
 /**
  * Handle resize events from the context
  */
 ve.ui.Surface.prototype.onContextResize = function () {
-	const padding = this.context.getSurfacePadding();
-	if ( padding ) {
-		this.setPadding( padding );
-		this.adjustVisiblePadding();
-		this.scrollSelectionIntoView();
-	}
+	this.recalculatePadding();
+	this.scrollSelectionIntoView();
 };
 
 /**

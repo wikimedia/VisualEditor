@@ -535,9 +535,21 @@ ve.init.Target.prototype.onToolbarResize = function () {
 	if ( !this.getSurface() ) {
 		return;
 	}
-	this.getSurface().setPadding( {
+	this.getSurface().getView().emit( 'position', true );
+};
+
+/**
+ * Get an object describing the amount of padding the toolbar adds to the surface.
+ *
+ * @return {ve.ui.Surface.Padding|null} Padding object, or null
+ */
+ve.init.Target.prototype.getToolbarSurfacePadding = function () {
+	if ( !this.getToolbar() ) {
+		return null;
+	}
+	return {
 		top: this.getToolbar().getHeight() + this.toolbarScrollOffset
-	} );
+	};
 };
 
 /**
