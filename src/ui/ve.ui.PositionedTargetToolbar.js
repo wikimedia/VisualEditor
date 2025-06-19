@@ -97,7 +97,8 @@ ve.ui.PositionedTargetToolbar.prototype.detach = function () {
  * @inheritdoc
  */
 ve.ui.PositionedTargetToolbar.prototype.onWindowResize = function () {
-	ve.ui.Toolbar.super.prototype.onWindowResize.call( this );
+	// Parent method
+	ve.ui.PositionedTargetToolbar.super.prototype.onWindowResize.call( this );
 
 	// Update offsets after resize (see #float)
 	this.calculateOffset();
