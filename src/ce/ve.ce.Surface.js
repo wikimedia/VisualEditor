@@ -207,8 +207,9 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  * (only after initialize has already been called).
  *
  * @event ve.ce.Surface#position
- * @param {boolean} [wasSynchronizing=false] The surface was positioned due to
- *  synchronization (ve.dm.SurfaceSynchronizer)
+ * @param {boolean} [passive=false] Passive position events will
+ *  not try to keep the selection in view, e.g. when triggered
+ *  by ve.dm.SurfaceSynchronizer, or the toolbar unfloating.
  */
 
 /**
