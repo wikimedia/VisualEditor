@@ -73,11 +73,10 @@ const self = module.exports = {
 		 * and styles.
 		 *
 		 * @param {string[]} buildlist List of targets to work through
-		 * @param {Object|null} filelist Object to extend
+		 * @param {Object} [filelist] Object to extend
 		 * @return {Object} Object of two arrays listing the file paths
 		 */
-		function expandBuildList( buildlist, filelist ) {
-			filelist = filelist || {};
+		function expandBuildList( buildlist, filelist = {} ) {
 			filelist.scripts = filelist.scripts || [];
 			filelist.styles = filelist.styles || [];
 

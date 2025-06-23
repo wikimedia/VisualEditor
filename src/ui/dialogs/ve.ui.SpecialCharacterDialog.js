@@ -63,8 +63,7 @@ ve.ui.SpecialCharacterDialog.prototype.initialize = function () {
 /**
  * @inheritdoc
  */
-ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
-	data = data || {};
+ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data = {} ) {
 	return ve.ui.SpecialCharacterDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {
 			this.surface = data.surface;
@@ -87,8 +86,7 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 /**
  * @inheritdoc
  */
-ve.ui.SpecialCharacterDialog.prototype.getTeardownProcess = function ( data ) {
-	data = data || {};
+ve.ui.SpecialCharacterDialog.prototype.getTeardownProcess = function ( data = {} ) {
 	return ve.ui.SpecialCharacterDialog.super.prototype.getTeardownProcess.call( this, data )
 		.first( () => {
 			this.surface.getModel().disconnect( this );

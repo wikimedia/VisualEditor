@@ -114,8 +114,7 @@ ve.ce.ClipboardHandler.static.pasteSourceDetectors = {
  * @param {Object} [beforePasteData] Paste information, including leftText and rightText to strip
  * @return {string} Hash
  */
-ve.ce.ClipboardHandler.static.getClipboardHash = function ( $elements, beforePasteData ) {
-	beforePasteData = beforePasteData || {};
+ve.ce.ClipboardHandler.static.getClipboardHash = function ( $elements, beforePasteData = {} ) {
 	return $elements.text()
 		.slice(
 			beforePasteData.leftText ? beforePasteData.leftText.length : 0,

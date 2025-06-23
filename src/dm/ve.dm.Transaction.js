@@ -486,12 +486,10 @@ ve.dm.Transaction.prototype.translateRangeWithAuthor = function ( range, authorI
  * @param {boolean} [options.excludeAttributes] Exclude attribute changes
  * @return {ve.Range|null} Range covering modifications, or null for a no-op transaction
  */
-ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options ) {
+ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options = {} ) {
 	let docEndOffset = doc.data.getLength(),
 		oldOffset = 0,
 		offset = 0;
-
-	options = options || {};
 
 	if ( !options.includeInternalList ) {
 		const internalListNode = doc.getInternalList().getListNode();

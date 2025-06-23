@@ -129,9 +129,7 @@
 
 		return new MockSafeStorage( store );
 	};
-	DummyPlatform.prototype.createLocalStorage = DummyPlatform.prototype.createSessionStorage = function ( store ) {
-		store = store || {};
-
+	DummyPlatform.prototype.createLocalStorage = DummyPlatform.prototype.createSessionStorage = function ( store = {} ) {
 		const MockSystemStorage = function () {};
 		OO.initClass( MockSystemStorage );
 		MockSystemStorage.prototype.getItem = function ( key ) {

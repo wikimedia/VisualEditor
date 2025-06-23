@@ -60,9 +60,7 @@ ve.ui.ProgressDialog.prototype.initialize = function () {
 /**
  * @inheritdoc
  */
-ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
-	data = data || {};
-
+ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data = {} ) {
 	// Parent method
 	return ve.ui.ProgressDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {

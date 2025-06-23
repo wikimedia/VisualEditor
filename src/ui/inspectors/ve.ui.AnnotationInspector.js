@@ -236,8 +236,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 /**
  * @inheritdoc
  */
-ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
-	data = data || {};
+ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data = {} ) {
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( () => {
 			const annotation = this.getAnnotation(),
