@@ -512,12 +512,7 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options ) {
 		oldOffset = 0,
 		offset = 0;
 
-	if ( typeof options === 'boolean' ) {
-		// Backwards compatibility
-		options = { includeInternalList: options };
-	} else {
-		options = options || {};
-	}
+	options = options || {};
 
 	if ( !options.includeInternalList ) {
 		const internalListNode = doc.getInternalList().getListNode();
