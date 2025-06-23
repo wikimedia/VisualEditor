@@ -42,7 +42,7 @@
 					const dmSurface = new ve.dm.Surface( dmDoc );
 
 					t0 = performance.now();
-					dom = ve.dm.converter.getDomFromModel( dmDoc, config );
+					dom = ve.dm.converter.getDomFromModel( dmDoc );
 					dmDomTimes += performance.now() - t0;
 
 					t0 = performance.now();

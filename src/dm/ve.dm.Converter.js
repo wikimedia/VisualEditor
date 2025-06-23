@@ -1230,11 +1230,6 @@ ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {
  * @return {HTMLDocument} Document containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromModel = function ( model, mode = ve.dm.Converter.static.PARSER_MODE ) {
-	// Backwards compatibility with 'forClipboard' argument
-	if ( typeof mode === 'boolean' ) {
-		mode = mode ? this.constructor.static.CLIPBOARD_MODE : this.constructor.static.PARSER_MODE;
-	}
-
 	const doc = ve.createDocumentFromHtml( '' );
 	this.getDomSubtreeFromModel( model, doc.body, mode );
 
@@ -1249,10 +1244,6 @@ ve.dm.Converter.prototype.getDomFromModel = function ( model, mode = ve.dm.Conve
  * @return {HTMLDocument} Document containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromNode = function ( node, mode = ve.dm.Converter.static.PARSER_MODE ) {
-	// Backwards compatibility with 'forClipboard' argument
-	if ( typeof mode === 'boolean' ) {
-		mode = mode ? this.constructor.static.CLIPBOARD_MODE : this.constructor.static.PARSER_MODE;
-	}
 	return this.getDomFromModel(
 		node.getDocument().shallowCloneFromRange( node.isInternal() ? node.getRange() : node.getOuterRange() ),
 		mode
