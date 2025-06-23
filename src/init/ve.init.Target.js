@@ -16,7 +16,6 @@
  * @param {Object} [config] Configuration options
  * @param {Object} [config.toolbarConfig={}] Configuration options for the toolbar
  * @param {Object} [config.toolbarGroups] Toolbar groups, defaults to this.constructor.static.toolbarGroups
- * @param {Object} [config.actionGroups] Toolbar groups, defaults to this.constructor.static.actionGroups
  * @param {string[]} [config.modes] Available editing modes. Defaults to static.modes
  * @param {string} [config.defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
  * @param {boolean} [config.register=true] Register the target at ve.init.target
@@ -39,7 +38,6 @@ ve.init.Target = function VeInitTarget( config = {} ) {
 	this.toolbar = null;
 	this.toolbarConfig = config.toolbarConfig || {};
 	this.toolbarGroups = config.toolbarGroups || this.constructor.static.toolbarGroups;
-	this.actionGroups = config.actionGroups || this.constructor.static.actionGroups;
 	this.$scrollContainer = this.getScrollContainer();
 	this.$scrollListener = this.$scrollContainer.is( 'html, body' ) ?
 		$( OO.ui.Element.static.getWindow( this.$scrollContainer[ 0 ] ) ) :
@@ -169,16 +167,6 @@ ve.init.Target.static.toolbarGroups = [
 	// visualeditor-help-tool message.
 	// TODO: Consider downstreaming this message.
 ];
-
-/**
- * Toolbar definition for the actions side of the toolbar
- *
- * @deprecated Use align:'after' in the regular toolbarGroups instead.
- * @static
- * @property {Array}
- * @inheritable
- */
-ve.init.Target.static.actionGroups = [];
 
 /**
  * List of commands which can be triggered anywhere from within the document
@@ -684,21 +672,6 @@ ve.init.Target.prototype.getToolbar = function () {
 };
 
 /**
- * Get the actions toolbar
- *
- * @deprecated
- * @return {ve.ui.TargetToolbar} Actions toolbar (same as the normal toolbar)
- */
-ve.init.Target.prototype.getActions = function () {
-	OO.ui.warnDeprecation( 'Target#getActions: Use #getToolbar instead ' +
-		'(actions toolbar has been merged into the normal toolbar)' );
-	if ( !this.actionsToolbar ) {
-		this.actionsToolbar = this.getToolbar();
-	}
-	return this.actionsToolbar;
-};
-
-/**
  * Set up the toolbar if it doesn't exist, and attach it to a surface
  *
  * If the toolbar already exists it can still be attached
@@ -710,12 +683,6 @@ ve.init.Target.prototype.setupToolbar = function ( newSurface ) {
 	// Create toolbar if it doesn't exist
 	if ( !this.toolbar ) {
 		const toolbar = this.toolbar = new ve.ui.PositionedTargetToolbar( this, this.toolbarConfig );
-		if ( this.actionGroups.length ) {
-			// Backwards-compatibility
-			if ( !this.actionsToolbar ) {
-				this.actionsToolbar = this.getToolbar();
-			}
-		}
 
 		if ( this.constructor.static.enforceResizesContent ) {
 			this.toggleResizesContent( true );
@@ -762,13 +729,7 @@ ve.init.Target.prototype.setupToolbar = function ( newSurface ) {
 			} );
 	}
 
-	// Connect to surface
-	this.actionGroups.forEach( ( group ) => {
-		group.align = 'after';
-	} );
-	const groups = [ ...this.toolbarGroups, ...this.actionGroups ];
-
-	this.toolbar.setup( groups, newSurface );
+	this.toolbar.setup( this.toolbarGroups, newSurface );
 	this.attachToolbar();
 	requestAnimationFrame( this.onContainerScrollHandler );
 };
@@ -829,9 +790,6 @@ ve.init.Target.prototype.teardownToolbar = function () {
 	if ( this.toolbar ) {
 		this.toolbar.destroy();
 		this.toolbar = null;
-	}
-	if ( this.actionsToolbar ) {
-		this.actionsToolbar = null;
 	}
 	if ( this.constructor.static.enforceResizesContent ) {
 		this.toggleResizesContent( false );
