@@ -265,37 +265,14 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 		group = this.nodes[ groupName ] = new ve.dm.InternalListNodeGroup();
 	}
 
-	let keyedNodes = group.keyedNodes[ key ];
 	this.keys[ index ] = key;
-	// The key may not exist yet
-	if ( keyedNodes === undefined ) {
-		keyedNodes = group.keyedNodes[ key ] = [];
-	}
 	if ( node.getDocument().buildingNodeTree ) {
 		// If the document is building the original node tree
 		// then every item is being added in order, so we don't
 		// need to worry about sorting.
-		keyedNodes.push( node );
-		if ( keyedNodes.length === 1 ) {
-			group.firstNodes[ index ] = node;
-		}
+		group.appendNodeWithKnownIndex( key, node, index );
 	} else {
-		// TODO: We could use binary search insertion sort
-		const start = node.getRange().start;
-		let i, len;
-		for ( i = 0, len = keyedNodes.length; i < len; i++ ) {
-			if ( start < keyedNodes[ i ].getRange().start ) {
-				break;
-			}
-		}
-		// 'i' is now the insertion point, so add the node here
-		keyedNodes.splice( i, 0, node );
-		if ( i === 0 ) {
-			group.firstNodes[ index ] = node;
-		}
-	}
-	if ( !group.indexOrder.includes( index ) ) {
-		group.indexOrder.push( index );
+		group.insertNodeInDocumentOrder( key, node );
 	}
 	this.markGroupAsChanged( groupName );
 };
@@ -318,11 +295,11 @@ ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
  * @fires ve.dm.InternalList#update
  */
 ve.dm.InternalList.prototype.onTransact = function () {
-	if ( this.groupsChanged.length > 0 ) {
+	if ( this.groupsChanged.length ) {
 		// length will almost always be 1, so probably better to not cache it
-		for ( let i = 0; i < this.groupsChanged.length; i++ ) {
-			this.sortGroupIndexes( this.nodes[ this.groupsChanged[ i ] ] );
-		}
+		this.groupsChanged.forEach( ( groupName ) => {
+			this.getNodeGroup( groupName ).sortGroupIndexes();
+		} );
 		this.emit( 'update', this.groupsChanged );
 		this.groupsChanged = [];
 	}
@@ -337,53 +314,8 @@ ve.dm.InternalList.prototype.onTransact = function () {
  * @param {ve.dm.Node} node Item node
  */
 ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node ) {
-	const group = this.nodes[ groupName ];
-	const keyedNodes = group.keyedNodes[ key ];
-	for ( let i = 0, len = keyedNodes.length; i < len; i++ ) {
-		if ( keyedNodes[ i ] === node ) {
-			keyedNodes.splice( i, 1 );
-			if ( i === 0 ) {
-				group.firstNodes[ index ] = keyedNodes[ 0 ];
-			}
-			break;
-		}
-	}
-	// If the all the items in this key have been removed
-	// then remove this index from indexOrder and firstNodes
-	if ( keyedNodes.length === 0 ) {
-		delete group.keyedNodes[ key ];
-		delete group.firstNodes[ index ];
-		const j = group.indexOrder.indexOf( index );
-		group.indexOrder.splice( j, 1 );
-	}
+	this.getNodeGroup( groupName ).removeNode( key, node );
 	this.markGroupAsChanged( groupName );
-};
-
-/**
- * Sort the indexOrder array within a group object.
- *
- * Items are sorted by the start offset of their firstNode, unless that node
- * has the 'placeholder' attribute, in which case it moved to the end of the
- * list, where it should be ignored.
- *
- * @private
- * @param {ve.dm.InternalListNodeGroup} group
- */
-ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {
-	// Sort indexOrder
-	group.indexOrder.sort( ( index1, index2 ) => {
-		// Sometimes there is no node at the time of sorting (T350902) so move these to the end to be ignored
-		if ( !group.firstNodes[ index1 ] ) {
-			return !group.firstNodes[ index2 ] ? 0 : 1;
-		} else if ( !group.firstNodes[ index2 ] ) {
-			return -1;
-		}
-		// Sort placeholder nodes to the end, so they don't interfere with numbering
-		if ( group.firstNodes[ index1 ].getAttribute( 'placeholder' ) ) {
-			return group.firstNodes[ index2 ].getAttribute( 'placeholder' ) ? 0 : 1;
-		}
-		return group.firstNodes[ index1 ].getRange().start - group.firstNodes[ index2 ].getRange().start;
-	} );
 };
 
 /**
