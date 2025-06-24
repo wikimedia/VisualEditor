@@ -82,15 +82,6 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
 };
 
 /**
- * Gets all the item's HTML strings
- *
- * @return {Object} Name-indexed object containing HTMLElements
- */
-ve.dm.InternalList.prototype.getItemHtmlQueue = function () {
-	return this.itemHtmlQueue;
-};
-
-/**
  * Gets the internal list's document model
  *
  * @return {ve.dm.Document} Document model
@@ -210,7 +201,7 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  * @return {Array} Linear model data
  */
 ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
-	const itemHtmlQueue = this.getItemHtmlQueue();
+	const itemHtmlQueue = this.itemHtmlQueue;
 
 	const list = [];
 	list.push( { type: 'internalList' } );
@@ -334,6 +325,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 /**
  * Mark a node group as having been changed since the last transaction.
  *
+ * @private
  * @param {string} groupName Name of group which has changed
  */
 ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
@@ -396,6 +388,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
  * has the 'placeholder' attribute, in which case it moved to the end of the
  * list, where it should be ignored.
  *
+ * @private
  * @param {ve.dm.InternalListNodeGroup} group
  */
 ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {
