@@ -445,6 +445,7 @@ module.exports = function ( grunt ) {
 								'src/init/**/*.js',
 								// DM
 								'src/dm/ve.dm.InternalList.js',
+								'src/dm/ve.dm.InternalListNodeGroup.js',
 								'src/dm/ve.dm.SourceSurfaceFragment.js',
 								'src/dm/ve.dm.SurfaceSynchronizer.js',
 								'src/dm/ve.dm.TableSlice.js',

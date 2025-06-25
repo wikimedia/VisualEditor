@@ -380,6 +380,7 @@
 			"src/dm/ve.dm.LeafNode.js",
 			"src/dm/ve.dm.Annotation.js",
 			"src/dm/ve.dm.InternalList.js",
+			"src/dm/ve.dm.InternalListNodeGroup.js",
 			"src/dm/ve.dm.MetaItem.js",
 			"src/dm/ve.dm.MetaList.js",
 			"src/dm/ve.dm.TableMatrix.js",
