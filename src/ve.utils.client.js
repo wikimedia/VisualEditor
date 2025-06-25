@@ -38,7 +38,7 @@ ve.supportsSelectionExtend = !!window.getSelection().extend;
 /**
  * Translate rect by some fixed vector and return a new offset object
  *
- * @param {Object} rect Offset object containing all or any of top, left, bottom, right, width & height
+ * @param {DOMRect|Object} rect DOMRect or DOMRect-like object describing rectangle
  * @param {number} x Horizontal translation
  * @param {number} y Vertical translation
  * @return {Object} Translated rect
@@ -71,49 +71,50 @@ ve.translateRect = function ( rect, x, y ) {
  *
  * The start rectangle is the top-most, and the end rectangle is the bottom-most.
  *
- * @param {Object[]|null} rects Full list of rectangles
+ * @param {DOMRectList|DOMRect[]|Object[]|null} rects List of rectangles
  * @return {Object.<string,Object>|null} Object containing two rectangles: start and end, or null if there are no rectangles
  */
 ve.getStartAndEndRects = function ( rects ) {
 	if ( !rects || !rects.length ) {
 		return null;
 	}
-	let startRect, endRect;
-	for ( let i = 0, l = rects.length; i < l; i++ ) {
-		if ( !startRect || rects[ i ].top < startRect.top ) {
+	let start, end;
+	for ( const rect of rects ) {
+		if ( !start || rect.top < start.top ) {
 			// Use ve.extendObject as ve.copy copies non-plain objects by reference
-			startRect = ve.extendObject( {}, rects[ i ] );
-		} else if ( rects[ i ].top === startRect.top ) {
+			start = ve.extendObject( {}, rect );
+		} else if ( rect.top === start.top ) {
 			// Merge rects with the same top coordinate
-			startRect.left = Math.min( startRect.left, rects[ i ].left );
-			startRect.right = Math.max( startRect.right, rects[ i ].right );
-			startRect.width = startRect.right - startRect.left;
+			start.left = Math.min( start.left, rect.left );
+			start.right = Math.max( start.right, rect.right );
+			start.width = start.right - start.left;
 		}
-		if ( !endRect || rects[ i ].bottom > endRect.bottom ) {
+		if ( !end || rect.bottom > end.bottom ) {
 			// Use ve.extendObject as ve.copy copies non-plain objects by reference
-			endRect = ve.extendObject( {}, rects[ i ] );
-		} else if ( rects[ i ].bottom === endRect.bottom ) {
+			end = ve.extendObject( {}, rect );
+		} else if ( rect.bottom === end.bottom ) {
 			// Merge rects with the same bottom coordinate
-			endRect.left = Math.min( endRect.left, rects[ i ].left );
-			endRect.right = Math.max( endRect.right, rects[ i ].right );
-			endRect.width = startRect.right - startRect.left;
+			end.left = Math.min( end.left, rect.left );
+			end.right = Math.max( end.right, rect.right );
+			end.width = start.right - start.left;
 		}
 	}
-	return {
-		start: startRect,
-		end: endRect
-	};
+	return { start, end };
 };
 
 /**
  * Minimize a set of rectangles by discarding ones which are contained by others
  *
- * @param {Object[]} rects Full list of rectangles
+ * @param {DOMRectList|DOMRect[]|Object[]|null} rects List of rectangles
  * @param {number} [allowedErrorOffset=3] Allowed error offset, the pixel error amount
  *  used in coordinate comparisons.
  * @return {Object[]} Minimized list of rectangles
  */
 ve.minimizeRects = function ( rects, allowedErrorOffset = 3 ) {
+	if ( !rects || !rects.length ) {
+		return [];
+	}
+
 	// Check if rect1 contains rect2
 	function contains( rect1, rect2 ) {
 		return rect2.left >= rect1.left - allowedErrorOffset &&
@@ -139,7 +140,7 @@ ve.minimizeRects = function ( rects, allowedErrorOffset = 3 ) {
 	}
 
 	const minimalRects = [];
-	rects.forEach( ( rect ) => {
+	for ( const rect of rects ) {
 		let keep = true;
 		for ( let i = 0, il = minimalRects.length; i < il; i++ ) {
 			// This rect is contained by an existing rect, discard
@@ -180,9 +181,50 @@ ve.minimizeRects = function ( rects, allowedErrorOffset = 3 ) {
 		if ( keep ) {
 			minimalRects.push( rect );
 		}
-	} );
+	}
 
 	return minimalRects;
+};
+
+/**
+ * Compute the bounding rectangle of a list of rectangles
+ *
+ * @param {DOMRectList|DOMRect[]|Object[]|null} rects List of rectangles
+ * @return {Object|null} DOMRect-like object, or null if there are no rectangles
+ */
+ve.getBoundingRect = function ( rects ) {
+	if ( !rects || !rects.length ) {
+		return null;
+	}
+
+	let top = Infinity;
+	let left = Infinity;
+	let right = -Infinity;
+	let bottom = -Infinity;
+
+	for ( const rect of rects ) {
+		if ( rect.top < top ) {
+			top = rect.top;
+		}
+		if ( rect.left < left ) {
+			left = rect.left;
+		}
+		if ( rect.right > right ) {
+			right = rect.right;
+		}
+		if ( rect.bottom > bottom ) {
+			bottom = rect.bottom;
+		}
+	}
+
+	return {
+		top,
+		left,
+		right,
+		bottom,
+		width: right - left,
+		height: bottom - top
+	};
 };
 
 /**

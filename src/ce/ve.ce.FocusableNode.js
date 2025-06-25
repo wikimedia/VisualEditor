@@ -162,26 +162,13 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 		rects = filteredRects;
 	}
 
-	let boundingRect = null;
+	if ( relativeRect ) {
+		rects.forEach( ( rect, i ) => {
+			rects[ i ] = ve.translateRect( rect, -relativeRect.left, -relativeRect.top );
+		} );
+	}
 
-	for ( let i = 0, l = rects.length; i < l; i++ ) {
-		// Translate to relative
-		if ( relativeRect ) {
-			rects[ i ] = ve.translateRect( rects[ i ], -relativeRect.left, -relativeRect.top );
-		}
-		if ( !boundingRect ) {
-			boundingRect = ve.copy( rects[ i ] );
-		} else {
-			boundingRect.top = Math.min( boundingRect.top, rects[ i ].top );
-			boundingRect.left = Math.min( boundingRect.left, rects[ i ].left );
-			boundingRect.bottom = Math.max( boundingRect.bottom, rects[ i ].bottom );
-			boundingRect.right = Math.max( boundingRect.right, rects[ i ].right );
-		}
-	}
-	if ( boundingRect ) {
-		boundingRect.width = boundingRect.right - boundingRect.left;
-		boundingRect.height = boundingRect.bottom - boundingRect.top;
-	}
+	const boundingRect = ve.getBoundingRect( rects );
 
 	return {
 		rects: rects,
