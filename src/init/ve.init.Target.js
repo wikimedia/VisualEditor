@@ -450,8 +450,7 @@ ve.init.Target.prototype.getScrollContainer = function () {
  * Handle scroll container scroll events
  */
 ve.init.Target.prototype.onContainerScroll = function () {
-	// Don't use getter as it creates the toolbar
-	const toolbar = this.toolbar;
+	const toolbar = this.getToolbar();
 
 	if ( toolbar && toolbar.isFloatable() ) {
 		const wasFloating = toolbar.isFloating();
@@ -544,11 +543,12 @@ ve.init.Target.prototype.onToolbarResize = function () {
  * @return {ve.ui.Surface.Padding|null} Padding object, or null
  */
 ve.init.Target.prototype.getToolbarSurfacePadding = function () {
-	if ( !this.getToolbar() ) {
+	const toolbar = this.getToolbar();
+	if ( !toolbar ) {
 		return null;
 	}
 	return {
-		top: this.getToolbar().getHeight() + this.toolbarScrollOffset
+		top: toolbar.getHeight() + this.toolbarScrollOffset
 	};
 };
 
@@ -674,14 +674,11 @@ ve.init.Target.prototype.getSurface = function () {
 };
 
 /**
- * Get the target's toolbar
+ * Get the target's toolbar, if it exists
  *
- * @return {ve.ui.TargetToolbar} Toolbar
+ * @return {ve.ui.TargetToolbar|null}
  */
 ve.init.Target.prototype.getToolbar = function () {
-	if ( !this.toolbar ) {
-		this.toolbar = new ve.ui.PositionedTargetToolbar( this, this.toolbarConfig );
-	}
 	return this.toolbar;
 };
 
@@ -706,7 +703,7 @@ ve.init.Target.prototype.getActions = function () {
  * @param {ve.ui.Surface} surface
  */
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
-	const toolbar = this.getToolbar();
+	const toolbar = this.toolbar = new ve.ui.PositionedTargetToolbar( this, this.toolbarConfig );
 	if ( this.actionGroups.length ) {
 		// Backwards-compatibility
 		if ( !this.actionsToolbar ) {
