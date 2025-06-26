@@ -156,6 +156,7 @@ ve.init.Target.static.toolbarGroups = [
 		name: 'pageMenu',
 		type: 'list',
 		align: 'after',
+		excludeFromTargetWidget: true,
 		icon: 'menu',
 		indicator: null,
 		header: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
@@ -560,7 +561,7 @@ ve.init.Target.prototype.getToolbarSurfacePadding = function () {
  */
 ve.init.Target.prototype.createTargetWidget = function ( config = {} ) {
 	return new ve.ui.TargetWidget( ve.extendObject( {
-		toolbarGroups: this.toolbarGroups
+		toolbarGroups: this.toolbarGroups.filter( ( group ) => !group.excludeFromTargetWidget )
 	}, config ) );
 };
 

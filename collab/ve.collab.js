@@ -88,7 +88,8 @@ ve.collab.initPeerClient = function ( serverId, isMain, userName ) {
 	ve.init.target.constructor.static.toolbarGroups.unshift( {
 		name: 'authorList',
 		include: [ 'authorList' ],
-		align: 'after'
+		align: 'after',
+		excludeFromTargetWidget: true
 	} );
 
 	peerClient.on( 'open', ( /* id */ ) => {

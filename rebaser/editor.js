@@ -24,6 +24,7 @@
 		{
 			name: 'authorList',
 			align: 'after',
+			excludeFromTargetWidget: true,
 			include: [ 'authorList' ]
 		}
 	);
