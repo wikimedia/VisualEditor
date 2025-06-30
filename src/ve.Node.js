@@ -289,7 +289,7 @@ ve.Node.prototype.getOffset = null;
 /**
  * Get the range inside the node.
  *
- * @param {boolean} backwards Return a backwards range
+ * @param {boolean} [backwards=false] Return a backwards range
  * @return {ve.Range} Inner node range
  */
 ve.Node.prototype.getRange = function ( backwards ) {
@@ -301,7 +301,7 @@ ve.Node.prototype.getRange = function ( backwards ) {
 /**
  * Get the outer range of the node, which includes wrappers if present.
  *
- * @param {boolean} backwards Return a backwards range
+ * @param {boolean} [backwards=false] Return a backwards range
  * @return {ve.Range} Node outer range
  */
 ve.Node.prototype.getOuterRange = function ( backwards ) {

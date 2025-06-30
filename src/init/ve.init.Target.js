@@ -828,7 +828,7 @@ ve.init.Target.prototype.attachToolbar = function () {
  *
  * See #static-enforceResizesContent
  *
- * @param {boolean} set Set (true) or restore initial value (false)
+ * @param {boolean} [set=false] Set (true) or restore initial value (false)
  */
 ve.init.Target.prototype.toggleResizesContent = function ( set ) {
 	// eslint-disable-next-line no-jquery/no-global-selector

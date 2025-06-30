@@ -73,7 +73,7 @@ ve.Range.static.newFromHash = function ( hash ) {
  *
  * @static
  * @param {ve.Range[]} ranges Array of ve.Range objects (at least one)
- * @param {boolean} backwards Return a backwards range
+ * @param {boolean} [backwards=false] Return a backwards range
  * @return {ve.Range} Range that spans all of the given ranges
  */
 ve.Range.static.newCoveringRange = function ( ranges, backwards ) {

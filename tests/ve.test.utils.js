@@ -237,7 +237,7 @@
 	 * disable this check with the ignoreXmlWarnings param.
 	 *
 	 * @param {string} html
-	 * @param {boolean} ignoreXmlWarnings Skip validation
+	 * @param {boolean} [ignoreXmlWarnings=false] Skip validation
 	 * @return {HTMLDocument}
 	 */
 	ve.test.utils.createDocumentFromHtml = function ( html, ignoreXmlWarnings ) {

@@ -285,7 +285,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
  *
  * @param {string} pageHtml HTML string
  * @param {string} mode Edit mode
- * @param {boolean} skipAutoSave Skip auto-save check (e.g. when switching modes)
+ * @param {boolean} [skipAutoSave=false] Skip auto-save check (e.g. when switching modes)
  */
 ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, skipAutoSave ) {
 	let restored = false;

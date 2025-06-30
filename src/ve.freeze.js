@@ -24,7 +24,7 @@
 	 * Original object properties are overwritten with frozen versions.
 	 *
 	 * @param {Object} object Object to freeze
-	 * @param {boolean} [onlyProperties] Only freeze properties (or array items)
+	 * @param {boolean} [onlyProperties=false] Only freeze properties (or array items)
 	 * @param {Set} [seen] Set of already-seen objects (for internal, recursive use)
 	 * @return {Object} Immutable deep copy of the original object
 	 */

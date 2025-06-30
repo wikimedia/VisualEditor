@@ -490,7 +490,7 @@ ve.dir = ve.dir || function () {
  * This implementation does nothing, to add a real implementation ve.freeze needs to be loaded.
  *
  * @param {Object} obj
- * @param {boolean} onlyProperties
+ * @param {boolean} [onlyProperties=false]
  * @return {Object}
  */
 ve.deepFreeze = ve.deepFreeze || function ( obj ) {
