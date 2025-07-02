@@ -417,17 +417,6 @@ ve.dm.Converter.prototype.getCurrentContext = function () {
 };
 
 /**
- * Get the annotations currently being applied by the converter. Note that this is specific to
- * the current recursion level.
- *
- * @return {ve.dm.AnnotationSet|null} Annotation set, or null if not converting
- */
-ve.dm.Converter.prototype.getActiveAnnotations = function () {
-	const context = this.getCurrentContext();
-	return context ? context.annotations : null;
-};
-
-/**
  * Whether the converter is currently expecting content. Note that this is specific to the current
  * recursion level.
  *
