@@ -583,21 +583,6 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 };
 
 /**
- * Build an HTML DOM node for a linear model annotation.
- *
- * @param {Object} dataAnnotation
- * @param {HTMLDocument} doc HTML document to create element with
- * @return {HTMLElement} HTML DOM node
- */
-ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation, doc ) {
-	const htmlData = dataAnnotation.toHtml(),
-		domElement = doc.createElement( htmlData.tag );
-
-	ve.setDomAttributes( domElement, htmlData.attributes );
-	return domElement;
-};
-
-/**
  * Convert an HTML document to a document model.
  *
  * @param {HTMLDocument} doc HTML document to convert
