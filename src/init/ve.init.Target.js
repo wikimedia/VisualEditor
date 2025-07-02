@@ -699,36 +699,48 @@ ve.init.Target.prototype.getActions = function () {
 };
 
 /**
- * Set up the toolbar, attaching it to a surface.
+ * Set up the toolbar if it doesn't exist, and attach it to a surface
  *
- * @param {ve.ui.Surface} surface
+ * If the toolbar already exists it can still be attached
+ * to another surface.
+ *
+ * @param {ve.ui.Surface} newSurface
  */
-ve.init.Target.prototype.setupToolbar = function ( surface ) {
-	const toolbar = this.toolbar = new ve.ui.PositionedTargetToolbar( this, this.toolbarConfig );
-	if ( this.actionGroups.length ) {
-		// Backwards-compatibility
-		if ( !this.actionsToolbar ) {
-			this.actionsToolbar = this.getToolbar();
+ve.init.Target.prototype.setupToolbar = function ( newSurface ) {
+	// Create toolbar if it doesn't exist
+	if ( !this.toolbar ) {
+		const toolbar = this.toolbar = new ve.ui.PositionedTargetToolbar( this, this.toolbarConfig );
+		if ( this.actionGroups.length ) {
+			// Backwards-compatibility
+			if ( !this.actionsToolbar ) {
+				this.actionsToolbar = this.getToolbar();
+			}
 		}
-	}
 
-	if ( this.constructor.static.enforceResizesContent ) {
-		this.toggleResizesContent( true );
-	}
+		if ( this.constructor.static.enforceResizesContent ) {
+			this.toggleResizesContent( true );
+		}
 
-	toolbar.connect( this, {
-		resize: 'onToolbarResize',
-		active: 'onToolbarActive'
-	} );
+		toolbar.connect( this, {
+			resize: 'onToolbarResize',
+			active: 'onToolbarActive'
+		} );
 
-	if ( surface.nullSelectionOnBlur ) {
 		toolbar.$element
 			.on( 'focusin', () => {
+				const surface = toolbar.getSurface();
+				if ( !surface || !surface.nullSelectionOnBlur ) {
+					return;
+				}
 				// When the focus moves to the toolbar, deactivate the surface but keep the selection (even if
 				// nullSelectionOnBlur is true), to allow tools to act on that selection.
 				surface.getView().deactivate( /* showAsActivated= */ true );
 			} )
 			.on( 'focusout', ( e ) => {
+				const surface = toolbar.getSurface();
+				if ( !surface || !surface.nullSelectionOnBlur ) {
+					return;
+				}
 				const newFocusedElement = e.relatedTarget;
 				if ( !OO.ui.contains( [ toolbar.$element[ 0 ], toolbar.$overlay[ 0 ] ], newFocusedElement, true ) ) {
 					// When the focus moves out of the toolbar:
@@ -750,12 +762,13 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 			} );
 	}
 
+	// Connect to surface
 	this.actionGroups.forEach( ( group ) => {
 		group.align = 'after';
 	} );
 	const groups = [ ...this.toolbarGroups, ...this.actionGroups ];
 
-	toolbar.setup( groups, surface );
+	this.toolbar.setup( groups, newSurface );
 	this.attachToolbar();
 	requestAnimationFrame( this.onContainerScrollHandler );
 };
