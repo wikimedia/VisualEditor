@@ -32,7 +32,7 @@ ve.init.sa.Target = function VeInitSaTarget( config = {} ) {
 	config.toolbarConfig = ve.extendObject( { shadow: true, floatable: true }, config.toolbarConfig );
 
 	// Parent constructor
-	ve.init.sa.Target.super.call( this );
+	ve.init.sa.Target.super.call( this, config );
 
 	this.$element
 		.addClass( 've-init-sa-target' )
