@@ -32,10 +32,16 @@ OO.inheritClass( ve.dm.DocumentSlice, ve.dm.Document );
 
 /* Methods */
 
+/**
+ * @return {Array}
+ */
 ve.dm.DocumentSlice.prototype.getOriginalData = function () {
 	return this.getData( this.originalRange );
 };
 
+/**
+ * @return {Array}
+ */
 ve.dm.DocumentSlice.prototype.getBalancedData = function () {
 	return this.getData( this.balancedRange );
 };

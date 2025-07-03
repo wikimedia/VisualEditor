@@ -5,6 +5,9 @@ function Logger( logger ) {
 	this.startTimestamp = null;
 }
 
+/**
+ * @return {number}
+ */
 Logger.prototype.getRelativeTimestamp = function () {
 	return Date.now() - this.startTimestamp;
 };

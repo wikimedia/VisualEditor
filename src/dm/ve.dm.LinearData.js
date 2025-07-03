@@ -240,7 +240,7 @@ ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 	return deep ? ve.copy( data ) : data;
 };
 
-/*
+/**
  * Clone the data, with a deep copy of the data.
  *
  * @return {ve.dm.LinearData} Clone of this object

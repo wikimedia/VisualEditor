@@ -950,7 +950,7 @@ ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList
  * @property {ve.dm.InternalListNode} newDocInternalListNode
  */
 
-/*
+/**
  * Get the diff between the old document's internal list and the new document's
  * internal list. The diff is grouped by list group, and each node in each list
  * group is marked as removed, inserted, the same, or changed (in which case the

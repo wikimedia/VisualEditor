@@ -177,6 +177,10 @@ ve.dm.Change.static.unsafeDeserialize = function ( data ) {
 	return this.deserialize( data, false, true );
 };
 
+/**
+ * @param {any} value
+ * @return {{type: string, value: any}}
+ */
 ve.dm.Change.static.serializeValue = function ( value ) {
 	if ( value instanceof ve.dm.Annotation ) {
 		return { type: 'annotation', value: value.element };
@@ -187,6 +191,11 @@ ve.dm.Change.static.serializeValue = function ( value ) {
 	}
 };
 
+/**
+ * @param {{type: string, value: any}} serialized
+ * @param {boolean} unsafe
+ * @return {any}
+ */
 ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
 	if ( serialized.type === 'annotation' ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );

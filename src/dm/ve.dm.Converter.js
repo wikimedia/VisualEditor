@@ -1372,6 +1372,10 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		}
 	};
 
+	/**
+	 * @param {number} k
+	 * @return {number}
+	 */
 	const findEndOfNode = ( k ) => {
 		let n, depth;
 		for ( n = k + 1, depth = 1; n < dataLen && depth > 0; n++ ) {
@@ -1385,6 +1389,10 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		return n;
 	};
 
+	/**
+	 * @param {number} i
+	 * @return {Object|Array}
+	 */
 	const getDataElementOrSlice = ( i ) => {
 		let dataSlice;
 		if (
@@ -1398,6 +1406,10 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		return dataSlice;
 	};
 
+	/**
+	 * @param {string} char
+	 * @return {string}
+	 */
 	const getChar = ( char ) => {
 		if (
 			isForPreview &&
