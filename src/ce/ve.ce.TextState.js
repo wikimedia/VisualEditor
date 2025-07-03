@@ -400,7 +400,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 						continue;
 					}
 					ann = ve.dm.annotationFactory.createFromElement(
-						modelClass.static.toDataElement( [ element ], ve.dm.converter )
+						modelClass.static.toDataElement( [ element ], ve.dm.converter.modelFromDomConverter )
 					);
 					const oldAnn = oldAnnotations.getComparable( ann );
 					if ( oldAnn ) {

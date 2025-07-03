@@ -63,16 +63,16 @@ QUnit.test( 'convertToData', ( assert ) => {
 			{ type: '/internalList' }
 		];
 
-	// Mimic convert state setup (as done in ve.dm.Converter#getDataFromDom)
-	// TODO: The test should not (directly) reference the global instance
-	ve.dm.converter.doc = htmlDoc;
-	ve.dm.converter.store = doc.getStore();
-	ve.dm.converter.internalList = internalList;
-	ve.dm.converter.contextStack = [];
+	// Mimic converter state setup (as done in ve.dm.ModelFromDomConverter#getDataFromDom)
+	const converter = new ve.dm.ModelFromDomConverter( ve.dm.modelRegistry, ve.dm.nodeFactory, ve.dm.annotationFactory );
+	converter.doc = htmlDoc;
+	converter.store = doc.getStore();
+	converter.internalList = internalList;
+	converter.contextStack = [];
 
 	internalList.queueItemHtml( 'reference', 'foo', 'Bar' );
 	internalList.queueItemHtml( 'reference', 'bar', 'Baz' );
-	assert.deepEqual( internalList.convertToData( ve.dm.converter, htmlDoc ), expectedData, 'Data matches' );
+	assert.deepEqual( internalList.convertToData( converter, htmlDoc ), expectedData, 'Data matches' );
 	assert.strictEqual( internalList.itemHtmlQueue.length, 0, 'queue is emptied after conversion' );
 } );
 
