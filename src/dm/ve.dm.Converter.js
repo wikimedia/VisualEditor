@@ -20,24 +20,22 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 	this.modelRegistry = modelRegistry;
 	this.nodeFactory = nodeFactory;
 	this.annotationFactory = annotationFactory;
+
+	// Model from DOM state
 	this.doc = null;
-	this.documentData = null;
-	this.store = null;
-	this.internalList = null;
-	this.mode = null;
+	this.targetDoc = null;
 	this.fromClipboard = null;
+	this.internalList = null;
 	this.contextStack = null;
 
-	// Whitespace regexes
-	const whitespaceList = this.constructor.static.whitespaceList;
+	// DOM from model state
+	this.documentData = null;
+	this.internalList = null;
+	this.originalDocInternalList = null;
+	this.mode = null;
 
-	this.leadingWhitespaceRegex = new RegExp( '^[' + whitespaceList + ']' );
-	this.leadingWhitespacesRegex = new RegExp( '^[' + whitespaceList + ']+' );
-	this.trailingWhitespaceRegex = new RegExp( '[' + whitespaceList + ']$' );
-	this.trailingWhitespacesRegex = new RegExp( '[' + whitespaceList + ']+$' );
-	this.onlyWhitespaceRegex = new RegExp( '^[' + whitespaceList + ']+$' );
-	this.trimWhitespaceRegex = new RegExp( '^([' + whitespaceList + ']*)([\\s\\S]*?)([' + whitespaceList + ']*)$' );
-
+	// Both
+	this.store = null;
 };
 
 /* Inheritance */
@@ -60,9 +58,17 @@ ve.dm.Converter.static.computedAttributes = [ 'href', 'src' ];
  *
  * See https://www.w3.org/TR/html4/struct/text.html#h-9.1
  *
- * @type {RegExp}
+ * @type {string}
  */
 ve.dm.Converter.static.whitespaceList = ' \\t\\f\\u200b\\r\\n';
+
+const whitespaceList = ve.dm.Converter.static.whitespaceList;
+ve.dm.Converter.static.leadingWhitespaceRegex = new RegExp( '^[' + whitespaceList + ']' );
+ve.dm.Converter.static.leadingWhitespacesRegex = new RegExp( '^[' + whitespaceList + ']+' );
+ve.dm.Converter.static.trailingWhitespaceRegex = new RegExp( '[' + whitespaceList + ']$' );
+ve.dm.Converter.static.trailingWhitespacesRegex = new RegExp( '[' + whitespaceList + ']+$' );
+ve.dm.Converter.static.onlyWhitespaceRegex = new RegExp( '^[' + whitespaceList + ']+$' );
+ve.dm.Converter.static.trimWhitespaceRegex = new RegExp( '^([' + whitespaceList + ']*)([\\s\\S]*?)([' + whitespaceList + ']*)$' );
 
 ve.dm.Converter.static.PARSER_MODE = 0;
 ve.dm.Converter.static.CLIPBOARD_MODE = 1;
@@ -994,7 +1000,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 				}
 				if ( !context.originallyExpectingContent ) {
 					// Strip and store outer whitespace
-					if ( this.onlyWhitespaceRegex.test( text ) ) {
+					if ( this.constructor.static.onlyWhitespaceRegex.test( text ) ) {
 						// This text node is whitespace only
 						if ( context.inWrapper ) {
 							// We're already wrapping, so output this whitespace
@@ -1030,7 +1036,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						// Separate the real text from the whitespace
 						// HACK: '.' doesn't match newlines in JS, so use
 						// [\s\S] to match any character
-						const matches = text.match( this.trimWhitespaceRegex );
+						const matches = text.match( this.constructor.static.trimWhitespaceRegex );
 						if ( !context.inWrapper ) {
 							// Wrap the text in a paragraph and output it
 							startWrapping();
@@ -1090,7 +1096,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					!this.nodeFactory.doesNodeHaveSignificantWhitespace( wrapperElement.type )
 				) {
 					// Strip leading whitespace from the first child
-					const matches = text.match( this.leadingWhitespacesRegex );
+					const matches = text.match( this.constructor.static.leadingWhitespacesRegex );
 					if ( matches && matches[ 0 ] !== '' ) {
 						addWhitespace( wrapperElement, 1, matches[ 0 ] );
 						text = text.slice( matches[ 0 ].length );
@@ -1103,7 +1109,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					!this.nodeFactory.doesNodeHaveSignificantWhitespace( wrapperElement.type )
 				) {
 					// Strip trailing whitespace from the last child
-					const matches = text.match( this.trailingWhitespacesRegex );
+					const matches = text.match( this.constructor.static.trailingWhitespacesRegex );
 					if ( matches && matches[ 0 ] !== '' ) {
 						addWhitespace( wrapperElement, 2, matches[ 0 ] );
 						text = text.slice( 0, -matches[ 0 ].length );
@@ -1308,8 +1314,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			while (
 				first &&
 				first.nodeType === Node.TEXT_NODE &&
-				( matches = first.data.match( this.leadingWhitespacesRegex ) ) &&
-				!this.leadingWhitespaceRegex.test( origElementText )
+				( matches = first.data.match( this.constructor.static.leadingWhitespacesRegex ) ) &&
+				!this.constructor.static.leadingWhitespaceRegex.test( origElementText )
 			) {
 				leading += matches[ 0 ];
 				first.deleteData( 0, matches[ 0 ].length );
@@ -1325,8 +1331,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			while (
 				last &&
 				last.nodeType === Node.TEXT_NODE &&
-				( matches = last.data.match( this.trailingWhitespacesRegex ) ) &&
-				!this.trailingWhitespaceRegex.test( origElementText )
+				( matches = last.data.match( this.constructor.static.trailingWhitespacesRegex ) ) &&
+				!this.constructor.static.trailingWhitespaceRegex.test( origElementText )
 			) {
 				trailing = matches[ 0 ] + trailing;
 				last.deleteData( last.data.length - matches[ 0 ].length, matches[ 0 ].length );
@@ -1418,7 +1424,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			while ( typeof data[ i ] === 'string' ) {
 				// HACK: Skip over leading whitespace (T53462/T142132) in non-whitespace-preserving tags
 				// This should possibly be handled by Parsoid or in the UI.
-				if ( !( isStart && this.onlyWhitespaceRegex.test( data[ i ] ) && this.isForParser() ) ) {
+				if ( !( isStart && this.constructor.static.onlyWhitespaceRegex.test( data[ i ] ) && this.isForParser() ) ) {
 					text += getChar( data[ i ] );
 					isStart = false;
 				}
