@@ -779,7 +779,7 @@ ve.ce.Surface.prototype.activate = function ( useModelSelection ) {
 			this.surfaceObserver.pollOnce();
 		} else {
 			// Clear focused node so onModelSelect re-selects it if necessary
-			this.focusedNode = null;
+			this.clearFocusedNode();
 			this.onModelSelect();
 		}
 
@@ -861,10 +861,7 @@ ve.ce.Surface.prototype.onDocumentBlur = function () {
 	this.setDragging( false );
 	this.focused = false;
 	if ( nullSelectionOnBlur ) {
-		if ( this.focusedNode ) {
-			this.focusedNode.setFocused( false );
-			this.focusedNode = null;
-		}
+		this.clearFocusedNode();
 		this.getModel().setNullSelection();
 	}
 	this.$element.removeClass( 've-ce-surface-focused' );
@@ -2004,6 +2001,16 @@ ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
 	this.handleInsertion();
 };
 
+/**
+ * Clear the currently set focused node
+ */
+ve.ce.Surface.prototype.clearFocusedNode = function () {
+	if ( this.focusedNode ) {
+		this.focusedNode.setFocused( false );
+		this.focusedNode = null;
+	}
+};
+
 /* Custom Events */
 
 /**
@@ -2054,10 +2061,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 
 		// If focus has changed, update nodes and this.focusedNode
 		if ( focusedNode !== this.focusedNode ) {
-			if ( this.focusedNode ) {
-				this.focusedNode.setFocused( false );
-				this.focusedNode = null;
-			}
+			this.clearFocusedNode();
 			if ( focusedNode ) {
 				focusedNode.setFocused( true );
 				this.focusedNode = focusedNode;
@@ -2076,10 +2080,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 		if ( selection instanceof ve.dm.TableSelection ) {
 			this.prepareClipboardHandlerForCopy();
 		}
-		if ( this.focusedNode ) {
-			this.focusedNode.setFocused( false );
-		}
-		this.focusedNode = null;
+		this.clearFocusedNode();
 	}
 
 	// Deactivate immediately if mobile and read-only to avoid showing keyboard (T281771)
