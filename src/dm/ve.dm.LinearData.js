@@ -95,7 +95,6 @@ ve.dm.LinearData.prototype.getData = function ( offset ) {
  */
 ve.dm.LinearData.prototype.setData = function ( offset, value ) {
 	this.data[ offset ] = typeof value === 'object' ? ve.deepFreeze( value ) : value;
-	// this.data[ offset ] = value;
 };
 
 /**
