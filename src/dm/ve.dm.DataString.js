@@ -10,7 +10,7 @@
  * @class
  * @extends unicodeJS.TextString
  * @constructor
- * @param {Array} data Document data
+ * @param {ve.dm.LinearData.Item[]} data Document data
  */
 ve.dm.DataString = function VeDmDataString( data ) {
 	this.data = data;

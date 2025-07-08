@@ -97,7 +97,7 @@ ve.dm.Annotation.static.trimWhitespace = true;
  * @static
  * @inheritable
  * @method
- * @param {Object|Array} dataElement Linear model element or array of linear model data
+ * @param {ve.dm.LinearData.Element|ve.dm.LinearData.Item[]} dataElement Linear model element or array of linear model data
  * @param {HTMLDocument} doc HTML document for creating elements
  * @param {ve.dm.Converter} converter Converter object to optionally call .getDomSubtreeFromData() on
  * @param {Node[]} childDomElements Children that will be appended to the returned element

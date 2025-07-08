@@ -483,7 +483,7 @@ ve.dm.DomFromModelConverter.prototype.getDomSubtreeFromData = function ( data, c
 
 	/**
 	 * @param {number} i
-	 * @return {Object|Array}
+	 * @return {ve.dm.LinearData.Element|ve.dm.LinearData.Item[]}
 	 */
 	const getDataElementOrSlice = ( i ) => {
 		let dataSlice;

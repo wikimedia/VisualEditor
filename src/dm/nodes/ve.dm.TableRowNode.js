@@ -63,7 +63,7 @@ ve.dm.TableRowNode.static.toDomElements = function ( dataElement, doc ) {
  * @param {number} [options.cellCount=1] Number of cells to create
  * @param {ve.dm.TableRowNode} [options.clonedRow] Copy certain attributes from this row
  * @param {ve.dm.TableCellNode[]} [options.clonedCells] Copy certain attributes from these cells (the array needs to be of size cellCount)
- * @return {Array} Model data for a new table row
+ * @return {ve.dm.LinearData.Item[]} Model data for a new table row
  */
 ve.dm.TableRowNode.static.createData = function ( options = {} ) {
 	const cellCount = options.cellCount || 1;

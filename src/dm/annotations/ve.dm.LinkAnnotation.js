@@ -67,7 +67,7 @@ ve.dm.LinkAnnotation.static.describeChange = function ( key, change ) {
  *
  * @static
  * @inheritable
- * @param {Object} dataElement Linear model element
+ * @param {ve.dm.LinearData.Element} dataElement Linear model element
  * @return {string} Link href
  */
 ve.dm.LinkAnnotation.static.getHref = function ( dataElement ) {

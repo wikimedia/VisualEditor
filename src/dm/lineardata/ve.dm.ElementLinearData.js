@@ -13,7 +13,7 @@
  * @extends ve.dm.FlatLinearData
  * @constructor
  * @param {ve.dm.HashValueStore} store Hash-value store
- * @param {Array} [data] Linear data
+ * @param {ve.dm.LinearData.Item[]} [data] Linear data
  */
 ve.dm.ElementLinearData = function VeDmElementLinearData() {
 	// Parent constructor
@@ -37,18 +37,18 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
 /* Static Methods */
 
 /**
- * Compare two elements' basic properties
+ * Compare two items' basic properties
  *
- * Elements are comparable if they have the same type and attributes, or
+ * Items are comparable if they have the same type and attributes, or
  * have the same text data. Anything semantically irrelevant is filtered
  * out first.
  *
  * When changing, ensure that ve.dm.Transaction.static.compareElementsForTranslate
  * is also updated.
  *
- * @param {Object|Array|string} a First element
- * @param {Object|Array|string} b Second element
- * @return {boolean} Elements are comparable
+ * @param {ve.dm.LinearData.Item} a First item
+ * @param {ve.dm.LinearData.Item} b Second item
+ * @return {boolean} Items are comparable
  */
 ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
 	let aPlain = a,
@@ -96,17 +96,17 @@ ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
 };
 
 /**
- * Compare two elements' basic properties and annotations
+ * Compare two items' basic properties and annotations
  *
- * Elements are comparable if they have the same type, attributes,
+ * Items are comparable if they have the same type, attributes,
  * text data and annotations, as determined by
  * ve.dm.AnnotationSet#compareTo .
  *
- * @param {Object|Array|string} a First element
- * @param {Object|Array|string} b Second element
- * @param {ve.dm.HashValueStore} aStore First element's store
- * @param {ve.dm.HashValueStore} [bStore] Second element's store, if different
- * @return {boolean} Elements are comparable
+ * @param {ve.dm.LinearData.Item} a First item
+ * @param {ve.dm.LinearData.Item} b Second item
+ * @param {ve.dm.HashValueStore} aStore First item's store
+ * @param {ve.dm.HashValueStore} [bStore] Second item's store, if different
+ * @return {boolean} Items are comparable
  */
 ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore ) {
 	if ( a === b ) {
@@ -127,7 +127,7 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore
 		return false;
 	}
 	let aAnnotations, bAnnotations;
-	// Elements are equal without annotations, now compare annotations:
+	// Items are equal without annotations, now compare annotations:
 	if ( Array.isArray( a ) ) {
 		aAnnotations = a[ 1 ];
 	}
@@ -150,7 +150,7 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore
 /**
  * Read the array of annotation store hashes from an item of linear data
  *
- * @param {string|Array|Object} item Item of linear data
+ * @param {ve.dm.LinearData.Item} item Item of linear data
  * @return {string[]} An array of annotation store hashes
  */
 ve.dm.ElementLinearData.static.getAnnotationHashesFromItem = function ( item ) {
@@ -170,9 +170,9 @@ ve.dm.ElementLinearData.static.getAnnotationHashesFromItem = function ( item ) {
  *
  * Cleans up data structure if hashes array is empty.
  *
- * @param {string|Array|Object} item Item of linear data
+ * @param {ve.dm.LinearData.Item} item Item of linear data
  * @param {string[]} hashes Annotations' store hashes
- * @return {string|Array|Object} Deep-copied, modified item
+ * @return {ve.dm.LinearData.Item} Deep-copied, modified item
  */
 ve.dm.ElementLinearData.static.replaceAnnotationHashesForItem = function ( item, hashes ) {
 	const isElement = ve.dm.LinearData.static.isElementData( item );
@@ -202,7 +202,7 @@ ve.dm.ElementLinearData.static.replaceAnnotationHashesForItem = function ( item,
 /**
  * Get character data from an item
  *
- * @param {string|Array|Object} item Item to get character data from
+ * @param {ve.dm.LinearData.Item} item Item to get character data from
  * @return {string} Character data, or '' if no character data
  */
 ve.dm.ElementLinearData.static.getCharacterDataFromItem = function ( item ) {
@@ -1226,8 +1226,8 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
 /**
  * Remap an annotation hash when it changes
  *
- * @param  {string} oldHash Old hash to replace
- * @param  {string} newHash New hash to replace it with
+ * @param {string} oldHash Old hash to replace
+ * @param {string} newHash New hash to replace it with
  */
 ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newHash ) {
 	function remap( annotations ) {

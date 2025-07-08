@@ -46,7 +46,7 @@ ve.dm.TreeModifier = function VeDmTreeModifier() {
 	this.insertions = null;
 
 	/**
-	 * @property {Array} data Live document linear data
+	 * @property {ve.dm.LinearData.Item[]} data Live document linear data
 	 */
 	this.data = null;
 
@@ -109,8 +109,8 @@ ve.dm.TreeModifier.static.applyTreeOperations = function ( isReversed, document,
 /**
  * Throw an exception if two pieces of linear data are not equal
  *
- * @param {Array} actual Document linear data to test
- * @param {Array} expected Expected linear data to test against
+ * @param {ve.dm.LinearData.Item[]} actual Document linear data to test
+ * @param {ve.dm.LinearData.Item[]} expected Expected linear data to test against
  */
 ve.dm.TreeModifier.static.checkEqualData = function ( actual, expected ) {
 	function replacer( name, value ) {
@@ -643,7 +643,7 @@ ve.dm.TreeModifier.prototype.processRetain = function ( maxLength ) {
 /**
  * Process the removal of some items
  *
- * @param {Object|Array} itemOrData An open tag, a close tag, or an array of text items
+ * @param {ve.dm.LinearData.Element|ve.dm.LinearData.Item[]} itemOrData An open tag, a close tag, or an array of text items
  */
 ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData ) {
 	const cursorsMatch = this.cursorsMatch(),
@@ -668,7 +668,7 @@ ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData ) {
 /**
  * Process the insertion an open tag, a close tag, or an array of text items
  *
- * @param {Object|Array} itemOrData An open tag, a close tag, or an array of text items
+ * @param {ve.dm.LinearData.Element|ve.dm.LinearData.Item[]} itemOrData An open tag, a close tag, or an array of text items
  */
 ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
 	const inserter = this.inserter;

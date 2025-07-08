@@ -12,7 +12,7 @@
  * @class
  * @constructor
  * @param {ve.dm.HashValueStore} store Hash-value store
- * @param {Array} [data] Linear data
+ * @param {ve.dm.LinearData.Item[]} [data] Linear data
  */
 ve.dm.LinearData = function VeDmLinearData( store, data ) {
 	this.store = store;
@@ -23,6 +23,31 @@ ve.dm.LinearData = function VeDmLinearData( store, data ) {
 
 OO.initClass( ve.dm.LinearData );
 
+/**
+ * @typedef {Object} Element
+ * @memberof ve.dm.LinearData
+ * @property {string} type The type of the element
+ * @property {Object} [attributes] Optional additional attributes specific to the element type
+ * @property {string} [originalDomElementsHash] Hash of the original DOM elements found by the converter
+ * @property {Object} [internal] Internal attributes used by the converter
+ */
+
+/**
+ * @typedef {Array} AnnotatedCharacter
+ * @memberof ve.dm.LinearData
+ * @property {string} 0 Character data
+ * @property {string[]} 1 Annotation hashses
+ */
+
+/**
+ * @typedef {ve.dm.LinearData.Element|string|ve.dm.LinearData.AnnotatedCharacter} Item
+ * @memberof ve.dm.LinearData
+ * A single item in the linear model data array, which can be:
+ * - An element object
+ * - A single character string
+ * - A tuple of character and annotation hashes
+ */
+
 /* Static Methods */
 
 /**
@@ -30,11 +55,11 @@ OO.initClass( ve.dm.LinearData );
  *
  * This will return the same string for close and open elements.
  *
- * @param {Object} item Element item
+ * @param {ve.dm.LinearData.Element} element Element item
  * @return {string} Type of the element
  */
-ve.dm.LinearData.static.getType = function ( item ) {
-	return this.isCloseElementData( item ) ? item.type.slice( 1 ) : item.type;
+ve.dm.LinearData.static.getType = function ( element ) {
+	return this.isCloseElementData( element ) ? element.type.slice( 1 ) : element.type;
 };
 
 /**
@@ -47,7 +72,7 @@ ve.dm.LinearData.static.getType = function ( item ) {
  *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
  *     ^         . ^          ^           . . ^     ^     ^            .
  *
- * @param {Object|Array|string} item Linear data item
+ * @param {ve.dm.LinearData.Item} item Linear data item
  * @return {boolean} Item is an element
  */
 ve.dm.LinearData.static.isElementData = function ( item ) {
@@ -58,7 +83,7 @@ ve.dm.LinearData.static.isElementData = function ( item ) {
 /**
  * Checks if data item is an open element.
  *
- * @param {Object} item Element item
+ * @param {ve.dm.LinearData.Item} item Element item
  * @return {boolean} Item is an open element
  */
 ve.dm.LinearData.static.isOpenElementData = function ( item ) {
@@ -68,7 +93,7 @@ ve.dm.LinearData.static.isOpenElementData = function ( item ) {
 /**
  * Checks if data item is a close element.
  *
- * @param {Object} item Element item
+ * @param {ve.dm.LinearData.Item} item Element item
  * @return {boolean} Item is a close element
  */
 ve.dm.LinearData.static.isCloseElementData = function ( item ) {
@@ -81,7 +106,7 @@ ve.dm.LinearData.static.isCloseElementData = function ( item ) {
  * Gets linear data from a specified index, or all data if no index specified
  *
  * @param {number} [offset] Offset to get data from
- * @return {Object|Array} Data from index, or all data (by reference)
+ * @return {ve.dm.LinearData.Item|ve.dm.LinearData.Item[]} Data from index, or all data (by reference)
  */
 ve.dm.LinearData.prototype.getData = function ( offset ) {
 	return offset === undefined ? this.data : this.data[ offset ];
@@ -91,10 +116,10 @@ ve.dm.LinearData.prototype.getData = function ( offset ) {
  * Sets linear data at a specified index
  *
  * @param {number} offset Offset to set data at
- * @param {Object|string} value Value to store
+ * @param {ve.dm.LinearData.Item} item Value to store
  */
-ve.dm.LinearData.prototype.setData = function ( offset, value ) {
-	this.data[ offset ] = typeof value === 'object' ? ve.deepFreeze( value ) : value;
+ve.dm.LinearData.prototype.setData = function ( offset, item ) {
+	this.data[ offset ] = typeof item === 'object' ? ve.deepFreeze( item ) : item;
 };
 
 /**
@@ -119,7 +144,7 @@ ve.dm.LinearData.prototype.modifyData = function ( offset, modify ) {
 /**
  * Push data to the end of the array
  *
- * @param {...Object} [values] Values to store
+ * @param {...ve.dm.LinearData.Item} [values] Values to store
  * @return {number} The new length of the linear data
  */
 ve.dm.LinearData.prototype.push = function ( ...values ) {
@@ -149,7 +174,7 @@ ve.dm.LinearData.prototype.getStore = function () {
  *
  * @param {number} begin Index to begin at
  * @param {number} [end] Index to end at
- * @return {Array} One-level deep copy of sliced range
+ * @return {ve.dm.LinearData.Item[]} One-level deep copy of sliced range
  */
 ve.dm.LinearData.prototype.slice = function ( begin, end ) {
 	return this.data.slice( begin, end );
@@ -171,8 +196,8 @@ ve.dm.LinearData.prototype.sliceObject = function ( begin, end ) {
  *
  * @param {number} index Splice from
  * @param {number} deleteCount Items to be removed
- * @param {...Object} [elements] Items to be inserted
- * @return {Array} Elements removed
+ * @param {...ve.dm.LinearData.Item} [elements] Items to be inserted
+ * @return {ve.dm.LinearData.Item[]} Elements removed
  */
 ve.dm.LinearData.prototype.splice = function ( index, deleteCount, ...elements ) {
 	return this.data.splice( index, deleteCount, ...elements );
@@ -183,7 +208,7 @@ ve.dm.LinearData.prototype.splice = function ( index, deleteCount, ...elements )
  *
  * @param {number} index Splice from
  * @param {number} deleteCount Items to be removed
- * @param {...Object} [elements] Items to be inserted
+ * @param {...ve.dm.LinearData.Item} [elements] Items to be inserted
  * @return {ve.dm.LinearData} LinearData object containing elements removed
  */
 ve.dm.LinearData.prototype.spliceObject = function ( index, deleteCount, ...elements ) {
@@ -196,8 +221,8 @@ ve.dm.LinearData.prototype.spliceObject = function ( index, deleteCount, ...elem
  * @see ve.batchSplice
  * @param {number} offset
  * @param {number} remove
- * @param {Array} data
- * @return {Array}
+ * @param {ve.dm.LinearData.Item[]} data
+ * @return {ve.dm.LinearData.Item[]}
  */
 ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
 	return ve.batchSplice( this.getData(), offset, remove, data );
@@ -209,7 +234,7 @@ ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
  * @see ve.batchSplice
  * @param {number} offset
  * @param {number} remove
- * @param {Array} data
+ * @param {ve.dm.LinearData.Item[]} data
  * @return {ve.dm.LinearData}
  */
 ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data ) {
@@ -224,7 +249,7 @@ ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data )
  *
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
  * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
- * @return {Array} Slice or copy of data
+ * @return {ve.dm.LinearData.Item[]} Slice or copy of data
  */
 ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 	const length = this.getLength();

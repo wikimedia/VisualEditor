@@ -26,7 +26,7 @@ OO.initClass( ve.dm.TransactionBuilder );
  *
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {ve.Range} range Range of data to remove
- * @param {Array} data Data to insert
+ * @param {ve.dm.LinearData.Item[]} data Data to insert
  * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
  * @return {ve.dm.Transaction} Transaction that replaces data
  * @throws {Error} Invalid range
@@ -45,7 +45,7 @@ ve.dm.TransactionBuilder.static.newFromReplacement = function ( doc, range, data
  * @static
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {number} offset Offset to insert at
- * @param {Array} data Data to insert
+ * @param {ve.dm.LinearData.Item[]} data Data to insert
  * @return {ve.dm.Transaction} Transaction that inserts data
  */
 ve.dm.TransactionBuilder.static.newFromInsertion = function ( doc, offset, data ) {
@@ -527,22 +527,22 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
  *
  * Changing a paragraph to a header:
  *     Before: [ {type: 'paragraph'}, 'a', 'b', 'c', {type: '/paragraph'} ]
- *     newFromWrap( new ve.Range( 1, 4 ), [ {type: 'paragraph'} ], [ {type: 'heading', level: 1 } ] );
+ *     newFromWrap( doc, new ve.Range( 1, 4 ), [ {type: 'paragraph'} ], [ {type: 'heading', level: 1 } ] );
  *     After: [ {type: 'heading', level: 1 }, 'a', 'b', 'c', {type: '/heading'} ]
  *
  * Changing a set of paragraphs to a list:
  *     Before: [ {type: 'paragraph'}, 'a', {type: '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
- *     newFromWrap( new ve.Range( 0, 6 ), [], [ {type: 'list' } ], [], [ {type: 'listItem', attributes: {styles: ['bullet']}} ] );
+ *     newFromWrap( doc, new ve.Range( 0, 6 ), [], [ {type: 'list' } ], [], [ {type: 'listItem', attributes: {styles: ['bullet']}} ] );
  *     After: [ {type: 'list'}, {type: 'listItem', attributes: {styles: ['bullet']}}, {'type':'paragraph'} 'a',
  *              {type: '/paragraph'}, {type: '/listItem'}, {type: 'listItem', attributes: {styles: ['bullet']}},
  *              {type: 'paragraph'}, 'b', {type: '/paragraph'}, {type: '/listItem'}, {type: '/list'} ]
  *
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {ve.Range} range Range to wrap/unwrap/replace around
- * @param {Array} unwrapOuter Opening elements to unwrap. These must be immediately *outside* the range
- * @param {Array} wrapOuter Opening elements to wrap around the range
- * @param {Array} unwrapEach Opening elements to unwrap from each top-level element in the range
- * @param {Array} wrapEach Opening elements to wrap around each top-level element in the range
+ * @param {ve.dm.LinearData.Element[]} unwrapOuter Opening elements to unwrap. These must be immediately *outside* the range
+ * @param {ve.dm.LinearData.Element[]} wrapOuter Opening elements to wrap around the range
+ * @param {ve.dm.LinearData.Element[]} unwrapEach Opening elements to unwrap from each top-level element in the range
+ * @param {ve.dm.LinearData.Element[]} wrapEach Opening elements to wrap around each top-level element in the range
  * @return {ve.dm.Transaction}
  */
 ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
@@ -784,8 +784,8 @@ ve.dm.TransactionBuilder.prototype.addSafeRemoveOps = function ( doc, removeStar
  * Add a replace operation (internal helper).
  *
  * @private
- * @param {Array} remove Data removed.
- * @param {Array} insert Data to insert.
+ * @param {ve.dm.LinearData.Item[]} remove Data removed.
+ * @param {ve.dm.LinearData.Item[]} insert Data to insert.
  * @param {number} [insertedDataOffset] Inserted data offset
  * @param {number} [insertedDataLength] Inserted data length
  */
@@ -805,7 +805,7 @@ ve.dm.TransactionBuilder.prototype.pushReplaceInternal = function ( remove, inse
  * @param {ve.dm.Document} doc The document in the state to which the transaction applies
  * @param {number} offset Offset to start at
  * @param {number} removeLength Number of data items to remove
- * @param {Array} insert Data to insert
+ * @param {ve.dm.LinearData.Item[]} insert Data to insert
  * @param {boolean} removeMetadata Remove metadata instead of collapsing it
  * @param {number} [insertedDataOffset] Offset of the originally inserted data in the resulting operation data
  * @param {number} [insertedDataLength] Length of the originally inserted data in the resulting operation data
@@ -893,7 +893,7 @@ ve.dm.TransactionBuilder.prototype.pushAttributeChanges = function ( changes, ol
  * @param {ve.dm.Document} doc The document in the state to which the transaction applies
  * @param {number} currentOffset Offset up to which the transaction has gone already
  * @param {number} insertOffset Offset to insert at
- * @param {Array} data Linear model data to insert
+ * @param {ve.dm.LinearData.Item[]} data Linear model data to insert
  * @return {number} End offset of the insertion
  */
 ve.dm.TransactionBuilder.prototype.pushInsertion = function ( doc, currentOffset, insertOffset, data ) {
@@ -1012,7 +1012,7 @@ ve.dm.TransactionBuilder.prototype.pushRemoval = function ( doc, currentOffset, 
  *
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {number} offset Offset of the end of the current (partial) operations list
- * @param {Array} metaItems linear data containing just meta items
+ * @param {ve.dm.LinearData.Element[]} metaItems linear data containing just meta items
  */
 ve.dm.TransactionBuilder.prototype.pushMeta = function ( doc, offset, metaItems ) {
 	const ops = this.transaction.operations;

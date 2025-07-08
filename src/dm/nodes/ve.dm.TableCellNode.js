@@ -153,7 +153,7 @@ ve.dm.TableCellNode.static.copyAlignmentData = function ( clonedCell, attributes
  * @param {number} [options.colspan=1] Number of columns the cell spans
  * @param {ve.dm.TableCellNode} [options.clonedCell] Copy certain attributes from this cell
  * @param {Array} [options.content] Linear model data, defaults to empty wrapper paragraph
- * @return {Array} Model data for a new table cell
+ * @return {ve.dm.LinearData.Item[]} Model data for a new table cell
  */
 ve.dm.TableCellNode.static.createData = function ( options = {} ) {
 	const opening = {

@@ -13,7 +13,7 @@
  * @extends ve.dm.LinearData
  * @constructor
  * @param {ve.dm.HashValueStore} store Hash-value store
- * @param {Array} [data] Linear data
+ * @param {ve.dm.LinearData.Item[]} [data] Linear data
  */
 ve.dm.FlatLinearData = function VeDmFlatLinearData() {
 	// Parent constructor

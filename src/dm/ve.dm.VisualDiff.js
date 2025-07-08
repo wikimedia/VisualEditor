@@ -85,7 +85,7 @@ OO.initClass( ve.dm.VisualDiff );
  *
  * @param {ve.dm.Node} node Node
  * @param {boolean} innerRange Get the node's inner range
- * @return {Array} Linear data
+ * @return {ve.dm.LinearData.Item[]} Linear data
  */
 ve.dm.VisualDiff.static.getDataFromNode = function ( node, innerRange ) {
 	const doc = node.getRoot().getDocument();

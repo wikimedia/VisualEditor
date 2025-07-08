@@ -250,7 +250,7 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  * @param {Object[]} splices Array of splice operations to execute. Properties:
  *  {number} splices[].offset Offset to remove/insert at (unadjusted)
  *  {number} splices[].removeLength Number of elements to remove
- *  {Array} splices[].insert Data to insert; for efficiency, objects are inserted without cloning
+ *  {ve.dm.LinearData.Item[]} splices[].insert Data to insert; for efficiency, objects are inserted without cloning
  */
 ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
 	const data = this.document.data;
@@ -373,8 +373,8 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
  * Verify a replace operation (the actual processing is now done in ve.dm.TreeModifier)
  *
  * @param {Object} op Operation object
- * @param {Array} op.remove Linear model data to remove
- * @param {Array} op.insert Linear model data to insert
+ * @param {ve.dm.LinearData.Item[]} op.remove Linear model data to remove
+ * @param {ve.dm.LinearData.Item[]} op.insert Linear model data to insert
  */
 ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	// Track balancedness for verification purposes only

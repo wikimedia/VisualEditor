@@ -32,7 +32,7 @@ ve.dm.SourceConverter.prototype.getModelFromSourceText = function ( sourceText, 
  *
  * @param {string} sourceText Source text
  * @param {boolean} [inline] Convert text for inline insertion, so skip opening and closing paragraph elements
- * @return {Array} Linear data
+ * @return {ve.dm.LinearData.Item[]} Linear data
  */
 ve.dm.SourceConverter.prototype.getDataFromSourceText = function ( sourceText, inline ) {
 	const lines = sourceText.split( /\r\n|\r|\n/ ),
@@ -65,7 +65,7 @@ ve.dm.SourceConverter.prototype.getSourceTextFromModel = function ( model ) {
 /**
  * Convert from linear data to source text, optionally with a specified range
  *
- * @param {Array} data Linear data
+ * @param {ve.dm.LinearData.Item[]} data Linear data
  * @param {ve.Range} [range] Range, defaults to full data set.
  * @return {string} Source text
  */

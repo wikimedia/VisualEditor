@@ -133,8 +133,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	 * Warning: this step assumes that, within a content branch node, an element
 	 * is always immediately followed by its close element.
 	 *
-	 * @param {Array} data Linear data
-	 * @return {Array} Linear data without close elements
+	 * @param {ve.dm.LinearData.Item[]} data Linear data
+	 * @return {ve.dm.LinearData.Item[]} Linear data without close elements
 	 */
 	function removeCloseElements( data ) {
 		for ( let i = 0, ilen = data.length; i < ilen; i++ ) {
@@ -150,7 +150,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	/**
 	 * Get the index of the first or last wordbreak in a data array
 	 *
-	 * @param {Array} data Linear data
+	 * @param {ve.dm.LinearData.Item[]} data Linear data
 	 * @param {boolean} reversed Get the index of the last wordbreak
 	 * @return {number|null} Index of the first or last wordbreak, or null if no
 	 *  wordbreak was found
@@ -174,7 +174,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	/**
 	 * Determine whether there is a wordbreak at an offset
 	 *
-	 * @param {Array} data Linear data
+	 * @param {ve.dm.LinearData.Item[]} data Linear data
 	 * @param {number} offset
 	 * @return {boolean} There is a wordbreak at the offset
 	 */

@@ -139,7 +139,7 @@ ve.dm.Model.static.matchFunction = null;
  * @inheritable
  * @param {Node[]} domElements DOM elements to convert. Usually only one element
  * @param {ve.dm.Converter} converter
- * @return {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
+ * @return {ve.dm.LinearData.Element|ve.dm.LinearData.Item[]|null} Linear model element, or array if linear model data, or null to alienate
  */
 ve.dm.Model.static.toDataElement = function () {
 	return { type: this.name };
@@ -160,7 +160,7 @@ ve.dm.Model.static.toDataElement = function () {
  *
  * @static
  * @inheritable
- * @param {Object|Array} dataElement Linear model element or array of linear model data
+ * @param {ve.dm.LinearData.Element|ve.dm.LinearData.Item[]} dataElement Linear model element or array of linear model data
  * @param {HTMLDocument} doc HTML document for creating elements
  * @param {ve.dm.Converter} converter Converter object to optionally call `getDomSubtreeFromData` on
  * @return {Node[]} DOM elements
@@ -210,7 +210,7 @@ ve.dm.Model.static.preserveHtmlAttributes = true;
  * Get hash object of a linear model data element.
  *
  * @static
- * @param {Object} dataElement Data element
+ * @param {ve.dm.LinearData.Element} dataElement Data element
  * @return {Object} Hash object
  */
 ve.dm.Model.static.getHashObject = function ( dataElement ) {

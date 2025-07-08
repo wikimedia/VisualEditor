@@ -32,7 +32,7 @@ OO.initClass( ve.dm.GeneratedContentNode );
  * Store HTML of DOM elements, hashed on data element
  *
  * @static
- * @param {Object} dataElement Data element
+ * @param {ve.dm.LinearData.Element} dataElement Data element
  * @param {Object|string|Array} generatedContents Generated contents
  * @param {ve.dm.HashValueStore} store Hash-value store
  * @return {string} Hash of stored data
@@ -49,7 +49,7 @@ ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElemen
  * don't affect the rendering.
  *
  * @static
- * @param {Object} dataElement Data element
+ * @param {ve.dm.LinearData.Element} dataElement Data element
  * @return {Object} Hash object
  */
 ve.dm.GeneratedContentNode.static.getHashObjectForRendering = function ( dataElement ) {

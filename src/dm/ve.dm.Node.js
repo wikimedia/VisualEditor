@@ -293,7 +293,7 @@ ve.dm.Node.static.defaultAttributes = {};
 /**
  * Sanitize the node's linear model data, typically if it was generated from an external source (e.g. copied HTML)
  *
- * @param {Object} dataElement Linear model element, modified in place
+ * @param {ve.dm.LinearData.Element} dataElement Linear model element, modified in place
  */
 ve.dm.Node.static.sanitize = function () {
 };
@@ -307,7 +307,7 @@ ve.dm.Node.static.sanitize = function () {
  *
  * @static
  * @inheritable
- * @param {Object} dataElement Data element (opening) to remap. Will be modified.
+ * @param {ve.dm.LinearData.Element} dataElement Data element (opening) to remap. Will be modified.
  * @param {Object} mapping Object mapping old internal list indexes to new internal list indexes
  * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
  *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
@@ -323,7 +323,7 @@ ve.dm.Node.static.remapInternalListIndexes = function () {
  *
  * @static
  * @inheritable
- * @param {Object} dataElement Data element (opening) to remap. Will be modified.
+ * @param {ve.dm.LinearData.Element} dataElement Data element (opening) to remap. Will be modified.
  * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
  */
 ve.dm.Node.static.remapInternalListKeys = function () {

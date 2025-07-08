@@ -116,7 +116,7 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
 };
 
 /**
- * Simpified comparison of linear data elements
+ * Simpified comparison of linear data items
  *
  * Identical to ve.dm.ElementLinearData.static.compareElementsUnannotated, but without
  * the complex comparison of node elements that requires the model registry.
@@ -124,8 +124,8 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
  * For the purposes of translateOffset it is just sufficient that we catch obvious
  * cases of annotations being set/clear.
  *
- * @param {Object|Array|string} a First element
- * @param {Object|Array|string} b Second element
+ * @param {ve.dm.LinearData.Item} a First item
+ * @param {ve.dm.LinearData.Item} b Second item
  * @return {boolean} Elements are comparable
  */
 ve.dm.Transaction.static.compareElementsForTranslate = function ( a, b ) {
@@ -241,8 +241,8 @@ ve.dm.Transaction.prototype.pushRetainOp = function ( length ) {
  * is wrapped with fixup data to preserve HTML validity. For instance, an intended table cell
  * insertion may have been fixed up by wrapping inside a table row, table section and table.
  *
- * @param {Array} remove Data to remove
- * @param {Array} insert Data to insert, possibly fixed up
+ * @param {ve.dm.LinearData.Item[]} remove Data to remove
+ * @param {ve.dm.LinearData.Item[]} insert Data to insert, possibly fixed up
  * @param {number} [insertedDataOffset] Offset of intended insertion within fixed up data
  * @param {number} [insertedDataLength] Length of intended insertion within fixed up data
  */

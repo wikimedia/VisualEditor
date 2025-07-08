@@ -407,7 +407,7 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope = 'pare
  * Get data for the fragment.
  *
  * @param {boolean} [deep] Get a deep copy of the data
- * @return {Array} Fragment data
+ * @return {ve.dm.LinearData.Item[]} Fragment data
  */
 ve.dm.SurfaceFragment.prototype.getData = function ( deep ) {
 	const range = this.getSelection().getCoveringRange();
@@ -784,7 +784,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  * If the content is a plain text string containing linebreaks, each line will be wrapped
  * in a paragraph.
  *
- * @param {string|Array} content Content to insert, can be either a string or array of data
+ * @param {string|ve.dm.LinearData.Item[]} content Content to insert, can be either a string or array of data
  * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated
  *  with annotations covering the selection / annotations at the current offset, or a set of
  *  annotations to annotate the content with.

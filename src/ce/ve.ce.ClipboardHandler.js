@@ -730,7 +730,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromInternal = function 
  * Insert some pasted data from an internal source
  *
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
- * @param {Array} data Data to insert
+ * @param {ve.dm.LinearData.Item[]} data Data to insert
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.ClipboardHandler.prototype.afterPasteInsertInternalData = function ( targetFragment, data ) {

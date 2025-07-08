@@ -176,7 +176,7 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  *
  * @param {ve.dm.Converter} converter
  * @param {HTMLDocument} doc Document to create nodes in
- * @return {Array} Linear model data
+ * @return {ve.dm.LinearData.Item[]} Linear model data
  */
 ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 	const itemHtmlQueue = this.itemHtmlQueue;
@@ -211,7 +211,7 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
  *
  * @param {string} groupName Item group
  * @param {string} key Item key
- * @param {Array} data Linear model data
+ * @param {ve.dm.LinearData.Item[]} data Linear model data
  * @return {Object} Object containing the transaction (or null if none required)
  * and the new item's index within the list
  */

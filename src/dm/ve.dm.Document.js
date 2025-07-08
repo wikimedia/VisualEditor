@@ -15,7 +15,7 @@
  * @class
  * @extends ve.Document
  * @constructor
- * @param {Array|ve.dm.ElementLinearData} data Raw linear model data or ElementLinearData
+ * @param {ve.dm.LinearData.Item[]|ve.dm.ElementLinearData} data Raw linear model data or ElementLinearData
  * @param {HTMLDocument} [htmlDocument] HTML document the data was converted from, if any.
  *  If omitted, a new document will be created. If data is an HTMLDocument, this parameter is
  *  ignored.
@@ -123,7 +123,7 @@ OO.inheritClass( ve.dm.Document, ve.Document );
  * This method modifies data in place.
  *
  * @static
- * @param {ve.dm.ElementLinearData|Array} data Data to apply annotations to
+ * @param {ve.dm.LinearData.Item[]|ve.dm.ElementLinearData} data Data to apply annotations to
  * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
  * @param {boolean} [replaceComparable=false] Whether to remove annotations from the data which are comparable to those in annotationSet
  * @param {ve.dm.HashValueStore} [store] Store associated with the data; only needs to be provided if that data is associated with a different store than annotationSet
@@ -425,7 +425,7 @@ ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
  *
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
  * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
- * @return {Array} Slice or copy of document data
+ * @return {ve.dm.LinearData.Item[]} Slice or copy of document data
  */
 ve.dm.Document.prototype.getData = function ( range, deep ) {
 	return this.data.getDataSlice( range, deep );
@@ -726,7 +726,7 @@ ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy, mode )
  * Create a sub-document associated with this document like #cloneFromRange, but without cloning
  * any data from a range in this document: instead, use the specified data.
  *
- * @param {Array|ve.dm.ElementLinearData} data Raw linear model data or ElementLinearData
+ * @param {ve.dm.LinearData.Item[]|ve.dm.ElementLinearData} data Raw linear model data or ElementLinearData
  * @param {boolean} [copyInternalList] Copy the internal list
  * @param {boolean} [detachedCopy] The copy is not intended to be merged into the original
  * @return {ve.dm.Document} New document
@@ -769,7 +769,7 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
  * @param {ve.Range} [range] Range to get full data for. If omitted, all data will be returned
  * @param {string} [mode] If 'roundTrip', restore load offsets of inlined meta items from unchanged
  * branches. If 'noMetadata', don't include metadata items.
- * @return {Array} Data, with load offset info removed (some items are referenced, others copied)
+ * @return {ve.dm.LinearData.Item[]} Data, with load offset info removed (some items are referenced, others copied)
  */
 ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 	const insertedMetaItems = [],
@@ -1137,7 +1137,7 @@ ve.dm.Document.prototype.hasSlugAtOffset = function ( offset ) {
  * Get the content data of a node.
  *
  * @param {ve.dm.Node} node Node to get content data for
- * @return {Array|null} List of content and elements inside node or null if node is not found
+ * @return {ve.dm.LinearData.Item[]|null} List of content and elements inside node or null if node is not found
  */
 ve.dm.Document.prototype.getDataFromNode = function ( node ) {
 	let offset = node.getOffset();
@@ -1268,7 +1268,7 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
 /**
  * @typedef FixedInsertion
  * @memberof ve.dm.Document
- * @property {Array} data Possibly modified copy of `data`
+ * @property {ve.dm.LinearData.Item[]} data Possibly modified copy of `data`
  * @property {number} offset Possibly modified offset
  * @property {number} remove Number of elements to remove after the modified `offset`
  * @property {number} [insertedDataOffset] Offset of intended insertion within fixed up data
@@ -1280,7 +1280,7 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
  *
  * TODO: this function needs more work but it seems to work, mostly
  *
- * @param {Array} data Snippet of linear model data to insert
+ * @param {ve.dm.LinearData.Item[]} data Snippet of linear model data to insert
  * @param {number} offset Offset in the linear model where the caller wants to insert data
  * @return {ve.dm.Document.FixedInsertion}
  */
@@ -1318,12 +1318,12 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		isFirstChild = null;
 
 	/**
-	 * Append a linear model element to newData and update the state.
+	 * Append a linear model item to newData and update the state.
 	 *
 	 * This function updates parentNode, parentType, openingStack and closingStack.
 	 *
 	 * @private
-	 * @param {Object|Array|string} element Linear model element
+	 * @param {ve.dm.LinearData.Item[]} element Linear model item
 	 * @param {number} index Index in data that the element came from (for error reporting only)
 	 */
 	function writeElement( element, index ) {
@@ -1399,8 +1399,8 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	 * This function updates parentNode, parentType, closingStack, reopenElements, and closings.
 	 *
 	 * @private
-	 * @param {Array} closings Closing elements array to be appended to
-	 * @param {Array} reopenElements Opening elements array to be appended to
+	 * @param {ve.dm.LinearData.Element[]} closings Closing elements array to be appended to
+	 * @param {ve.dm.LinearData.Element[]} reopenElements Opening elements array to be appended to
 	 * @param {string} type Current element type we're considering (for error reporting only)
 	 * @param {number} index Current index (for error reporting only)
 	 */

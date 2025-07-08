@@ -100,7 +100,7 @@ ve.ui.DiffElement.static.compareAttributes = function ( oldAttributes, newAttrib
  * Get the original linear data from a node
  *
  * @param {ve.dm.Node} node Node
- * @return {Array} Linear data
+ * @return {ve.dm.LinearData.Item[]} Linear data
  */
 ve.ui.DiffElement.static.getDataFromNode = function ( node ) {
 	const doc = node.getRoot().getDocument();
@@ -478,7 +478,7 @@ ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
  * Get the DOM from linear data and wrap it for the diff.
  *
  * @param {ve.dm.Document} nodeDoc Node's document model
- * @param {Array} nodeData Linear data for the diff
+ * @param {ve.dm.LinearData.Item[]} nodeData Linear data for the diff
  * @return {HTMLElement[]} Elements (not owned by window.document)
  */
 ve.ui.DiffElement.prototype.wrapNodeData = function ( nodeDoc, nodeData ) {
@@ -497,7 +497,7 @@ ve.ui.DiffElement.prototype.wrapNodeData = function ( nodeDoc, nodeData ) {
  * @param {ve.dm.Node} node
  * @param {string} action  'remove', 'insert' or, if moved, 'none'
  * @param {string|null} move 'up' or 'down' if the node has moved
- * @return {Array} Linear Data
+ * @return {ve.dm.LinearData.Item[]} Linear Data
  */
 ve.ui.DiffElement.prototype.getNodeData = function ( node, action, move ) {
 	// Get the linear model for the node
@@ -533,7 +533,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( diff, oldNode, n
  * @param {ve.dm.Node} newNode Corresponding node from the new document
  * @param {string|null} move 'up' or 'down' if the node has moved
  * @param {boolean} [noTreeDiff] Don't perform a tree diff of the nodes (used internally to avoid recursion)
- * @return {Array|boolean} Linear data for the diff, or false
+ * @return {ve.dm.LinearData.Item[]|boolean} Linear data for the diff, or false
  */
 ve.ui.DiffElement.prototype.getChangedNodeData = function ( diff, oldNode, newNode, move, noTreeDiff ) {
 	let nodeData;
@@ -561,7 +561,7 @@ ve.ui.DiffElement.prototype.getChangedNodeData = function ( diff, oldNode, newNo
  *
  * @param {ve.dm.Node} newNode Corresponding node from the new document
  * @param {Object} diff Object describing the diff
- * @return {Array} Linear data for the diff
+ * @return {ve.dm.LinearData.Item[]} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedLeafNodeData = function ( newNode, diff ) {
 	const nodeData = this.constructor.static.getDataFromNode( newNode ),
@@ -591,11 +591,11 @@ ve.ui.DiffElement.prototype.getChangedLeafNodeData = function ( newNode, diff ) 
  * Append list item
  *
  * @private
- * @param {Array} diffData
+ * @param {ve.dm.LinearData.Item[]} diffData
  * @param {number} insertIndex
  * @param {ve.dm.ListNode} listNode
- * @param {Array} listNodeData List node opening
- * @param {Array} listItemData
+ * @param {ve.dm.LinearData.Item[]} listNodeData List node opening
+ * @param {ve.dm.LinearData.Item[]} listItemData
  * @param {number} depthChange
  * @return {number}
  */
@@ -653,7 +653,7 @@ ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, l
  * @param {ve.dm.Node} newDoclistNode Node from new document
  * @param {Object} diff Object describing the diff
  * @param {boolean} neverProcess Never process the diffQueue (always show the whole document)
- * @return {Array} Linear data for the diff
+ * @return {ve.dm.LinearData.Item[]} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedDocListData = function ( newDoclistNode, diff, neverProcess ) {
 	const diffData = [];
@@ -803,7 +803,7 @@ ve.ui.DiffElement.prototype.iterateDiff = function ( diff, callbacks ) {
  *
  * @param {ve.dm.Node} newListNode Corresponding node from the new document
  * @param {Object} diff Object describing the diff
- * @return {Array} Linear data for the diff
+ * @return {ve.dm.LinearData.Item[]} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, diff ) {
 	const diffData = [];
@@ -1010,7 +1010,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
  * @param {ve.dm.Node} oldTreeNode Node from the old document
  * @param {ve.dm.Node} newTreeNode Corresponding node from the new document
  * @param {Object} diff Object describing the diff
- * @return {Array} Linear data for the diff
+ * @return {ve.dm.LinearData.Item[]} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, newTreeNode, diff ) {
 	const nodeData = this.constructor.static.getDataFromNode( newTreeNode ),
@@ -1329,7 +1329,7 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( diff
 /**
  * Compare attributes of two nodes
  *
- * @param {Array} data Linear data containing new node
+ * @param {ve.dm.LinearData.Item[]} data Linear data containing new node
  * @param {number} offset Offset in data
  * @param {Object} attributeChange Attribute change object containing oldAttributes and newAttributes
  * @return {OO.ui.OptionWidget|null} Change description item, or null if nothing to describe
@@ -1388,7 +1388,7 @@ ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes, class
 /**
  * Mark an element with attributes to be added later by the converter.
  *
- * @param {Array} data Data containing element to be marked
+ * @param {ve.dm.LinearData.Item[]} data Data containing element to be marked
  * @param {number} offset Offset of element to be marked
  * @param {Object} attributes Attributes to set
  */
@@ -1412,7 +1412,7 @@ ve.ui.DiffElement.prototype.addAttributesToElement = function ( data, offset, at
  * Mark an HTML element or data element as moved
  *
  * @param {string|null} move 'up' or 'down' if the node has moved
- * @param {HTMLElement|Array} elementOrData Linear data or HTMLElement
+ * @param {HTMLElement|ve.dm.LinearData.Item[]} elementOrData Linear data or HTMLElement
  * @param {number} [offset=0] Linear mode offset
  */
 ve.ui.DiffElement.prototype.markMove = function ( move, elementOrData, offset = 0 ) {
@@ -1441,7 +1441,7 @@ ve.ui.DiffElement.prototype.markMove = function ( move, elementOrData, offset = 
  * @param {Array} linearDiff Linear diff, mapping arrays of linear data to diff
  *  actions (remove, insert or retain)
  * @param {ve.dm.Node} newNode Node from the new document
- * @return {Array} Data with annotations added
+ * @return {ve.dm.LinearData.Item[]} Data with annotations added
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 	const items = [],

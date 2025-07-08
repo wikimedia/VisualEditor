@@ -35,7 +35,7 @@ ve.dm.example.singleLine = function ( strings, ...values ) {
  * The actual storage format has an instance of ve.dm.LinkAnnotation instead of the plain object,
  * and an instance of ve.dm.AnnotationSet instead of the array.
  *
- * @param {Array} data Linear model data
+ * @param {ve.dm.LinearData.Item[]} data Linear model data
  * @param {ve.dm.HashValueStore} [store] Hash-value store to use, creates one if undefined
  * @return {ve.dm.ElementLinearData} Linear data store
  * @throws {Error} Example data passed to preprocessAnnotations by reference
@@ -77,10 +77,10 @@ ve.dm.example.preprocessAnnotations = function ( data, store = new ve.dm.HashVal
  * Any annotation that has originalDomElements will be shallow-cloned and have
  * originalDomElements removed.
  *
- * @param {Array} data Linear model data. Will be modified.
+ * @param {ve.dm.LinearData.Item[]} data Linear model data. Will be modified.
  * @param {ve.dm.HashValueStore} store Hash-value store to resolve annotations in
  * @param {boolean} [preserveDomElements] Preserve original DOM elements
- * @return {Array} The given `data` parameter.
+ * @return {ve.dm.LinearData.Item[]} The given `data` parameter.
  */
 ve.dm.example.postprocessAnnotations = function ( data, store, preserveDomElements ) {
 	for ( let i = 0; i < data.length; i++ ) {
@@ -134,7 +134,7 @@ ve.dm.example.createAnnotationSet = function ( store, annotations ) {
  *
  * @param {string} text Text to annotate
  * @param {Object|Object[]} annotationOrAnnotations Annotation data
- * @return {Array} Annotated linear data
+ * @return {ve.dm.LinearData.Item[]} Annotated linear data
  */
 ve.dm.example.annotateText = function ( text, annotationOrAnnotations ) {
 	if ( !Array.isArray( annotationOrAnnotations ) ) {
@@ -234,7 +234,7 @@ ve.dm.example.createExampleDocumentFromObject = function ( name, store, object, 
 };
 
 /**
- * @param {Array} data
+ * @param {ve.dm.LinearData.Item[]} data
  * @param {ve.dm.HashValueStore} [store=new ve.dm.HashValueStore()] A specific hash-value store to use, optionally.
  * @param {string} [base=ve.dm.example.baseUri] Base URL to use for the document
  * @return {ve.dm.Document}
