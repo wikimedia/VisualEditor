@@ -401,6 +401,8 @@
 			"src/dm/ve.dm.TableSlice.js",
 			"src/dm/ve.dm.LinearData.js",
 			"src/dm/ve.dm.HashValueStore.js",
+			"src/dm/converters/ve.dm.DomFromModelConverter.js",
+			"src/dm/converters/ve.dm.ModelFromDomConverter.js",
 			"src/dm/ve.dm.Converter.js",
 			"src/dm/ve.dm.SourceConverter.js",
 			"src/dm/selections/ve.dm.LinearSelection.js",
