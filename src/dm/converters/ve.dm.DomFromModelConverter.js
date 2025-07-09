@@ -382,7 +382,7 @@ ve.dm.DomFromModelConverter.prototype.getDomSubtreeFromData = function ( data, c
 	};
 
 	const closeAnnotation = ( annotation ) => {
-		const originalDomElements = annotation.getOriginalDomElements( this.store ),
+		const originalDomElements = annotation.getOriginalDomElements(),
 			origElementText = originalDomElements[ 0 ] &&
 				originalDomElements[ 0 ].textContent ||
 				'';
