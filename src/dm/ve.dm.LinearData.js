@@ -350,24 +350,6 @@ ve.dm.LinearData.prototype.isElementData = function ( offset ) {
 };
 
 /**
- * Check for elements in data.
- *
- * This method assumes that any value that has a type property that's a string is an element object.
- * Elements are discovered by iterating through the entire data array (backwards).
- *
- * @return {boolean} At least one elements exists in data
- */
-ve.dm.LinearData.prototype.containsElementData = function () {
-	let i = this.getLength();
-	while ( i-- ) {
-		if ( this.isElementData( i ) ) {
-			return true;
-		}
-	}
-	return false;
-};
-
-/**
  * Checks if data at a given offset is an open element.
  *
  * @param {number} offset Data offset

@@ -203,38 +203,6 @@ QUnit.test( 'isElementData', ( assert ) => {
 	} );
 } );
 
-QUnit.test( 'containsElementData', ( assert ) => {
-	const cases = [
-		{
-			msg: 'simple paragraph',
-			data: [ { type: 'paragraph' }, 'a', { type: '/paragraph' } ],
-			expected: true
-		},
-		{
-			msg: 'plain text',
-			data: [ ...'abc' ],
-			expected: false
-		},
-		{
-			msg: 'annotated text',
-			data: [ [ 'a', { '{"type:"bold"}': { type: 'bold' } } ] ],
-			expected: false
-		},
-		{
-			msg: 'non-text leaf',
-			data: [ 'a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c' ],
-			expected: true
-		}
-	];
-
-	cases.forEach( ( caseItem ) => {
-		const data = new ve.dm.LinearData( new ve.dm.HashValueStore(), caseItem.data );
-		assert.strictEqual(
-			data.containsElementData(), caseItem.expected, caseItem.msg
-		);
-	} );
-} );
-
 QUnit.test( 'getAnnotationsFromOffset', ( assert ) => {
 	const cases = [
 		{
