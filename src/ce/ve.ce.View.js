@@ -110,7 +110,7 @@ ve.ce.View.prototype.initialize = function () {
 	if ( this.model.element && this.model.element.originalDomElementsHash !== undefined ) {
 		// Render attributes from original DOM elements
 		ve.dm.Converter.static.renderHtmlAttributeList(
-			this.model.getOriginalDomElements( this.model.getStore() ),
+			this.model.getOriginalDomElements(),
 			this.$element,
 			this.constructor.static.renderHtmlAttributes,
 			// Computed

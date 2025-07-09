@@ -21,7 +21,7 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 	ve.ce.AlienNode.super.apply( this, arguments );
 
 	// DOM changes
-	this.$element = $( ve.copyDomElements( this.model.getOriginalDomElements( this.model.getDocument().getStore() ), document ) );
+	this.$element = $( ve.copyDomElements( this.model.getOriginalDomElements(), document ) );
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this, this.$element, {

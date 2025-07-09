@@ -457,11 +457,11 @@ ve.dm.Model.prototype.getOriginalDomElementsHash = function () {
 /**
  * Get the DOM element(s) this model was originally converted from, if any.
  *
- * @param {ve.dm.HashValueStore} store Hash value store where the DOM elements are stored
  * @return {HTMLElement[]} DOM elements this model was converted from, empty if not applicable
  */
-ve.dm.Model.prototype.getOriginalDomElements = function ( store ) {
-	return store.value( this.getOriginalDomElementsHash() ) || [];
+ve.dm.Model.prototype.getOriginalDomElements = function () {
+	const store = this.getStore();
+	return ( store && store.value( this.getOriginalDomElementsHash() ) ) || [];
 };
 
 /**
