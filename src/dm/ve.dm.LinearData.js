@@ -1464,38 +1464,6 @@ ve.dm.LinearData.prototype.getWordRange = function ( offset ) {
 };
 
 /**
- * Finds all instances of items being stored in the hash-value store for this data store
- *
- * Currently this is just all annotations still in use.
- *
- * @param {ve.Range} [range] Optional range to get store values for
- * @return {Object} Object containing all store values, keyed by store hash
- */
-ve.dm.LinearData.prototype.getUsedStoreValues = function ( range ) {
-	const store = this.getStore(),
-		valueStore = {};
-
-	range = range || new ve.Range( 0, this.data.length );
-
-	for ( let i = range.start; i < range.end; i++ ) {
-		// Annotations
-		// Use ignoreClose to save time; no need to count every element annotation twice
-		const hashes = this.getAnnotationHashesFromOffset( i, true );
-		let j = hashes.length;
-		while ( j-- ) {
-			const hash = hashes[ j ];
-			if ( !Object.prototype.hasOwnProperty.call( valueStore, hash ) ) {
-				valueStore[ hash ] = store.value( hash );
-			}
-		}
-		if ( this.data[ i ].originalDomElementsHash !== undefined ) {
-			valueStore[ this.data[ i ].originalDomElementsHash ] = store.value( this.data[ i ].originalDomElementsHash );
-		}
-	}
-	return valueStore;
-};
-
-/**
  * Remap the internal list indexes used in this linear data.
  *
  * Calls remapInternalListIndexes() for each node.

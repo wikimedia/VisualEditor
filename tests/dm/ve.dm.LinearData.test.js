@@ -2310,62 +2310,6 @@ QUnit.test( 'getAnnotationHashesFromOffset', ( assert ) => {
 	} );
 } );
 
-QUnit.test( 'getUsedStoreValues', ( assert ) => {
-	const bold = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
-		italic = new ve.dm.ItalicAnnotation( { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ),
-		linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
-		elementData = new ve.dm.LinearData( linearData.getStore(), linearData.getData() ),
-		cases = [
-			{
-				msg: 'no range (whole document) contains everything',
-				expected: {
-					[ ve.dm.example.boldHash ]: bold,
-					[ ve.dm.example.italicHash ]: italic
-				}
-			},
-			{
-				msg: '2-4 contains bold and italic',
-				range: new ve.Range( 2, 4 ),
-				expected: {
-					[ ve.dm.example.boldHash ]: bold,
-					[ ve.dm.example.italicHash ]: italic
-				}
-			},
-			{
-				msg: '2-3 contains bold',
-				range: new ve.Range( 2, 3 ),
-				expected: {
-					[ ve.dm.example.boldHash ]: bold
-				}
-			},
-			{
-				msg: '3-4 contains italic',
-				range: new ve.Range( 3, 4 ),
-				expected: {
-					[ ve.dm.example.italicHash ]: italic
-				}
-			},
-			{
-				msg: '5-10 contains nothing',
-				range: new ve.Range( 5, 10 ),
-				expected: {}
-			}
-		];
-
-	function getElement( ann ) {
-		return ann.element;
-	}
-
-	cases.forEach( ( caseItem ) => {
-		assert.deepEqual(
-			ve.copy( elementData.getUsedStoreValues( caseItem.range ), getElement ),
-			ve.copy( caseItem.expected, getElement ),
-			caseItem.msg
-		);
-	} );
-
-} );
-
 QUnit.test( 'compareElements and compareElementsUnannotated', ( assert ) => {
 	const store = new ve.dm.HashValueStore(),
 		cases = [
