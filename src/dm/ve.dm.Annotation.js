@@ -108,6 +108,13 @@ ve.dm.Annotation.static.toDomElements = null;
 /* Methods */
 
 /**
+ * @inheritdoc
+ */
+ve.dm.Annotation.prototype.getStore = function () {
+	return this.store;
+};
+
+/**
  * Get an object containing comparable annotation properties.
  *
  * This is used by the converter to merge adjacent annotations.
@@ -131,6 +138,7 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
 ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
 	const domElements = this.store && this.getOriginalDomElements( this.store );
 
+	/* istanbul ignore next */
 	if ( domElements && domElements[ 0 ] ) {
 		const comparableAttributes = ve.getDomAttributes( domElements[ 0 ] );
 		delete comparableAttributes[ 'data-parsoid' ];

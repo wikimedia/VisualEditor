@@ -16,7 +16,6 @@
 ve.dm.Model = function VeDmModel( element ) {
 	// Properties
 	this.element = element || { type: this.constructor.static.name };
-	this.store = null;
 };
 
 /* Inheritance */
@@ -398,11 +397,10 @@ ve.dm.Model.prototype.getElement = function () {
 /**
  * Get a reference to the hash-value store used by the element.
  *
- * @return {ve.dm.HashValueStore} Hash-value store
+ * @abstract
+ * @return {ve.dm.HashValueStore|null} Hash-value store, null if not available
  */
-ve.dm.Model.prototype.getStore = function () {
-	return this.store;
-};
+ve.dm.Model.prototype.getStore = null;
 
 /**
  * Get the symbolic name of this model's type.
