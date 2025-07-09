@@ -781,22 +781,6 @@ ve.dm.TransactionBuilder.prototype.addSafeRemoveOps = function ( doc, removeStar
 };
 
 /**
- * Add a replace operation (internal helper).
- *
- * @private
- * @param {ve.dm.LinearData.Item[]} remove Data removed.
- * @param {ve.dm.LinearData.Item[]} insert Data to insert.
- * @param {number} [insertedDataOffset] Inserted data offset
- * @param {number} [insertedDataLength] Inserted data length
- */
-ve.dm.TransactionBuilder.prototype.pushReplaceInternal = function ( remove, insert, insertedDataOffset, insertedDataLength ) {
-	if ( remove.length === 0 && insert.length === 0 ) {
-		return; // No-op
-	}
-	this.transaction.pushReplaceOp( remove, insert, insertedDataOffset, insertedDataLength );
-};
-
-/**
  * Add a replace operation
  *
  * If metadata is collapsed instead of removed, it will be shifted backwards if necessary to

@@ -235,27 +235,6 @@ ve.dm.Transaction.prototype.pushRetainOp = function ( length ) {
 };
 
 /**
- * Build a replace operation
- *
- * The `insertedDataOffset` and `insertedDataLength` parameters indicate the intended insertion
- * is wrapped with fixup data to preserve HTML validity. For instance, an intended table cell
- * insertion may have been fixed up by wrapping inside a table row, table section and table.
- *
- * @param {ve.dm.LinearData.Item[]} remove Data to remove
- * @param {ve.dm.LinearData.Item[]} insert Data to insert, possibly fixed up
- * @param {number} [insertedDataOffset] Offset of intended insertion within fixed up data
- * @param {number} [insertedDataLength] Length of intended insertion within fixed up data
- */
-ve.dm.Transaction.prototype.pushReplaceOp = function ( remove, insert, insertedDataOffset, insertedDataLength ) {
-	const op = { type: 'replace', remove: remove, insert: insert };
-	if ( insertedDataOffset !== undefined && insertedDataLength !== undefined ) {
-		op.insertedDataOffset = insertedDataOffset;
-		op.insertedDataLength = insertedDataLength;
-	}
-	this.operations.push( op );
-};
-
-/**
  * Build an attribute operation
  *
  * @param {string} key Name of attribute to change
