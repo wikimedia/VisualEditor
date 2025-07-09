@@ -41,7 +41,7 @@ ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
 	if ( !this.node.isDiffedAsTree() && !otherNode.node.isDiffedAsTree() ) {
 		return ve.dm.VisualDiff.static.compareNodes( this.node, otherNode.node );
 	} else {
-		return ve.dm.ElementLinearData.static.compareElementsUnannotated( this.node.element, otherNode.node.element );
+		return ve.dm.LinearData.static.compareElementsUnannotated( this.node.element, otherNode.node.element );
 	}
 };
 

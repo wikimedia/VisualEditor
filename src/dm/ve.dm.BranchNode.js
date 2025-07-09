@@ -204,7 +204,7 @@ ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
 /**
  * Get all annotations and the ranges they cover
  *
- * @return {ve.dm.ElementLinearData.AnnotationRange[]} Contiguous annotation ranges, ordered by start then end
+ * @return {ve.dm.LinearData.AnnotationRange[]} Contiguous annotation ranges, ordered by start then end
  */
 ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
 	const annotationRanges = [];

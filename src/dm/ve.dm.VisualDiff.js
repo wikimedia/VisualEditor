@@ -118,7 +118,7 @@ ve.dm.VisualDiff.static.compareNodes = function ( oldNode, newNode ) {
 
 	for ( let i = 0, ilen = oldData.length; i < ilen; i++ ) {
 		if ( oldData[ i ] !== newData[ i ] &&
-			!ve.dm.ElementLinearData.static.compareElements( oldData[ i ], newData[ i ], oldStore, newStore ) ) {
+			!ve.dm.LinearData.static.compareElements( oldData[ i ], newData[ i ], oldStore, newStore ) ) {
 			return false;
 		}
 	}

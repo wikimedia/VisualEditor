@@ -97,6 +97,6 @@ QUnit.test( 'conversion', ( assert ) => {
 			caseItem.textFromDataRange || caseItem.textRoundtrip || caseItem.text,
 			caseItem.msg + ': getSourceTextFromDataRange'
 		);
-		// getSourceTextFromDataRange with a range argument is currently tested by ElementLinearData#getSourceText tests
+		// getSourceTextFromDataRange with a range argument is currently tested by LinearData#getSourceText tests
 	} );
 } );

@@ -76,7 +76,7 @@ QUnit.test( 'constructor', ( assert ) => {
 	doc = new ve.dm.Document( [ ...'abcd' ], htmlDoc );
 	assert.strictEqual( doc.getHtmlDocument(), htmlDoc, 'Provided HTML document is used' );
 
-	const data = new ve.dm.ElementLinearData(
+	const data = new ve.dm.LinearData(
 		new ve.dm.HashValueStore(),
 		[ { type: 'paragraph' }, { type: '/paragraph' } ]
 	);

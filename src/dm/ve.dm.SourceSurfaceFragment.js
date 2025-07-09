@@ -79,7 +79,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function ( ...args ) {
  */
 ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	if ( typeof content !== 'string' ) {
-		const data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), content );
+		const data = new ve.dm.LinearData( new ve.dm.HashValueStore(), content );
 		// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
 		if ( !data.isPlainText( null, false, [ 'paragraph' ], annotate ) ) {
 			this.insertDocument( new ve.dm.Document( content.concat( { type: 'internalList' }, { type: '/internalList' } ) ) );

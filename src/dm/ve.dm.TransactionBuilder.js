@@ -120,10 +120,10 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 
 	let data;
 	if ( newDocRange ) {
-		data = new ve.dm.ElementLinearData( doc.getStore(), newDoc.getData( newDocRange, true ) );
+		data = new ve.dm.LinearData( doc.getStore(), newDoc.getData( newDocRange, true ) );
 	} else {
 		// Get the data, but skip over the internal list
-		data = new ve.dm.ElementLinearData( doc.getStore(),
+		data = new ve.dm.LinearData( doc.getStore(),
 			newDoc.getData( new ve.Range( 0, newListNodeOuterRange.start ), true ).concat(
 				newDoc.getData( new ve.Range( newListNodeOuterRange.end, newDoc.data.getLength() ), true )
 			)
@@ -154,7 +154,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 				oldEndOffset = listNodeRange.start;
 				newEndOffset = newListNodeRange.start;
 			}
-			linearData = new ve.dm.ElementLinearData(
+			linearData = new ve.dm.LinearData(
 				doc.getStore(),
 				newDoc.getData( new ve.Range( newListNodeRange.start, newEndOffset ), true )
 			);
@@ -165,7 +165,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 			listData = doc.getData( listNodeRange, true );
 		}
 		for ( let i = 0, len = listMerge.newItemRanges.length; i < len; i++ ) {
-			linearData = new ve.dm.ElementLinearData(
+			linearData = new ve.dm.LinearData(
 				doc.getStore(),
 				newDoc.getData( listMerge.newItemRanges[ i ], true )
 			);
@@ -328,14 +328,14 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 			let item = ve.copy( run.data[ j ] );
 			const anns = new ve.dm.AnnotationSet(
 				doc.getStore(),
-				ve.dm.ElementLinearData.static.getAnnotationHashesFromItem( item )
+				ve.dm.LinearData.static.getAnnotationHashesFromItem( item )
 			);
 			if ( clear ) {
 				anns.remove( annotation );
 			} else {
 				anns.add( annotation, run.spliceAt );
 			}
-			item = ve.dm.ElementLinearData.static.replaceAnnotationHashesForItem( item, anns.getHashes() );
+			item = ve.dm.LinearData.static.replaceAnnotationHashesForItem( item, anns.getHashes() );
 			run.data[ j ] = item;
 		}
 		runs.push( run );

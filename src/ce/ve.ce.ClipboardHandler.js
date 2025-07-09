@@ -684,7 +684,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromInternal = function 
 	if ( isMultiline ) {
 		// Take a copy to prevent the data being annotated a second time in the balanced data path
 		// and to prevent actions in the data model affecting view.clipboard
-		linearData = new ve.dm.ElementLinearData(
+		linearData = new ve.dm.LinearData(
 			slice.getStore(),
 			ve.copy( slice.getOriginalData() )
 		);
@@ -702,7 +702,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromInternal = function 
 	// Balanaced data
 	if ( !insertionPromise ) {
 		// Take a copy to prevent actions in the data model affecting view.clipboard
-		linearData = new ve.dm.ElementLinearData(
+		linearData = new ve.dm.LinearData(
 			slice.getStore(),
 			ve.copy( slice.getBalancedData() )
 		);
@@ -1000,7 +1000,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteFromExternalContextRange = function (
 	const data = pastedDocumentModel.data,
 		documentRange = pastedDocumentModel.getDocumentRange(),
 		beforePasteData = this.beforePasteData || {},
-		context = new ve.dm.ElementLinearData(
+		context = new ve.dm.LinearData(
 			pastedDocumentModel.getStore(),
 			ve.copy( beforePasteData.context )
 		);
@@ -1014,7 +1014,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteFromExternalContextRange = function (
 	let left = 0;
 	while (
 		context.getLength() &&
-		ve.dm.ElementLinearData.static.compareElementsUnannotated(
+		ve.dm.LinearData.static.compareElementsUnannotated(
 			data.getData( left ),
 			data.isElementData( left ) ? context.getData( 0 ) : leftText
 		)
@@ -1032,7 +1032,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteFromExternalContextRange = function (
 	while (
 		right > 0 &&
 		context.getLength() &&
-		ve.dm.ElementLinearData.static.compareElementsUnannotated(
+		ve.dm.LinearData.static.compareElementsUnannotated(
 			data.getData( right - 1 ),
 			data.isElementData( right - 1 ) ? context.getData( context.getLength() - 1 ) : rightText
 		)

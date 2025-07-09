@@ -464,7 +464,7 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		let contentData;
 		// Find first cell with content
 		for ( i = 0, l = cells.length; i < l; i++ ) {
-			contentData = new ve.dm.ElementLinearData(
+			contentData = new ve.dm.LinearData(
 				documentModel.getStore(),
 				documentModel.getData( cells[ i ].node.getRange() )
 			);

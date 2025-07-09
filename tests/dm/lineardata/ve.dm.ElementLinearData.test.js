@@ -558,7 +558,7 @@ QUnit.test( 'trimOuterSpaceFromRange', ( assert ) => {
 		];
 
 	const linearData = ve.dm.example.preprocessAnnotations( data );
-	const elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() );
+	const elementData = new ve.dm.LinearData( linearData.getStore(), linearData.getData() );
 	cases.forEach( ( caseItem ) => {
 		assert.equalRange(
 			elementData.trimOuterSpaceFromRange( caseItem.range ),
@@ -569,7 +569,7 @@ QUnit.test( 'trimOuterSpaceFromRange', ( assert ) => {
 } );
 
 QUnit.test( 'isContentOffset', ( assert ) => {
-	const data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), [
+	const data = new ve.dm.LinearData( new ve.dm.HashValueStore(), [
 			{ type: 'heading' },
 			'a',
 			{ type: 'inlineImage' },
@@ -640,7 +640,7 @@ QUnit.test( 'isContentOffset', ( assert ) => {
 } );
 
 QUnit.test( 'isStructuralOffset', ( assert ) => {
-	const data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), [
+	const data = new ve.dm.LinearData( new ve.dm.HashValueStore(), [
 			{ type: 'heading' },
 			'a',
 			{ type: 'inlineImage' },
@@ -718,7 +718,7 @@ QUnit.test( 'isStructuralOffset', ( assert ) => {
 QUnit.test( 'getCharacterData', ( assert ) => {
 	const data = [ { type: 'paragraph' }, 'a', [ 'b', [ 0 ] ], { type: '/paragraph' } ],
 		expected = [ '', 'a', 'b', '' ],
-		linearData = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), data );
+		linearData = new ve.dm.LinearData( new ve.dm.HashValueStore(), data );
 
 	for ( let i = 0; i < data.length; i++ ) {
 		assert.strictEqual(
@@ -752,7 +752,7 @@ QUnit.test( 'getText', ( assert ) => {
 } );
 
 QUnit.test( 'getSourceText', ( assert ) => {
-	const data = new ve.dm.ElementLinearData(
+	const data = new ve.dm.LinearData(
 			new ve.dm.HashValueStore(),
 			[
 				{ type: 'paragraph' }, ...'foo', { type: '/paragraph' },
@@ -817,7 +817,7 @@ QUnit.test( 'isContentData', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		const data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), caseItem.data );
+		const data = new ve.dm.LinearData( new ve.dm.HashValueStore(), caseItem.data );
 		assert.strictEqual(
 			data.isContentData(), caseItem.expected, caseItem.msg
 		);
@@ -856,7 +856,7 @@ QUnit.test( 'getRelativeOffset', ( assert ) => {
 				{ type: '/internalItem' },
 				{ type: '/internalList' }
 			],
-			callback: ve.dm.ElementLinearData.prototype.isContentOffset,
+			callback: ve.dm.LinearData.prototype.isContentOffset,
 			// The results here look incorrect. It should "turn around" and return 7.
 			// It should only return -1 if the internalItem has no valid offsets inside (it is empty).
 			expected: -1
@@ -864,7 +864,7 @@ QUnit.test( 'getRelativeOffset', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		const data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), caseItem.data );
+		const data = new ve.dm.LinearData( new ve.dm.HashValueStore(), caseItem.data );
 		if ( 'expected' in caseItem ) {
 			assert.strictEqual(
 				data.getRelativeOffset(
@@ -1502,9 +1502,9 @@ QUnit.test( 'getWordRange', ( assert ) => {
 		const data = caseItem.phrase.split( '' );
 		data.unshift( { type: 'paragraph' } );
 		data.push( { type: '/paragraph' } );
-		const elementLinearData = new ve.dm.ElementLinearData( store, data );
+		const linearData = new ve.dm.LinearData( store, data );
 		// Adjust offsets to account for the paragraph tag
-		const range = elementLinearData.getWordRange( caseItem.offset + 1 );
+		const range = linearData.getWordRange( caseItem.offset + 1 );
 		const word = caseItem.phrase.slice( range.start - 1, range.end - 1 );
 		assert.strictEqual( word, caseItem.expected,
 			caseItem.msg + ': ' +
@@ -1953,7 +1953,7 @@ QUnit.test( 'countNonInternalElements', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		const data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), caseItem.data );
+		const data = new ve.dm.LinearData( new ve.dm.HashValueStore(), caseItem.data );
 		assert.strictEqual( data.countNonInternalElements(), caseItem.expected, caseItem.msg );
 	} );
 } );
@@ -2022,14 +2022,14 @@ QUnit.test( 'hasContent', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		const data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), caseItem.data );
+		const data = new ve.dm.LinearData( new ve.dm.HashValueStore(), caseItem.data );
 		assert.strictEqual( data.hasContent(), caseItem.expected, caseItem.msg );
 	} );
 } );
 
 QUnit.test( 'getAnnotationHashesFromOffset', ( assert ) => {
 	const linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
-		elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() ),
+		elementData = new ve.dm.LinearData( linearData.getStore(), linearData.getData() ),
 		cases = [
 			{
 				msg: '0 has no annotations',
@@ -2087,7 +2087,7 @@ QUnit.test( 'getUsedStoreValues', ( assert ) => {
 	const bold = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
 		italic = new ve.dm.ItalicAnnotation( { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ),
 		linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
-		elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() ),
+		elementData = new ve.dm.LinearData( linearData.getStore(), linearData.getData() ),
 		cases = [
 			{
 				msg: 'no range (whole document) contains everything',
@@ -2282,12 +2282,12 @@ QUnit.test( 'compareElements and compareElementsUnannotated', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		assert.strictEqual(
-			ve.dm.ElementLinearData.static.compareElements( caseItem.a, caseItem.b, store ),
+			ve.dm.LinearData.static.compareElements( caseItem.a, caseItem.b, store ),
 			caseItem.comparison,
 			caseItem.msg
 		);
 		assert.strictEqual(
-			ve.dm.ElementLinearData.static.compareElementsUnannotated( caseItem.a, caseItem.b ),
+			ve.dm.LinearData.static.compareElementsUnannotated( caseItem.a, caseItem.b ),
 			caseItem.comparisonUnannotated || caseItem.comparison,
 			caseItem.msg + ' (unannotated)'
 		);
@@ -2301,7 +2301,7 @@ QUnit.test( 'compareElements and compareElementsUnannotated', ( assert ) => {
 
 QUnit.test( 'setAnnotationsAtOffset', ( assert ) => {
 	const store = new ve.dm.HashValueStore();
-	const elementData = new ve.dm.ElementLinearData( store, [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ] );
+	const elementData = new ve.dm.LinearData( store, [ { type: 'paragraph' }, ...'abc', { type: '/paragraph' } ] );
 
 	elementData.setAnnotationsAtOffset( 2, ve.dm.example.createAnnotationSet( store, [ ve.dm.example.bold ] ) );
 	elementData.setAnnotationsAtOffset( 3, ve.dm.example.createAnnotationSet( store, [ ve.dm.example.italic ] ) );
@@ -2318,6 +2318,6 @@ QUnit.test( 'setAnnotationsAtOffset', ( assert ) => {
 	);
 } );
 
-// TODO: ve.dm.ElementLinearData#remapInternalListIndexes
-// TODO: ve.dm.ElementLinearData#remapInternalListKeys
-// TODO: ve.dm.ElementLinearData#cloneElements
+// TODO: ve.dm.LinearData#remapInternalListIndexes
+// TODO: ve.dm.LinearData#remapInternalListKeys
+// TODO: ve.dm.LinearData#cloneElements

@@ -27,7 +27,7 @@ ve.dm.example.singleLine = function ( strings, ...values ) {
 
 /**
  * Convert arrays of shorthand annotations in a data fragment to AnnotationSets with real
- * annotation objects, and wraps the result in a ve.dm.ElementLinearData object.
+ * annotation objects, and wraps the result in a ve.dm.LinearData object.
  *
  * Shorthand notation for annotations is:
  * [ 'a', [ { type: 'link', attributes: { href: '…' } ] ]
@@ -37,7 +37,7 @@ ve.dm.example.singleLine = function ( strings, ...values ) {
  *
  * @param {ve.dm.LinearData.Item[]} data Linear model data
  * @param {ve.dm.HashValueStore} [store] Hash-value store to use, creates one if undefined
- * @return {ve.dm.ElementLinearData} Linear data store
+ * @return {ve.dm.LinearData} Linear data store
  * @throws {Error} Example data passed to preprocessAnnotations by reference
  */
 ve.dm.example.preprocessAnnotations = function ( data, store = new ve.dm.HashValueStore() ) {
@@ -68,7 +68,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store = new ve.dm.HashVal
 		}
 		preprocessOriginalDomElements( data[ i ] );
 	}
-	return new ve.dm.ElementLinearData( store, data );
+	return new ve.dm.LinearData( store, data );
 };
 
 /**

@@ -228,7 +228,7 @@ ve.init.Target.static.enforceResizesContent = false;
  *
  * One set for external (non-VE) paste sources and one for all paste sources.
  *
- * Most rules are handled in ve.dm.ElementLinearData#sanitize, but htmlBlacklist
+ * Most rules are handled in ve.dm.LinearData#sanitize, but htmlBlacklist
  * is handled in ve.ce.Surface#afterPaste.
  *
  * @type {Object}

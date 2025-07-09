@@ -219,7 +219,7 @@ ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
 /**
  * Rebase parallel transactions transactionA and transactionB onto each other
  *
- * Recalling that a transaction is a mapping from one ve.dm.ElementLinearData state to another,
+ * Recalling that a transaction is a mapping from one ve.dm.LinearData state to another,
  * suppose we have two parallel transactions, i.e.:
  *
  * - transactionA mapping docstate0 to some docstateA, and
@@ -481,8 +481,8 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
  * @return {ve.dm.Change.TransactionInfo|null} Info about the transaction if a simple replacement, else null
  */
 ve.dm.Change.static.getTransactionInfo = function ( tx ) {
-	// Copy of ve.dm.ElementLinearData.static.getAnnotationHashesFromItem, but we
-	// don't want to load all of ElementLinearData and its dependencies on the server-side.
+	// Copy of ve.dm.LinearData.static.getAnnotationHashesFromItem, but we
+	// don't want to load all of LinearData and its dependencies on the server-side.
 	function getAnnotations( item ) {
 		if ( typeof item === 'string' ) {
 			return [];

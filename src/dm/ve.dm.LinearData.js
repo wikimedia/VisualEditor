@@ -23,6 +23,10 @@ ve.dm.LinearData = function VeDmLinearData( store, data ) {
 
 OO.initClass( ve.dm.LinearData );
 
+// Deprecated aliases
+ve.dm.FlatLinearData = ve.dm.LinearData;
+ve.dm.ElementLinearData = ve.dm.LinearData;
+
 /**
  * @typedef {Object} Element
  * @memberof ve.dm.LinearData

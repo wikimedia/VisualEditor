@@ -195,7 +195,7 @@ ve.ui.DebugBar.prototype.updateDump = function () {
 /**
  * Get an ordered list representation of some linear data
  *
- * @param {ve.dm.ElementLinearData} linearData Linear data
+ * @param {ve.dm.LinearData} linearData Linear data
  * @return {jQuery} Ordered list
  */
 ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {

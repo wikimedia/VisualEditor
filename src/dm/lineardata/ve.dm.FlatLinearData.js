@@ -1,28 +1,4 @@
-/*!
- * VisualEditor FlatLinearData classes.
- *
- * Class containing Flat linear data and a hash-value store.
- *
- * @copyright See AUTHORS.txt
- */
-
-/**
- * Flat linear data storage
- *
- * @class
- * @extends ve.dm.LinearData
- * @constructor
- * @param {ve.dm.HashValueStore} store Hash-value store
- * @param {ve.dm.LinearData.Item[]} [data] Linear data
- */
-ve.dm.FlatLinearData = function VeDmFlatLinearData() {
-	// Parent constructor
-	ve.dm.FlatLinearData.super.apply( this, arguments );
-};
-
-/* Inheritance */
-
-OO.inheritClass( ve.dm.FlatLinearData, ve.dm.LinearData );
+// Previously ve.dm.FlatLinearData - to be merged in a follow-up commit
 
 /* Methods */
 
@@ -32,8 +8,8 @@ OO.inheritClass( ve.dm.FlatLinearData, ve.dm.LinearData );
  * @param {number} offset Data offset
  * @return {string} Type of the element
  */
-ve.dm.FlatLinearData.prototype.getType = function ( offset ) {
-	return ve.dm.LinearData.static.getType( this.getData( offset ) );
+ve.dm.LinearData.prototype.getType = function ( offset ) {
+	return this.constructor.static.getType( this.getData( offset ) );
 };
 
 /**
@@ -42,8 +18,8 @@ ve.dm.FlatLinearData.prototype.getType = function ( offset ) {
  * @param {number} offset Data offset
  * @return {boolean} Data at offset is an element
  */
-ve.dm.FlatLinearData.prototype.isElementData = function ( offset ) {
-	return ve.dm.LinearData.static.isElementData( this.getData( offset ) );
+ve.dm.LinearData.prototype.isElementData = function ( offset ) {
+	return this.constructor.static.isElementData( this.getData( offset ) );
 };
 
 /**
@@ -54,7 +30,7 @@ ve.dm.FlatLinearData.prototype.isElementData = function ( offset ) {
  *
  * @return {boolean} At least one elements exists in data
  */
-ve.dm.FlatLinearData.prototype.containsElementData = function () {
+ve.dm.LinearData.prototype.containsElementData = function () {
 	let i = this.getLength();
 	while ( i-- ) {
 		if ( this.isElementData( i ) ) {
@@ -70,8 +46,8 @@ ve.dm.FlatLinearData.prototype.containsElementData = function () {
  * @param {number} offset Data offset
  * @return {boolean} Data at offset is an open element
  */
-ve.dm.FlatLinearData.prototype.isOpenElementData = function ( offset ) {
-	return ve.dm.LinearData.static.isOpenElementData( this.getData( offset ) );
+ve.dm.LinearData.prototype.isOpenElementData = function ( offset ) {
+	return this.constructor.static.isOpenElementData( this.getData( offset ) );
 };
 
 /**
@@ -80,6 +56,6 @@ ve.dm.FlatLinearData.prototype.isOpenElementData = function ( offset ) {
  * @param {number} offset Data offset
  * @return {boolean} Data at offset is a close element
  */
-ve.dm.FlatLinearData.prototype.isCloseElementData = function ( offset ) {
-	return ve.dm.LinearData.static.isCloseElementData( this.getData( offset ) );
+ve.dm.LinearData.prototype.isCloseElementData = function ( offset ) {
+	return this.constructor.static.isCloseElementData( this.getData( offset ) );
 };

@@ -38,7 +38,7 @@ ve.DiffMatchPatch.static.DIFF_CHANGE_INSERT = 2;
 /* Methods */
 
 ve.DiffMatchPatch.prototype.isEqualChar = function ( a, b ) {
-	return a === b || ve.dm.ElementLinearData.static.compareElements( a, b, this.store, this.store );
+	return a === b || ve.dm.LinearData.static.compareElements( a, b, this.store, this.store );
 };
 
 ve.DiffMatchPatch.prototype.isEqualString = function ( a, b ) {
@@ -205,7 +205,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		const cleanDiff = [];
 
 		function equalUnannotated( other, element, index ) {
-			return ve.dm.ElementLinearData.static.compareElementsUnannotated( element, other[ index ] );
+			return ve.dm.LinearData.static.compareElementsUnannotated( element, other[ index ] );
 		}
 
 		function equalElements( other, element, index ) {
@@ -364,8 +364,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 				( ( aAction === DIFF_DELETE && bAction === DIFF_INSERT ) || ( aAction === DIFF_INSERT && bAction === DIFF_DELETE ) )
 			) {
 				if ( aData.every( equalUnannotated.bind( this, bData ) ) ) {
-					const aAnnotations = new ve.dm.ElementLinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
-					const bAnnotations = new ve.dm.ElementLinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
+					const aAnnotations = new ve.dm.LinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
+					const bAnnotations = new ve.dm.LinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
 
 					const annotationChanges = [];
 					bAnnotations.get().forEach( ( b ) => {

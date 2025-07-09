@@ -15,7 +15,7 @@
  * @class
  * @extends ve.Document
  * @constructor
- * @param {ve.dm.LinearData.Item[]|ve.dm.ElementLinearData} data Raw linear model data or ElementLinearData
+ * @param {ve.dm.LinearData.Item[]|ve.dm.LinearData} data Raw linear model data or LinearData
  * @param {HTMLDocument} [htmlDocument] HTML document the data was converted from, if any.
  *  If omitted, a new document will be created. If data is an HTMLDocument, this parameter is
  *  ignored.
@@ -63,12 +63,10 @@ ve.dm.Document = function VeDmDocument(
 	// Sparse array
 	this.branchNodeFromOffsetCache = [];
 
-	if ( data instanceof ve.dm.ElementLinearData ) {
+	if ( data instanceof ve.dm.LinearData ) {
 		this.data = data;
-	} else if ( data instanceof ve.dm.FlatLinearData ) {
-		this.data = new ve.dm.ElementLinearData( data.getStore(), data.getData() );
 	} else {
-		this.data = new ve.dm.ElementLinearData(
+		this.data = new ve.dm.LinearData(
 			new ve.dm.HashValueStore(),
 			Array.isArray( data ) ? data : []
 		);
@@ -123,7 +121,7 @@ OO.inheritClass( ve.dm.Document, ve.Document );
  * This method modifies data in place.
  *
  * @static
- * @param {ve.dm.LinearData.Item[]|ve.dm.ElementLinearData} data Data to apply annotations to
+ * @param {ve.dm.LinearData.Item[]|ve.dm.LinearData} data Data to apply annotations to
  * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
  * @param {boolean} [replaceComparable=false] Whether to remove annotations from the data which are comparable to those in annotationSet
  * @param {ve.dm.HashValueStore} [store] Store associated with the data; only needs to be provided if that data is associated with a different store than annotationSet
@@ -142,8 +140,8 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, rep
 	} else {
 		store = annotationSet.getStore();
 	}
-	if ( !( data instanceof ve.dm.ElementLinearData ) ) {
-		data = new ve.dm.ElementLinearData( store, data );
+	if ( !( data instanceof ve.dm.LinearData ) ) {
+		data = new ve.dm.LinearData( store, data );
 	}
 
 	// Apply annotations to data
@@ -524,7 +522,7 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 		for ( let i = 0, l = ranges.length; i < l; i++ ) {
 			ve.batchPush( data, this.data.slice( ranges[ i ].start, ranges[ i ].end ) );
 		}
-		const linearData = new ve.dm.ElementLinearData( this.getStore(), data );
+		const linearData = new ve.dm.LinearData( this.getStore(), data );
 
 		const tableRange = new ve.Range( 0, data.length );
 
@@ -588,7 +586,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 		let balancedNodes;
 		if ( selection.length === 0 || range.isCollapsed() ) {
 			// Nothing selected
-			linearData = new ve.dm.ElementLinearData( this.getStore(), [
+			linearData = new ve.dm.LinearData( this.getStore(), [
 				{ type: 'paragraph', internal: { generated: 'empty' } },
 				{ type: '/paragraph' }
 			] );
@@ -669,7 +667,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 			// Final data:
 			//  contextOpenings + balanceOpenings + data slice + balanceClosings + contextClosings
-			linearData = new ve.dm.ElementLinearData(
+			linearData = new ve.dm.LinearData(
 				this.getStore(),
 				[].concat(
 					contextOpenings.reverse(),
@@ -726,14 +724,14 @@ ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy, mode )
  * Create a sub-document associated with this document like #cloneFromRange, but without cloning
  * any data from a range in this document: instead, use the specified data.
  *
- * @param {ve.dm.LinearData.Item[]|ve.dm.ElementLinearData} data Raw linear model data or ElementLinearData
+ * @param {ve.dm.LinearData.Item[]|ve.dm.LinearData} data Raw linear model data or LinearData
  * @param {boolean} [copyInternalList] Copy the internal list
  * @param {boolean} [detachedCopy] The copy is not intended to be merged into the original
  * @return {ve.dm.Document} New document
  */
 ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, detachedCopy ) {
 	if ( Array.isArray( data ) ) {
-		data = new ve.dm.ElementLinearData( this.getStore().slice(), data );
+		data = new ve.dm.LinearData( this.getStore().slice(), data );
 	}
 
 	const newDoc = new this.constructor(

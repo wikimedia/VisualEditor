@@ -5,9 +5,9 @@
  */
 
 /**
- * Transaction on ve.dm.ElementLinearData, preserving ve.dm.Document tree validity
+ * Transaction on ve.dm.LinearData, preserving ve.dm.Document tree validity
  *
- * A transaction represents a mapping on ve.dm.ElementLinearData, from one state (the start
+ * A transaction represents a mapping on ve.dm.LinearData, from one state (the start
  * state) to another (the end state). The transaction is guaranteed not to break tree validity:
  * if the start state represents a syntactically valid ve.dm.Document tree (without unbalanced
  * tags, bare listItems, bare table cells etc), then the end state tree must be syntactically
@@ -118,7 +118,7 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
 /**
  * Simpified comparison of linear data items
  *
- * Identical to ve.dm.ElementLinearData.static.compareElementsUnannotated, but without
+ * Identical to ve.dm.LinearData.static.compareElementsUnannotated, but without
  * the complex comparison of node elements that requires the model registry.
  *
  * For the purposes of translateOffset it is just sufficient that we catch obvious

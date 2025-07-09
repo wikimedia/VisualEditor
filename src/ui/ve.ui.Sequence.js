@@ -47,7 +47,7 @@ OO.initClass( ve.ui.Sequence );
 /**
  * Check if the sequence matches a given offset in the data
  *
- * @param {ve.dm.ElementLinearData} data String or linear data
+ * @param {ve.dm.LinearData} data String or linear data
  * @param {number} offset
  * @param {string} plaintext Plain text of data
  * @return {ve.Range|null} Range corresponding to the match, or else null

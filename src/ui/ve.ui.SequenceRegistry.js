@@ -49,7 +49,7 @@ ve.ui.SequenceRegistry.prototype.register = function ( sequence ) {
 /**
  * Find sequence matches a given offset in the data
  *
- * @param {ve.dm.ElementLinearData} data
+ * @param {ve.dm.LinearData} data
  * @param {number} offset
  * @param {boolean} [isPaste=false] Whether this in the context of a paste
  * @param {boolean} [isDelete=false] Whether this is after content being deleted

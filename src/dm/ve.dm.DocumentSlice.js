@@ -10,7 +10,7 @@
  * @class
  * @extends ve.dm.Document
  * @constructor
- * @param {HTMLDocument|Array|ve.dm.ElementLinearData} data
+ * @param {HTMLDocument|Array|ve.dm.LinearData} data
  * @param {HTMLDocument} [htmlDocument]
  * @param {ve.dm.Document} [parentDocument]
  * @param {ve.dm.InternalList} [internalList]

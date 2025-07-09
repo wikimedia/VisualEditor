@@ -249,7 +249,7 @@ ve.ce.DragDropHandler.prototype.onDocumentDrop = function ( e ) {
 		if ( !isMultiline ) {
 			// Data needs to be balanced to be sanitized
 			const slice = this.getSurface().getModel().getDocument().shallowCloneFromRange( originFragment.getSelection().getCoveringRange() );
-			const linearData = new ve.dm.ElementLinearData(
+			const linearData = new ve.dm.LinearData(
 				originFragment.getDocument().getStore(),
 				slice.getBalancedData()
 			);
