@@ -174,7 +174,7 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  *
  * Stored HTML is deleted after conversion.
  *
- * @param {ve.dm.Converter} converter
+ * @param {ve.dm.ModelFromDomConverter} converter
  * @param {HTMLDocument} doc Document to create nodes in
  * @return {ve.dm.LinearData.Item[]} Linear model data
  */

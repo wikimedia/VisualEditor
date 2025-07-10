@@ -338,7 +338,7 @@ ve.dm.Node.static.remapInternalListKeys = function () {
  *
  * @static
  * @param {HTMLElement[]} domElements DOM elements being converted
- * @param {ve.dm.Converter} converter
+ * @param {ve.dm.ModelFromDomConverter} converter
  * @return {boolean} The element is inline
  */
 ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
