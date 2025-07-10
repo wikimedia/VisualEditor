@@ -757,7 +757,8 @@
 			"src/ui/styles/widgets/ve.ui.TargetWidget.less",
 			"src/ui/styles/windowmanagers/ve.ui.SidebarDialogWindowManager.less",
 			"src/ui/styles/ve.ui.TableLineContext.less",
-			"src/ui/styles/ve.ui.Toolbar.less"
+			"src/ui/styles/ve.ui.Toolbar.less",
+			{ "file": "src/ui/styles/ve.ui.DebugBar.less", "debug": true }
 		],
 		"styleGroup": "ve"
 	},
@@ -1060,8 +1061,7 @@
 			"src/init/sa/ve.init.sa.Target.js"
 		],
 		"styles": [
-			"src/init/sa/styles/ve.init.sa.Platform.less",
-			{ "file": "src/ui/styles/ve.ui.DebugBar.less", "debug": true }
+			"src/init/sa/styles/ve.init.sa.Platform.less"
 		],
 		"dependencies": [
 			"visualEditor.base.build",
