@@ -1630,7 +1630,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 /**
  * Find a text string within the document
  *
- * @param {string|RegExp} query Text to find, string or regex with no flags
+ * @param {string|RegExp} query Text to find. Either a string, or a RegExp with the /g flag
  * @param {Object} [options] Search options
  * @param {boolean} [options.searchRange] Range to search. Defaults to the attached root.
  * @param {boolean} [options.caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
@@ -1646,6 +1646,9 @@ ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 	let ranges = [];
 
 	if ( query instanceof RegExp ) {
+		if ( !query.global ) {
+			throw new Error( 'The /g flag must be set on the query RegExp' );
+		}
 		// Avoid multi-line matching by only matching within content (text or content elements)
 		data.forEachRunOfContent( searchRange, ( off, line ) => {
 			query.lastIndex = 0;
