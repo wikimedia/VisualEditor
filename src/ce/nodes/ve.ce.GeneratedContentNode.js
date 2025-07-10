@@ -146,7 +146,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 		ve.resolveAttributes(
 			rendering,
 			domElements[ 0 ].ownerDocument,
-			ve.dm.Converter.static.computedAttributes
+			ve.dm.DomFromModelConverter.static.computedAttributes
 		);
 	} else {
 		rendering = [ document.createElement( 'span' ) ];

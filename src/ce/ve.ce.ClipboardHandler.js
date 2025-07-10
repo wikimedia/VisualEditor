@@ -160,7 +160,7 @@ ve.ce.ClipboardHandler.prototype.onCopy = function ( e, selection ) {
 	// Clone the elements in the slice
 	slice.data.cloneElements( true );
 
-	ve.dm.converter.getDomSubtreeFromModel( slice, this.$element[ 0 ], ve.dm.Converter.static.CLIPBOARD_MODE );
+	ve.dm.converter.getDomSubtreeFromModel( slice, this.$element[ 0 ], ve.dm.DomFromModelConverter.static.CLIPBOARD_MODE );
 
 	// Some browsers strip out spans when they match the styling of the
 	// clipboard handler element (e.g. plain spans) so we must protect against this
@@ -178,7 +178,7 @@ ve.ce.ClipboardHandler.prototype.onCopy = function ( e, selection ) {
 	ve.resolveAttributes(
 		this.$element[ 0 ],
 		htmlDoc,
-		ve.dm.Converter.static.computedAttributes
+		ve.dm.DomFromModelConverter.static.computedAttributes
 	);
 
 	// Support: Firefox

@@ -549,7 +549,7 @@
 			msg
 		);
 		assert.equalDomElement(
-			ve.dm.converter.getDomFromModel( model, ve.dm.Converter.static.CLIPBOARD_MODE ),
+			ve.dm.converter.getDomFromModel( model, ve.dm.DomFromModelConverter.static.CLIPBOARD_MODE ),
 			ve.createDocumentFromHtml( clipboardHtml, caseItem.ignoreXmlWarnings ),
 			msg + ' (clipboard mode)'
 		);
@@ -558,7 +558,7 @@
 		// if ( caseItem.previewBody !== false ) {
 		if ( caseItem.previewBody ) {
 			assert.equalDomElement(
-				ve.dm.converter.getDomFromModel( model, ve.dm.Converter.static.PREVIEW_MODE ),
+				ve.dm.converter.getDomFromModel( model, ve.dm.DomFromModelConverter.static.PREVIEW_MODE ),
 				ve.createDocumentFromHtml( previewHtml, caseItem.ignoreXmlWarnings ),
 				msg + ' (preview mode)'
 			);

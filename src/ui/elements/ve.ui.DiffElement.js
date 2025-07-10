@@ -420,7 +420,7 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff, meta
 	this.descriptions.addItems( this.descriptionItemsStack );
 	this.descriptionItemsStack = null;
 
-	ve.resolveAttributes( documentNode, newHtmlDocument, ve.dm.Converter.static.computedAttributes );
+	ve.resolveAttributes( documentNode, newHtmlDocument, ve.dm.DomFromModelConverter.static.computedAttributes );
 
 	if ( !documentNode.children.length ) {
 		const noChanges = document.createElement( 'div' );
@@ -484,7 +484,7 @@ ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
 ve.ui.DiffElement.prototype.wrapNodeData = function ( nodeDoc, nodeData ) {
 	const documentSlice = nodeDoc.cloneWithData( nodeData );
 	documentSlice.getStore().merge( nodeDoc.getStore() );
-	const nodeElements = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
+	const nodeElements = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.DomFromModelConverter.static.PREVIEW_MODE ).body;
 
 	// Convert NodeList to real array
 	return Array.prototype.slice.call( nodeElements.childNodes );
@@ -1325,7 +1325,7 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( diff
 	this.markMove( move, listItemNode );
 	const newDoc = newNode.getRoot().getDocument();
 	const documentSlice = newDoc.cloneWithData( data, true, true );
-	const body = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
+	const body = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.DomFromModelConverter.static.PREVIEW_MODE ).body;
 	while ( body.childNodes.length ) {
 		listItemNode.appendChild(
 			listItemNode.ownerDocument.adoptNode( body.childNodes[ 0 ] )

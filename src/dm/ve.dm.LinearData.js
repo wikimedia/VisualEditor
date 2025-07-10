@@ -793,7 +793,7 @@ ve.dm.LinearData.prototype.getAnnotationRanges = function ( range ) {
 	};
 	range.forEach( ( i ) => {
 		const annotations = this.getAnnotationsFromOffset( i );
-		ve.dm.Converter.static.openAndCloseAnnotations(
+		ve.dm.DomFromModelConverter.static.openAndCloseAnnotations(
 			annotationStack, annotations,
 			open.bind( this, i ),
 			close.bind( this, i )
@@ -801,7 +801,7 @@ ve.dm.LinearData.prototype.getAnnotationRanges = function ( range ) {
 	} );
 	// Close remaining annotations
 	const emptySet = new ve.dm.AnnotationSet( this.getStore() );
-	ve.dm.Converter.static.openAndCloseAnnotations(
+	ve.dm.DomFromModelConverter.static.openAndCloseAnnotations(
 		annotationStack, emptySet,
 		open.bind( this, range.end ),
 		close.bind( this, range.end )

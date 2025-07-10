@@ -517,7 +517,7 @@ QUnit.test( 'resolveAttributes', ( assert ) => {
 		doc.head.appendChild( $( '<base>', doc ).attr( 'href', caseItem.base )[ 0 ] );
 		const div = document.createElement( 'div' );
 		div.innerHTML = caseItem.html;
-		ve.resolveAttributes( div.childNodes, doc, ve.dm.Converter.static.computedAttributes );
+		ve.resolveAttributes( div.childNodes, doc, ve.dm.DomFromModelConverter.static.computedAttributes );
 		assert.strictEqual(
 			div.innerHTML,
 			caseItem.resolved,
