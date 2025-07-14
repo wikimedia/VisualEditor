@@ -45,19 +45,6 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	 * are added, reused, moved, and removed.
 	 */
 	this.indexOrder = [];
-
-	/**
-	 * @private
-	 * @property {Object.<string,string>} uniqueListKeys Internal cache for previously generated
-	 * listKeys to make sure the same {@link getUniqueListKey} call always returns the same value
-	 */
-	this.uniqueListKeys = {};
-
-	/**
-	 * @private
-	 * @property {number} uniqueNameSequence
-	 */
-	this.uniqueNameSequence = 0;
 };
 
 /**
@@ -258,7 +245,11 @@ ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( key, node ) {
  * @return {string} Generated unique list key, or existing unique key associated with oldListKey
  */
 ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, prefix ) {
-	if ( oldListKey in this.uniqueListKeys ) {
+	// Initialize properties dynamically; nobody needs to see this before it's used
+	if ( !this.uniqueListKeys ) {
+		this.uniqueListKeys = {};
+		this.uniqueNameSequence = 0;
+	} else if ( oldListKey in this.uniqueListKeys ) {
 		return this.uniqueListKeys[ oldListKey ];
 	}
 
