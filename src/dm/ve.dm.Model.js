@@ -316,13 +316,13 @@ ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveIn
 
 	diff.forEach( ( part ) => {
 		switch ( part[ 0 ] ) {
-			case -1:
+			case ve.DiffMatchPatch.static.DIFF_DELETE:
 				span.appendChild( this.wrapText( 'del', part[ 1 ] ) );
 				break;
-			case 1:
+			case ve.DiffMatchPatch.static.DIFF_INSERT:
 				span.appendChild( this.wrapText( 'ins', part[ 1 ] ) );
 				break;
-			case 0:
+			case ve.DiffMatchPatch.static.DIFF_EQUAL:
 				isRemoveInsert = false;
 				span.appendChild( document.createTextNode( part[ 1 ] ) );
 				break;

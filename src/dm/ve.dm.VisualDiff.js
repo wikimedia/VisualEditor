@@ -1041,7 +1041,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 				const listItems = getInternalListItemsToDiff(
 					newDocNodeGroups[ group.group ].indexOrder,
 					newDocInternalListNode.children,
-					1
+					ve.DiffMatchPatch.static.DIFF_INSERT
 				);
 				diff = listItems.indices;
 				diff.newNodes = listItems.toDiff;
@@ -1053,7 +1053,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 				const listItems = getInternalListItemsToDiff(
 					oldDocNodeGroups[ group.group ].indexOrder,
 					oldDocInternalListNode.children,
-					-1
+					ve.DiffMatchPatch.static.DIFF_DELETE
 				);
 				diff = listItems.indices;
 				diff.oldNodes = listItems.toDiff;
