@@ -217,10 +217,8 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 				}
 			}
 
-			let boundingRect;
-
 			if ( options.showBounding ) {
-				boundingRect = boundingRect || selection.getSelectionBoundingRect();
+				const boundingRect = selection.getSelectionBoundingRect();
 				$selection.append(
 					$( '<div>' )
 						.addClass( 've-ce-surface-selection-bounding' )
@@ -235,17 +233,19 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 			}
 
 			if ( options.label ) {
-				boundingRect = boundingRect || selection.getSelectionBoundingRect();
-				$selection.append(
-					$( '<div>' )
-						.addClass( 've-ce-surface-selection-label' )
-						.text( options.label )
-						.css( {
-							top: boundingRect.top,
-							left: boundingRect.left,
-							'background-color': options.color || undefined
-						} )
-				);
+				const startAndEndRects = selection.getSelectionStartAndEndRects();
+				if ( startAndEndRects ) {
+					$selection.append(
+						$( '<div>' )
+							.addClass( 've-ce-surface-selection-label' )
+							.text( options.label )
+							.css( {
+								top: startAndEndRects.start.top,
+								left: startAndEndRects.start.left,
+								'background-color': options.color || undefined
+							} )
+					);
+				}
 			}
 		}
 		if ( !$selection.parent().length ) {
