@@ -34,9 +34,11 @@
 
 .ve-ce-surface-selections-findResults {
 	.ve-ce-surface-selection {
-		opacity: 0.2;
+		.ve-ce-surface-selection-rects {
+			opacity: 0.2;
+		}
 
-		> div {
+		.ve-ce-surface-selection-rect {
 			background: #28bb0b;
 			position: absolute;
 			margin-top: -0.15em;
@@ -46,9 +48,11 @@
 	}
 
 	.ve-ce-surface-selections-findResult-focused {
-		opacity: 0.4;
+		.ve-ce-surface-selection-rects {
+			opacity: 0.4;
+		}
 
-		> div {
+		.ve-ce-surface-selection-rect {
 			background: #1f850b;
 		}
 	}

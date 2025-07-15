@@ -156,11 +156,12 @@ ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
  * @param {string} name Unique name for the selection being drawn
  * @param {ve.ce.Selection[]} selections Selections to draw
  * @param {Object} [options]
- * @param {string} options.color CSS color for the selection. Should usually
+ * @param {string} [options.color] CSS color for the selection. Should usually
  *  be set in a stylesheet using the generated class name.
- * @param {string} options.wrapperClass Additional CSS class string to add to the $selections wrapper.
- *  mapped to the same index.
- * @param {string} options.label Label shown above each selection
+ * @param {string} [options.wrapperClass] Additional CSS class string to add to the $selections wrapper.
+ * @param {boolean} [options.showRects=true] Show individual selection rectangles (default)
+ * @param {boolean} [options.showBounding=false] Show a bounding rectangle around the selection
+ * @param {string} [options.label] Label shown above each selection
  */
 ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options = {} ) {
 	if ( !Object.prototype.hasOwnProperty.call( this.drawnSelections, name ) ) {
@@ -191,28 +192,50 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 	selections.forEach( ( selection ) => {
 		let $selection = this.getDrawnSelection( name, selection.getModel(), options );
 		if ( !$selection ) {
-			let rects = selection.getSelectionRects();
-			if ( !rects ) {
-				return;
-			}
-			rects = ve.minimizeRects( rects );
 			$selection = $( '<div>' ).addClass( 've-ce-surface-selection' );
-			rects.forEach( ( rect ) => {
-				const $rect = $( '<div>' ).css( {
-					top: rect.top,
-					left: rect.left,
-					// Collapsed selections can have a width of 0, so expand
-					width: Math.max( rect.width, 1 ),
-					height: rect.height
-				} );
-				$selection.append( $rect );
-				if ( options.color ) {
-					$rect.css( 'background-color', options.color );
+
+			if ( options.showRects !== false ) {
+				let rects = selection.getSelectionRects();
+				if ( rects ) {
+					rects = ve.minimizeRects( rects );
+					const $rects = $( '<div>' ).addClass( 've-ce-surface-selection-rects' );
+					rects.forEach( ( rect ) => {
+						$rects.append(
+							$( '<div>' )
+								.addClass( 've-ce-surface-selection-rect' )
+								.css( {
+									top: rect.top,
+									left: rect.left,
+									// Collapsed selections can have a width of 0, so expand
+									width: Math.max( rect.width, 1 ),
+									height: rect.height,
+									'background-color': options.color || undefined
+								} )
+						);
+					} );
+					$selection.append( $rects );
 				}
-			} );
+			}
+
+			let boundingRect;
+
+			if ( options.showBounding ) {
+				boundingRect = boundingRect || selection.getSelectionBoundingRect();
+				$selection.append(
+					$( '<div>' )
+						.addClass( 've-ce-surface-selection-bounding' )
+						.css( {
+							top: boundingRect.top,
+							left: boundingRect.left,
+							width: boundingRect.width,
+							height: boundingRect.height,
+							'background-color': options.color || undefined
+						} )
+				);
+			}
 
 			if ( options.label ) {
-				const boundingRect = selection.getSelectionBoundingRect();
+				boundingRect = boundingRect || selection.getSelectionBoundingRect();
 				$selection.append(
 					$( '<div>' )
 						.addClass( 've-ce-surface-selection-label' )
@@ -220,7 +243,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 						.css( {
 							top: boundingRect.top,
 							left: boundingRect.left,
-							'background-color': options.color || ''
+							'background-color': options.color || undefined
 						} )
 				);
 			}
@@ -259,7 +282,13 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
  * @return {string} Cache key
  */
 ve.ce.SelectionManager.prototype.getDrawnSelectionCacheKey = function ( name, selection, options = {} ) {
-	return name + '-' + JSON.stringify( selection ) + '-' + ( options.color || '' ) + '-' + ( options.label || '' );
+	return name + '-' + JSON.stringify( selection ) + '-' + JSON.stringify( Object.assign( {}, options, {
+		// Normalize values for cache key
+		color: options.color || '',
+		showRects: !!options.showRects,
+		showBounding: !!options.showBounding,
+		label: options.label || ''
+	} ) );
 };
 
 /**

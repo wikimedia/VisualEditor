@@ -8,12 +8,13 @@
 	pointer-events: none;
 
 	.ve-ce-surface-selection {
-		> div {
+		&-rect,
+		&-bounding,
+		&-label {
 			position: absolute;
 		}
 
-		> .ve-ce-surface-selection-label {
-			position: absolute;
+		&-label {
 			font-size: 0.8em;
 			font-weight: bold;
 			color: #fff;
@@ -32,9 +33,11 @@
 	/* Deactivated selections */
 
 	&-deactivated {
-		opacity: 0.5;
+		.ve-ce-surface-selection-rects {
+			opacity: 0.5;
+		}
 
-		.ve-ce-surface-selection > div {
+		.ve-ce-surface-selection-rect {
 			background: #6da9f7;
 			/* Increase vertical height to look more like a system selection */
 			margin-top: -0.15em;
@@ -42,9 +45,11 @@
 		}
 
 		&-showAsDeactivated {
-			opacity: 0.15;
+			.ve-ce-surface-selection-rects {
+				opacity: 0.15;
+			}
 
-			.ve-ce-surface-selection > div {
+			.ve-ce-surface-selection-rect {
 				background: #000;
 			}
 		}
@@ -56,20 +61,26 @@
 	}
 
 	&-otherUserSelection {
-		opacity: 0.5;
+		.ve-ce-surface-selection-rects {
+			opacity: 0.5;
+		}
 
 		&-inactive {
-			opacity: 0.25;
+			.ve-ce-surface-selection-rects {
+				opacity: 0.25;
+			}
 		}
 	}
 
 	&-otherUserCursor {
-		.ve-ce-surface-selection > div:not( .ve-ce-surface-selection-label ) {
+		.ve-ce-surface-selection-rect {
 			width: 2px !important; /* stylelint-disable-line declaration-no-important */
 		}
 
 		&-inactive {
-			opacity: 0.5;
+			.ve-ce-surface-selection-rects {
+				opacity: 0.5;
+			}
 		}
 	}
 }
