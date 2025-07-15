@@ -170,7 +170,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 
 	drawnSelection.$selections = drawnSelection.$selections ||
 		// The following classes are used here:
-		// * ve-ce-surface-selections-deactived
+		// * ve-ce-surface-selections-deactivated
 		// * ve-ce-surface-selections-<name>
 		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$element );
 
@@ -366,7 +366,7 @@ ve.ce.SelectionManager.prototype.paintAuthor = function ( authorId ) {
 			wrapperClass: 've-ce-surface-selections-otherUserCursor',
 			color: color,
 			// Label is attached to cursor for 100% opacity, but it should probably be attached
-			// to the selection, so the cursor can be selectively rendered just for LinearSelection's.
+			// to the selection, so the cursor can be selectively rendered just for <LinearSelection>s.
 			label: authorData.name
 		}
 	);
