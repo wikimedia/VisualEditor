@@ -69,7 +69,20 @@ ve.translateRect = function ( rect, x, y ) {
 /**
  * Get the start and end rectangles (in a text flow sense) from a list of rectangles
  *
- * The start rectangle is the top-most, and the end rectangle is the bottom-most.
+ * The top-most and bottom-most rectangles are the union of rectangles that have the
+ * top-most and bottom-most coordinates, respectively.
+ *
+ * In the example below, the top-most rectangle is the union of A & C.
+ *
+ * The start and end rectangles are the unions of all rectangles that vertically overlap
+ * the top-most and bottom-most rectangles, respectively. This accounts for things like
+ * superscript and subscript text.
+ *
+ * In the example below, the start rectangle is the union of A, B, C & D.
+ *
+ *   AAAAA       CCCCC
+ *   AAAAA BBBBB CCCCC DDDDD
+ *         BBBBB       DDDDD
  *
  * @param {DOMRectList|DOMRect[]|Object[]|null} rects List of rectangles
  * @return {Object.<string,Object>|null} Object containing two rectangles: start and end, or null if there are no rectangles
@@ -78,27 +91,62 @@ ve.getStartAndEndRects = function ( rects ) {
 	if ( !rects || !rects.length ) {
 		return null;
 	}
-	let start, end;
+	let topRect, bottomRect;
 	for ( const rect of rects ) {
-		if ( !start || rect.top < start.top ) {
+		if ( !topRect || rect.top < topRect.top ) {
 			// Use ve.extendObject as ve.copy copies non-plain objects by reference
-			start = ve.extendObject( {}, rect );
-		} else if ( rect.top === start.top ) {
+			topRect = ve.extendObject( {}, rect );
+		} else if ( rect.top === topRect.top ) {
 			// Merge rects with the same top coordinate
-			start.left = Math.min( start.left, rect.left );
-			start.right = Math.max( start.right, rect.right );
-			start.width = start.right - start.left;
+			topRect.left = Math.min( topRect.left, rect.left );
+			topRect.right = Math.max( topRect.right, rect.right );
+			topRect.bottom = Math.max( topRect.bottom, rect.bottom );
 		}
-		if ( !end || rect.bottom > end.bottom ) {
+		if ( !bottomRect || rect.bottom > bottomRect.bottom ) {
 			// Use ve.extendObject as ve.copy copies non-plain objects by reference
-			end = ve.extendObject( {}, rect );
-		} else if ( rect.bottom === end.bottom ) {
+			bottomRect = ve.extendObject( {}, rect );
+		} else if ( rect.bottom === bottomRect.bottom ) {
 			// Merge rects with the same bottom coordinate
-			end.left = Math.min( end.left, rect.left );
-			end.right = Math.max( end.right, rect.right );
-			end.width = start.right - start.left;
+			bottomRect.left = Math.min( bottomRect.left, rect.left );
+			bottomRect.right = Math.max( bottomRect.right, rect.right );
+			bottomRect.top = Math.min( bottomRect.top, rect.top );
 		}
 	}
+	topRect.width = topRect.right - topRect.left;
+	topRect.height = topRect.bottom - topRect.top;
+	bottomRect.width = bottomRect.right - bottomRect.left;
+	bottomRect.height = bottomRect.bottom - bottomRect.top;
+
+	let start, end;
+	for ( const rect of rects ) {
+		if ( rect.top <= topRect.bottom ) {
+			if ( !start ) {
+				start = ve.extendObject( {}, rect );
+			} else {
+				// Merge all rects that overlap the topRect vertically into start
+				start.left = Math.min( start.left, rect.left );
+				start.right = Math.max( start.right, rect.right );
+				start.top = Math.min( start.top, rect.top );
+				start.bottom = Math.max( start.bottom, rect.bottom );
+			}
+		}
+		if ( rect.bottom >= bottomRect.top ) {
+			// Merge all rects that overlap the bottomRect vertically into end
+			if ( !end ) {
+				end = ve.extendObject( {}, rect );
+			} else {
+				end.left = Math.min( end.left, rect.left );
+				end.right = Math.max( end.right, rect.right );
+				end.top = Math.min( end.top, rect.top );
+				end.bottom = Math.max( end.bottom, rect.bottom );
+			}
+		}
+	}
+	start.width = start.right - start.left;
+	start.height = start.bottom - start.top;
+	end.width = end.right - end.left;
+	end.height = end.bottom - end.top;
+
 	return { start, end };
 };
 

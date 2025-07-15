@@ -11,7 +11,7 @@ QUnit.test( 'Rects', ( assert ) => {
 			<div rel="ve:Alien" style="width: 300px; height: 200px;">foo</div>
 			<div rel="ve:Alien" style="position: relative;">
 				<div style="position: absolute; width: 400px; height: 100px;">foo</div>
-				<div style="position: absolute; width: 150px; height: 500px;">bar</div>
+				<div style="position: absolute; width: 150px; height: 500px; top: 110px;">bar</div>
 			</div>
 			<p></p>
 			<table style="border-collapse: collapse;">
@@ -20,6 +20,14 @@ QUnit.test( 'Rects', ( assert ) => {
 					<td style="width: 100px; height: 50px; border: 0; padding: 0; line-height: 0;"></td>
 				</tr>
 			</table>
+			<div rel="ve:Alien" style="position: relative;">
+				<div style="position: absolute; left: 100px; top: 0px; width: 10px; height: 4px;">dot (doesn't overlap "foo")</div>
+				<div style="position: absolute; left: 110px; top: 5px; width: 90px; height: 10px;">foo</div>
+				<div style="position: absolute; left: 200px; top: 0px; width: 50px; height: 10px;">superscript</div>
+				<div style="position: absolute; left: 100px; top: 41px; width: 10px; height: 4px;">dot (doesn't overlap "bar")</div>
+				<div style="position: absolute; left: 110px; top: 30px; width: 70px; height: 10px;">bar</div>
+				<div style="position: absolute; left: 180px; top: 35px; width: 40px; height: 10px;">subscript</div>
+			</div>
 		`,
 		view = ve.test.utils.createSurfaceViewFromHtml( html ),
 		slugHeight = view.getDocument().getDocumentNode().children[ 2 ].$element[ 0 ].childNodes[ 0 ].offsetHeight,
@@ -41,7 +49,7 @@ QUnit.test( 'Rects', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				expectedRects: [ { width: 400, height: 100 }, { width: 150, height: 500 } ],
-				expectedBoundingRect: { width: 400, height: 500 },
+				expectedBoundingRect: { width: 400, height: 610 },
 				expectedStartAndEndRects: { start: { width: 400, height: 100 }, end: { width: 150, height: 500 } },
 				msg: 'Complex focusable node'
 			},
@@ -60,6 +68,23 @@ QUnit.test( 'Rects', ( assert ) => {
 				expectedRects: [ { width: 100, height: 50 } ],
 				expectedTableBoundingRect: { width: 200, height: 50 },
 				msg: 'Table selection'
+			},
+			{
+				rangeOrSelection: new ve.Range( 20, 22 ),
+				expectedRects: [
+					{ width: 10, height: 4 },
+					{ width: 90, height: 10 },
+					{ width: 50, height: 10 },
+					{ width: 10, height: 4 },
+					{ width: 70, height: 10 },
+					{ width: 40, height: 10 }
+				],
+				expectedStartAndEndRects: {
+					start: { width: 150, height: 15 },
+					end: { width: 120, height: 15 }
+				},
+				expectedBoundingRect: { width: 150, height: 45 },
+				msg: 'Subscript/superscript'
 			}
 		];
 
