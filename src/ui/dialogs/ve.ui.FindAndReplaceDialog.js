@@ -473,18 +473,18 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 	}
 
 	if ( this.focusedSelection ) {
-		const $focusedSelection = surfaceView.getSelectionManager().getCachedSelection( 'findResults', this.focusedSelection );
-		if ( $focusedSelection ) {
-			$focusedSelection.removeClass( 've-ce-surface-selections-findResult-focused' );
+		const focusedSelectionElements = surfaceView.getSelectionManager().getCachedSelection( 'findResults', this.focusedSelection );
+		if ( focusedSelectionElements ) {
+			focusedSelectionElements.$selection.removeClass( 've-ce-surface-selections-findResult-focused' );
 		}
 	}
 
 	const selection = this.fragments[ this.focusedIndex ].getSelection();
 	this.startOffset = selection.getCoveringRange().start;
 
-	const $selection = surfaceView.getSelectionManager().getCachedSelection( 'findResults', selection );
-	if ( $selection ) {
-		$selection.addClass( 've-ce-surface-selections-findResult-focused' );
+	const selectionElements = surfaceView.getSelectionManager().getCachedSelection( 'findResults', selection );
+	if ( selectionElements ) {
+		selectionElements.$selection.addClass( 've-ce-surface-selections-findResult-focused' );
 	}
 
 	if ( scrollIntoView ) {

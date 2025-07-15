@@ -35,7 +35,7 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 
 	this.userSelectionDeactivate = {};
 	// Data about currently rendered selections, keyed by selection name
-	// Each entry contains $selections, fragments and options
+	// Each entry contains $selections, $overlays, fragments and options
 	this.currentSelectionData = {};
 	// Cache of recently drawn selections
 	this.selectionCache = {};
@@ -51,6 +51,9 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 			authorDisconnect: 'onSynchronizerAuthorDisconnect'
 		} );
 	}
+
+	this.$element.addClass( 've-ce-selectionManager' );
+	this.$overlay = $( '<div>' ).addClass( 've-ce-selectionManager-overlay' );
 
 	// Debounce to prevent trying to draw every cursor position in history.
 	this.onSurfacePositionDebounced = ve.debounce( this.onSurfacePosition.bind( this ) );
@@ -81,6 +84,7 @@ ve.ce.SelectionManager.prototype.destroy = function () {
 		synchronizer.disconnect( this );
 	}
 	this.$element.remove();
+	this.$overlay.remove();
 };
 
 /**
@@ -164,6 +168,7 @@ ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
  * @param {boolean} [options.showRects=true] Show individual selection rectangles (default)
  * @param {boolean} [options.showBounding=false] Show a bounding rectangle around the selection
  * @param {boolean} [options.showCursor=false] Show a separate rectangle at the cursor ('to' position in a non-collapsed selection)
+ * @param {boolean} [options.overlay=false] Render all of the selection above the text
  * @param {string} [options.label] Label shown above each selection
  */
 ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options = {} ) {
@@ -177,6 +182,11 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 		// * ve-ce-surface-selections-deactivated
 		// * ve-ce-surface-selections-<name>
 		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$element );
+	selectionData.$overlays = selectionData.$overlays ||
+		// The following classes are used here:
+		// * ve-ce-surface-selections-deactivated
+		// * ve-ce-surface-selections-<name>
+		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$overlay );
 
 	const oldFragments = selectionData.fragments || [];
 	const oldOptions = selectionData.options || {};
@@ -185,7 +195,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 	selectionData.options = options;
 
 	// Always set the 'class' attribute to ensure previously-set classes are cleared.
-	selectionData.$selections.attr(
+	selectionData.$selections.add( selectionData.$overlays ).attr(
 		'class',
 		've-ce-surface-selections ve-ce-surface-selections-' + name + ' ' +
 		( options.wrapperClass || '' )
@@ -193,9 +203,14 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 
 	const selectionsJustShown = new Set();
 	selections.forEach( ( selection ) => {
-		let $selection = this.getCachedSelection( name, selection.getModel(), options );
-		if ( !$selection ) {
-			$selection = $( '<div>' ).addClass( 've-ce-surface-selection' );
+		let selectionElements = this.getCachedSelection( name, selection.getModel(), options );
+		if ( !selectionElements ) {
+			const $selection = $( '<div>' ).addClass( 've-ce-surface-selection' );
+			const $overlay = $( '<div>' ).addClass( 've-ce-surface-selection' );
+			selectionElements = {
+				$selection,
+				$overlay
+			};
 
 			if ( options.showRects !== false ) {
 				let rects = selection.getSelectionRects();
@@ -265,7 +280,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 				const labelRect = cursorRect || ( selection.getSelectionStartAndEndRects() || {} ).start;
 
 				if ( labelRect ) {
-					$selection.append(
+					$overlay.append(
 						$( '<div>' )
 							.addClass( 've-ce-surface-selection-label' )
 							.text( options.label )
@@ -278,10 +293,14 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 				}
 			}
 		}
-		if ( !$selection.parent().length ) {
-			selectionData.$selections.append( $selection );
+		if ( options.overlay ) {
+			selectionData.$overlays.append( selectionElements.$selection );
+		} else {
+			selectionData.$selections.append( selectionElements.$selection );
 		}
-		const cacheKey = this.cacheSelection( $selection, name, selection.getModel(), options );
+		selectionData.$overlays.append( selectionElements.$overlay );
+
+		const cacheKey = this.cacheSelection( selectionElements, name, selection.getModel(), options );
 		selectionsJustShown.add( cacheKey );
 	} );
 
@@ -289,9 +308,10 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 	oldFragments.forEach( ( oldFragment ) => {
 		const cacheKey = this.getSelectionCacheKey( name, oldFragment.getSelection(), oldOptions );
 		if ( !selectionsJustShown.has( cacheKey ) ) {
-			const $oldSelection = this.getCachedSelection( name, oldFragment.getSelection(), oldOptions );
-			if ( $oldSelection ) {
-				$oldSelection.detach();
+			const oldSelection = this.getCachedSelection( name, oldFragment.getSelection(), oldOptions );
+			if ( oldSelection ) {
+				oldSelection.$selection.detach();
+				oldSelection.$overlay.detach();
 			}
 		}
 	} );
@@ -307,17 +327,18 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
  * Get a cache key for a recently drawn selection
  *
  * @param {string} name Name of selection group
- * @param {ve.dm.Selection} selection Selection model
+ * @param {ve.dm.Selection} selectionModel Selection model
  * @param {Object} [options] Selection options
  * @return {string} Cache key
  */
-ve.ce.SelectionManager.prototype.getSelectionCacheKey = function ( name, selection, options = {} ) {
-	return name + '-' + JSON.stringify( selection ) + '-' + JSON.stringify( Object.assign( {}, options, {
+ve.ce.SelectionManager.prototype.getSelectionCacheKey = function ( name, selectionModel, options = {} ) {
+	return name + '-' + JSON.stringify( selectionModel ) + '-' + JSON.stringify( Object.assign( {}, options, {
 		// Normalize values for cache key
 		color: options.color || '',
 		showRects: !!options.showRects,
 		showBounding: !!options.showBounding,
 		showCursor: !!options.showCursor,
+		overlay: !!options.overlay,
 		label: options.label || ''
 	} ) );
 };
@@ -326,27 +347,27 @@ ve.ce.SelectionManager.prototype.getSelectionCacheKey = function ( name, selecti
  * Get a recently drawn selection from the cache
  *
  * @param {string} name Name of selection group
- * @param {ve.dm.Selection} selection Selection model
+ * @param {ve.dm.Selection} selectionModel Selection model
  * @param {Object} [options] Selection options
- * @return {jQuery} Drawn selection
+ * @return {Object|null} Selection elements containing $selection and $overlay, null if not found
  */
-ve.ce.SelectionManager.prototype.getCachedSelection = function ( name, selection, options ) {
-	const cacheKey = this.getSelectionCacheKey( name, selection, options );
+ve.ce.SelectionManager.prototype.getCachedSelection = function ( name, selectionModel, options ) {
+	const cacheKey = this.getSelectionCacheKey( name, selectionModel, options );
 	return Object.prototype.hasOwnProperty.call( this.selectionCache, cacheKey ) ? this.selectionCache[ cacheKey ] : null;
 };
 
 /**
  * Store an recently drawn selection in the cache
  *
- * @param {jQuery} $selection Drawn selection
+ * @param {Object} selectionElements Selection elements containing $selection and $overlay
  * @param {string} name Name of selection group
- * @param {ve.dm.Selection} selection Selection model
+ * @param {ve.dm.Selection} selectionModel Selection model
  * @param {Object} [options] Selection options
  * @return {string} Cache key
  */
-ve.ce.SelectionManager.prototype.cacheSelection = function ( $selection, name, selection, options ) {
-	const cacheKey = this.getSelectionCacheKey( name, selection, options );
-	this.selectionCache[ cacheKey ] = $selection;
+ve.ce.SelectionManager.prototype.cacheSelection = function ( selectionElements, name, selectionModel, options ) {
+	const cacheKey = this.getSelectionCacheKey( name, selectionModel, options );
+	this.selectionCache[ cacheKey ] = selectionElements;
 	return cacheKey;
 };
 

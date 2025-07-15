@@ -179,7 +179,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config = {} ) {
 	// Add elements to the DOM
 	this.$highlights.append( this.getDragDropHandler().$dropMarker );
 	this.$element.append( this.$attachedRootNode, this.clipboardHandler.$element );
-	this.surface.$blockers.append( this.$highlights );
+	this.surface.$blockers.append( this.$highlights, this.selectionManager.$overlay );
 	this.surface.$selections.append( this.selectionManager.$element );
 };
 
