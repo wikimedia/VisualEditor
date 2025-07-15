@@ -70,7 +70,7 @@ ve.dm.CheckListItemNode.static.toDomElements = function ( data, doc, converter )
 	} else {
 		listItem.style.listStyle = 'none';
 		checkbox = document.createElement( 'span' );
-		checkbox.setAttribute( 'data-ve-ignore', 'true' );
+		checkbox.setAttribute( 'data-ve-ignore', 1 );
 		checkbox.appendChild( checkboxText );
 	}
 

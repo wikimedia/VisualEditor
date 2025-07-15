@@ -1739,8 +1739,8 @@ ve.dm.example.domToDataCases = {
 		`,
 		clipboardBody: ve.dm.example.singleLine`
 			<ul rel="ve:checkList">
-				<li rel="ve:checkList" data-checked="checked" style="list-style: none;"><p><span data-ve-ignore="true">☑</span> foo</p></li>
-				<li rel="ve:checkList" style="list-style: none;"><span data-ve-ignore="true">☐</span> bar</li>
+				<li rel="ve:checkList" data-checked="checked" style="list-style: none;"><p><span data-ve-ignore="1">☑</span> foo</p></li>
+				<li rel="ve:checkList" style="list-style: none;"><span data-ve-ignore="1">☐</span> bar</li>
 			</ul>
 		`
 	},
