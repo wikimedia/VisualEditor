@@ -10,8 +10,15 @@
 	.ve-ce-surface-selection {
 		&-rect,
 		&-bounding,
+		&-cursor,
 		&-label {
 			position: absolute;
+		}
+
+		&-cursor {
+			min-width: 2px;
+			border: 1px solid;
+			box-sizing: border-box;
 		}
 
 		&-label {
@@ -69,16 +76,9 @@
 			.ve-ce-surface-selection-rects {
 				opacity: 0.25;
 			}
-		}
-	}
 
-	&-otherUserCursor {
-		.ve-ce-surface-selection-rect {
-			width: 2px !important; /* stylelint-disable-line declaration-no-important */
-		}
-
-		&-inactive {
-			.ve-ce-surface-selection-rects {
+			.ve-ce-surface-selection-cursor,
+			.ve-ce-surface-selection-label {
 				opacity: 0.5;
 			}
 		}

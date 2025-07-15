@@ -156,11 +156,11 @@ ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
  * @param {string} name Unique name for the selection being drawn
  * @param {ve.ce.Selection[]} selections Selections to draw
  * @param {Object} [options]
- * @param {string} [options.color] CSS color for the selection. Should usually
- *  be set in a stylesheet using the generated class name.
+ * @param {string} [options.color] CSS color for the selection. Should usually be set in a stylesheet using the generated class name.
  * @param {string} [options.wrapperClass] Additional CSS class string to add to the $selections wrapper.
  * @param {boolean} [options.showRects=true] Show individual selection rectangles (default)
  * @param {boolean} [options.showBounding=false] Show a bounding rectangle around the selection
+ * @param {boolean} [options.showCursor=false] Show a separate rectangle at the cursor ('to' position in a non-collapsed selection)
  * @param {string} [options.label] Label shown above each selection
  */
 ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options = {} ) {
@@ -209,7 +209,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 									// Collapsed selections can have a width of 0, so expand
 									width: Math.max( rect.width, 1 ),
 									height: rect.height,
-									'background-color': options.color || undefined
+									backgroundColor: options.color || undefined
 								} )
 						);
 					} );
@@ -227,22 +227,49 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 							left: boundingRect.left,
 							width: boundingRect.width,
 							height: boundingRect.height,
-							'background-color': options.color || undefined
+							backgroundColor: options.color || undefined
+						} )
+				);
+			}
+
+			let cursorRect;
+
+			if ( options.showCursor ) {
+				const selectionModel = selection.getModel();
+				const cursorSelection = ve.ce.Selection.static.newFromModel(
+					( selectionModel instanceof ve.dm.LinearSelection && this.getSurface().getFocusedNode( selectionModel.getRange() ) ?
+						selectionModel :
+						selectionModel.collapseToTo()
+					),
+					this.getSurface()
+				);
+				cursorRect = cursorSelection.getSelectionBoundingRect();
+				$selection.append(
+					$( '<div>' )
+						.addClass( 've-ce-surface-selection-cursor' )
+						.css( {
+							top: cursorRect.top,
+							left: cursorRect.left,
+							width: cursorRect.width,
+							height: cursorRect.height,
+							borderColor: options.color || undefined
 						} )
 				);
 			}
 
 			if ( options.label ) {
-				const startAndEndRects = selection.getSelectionStartAndEndRects();
-				if ( startAndEndRects ) {
+				// Position the label at the cursor if shown, otherwise use the start rect.
+				const labelRect = cursorRect || ( selection.getSelectionStartAndEndRects() || {} ).start;
+
+				if ( labelRect ) {
 					$selection.append(
 						$( '<div>' )
 							.addClass( 've-ce-surface-selection-label' )
 							.text( options.label )
 							.css( {
-								top: startAndEndRects.start.top,
-								left: startAndEndRects.start.left,
-								'background-color': options.color || undefined
+								top: labelRect.top,
+								left: labelRect.left,
+								backgroundColor: options.color || undefined
 							} )
 					);
 				}
@@ -287,6 +314,7 @@ ve.ce.SelectionManager.prototype.getDrawnSelectionCacheKey = function ( name, se
 		color: options.color || '',
 		showRects: !!options.showRects,
 		showBounding: !!options.showBounding,
+		showCursor: !!options.showCursor,
 		label: options.label || ''
 	} ) );
 };
@@ -363,16 +391,12 @@ ve.ce.SelectionManager.prototype.paintAuthor = function ( authorId ) {
 			if ( Object.prototype.hasOwnProperty.call( this.drawnSelections, 'otherUserSelection-' + authorId ) ) {
 				this.drawnSelections[ 'otherUserSelection-' + authorId ].$selections.addClass( 've-ce-surface-selections-otherUserSelection-inactive' );
 			}
-			if ( Object.prototype.hasOwnProperty.call( this.drawnSelections, 'otherUserCursor-' + authorId ) ) {
-				this.drawnSelections[ 'otherUserCursor-' + authorId ].$selections.addClass( 've-ce-surface-selections-otherUserCursor-inactive' );
-			}
 		}, 5000 );
 	}
 	this.userSelectionDeactivate[ authorId ]();
 
 	if ( !selection || selection.isNull() ) {
 		this.drawSelections( 'otherUserSelection-' + authorId, [] );
-		this.drawSelections( 'otherUserCursor-' + authorId, [] );
 		return;
 	}
 
@@ -381,21 +405,8 @@ ve.ce.SelectionManager.prototype.paintAuthor = function ( authorId ) {
 		[ ve.ce.Selection.static.newFromModel( selection, this.getSurface() ) ],
 		{
 			wrapperClass: 've-ce-surface-selections-otherUserSelection',
-			color: color
-		}
-	);
-
-	const cursorSelection = selection instanceof ve.dm.LinearSelection && this.getSurface().getFocusedNode( selection.getRange() ) ?
-		selection : selection.collapseToTo();
-
-	this.drawSelections(
-		'otherUserCursor-' + authorId,
-		[ ve.ce.Selection.static.newFromModel( cursorSelection, this.getSurface() ) ],
-		{
-			wrapperClass: 've-ce-surface-selections-otherUserCursor',
 			color: color,
-			// Label is attached to cursor for 100% opacity, but it should probably be attached
-			// to the selection, so the cursor can be selectively rendered just for <LinearSelection>s.
+			showCursor: true,
 			label: authorData.name
 		}
 	);
@@ -417,7 +428,6 @@ ve.ce.SelectionManager.prototype.onSynchronizerAuthorUpdate = function ( authorI
  */
 ve.ce.SelectionManager.prototype.onSynchronizerAuthorDisconnect = function ( authorId ) {
 	this.drawSelections( 'otherUserSelection-' + authorId, [] );
-	this.drawSelections( 'otherUserCursor-' + authorId, [] );
 };
 
 /**
