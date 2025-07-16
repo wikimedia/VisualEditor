@@ -61,16 +61,18 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
  * @return {boolean}
  */
 ve.dm.InternalListNodeGroup.prototype.isEmpty = function () {
+	// TODO: Using this.indexOrder.length would be cheaper, but at this point we cannot be sure the
+	// internal data structures are intact.
 	return Object.keys( this.keyedNodes ).length === 0;
 };
 
 /**
  * @param {string} key
- * @return {ve.dm.Node[]} All nodes (often only 1) that (re)use the same key. An empty array when
- *  the key is unknown.
+ * @return {ve.dm.Node[]|undefined} All nodes (1 or more, never 0) that (re)use the same key.
+ *  Undefined when the key is unknown.
  */
 ve.dm.InternalListNodeGroup.prototype.getAllReuses = function ( key ) {
-	return this.keyedNodes[ key ] || [];
+	return this.keyedNodes[ key ];
 };
 
 /**
@@ -79,8 +81,12 @@ ve.dm.InternalListNodeGroup.prototype.getAllReuses = function ( key ) {
 ve.dm.InternalListNodeGroup.prototype.getKeysInIndexOrder = function () {
 	const remainingKeys = Object.keys( this.keyedNodes );
 	return this.getFirstNodesInIndexOrder().map(
+		// FIXME: This should be a fast lookup, but we currently don't have a map for that
 		( node ) => remainingKeys.find( ( key, i ) => {
+			// TODO: Can we be sure the first node via this.firstNodes is always at position 0?
+			// If this is guaranteed we can replace this search with a single comparison.
 			if ( this.keyedNodes[ key ].includes( node ) ) {
+				// Performance optimization: Don't search again for the key we just found
 				remainingKeys.splice( i, 1 );
 				return true;
 			}
@@ -107,7 +113,13 @@ ve.dm.InternalListNodeGroup.prototype.getFirstNodesInIndexOrder = function () {
  */
 ve.dm.InternalListNodeGroup.prototype.getFirstNode = function ( key ) {
 	const nodes = this.getAllReuses( key );
+	if ( !nodes ) {
+		return undefined;
+	}
+	// FIXME: This should be a fast lookup, but we currently don't have a map for that
 	for ( const node in this.firstNodes ) {
+		// TODO: Can we be sure the first node is at position 0? If this is guaranteed we can
+		// replace this search with a single comparison.
 		if ( nodes.includes( node ) ) {
 			return node;
 		}
@@ -173,7 +185,7 @@ ve.dm.InternalListNodeGroup.prototype.appendNodeWithKnownIndex = function ( key,
 ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( key, newNode ) {
 	const nodes = this.getAllReuses( key );
 	// Fall back to the cheaper method if possible
-	if ( !nodes.length ) {
+	if ( !nodes ) {
 		this.appendNode( key, newNode );
 		return;
 	}
@@ -201,6 +213,10 @@ ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( key
  */
 ve.dm.InternalListNodeGroup.prototype.removeNode = function ( key, node ) {
 	const nodes = this.getAllReuses( key );
+	if ( !nodes ) {
+		return;
+	}
+
 	let i = nodes.indexOf( node );
 	if ( i !== -1 ) {
 		nodes.splice( i, 1 );
