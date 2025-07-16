@@ -197,11 +197,12 @@ ve.dm.InternalListNodeGroup.prototype.sortGroupIndexes = function () {
 		} else if ( node2.getAttribute( 'placeholder' ) ) {
 			return -1;
 		}
-		return node1.getRange().start - node2.getRange().start;
+		return node1.getOffset() - node2.getOffset();
 	} );
 };
 
 /**
+ * @private
  * @param {string} listKey
  * @param {ve.dm.Node} newNode New node to append to the end of the list of nodes with the same key
  */
@@ -210,6 +211,7 @@ ve.dm.InternalListNodeGroup.prototype.appendNode = function ( listKey, newNode )
 };
 
 /**
+ * @private
  * @param {string} listKey
  * @param {ve.dm.Node} newNode Reference node to add
  * @param {number} listIndex Existing listIndex; ignored when this is not the first node for this key
@@ -241,10 +243,10 @@ ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( lis
 		return;
 	}
 
-	const start = newNode.getRange().start;
+	const newOffset = newNode.getOffset();
 	let i = nodes.length;
 	// Search from the end, for optimal performance when nodes are added in order
-	while ( i && nodes[ i - 1 ].getRange().start > start ) {
+	while ( i && nodes[ i - 1 ].getOffset() > newOffset ) {
 		i--;
 	}
 

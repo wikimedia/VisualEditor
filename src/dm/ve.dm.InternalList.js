@@ -279,15 +279,7 @@ ve.dm.InternalList.prototype.addNode = function ( listGroup, listKey, listIndex,
 	if ( !group ) {
 		group = this.nodes[ listGroup ] = new ve.dm.InternalListNodeGroup();
 	}
-
-	if ( node.getDocument().buildingNodeTree ) {
-		// If the document is building the original node tree
-		// then every item is being added in order, so we don't
-		// need to worry about sorting.
-		group.appendNodeWithKnownIndex( listKey, node, listIndex );
-	} else {
-		group.insertNodeInDocumentOrder( listKey, node, listIndex );
-	}
+	group.insertNodeInDocumentOrder( listKey, node, listIndex );
 	this.markGroupAsChanged( listGroup );
 };
 

@@ -45,11 +45,11 @@ QUnit.test( 'appendNode', ( assert ) => {
 	assert.strictEqual( nodeGroup.getListKeyForListIndex( 0 ), 'key' );
 } );
 
-QUnit.test( 'appendNodeWithKnownIndex & unsetNode', ( assert ) => {
+QUnit.test( 'insertNodeInDocumentOrder & unsetNode', ( assert ) => {
 	const nodeGroup = new ve.dm.InternalListNodeGroup();
 
 	const node1 = new ve.dm.TextNode( 1 );
-	nodeGroup.appendNodeWithKnownIndex( 'key1', node1, 2 );
+	nodeGroup.insertNodeInDocumentOrder( 'key1', node1, 2 );
 	// Note: We need this incomplete array structure to record the index, but shouldn't expose it
 	assert.deepEqual( nodeGroup.firstNodes, [ undefined, undefined, node1 ] );
 	assert.deepEqual( nodeGroup.indexOrder, [ 2 ] );
@@ -59,7 +59,7 @@ QUnit.test( 'appendNodeWithKnownIndex & unsetNode', ( assert ) => {
 	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key1' ] );
 
 	const node2 = new ve.dm.TextNode( 2 );
-	nodeGroup.appendNodeWithKnownIndex( 'key2', node2, 1 );
+	nodeGroup.insertNodeInDocumentOrder( 'key2', node2, 1 );
 	assert.deepEqual( nodeGroup.firstNodes, [ undefined, node2, node1 ] );
 	assert.deepEqual( nodeGroup.indexOrder, [ 2, 1 ] );
 	assert.deepEqual( nodeGroup.getAllReuses( 'key2' ), [ node2 ] );
