@@ -596,7 +596,8 @@
 			"src/ce/styles/nodes/ve.ce.TableCellNode.less",
 			"src/ce/styles/nodes/ve.ce.TableNode.less",
 			"src/ce/styles/ve.ce.less",
-			"src/ce/styles/ve.ce.Surface.less"
+			"src/ce/styles/ve.ce.Surface.less",
+			"src/ce/styles/ve.ce.SelectionManager.less"
 		],
 		"styleGroup": "ve"
 	},
