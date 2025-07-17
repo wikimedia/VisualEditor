@@ -321,6 +321,24 @@ QUnit.test( 'unbalanced insertion', ( assert ) => {
 	}, /Expected closing for paragraph but got closing for heading/, 'unbalanced insertion' );
 } );
 
+QUnit.test( 'retain and merge inline node', ( assert ) => {
+	const data = [
+		{ type: 'paragraph' }, ...'Foo', { type: '/paragraph' },
+		{ type: 'paragraph' }, ...'Bar', { type: 'comment' }, { type: '/comment' }, ...'Baz', { type: '/paragraph' }
+	];
+	const doc = ve.dm.example.createExampleDocumentFromData( data );
+	const tx = new ve.dm.Transaction( [
+		{ type: 'retain', length: 3 },
+		{ type: 'replace', remove: [ 'o', { type: '/paragraph' }, { type: 'paragraph' }, 'B' ], insert: [] },
+		{ type: 'retain', length: 8 }
+	] );
+	doc.commit( tx );
+	assert.equalLinearData(
+		doc.getFullData(),
+		[ { type: 'paragraph' }, ...'Foar', { type: 'comment' }, { type: '/comment' }, ...'Baz', { type: '/paragraph' } ]
+	);
+} );
+
 QUnit.test( 'applyTreeOperation: ensureNotText', ( assert ) => {
 	const data = [
 		{ type: 'paragraph' },

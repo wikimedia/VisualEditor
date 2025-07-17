@@ -558,7 +558,7 @@ ve.dm.TreeModifier.prototype.processRetain = function ( maxLength ) {
 		inserter = this.inserter;
 
 	if ( this.insertedPositions.length === 0 ) {
-		this.inserter.crossIgnoredNodes();
+		inserter.crossIgnoredNodes();
 	}
 	let removerStep, inserterStep;
 	if ( this.cursorsMatch() ) {
@@ -666,7 +666,7 @@ ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData ) {
 };
 
 /**
- * Process the insertion an open tag, a close tag, or an array of text items
+ * Process the insertion of an open tag, a close tag, or an array of text items
  *
  * @param {ve.dm.LinearData.Element|ve.dm.LinearData.Item[]} itemOrData An open tag, a close tag, or an array of text items
  */
@@ -801,7 +801,12 @@ ve.dm.TreeModifier.prototype.pushInsertTextOp = function ( data ) {
 ve.dm.TreeModifier.prototype.pushMoveNodeOp = function ( removerStep ) {
 	const rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
 		rawInserterPosition = this.getRawInserterPosition(),
-		isContent = this.doesTypeTakeContent( removerStep.node.type );
+		isContent = this.doesTypeTakeContent( removerStep.node.type ),
+		inserter = this.inserter;
+
+	if ( inserter.node.type === 'text' ) {
+		inserter.stepOut();
+	}
 
 	this.checkCanInsertNodeType( removerStep.item.type );
 
