@@ -603,26 +603,13 @@ ve.graphemeSafeSubstring = function ( text, start, end, outer ) {
  * @param {string} value Attribute value to escape
  * @return {string} Escaped attribute value
  */
-ve.escapeHtml = ( function () {
-	function escape( value ) {
-		switch ( value ) {
-			case '\'':
-				return '&#039;';
-			case '"':
-				return '&quot;';
-			case '<':
-				return '&lt;';
-			case '>':
-				return '&gt;';
-			case '&':
-				return '&amp;';
-		}
-	}
-
-	return function ( value ) {
-		return value.replace( /['"<>&]/g, escape );
-	};
-}() );
+ve.escapeHtml = ( value ) => value.replace( /['"<>&]/g, ( c ) => ( {
+	'\'': '&#039;',
+	'"': '&quot;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'&': '&amp;'
+}[ c ] ) );
 
 /**
  * Get the attributes of a DOM element as an object with key/value pairs.
