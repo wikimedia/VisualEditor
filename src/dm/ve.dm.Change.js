@@ -898,12 +898,9 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	for ( const authorId in this.selections ) {
 		selections[ authorId ] = this.selections[ authorId ].toJSON();
 	}
-	const serializeStoreValues = preserveStoreValues ? function noop( x ) {
-		return x;
-	} : this.constructor.static.serializeValue;
-	const serializeStore = function ( store ) {
-		return store.serialize( serializeStoreValues );
-	};
+	const serializeStoreValues = preserveStoreValues ? ( x ) => x :
+		this.constructor.static.serializeValue;
+	const serializeStore = ( store ) => store.serialize( serializeStoreValues );
 	let prevInfo;
 	for ( let i = 0, iLen = this.transactions.length; i < iLen; i++ ) {
 		const tx = this.transactions[ i ];

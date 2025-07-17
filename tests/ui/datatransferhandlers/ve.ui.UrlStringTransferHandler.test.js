@@ -38,9 +38,7 @@ ve.test.utils.runUrlStringHandlerTest = function ( assert, caseItem ) {
 			} )
 		},
 		linkAction = ve.ui.actionFactory.create( 'link', mockSurface ),
-		makeLinkAnnotation = function ( href ) {
-			return linkAction.getLinkAnnotation( href ).element;
-		};
+		makeLinkAnnotation = ( href ) => linkAction.getLinkAnnotation( href ).element;
 
 	// Invoke the handler
 	const handler = ve.ui.dataTransferHandlerFactory.create( 'urlString', mockSurface, item );

@@ -61,9 +61,7 @@ QUnit.test( 'special key down: linear enter', ( assert ) => {
 				keys: [ 'ENTER' ],
 				htmlOrDoc: ( () => {
 					const view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() );
-					view.surface.isMultiline = function () {
-						return false;
-					};
+					view.surface.isMultiline = () => false;
 					return view;
 				} )(),
 				expectedData: noChange,

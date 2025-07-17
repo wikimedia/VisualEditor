@@ -107,13 +107,8 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 		target.$element.attr( 'lang', currentLang );
 
 		// HACK: Override/restore message functions for qqx mode
-		if ( lang === 'qqx' ) {
-			ve.init.platform.getMessage = function ( key ) {
-				return key;
-			};
-		} else {
-			ve.init.platform.getMessage = ve.init.sa.Platform.prototype.getMessage;
-		}
+		ve.init.platform.getMessage = lang === 'qqx' ? ( key ) => key :
+			ve.init.sa.Platform.prototype.getMessage;
 
 		// Re-bind as getMessage may have changed
 		OO.ui.msg = ve.init.platform.getMessage.bind( ve.init.platform );

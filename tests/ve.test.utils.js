@@ -221,9 +221,7 @@
 	};
 
 	// Disable scroll animatinos
-	ve.scrollIntoView = function () {
-		return ve.createDeferred().resolve().promise();
-	};
+	ve.scrollIntoView = () => ve.createDeferred().resolve().promise();
 
 	const voidGroup = '(' + ve.elementTypes.void.join( '|' ) + ')';
 	const voidRegexp = new RegExp( '(<' + voidGroup + '[^>]*?(/?))>', 'g' );
@@ -651,63 +649,37 @@
 			$element: $( '<div>' ),
 			$scrollContainer: $( document.documentElement ),
 			$scrollListener: $( window ),
-			isMobile: function () {
-				return false;
-			},
-			isMultiline: function () {
-				return true;
-			},
-			isReadOnly: function () {
-				return false;
-			},
+			isMobile: () => false,
+			isMultiline: () => true,
+			isReadOnly: () => false,
 			getBoundingClientRect: function () {
 				return this.$element[ 0 ].getClientRects()[ 0 ] || null;
 			},
-			getViewportDimensions: function () {
-				return null;
-			},
+			getViewportDimensions: () => null,
 			getImportRules: function () {
 				return this.importRules;
 			},
-			getMode: function () {
-				return config.mode || 'visual';
-			},
-			getModel: function () {
-				return model;
-			},
-			getView: function () {
-				return view;
-			},
-			getTarget: function () {
-				return ve.init.target;
-			},
-			getCommands: function () {
-				return ve.ui.commandRegistry.getNames();
-			},
-			getContext: function () {
-				return {
-					toggle: function () {},
-					updateDimensions: function () {}
-				};
-			},
-			isDisabled: function () {
-				return false;
-			},
-			doesAllowTabFocusChange: function () {
-				return !!config.allowTabFocusChange;
-			},
-			emit: function () {},
-			connect: function () {},
-			disconnect: function () {},
+			getMode: () => config.mode || 'visual',
+			getModel: () => model,
+			getView: () => view,
+			getTarget: () => ve.init.target,
+			getCommands: () => ve.ui.commandRegistry.getNames(),
+			getContext: () => ( {
+				toggle: () => {},
+				updateDimensions: () => {}
+			} ),
+			isDisabled: () => false,
+			doesAllowTabFocusChange: () => !!config.allowTabFocusChange,
+			emit: () => {},
+			connect: () => {},
+			disconnect: () => {},
 			execute: ve.ui.Surface.prototype.execute,
 			executeWithSource: ve.ui.Surface.prototype.executeWithSource,
 			createView: ve.ui.Surface.prototype.createView,
 			createModel: ve.ui.Surface.prototype.createModel,
 			context: {
 				// Used by ContentAction
-				isVisible: function () {
-					return false;
-				}
+				isVisible: () => false
 			}
 		};
 		// Copied from ui.Surface constructor
@@ -765,15 +737,8 @@
 			config
 		);
 		return {
-			getModel: function () {
-				return model;
-			},
-			getView: function () {
-				// Mock view
-				return {
-					focus: function () {}
-				};
-			}
+			getModel: () => model,
+			getView: () => ( { focus: () => {} } )
 		};
 	};
 

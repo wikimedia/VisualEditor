@@ -22,10 +22,7 @@ ve.now = function () {
 	// Optimisation: Avoid startup overhead by re-defining on first call instead of IIFE.
 	const perf = window.performance;
 	const navStart = perf && perf.timing && perf.timing.navigationStart;
-	ve.now = navStart && perf.now ?
-		function () {
-			return navStart + perf.now();
-		} : Date.now;
+	ve.now = navStart && perf.now ? () => navStart + perf.now() : Date.now;
 
 	return ve.now();
 };

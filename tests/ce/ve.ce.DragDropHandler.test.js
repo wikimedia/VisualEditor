@@ -56,9 +56,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', ( assert ) => {
 			};
 
 		// Mock drop coords
-		view.getOffsetFromCoords = function () {
-			return targetOffset;
-		};
+		view.getOffsetFromCoords = () => targetOffset;
 
 		expectedData( data );
 

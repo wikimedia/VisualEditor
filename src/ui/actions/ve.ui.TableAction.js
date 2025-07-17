@@ -1007,7 +1007,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
  * @param {ve.dm.TableMatrix} matrix Table matrix
  * @param {ve.dm.TableMatrixCell} placeholder Placeholder cell to replace
  * @param {Object} [options] Options to pass to ve.dm.TableCellNode.static.createData
- * @return {Function} Zero-argument function returning a ve.dm.Transaction
+ * @return {Function} Zero-argument function returning a ve.dm.Transaction or null
  */
 ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder, options ) {
 	// For inserting the new cell a reference cell node
@@ -1021,9 +1021,7 @@ ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder,
 	} else {
 		const rowNode = matrix.getRowNode( placeholder.row );
 		if ( !rowNode ) {
-			return function () {
-				return null;
-			};
+			return () => null;
 		}
 		// if there are only placeholders in the row, the row node's inner range is used
 		range = rowNode.getRange();

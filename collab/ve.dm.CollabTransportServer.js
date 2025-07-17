@@ -20,14 +20,10 @@ ve.dm.CollabTransportServer = function VeDmCollabTransportServer( startHeight ) 
 			startHeight,
 			// The server ID is arbitrary
 			serverId: 've-collab-server',
-			load: function () {
-				return Promise.resolve(
-					ve.dm.Change.static.deserialize( { transactions: [] } )
-				);
-			},
-			onNewChange: function () {
-				return Promise.resolve();
-			}
+			load: () => Promise.resolve(
+				ve.dm.Change.static.deserialize( { transactions: [] } )
+			),
+			onNewChange: () => Promise.resolve()
 		},
 		{
 			/* eslint-disable-next-line no-console */

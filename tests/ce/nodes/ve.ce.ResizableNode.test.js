@@ -113,9 +113,7 @@ QUnit.test( 'notResizable', ( assert ) => {
 		isMobile = OO.ui.isMobile;
 
 	// Sizing is disabled on mobile:
-	OO.ui.isMobile = function () {
-		return true;
-	};
+	OO.ui.isMobile = () => true;
 
 	assert.false( resizableNode.isResizable(), 'Not resizable' );
 

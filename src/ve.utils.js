@@ -266,9 +266,7 @@ ve.isEqualDomElements = function ( domElements1, domElements2 ) {
  * @return {boolean} Class lists are equivalent
  */
 ve.compareClassLists = function ( classList1, classList2 ) {
-	const removeEmpty = function ( c ) {
-		return c !== '';
-	};
+	const removeEmpty = ( c ) => c;
 
 	classList1 = Array.isArray( classList1 ) ? classList1 : classList1.trim().split( /\s+/ );
 	classList2 = Array.isArray( classList2 ) ? classList2 : classList2.trim().split( /\s+/ );
@@ -1267,9 +1265,7 @@ ve.rejectsCursor = function ( node ) {
  */
 ve.countEdgeMatches = function ( before, after, equals ) {
 	if ( !equals ) {
-		equals = function ( x, y ) {
-			return x === y;
-		};
+		equals = ( x, y ) => x === y;
 	}
 
 	let start, end;

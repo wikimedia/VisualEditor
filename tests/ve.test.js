@@ -912,9 +912,7 @@ QUnit.test( 'deepFreeze (recursive, aliased)', ( assert ) => {
 	let foo = { bar: {} };
 	const realFreeze = ve.deepFreeze;
 
-	ve.deepFreeze = function ( x ) {
-		return x;
-	};
+	ve.deepFreeze = ( x ) => x;
 	try {
 		foo = realFreeze( foo );
 		assert.true( Object.isFrozen( foo.bar ), 'Recursed into aliased version' );

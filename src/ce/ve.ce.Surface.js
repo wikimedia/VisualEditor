@@ -3468,9 +3468,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
  * @fires ve.dm.Surface#contextChange
  */
 ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
-	const canBeActive = function ( view ) {
-		return view.canBeActive();
-	};
+	const canBeActive = ( view ) => view.canBeActive();
 
 	let activeAnnotations;
 	if ( fromModelOrNode === true ) {

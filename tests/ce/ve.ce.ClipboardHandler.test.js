@@ -47,9 +47,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		let isClipboardDataFormatsSupported;
 		if ( item.noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
-			ve.isClipboardDataFormatsSupported = function () {
-				return false;
-			};
+			ve.isClipboardDataFormatsSupported = () => false;
 		}
 		view.clipboardHandler.onCopy( testEvent );
 		if ( item.noClipboardData ) {
@@ -151,9 +149,7 @@ ve.test.utils.MockDataTransfer = function MockDataTransfer( initialData ) {
 
 	this.items = items;
 	this.types = [];
-	this.getData = function ( prop ) {
-		return data[ prop ] || '';
-	};
+	this.getData = ( prop ) => data[ prop ] || '';
 	this.setData = function ( prop, val ) {
 		if ( data[ prop ] === undefined ) {
 			items.push( {
@@ -256,9 +252,7 @@ QUnit.test( 'onCopy', ( assert ) => {
 		let isClipboardDataFormatsSupported;
 		if ( caseItem.noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
-			ve.isClipboardDataFormatsSupported = function () {
-				return false;
-			};
+			ve.isClipboardDataFormatsSupported = () => false;
 		}
 
 		// Paste sequence
