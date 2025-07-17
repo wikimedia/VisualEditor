@@ -303,22 +303,25 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		}
 		return false;
 	}
-	const steps = ve.adjacentDomPosition( position, 1, { stop: stop, noDescend: noDescend } ).steps;
-	steps.slice( 0, -1 ).forEach( ( s ) => {
-		// Step type cannot be "internal", else the offset would have incremented
-		const hasClass = function ( className ) {
-			return s.node.nodeType === Node.ELEMENT_NODE &&
-				s.node.classList.contains( className );
-		};
-		found.preUnicorn = found.preUnicorn || ( hasClass( 've-ce-pre-unicorn' ) && s );
-		found.postUnicorn = found.postUnicorn || ( hasClass( 've-ce-post-unicorn' ) && s );
-		found.preOpenNail = found.preOpenNail || ( hasClass( 've-ce-nail-pre-open' ) && s );
-		found.postOpenNail = found.postOpenNail || ( hasClass( 've-ce-nail-post-open' ) && s );
-		found.preCloseNail = found.preCloseNail || ( hasClass( 've-ce-nail-pre-close' ) && s );
-		found.postCloseNail = found.postCloseNail || ( hasClass( 've-ce-nail-post-close' ) && s );
-		found.focusableNode = found.focusableNode || ( hasClass( 've-ce-focusableNode' ) && s );
-		found.text = found.text || ( s.node.nodeType === Node.TEXT_NODE && s );
-	} );
+	ve.adjacentDomPosition( position, 1, { stop: stop, noDescend: noDescend } ).steps
+		.slice( 0, -1 )
+		.forEach( ( s ) => {
+			if ( s.node.nodeType === Node.TEXT_NODE ) {
+				found.text = found.text || s;
+				return;
+			} else if ( s.node.nodeType !== Node.ELEMENT_NODE ) {
+				return;
+			}
+
+			const hasClass = ( className ) => s.node.classList.contains( className ) && s;
+			found.preUnicorn = found.preUnicorn || hasClass( 've-ce-pre-unicorn' );
+			found.postUnicorn = found.postUnicorn || hasClass( 've-ce-post-unicorn' );
+			found.preOpenNail = found.preOpenNail || hasClass( 've-ce-nail-pre-open' );
+			found.postOpenNail = found.postOpenNail || hasClass( 've-ce-nail-post-open' );
+			found.preCloseNail = found.preCloseNail || hasClass( 've-ce-nail-pre-close' );
+			found.postCloseNail = found.postCloseNail || hasClass( 've-ce-nail-post-close' );
+			found.focusableNode = found.focusableNode || hasClass( 've-ce-focusableNode' );
+		} );
 
 	// If there is a unicorn, it should be a unique pre/post-Unicorn pair containing text or
 	// nothing return the position just inside.
