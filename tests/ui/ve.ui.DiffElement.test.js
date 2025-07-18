@@ -1797,6 +1797,163 @@ QUnit.test( 'Diffing', ( assert ) => {
 				`
 			},
 			{
+				msg: 'Annotation change descriptions inside a table are in correct order (T302413)',
+				oldDoc: ve.dm.example.singleLine`
+					<table>
+						<tr>
+							<td>
+								<p>a b c</p>
+								<p>d e f</p>
+							</td>
+							<td>
+								<p>g h i</p>
+								<p>j k l</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>m n o</p>
+								<p>p q r</p>
+							</td>
+							<td>
+								<p>s t u</p>
+								<p>v w x</p>
+							</td>
+						</tr>
+					</table>
+				`,
+				newDoc: ve.dm.example.singleLine`
+					<table>
+						<tr>
+							<td>
+								<p>
+									<a href="http://example.com/a">a</a>
+									 b
+									 <a href="http://example.com/c">c</a>
+								</p>
+								<p>
+									<a href="http://example.com/d">d</a>
+									 e
+									 <a href="http://example.com/f">f</a>
+								</p>
+							</td>
+							<td>
+								<p>
+									<a href="http://example.com/g">g</a>
+									 h
+									 <a href="http://example.com/i">i</a>
+								</p>
+								<p>
+									<a href="http://example.com/j">j</a>
+									 k
+									 <a href="http://example.com/l">l</a>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>
+									<a href="http://example.com/m">m</a>
+									 n
+									 <a href="http://example.com/o">o</a>
+								</p>
+								<p>
+									<a href="http://example.com/p">p</a>
+									 q
+									 <a href="http://example.com/r">r</a>
+								</p>
+							</td>
+							<td>
+								<p>
+									<a href="http://example.com/s">s</a>
+									 t
+									 <a href="http://example.com/u">u</a>
+								</p>
+								<p>
+									<a href="http://example.com/v">v</a>
+									 w
+									 <a href="http://example.com/x">x</a>
+								</p>
+							</td>
+						</tr>
+					</table>
+				`,
+				expected: ve.dm.example.singleLine`
+					<table>
+						<tr>
+							<td>
+								<p>
+									<span data-diff-action="change-remove">a</span><span data-diff-action="change-insert" data-diff-id="12"><a href="http://example.com/a">a</a></span>
+									 b
+									 <span data-diff-action="change-remove">c</span><span data-diff-action="change-insert" data-diff-id="13"><a href="http://example.com/c">c</a></span>
+								</p>
+								<p>
+									<span data-diff-action="change-remove">d</span><span data-diff-action="change-insert" data-diff-id="14"><a href="http://example.com/d">d</a></span>
+									 e
+									 <span data-diff-action="change-remove">f</span><span data-diff-action="change-insert" data-diff-id="15"><a href="http://example.com/f">f</a></span>
+								</p>
+							</td>
+							<td>
+								<p>
+									<span data-diff-action="change-remove">g</span><span data-diff-action="change-insert" data-diff-id="8"><a href="http://example.com/g">g</a></span>
+									 h
+									 <span data-diff-action="change-remove">i</span><span data-diff-action="change-insert" data-diff-id="9"><a href="http://example.com/i">i</a></span>
+								</p>
+								<p>
+									<span data-diff-action="change-remove">j</span><span data-diff-action="change-insert" data-diff-id="10"><a href="http://example.com/j">j</a></span>
+									 k
+									 <span data-diff-action="change-remove">l</span><span data-diff-action="change-insert" data-diff-id="11"><a href="http://example.com/l">l</a></span>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>
+									<span data-diff-action="change-remove">m</span><span data-diff-action="change-insert" data-diff-id="4"><a href="http://example.com/m">m</a></span>
+									 n
+									 <span data-diff-action="change-remove">o</span><span data-diff-action="change-insert" data-diff-id="5"><a href="http://example.com/o">o</a></span>
+								</p>
+								<p>
+									<span data-diff-action="change-remove">p</span><span data-diff-action="change-insert" data-diff-id="6"><a href="http://example.com/p">p</a></span>
+									 q
+									 <span data-diff-action="change-remove">r</span><span data-diff-action="change-insert" data-diff-id="7"><a href="http://example.com/r">r</a></span>
+								</p>
+							</td>
+							<td>
+								<p>
+									<span data-diff-action="change-remove">s</span><span data-diff-action="change-insert" data-diff-id="0"><a href="http://example.com/s">s</a></span>
+									 t
+									 <span data-diff-action="change-remove">u</span><span data-diff-action="change-insert" data-diff-id="1"><a href="http://example.com/u">u</a></span>
+								</p>
+								<p>
+									<span data-diff-action="change-remove">v</span><span data-diff-action="change-insert" data-diff-id="2"><a href="http://example.com/v">v</a></span>
+									 w
+									 <span data-diff-action="change-remove">x</span><span data-diff-action="change-insert" data-diff-id="3"><a href="http://example.com/x">x</a></span>
+								</p>
+							</td>
+						</tr>
+					</table>
+				`,
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-link-added,http://example.com/a</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/c</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/d</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/f</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/g</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/i</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/j</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/l</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/m</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/o</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/p</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/r</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/s</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/u</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/v</div>',
+					'<div>visualeditor-changedesc-link-added,http://example.com/x</div>'
+				]
+			},
+			{
 				msg: 'Header attribute change in list',
 				oldDoc: '<ul><li><h2>Foo</h2></li></ul>',
 				newDoc: '<ul><li><h3>Foo</h3></li></ul>',

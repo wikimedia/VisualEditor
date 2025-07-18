@@ -1189,6 +1189,10 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, new
 		}
 	};
 
+	const savedStack = this.descriptionItemsStack;
+	this.descriptionItemsStack = [];
+	const backwardsStack = [];
+
 	// Iterate backwards over trees so that changes are made from right to left
 	// of the data, to avoid having to update ranges
 	const len = Math.max( oldNodes.length, newNodes.length );
@@ -1230,7 +1234,14 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, new
 			highlightRemovedNode( oldIndex );
 			i--;
 		}
+
+		// We are iterating backwards, so we have to put these items aside until we process the earlier ones
+		backwardsStack.push( ...this.descriptionItemsStack.reverse() );
+		this.descriptionItemsStack = [];
 	}
+	// Restore the stack as it was before this function, and put back the items we put aside within the backwards loop
+	this.descriptionItemsStack = savedStack;
+	this.descriptionItemsStack.push( ...backwardsStack.reverse() );
 
 	// Push new description items from the queue
 	this.descriptions.addItems( this.descriptionItemsStack );
