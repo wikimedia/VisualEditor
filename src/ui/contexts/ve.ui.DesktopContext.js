@@ -109,10 +109,12 @@ ve.ui.DesktopContext.prototype.onUnsuppress = function () {
 };
 
 /**
- * Handle cursor position change event.
+ * Handle surface position change event.
+ *
+ * @param {boolean} [passive=false]
  */
-ve.ui.DesktopContext.prototype.onPosition = function () {
-	if ( this.isVisible() ) {
+ve.ui.DesktopContext.prototype.onPosition = function ( passive ) {
+	if ( this.isVisible() && !passive ) {
 		this.updateDimensionsDebounced();
 	}
 };
