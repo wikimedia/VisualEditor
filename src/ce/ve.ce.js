@@ -16,9 +16,10 @@ ve.ce = {
 /* Static Properties */
 
 /**
- * Data URI for minimal GIF image. This is the smallest technically-valid 1x1px transparent GIF it's possible to create.
+ * Data URI for minimal GIF image. This is the smallest widely-supported 1x1px transparent GIF
+ * it's possible to create. There are smaller ones, but they don't work in Safari (T400116).
  */
-ve.ce.minImgDataUri = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+ve.ce.minImgDataUri = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEAAAAALAAAAAABAAEAAAIBAAA=';
 
 /* Static Methods */
 

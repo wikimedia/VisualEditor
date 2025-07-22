@@ -1832,7 +1832,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						},
 						{
 							type: 'replace',
-							insert: [ ...'image/gif:26' ],
+							insert: [ ...'image/gif:35' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 1 }
