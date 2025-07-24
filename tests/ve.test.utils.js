@@ -496,7 +496,7 @@
 			assert.equalLinearData( actualDataMeta, caseItem.data, msg + ': data with metaItems restored' );
 
 			assert.deepEqual( model.getInnerWhitespace(), caseItem.innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
-			// Check storeItems have been added to store
+			// Add storeItems to store
 			if ( caseItem.storeItems ) {
 				for ( const hash in caseItem.storeItems ) {
 					assert.deepEqualWithDomElements(

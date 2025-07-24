@@ -113,6 +113,7 @@
 	"visualeditor-contextitemwidget-label-remove": "Label for the remove action on a context item.\n\nAppears next to {{msg-mw|visualeditor-contextitemwidget-label-secondary}}\n{{Identical|Delete}}",
 	"visualeditor-contextitemwidget-label-secondary": "Label for the edit action on a context item.\n\nAppears next to {{msg-mw|Visualeditor-contextitemwidget-label-remove}}\n{{Identical|Edit}}",
 	"visualeditor-contextitemwidget-label-view": "Label for the view action on a context item, when the surface is in read-only mode.",
+	"visualeditor-debugbar-buildtest": "Label for the button to build ve.dm.Converter test cases from the open document.",
 	"visualeditor-debugbar-close": "Label for the button to dismiss the debug toolbar.\n{{Identical|Close}}",
 	"visualeditor-debugbar-inputdebug": "Label for the button in the debug toolbar to run keyboard input in debug mode.",
 	"visualeditor-debugbar-logrange": "Label for the button in the debug toolbar to output the current selection to the JavaScript console.\n{{doc-important|\"Log\" is a verb here. Translate as \"log the selected (text)\", and NOT as \"the log (that was) selected\".}}",
