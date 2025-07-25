@@ -534,8 +534,8 @@ ve.dm.ModelFromDomConverter.prototype.getDataFromDomSubtree = function ( domElem
 			case Node.ELEMENT_NODE:
 			case Node.COMMENT_NODE: {
 				if (
-					childNode.getAttribute &&
-					childNode.getAttribute( 'data-ve-ignore' )
+					childNode.hasAttribute &&
+					childNode.hasAttribute( 'data-ve-ignore' )
 				) {
 					continue;
 				}
