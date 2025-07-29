@@ -837,8 +837,11 @@ ve.ui.Surface.prototype.recalculatePadding = function ( scrollSelection ) {
  * Handle resize events from the context
  */
 ve.ui.Surface.prototype.onContextResize = function () {
-	this.recalculatePadding();
-	this.scrollSelectionIntoView();
+	// This listener is debounced, so check the surface hasn't been destroyed
+	if ( this.$element[ 0 ].parentNode ) {
+		this.recalculatePadding();
+		this.scrollSelectionIntoView();
+	}
 };
 
 /**
