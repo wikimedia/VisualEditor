@@ -54,6 +54,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config = {} ) {
 	this.lastNonCollapsedDocumentSelection = new ve.dm.NullSelection();
 	this.renderLocks = 0;
 	this.dragging = false;
+	this.noScrollSelecting = false;
 	this.resizing = false;
 	this.focused = false;
 	this.deactivated = false;
@@ -1812,7 +1813,11 @@ ve.ce.Surface.prototype.selectAll = function () {
 				dmDoc.getNearestCursorOffset( documentRange.end, -1 )
 			);
 		}
+		this.noScrollSelecting = true;
 		this.getModel().setLinearSelection( range );
+		setTimeout( () => {
+			this.noScrollSelecting = false;
+		} );
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		const matrix = selection.getTableNode( dmDoc ).getMatrix();
 		this.getModel().setSelection(

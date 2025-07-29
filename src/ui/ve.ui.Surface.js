@@ -532,8 +532,12 @@ ve.ui.Surface.prototype.onDocumentTransact = function () {
  * Handle select events from the model
  */
 ve.ui.Surface.prototype.onModelSelect = function () {
-	// eslint-disable-next-line no-bitwise
-	if ( this.getView().dragging ^ OO.ui.isMobile() ) {
+	if (
+		// Scroll is suppressed, e.g. by selectAll
+		this.getView().noScrollSelecting ||
+		// eslint-disable-next-line no-bitwise
+		( this.getView().dragging ^ OO.ui.isMobile() )
+	) {
 		// Allow native scroll behavior while dragging, as the start/end
 		// points are unreliable until we're finished. Without this, trying to
 		// drag a selection larger than a single screen will sometimes lock
