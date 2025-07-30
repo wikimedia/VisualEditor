@@ -5,7 +5,7 @@ QUnit.test( 'empty', ( assert ) => {
 	assert.deepEqual( nodeGroup.keyedNodes, {} );
 	assert.deepEqual( nodeGroup.firstNodes, [] );
 	assert.deepEqual( nodeGroup.indexOrder, [] );
-	assert.strictEqual( nodeGroup.getAllReuses( 'dummy' ), undefined );
+	assert.deepEqual( nodeGroup.getAllReuses( 'dummy' ), [] );
 	assert.strictEqual( nodeGroup.getFirstNode( 'dummy' ), undefined );
 	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [] );
 	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [] );
@@ -58,7 +58,7 @@ QUnit.test( 'appendNodeWithKnownIndex & removeNode', ( assert ) => {
 	nodeGroup.removeNode( 'key1', node1 );
 	assert.deepEqual( nodeGroup.firstNodes, [ undefined, node2 ] );
 	assert.deepEqual( nodeGroup.indexOrder, [ 1 ] );
-	assert.strictEqual( nodeGroup.getAllReuses( 'key1' ), undefined );
+	assert.deepEqual( nodeGroup.getAllReuses( 'key1' ), [] );
 	assert.strictEqual( nodeGroup.getFirstNode( 'key1' ), undefined );
 	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node2 ] );
 	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key2' ] );
