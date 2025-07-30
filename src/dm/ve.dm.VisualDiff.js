@@ -130,7 +130,6 @@ ve.dm.VisualDiff.static.compareNodes = function ( oldNode, newNode ) {
  * Attach the internal list indexOrder to each node referenced by the internal
  * list, ahead of document merge.
  *
- * @private
  * @param {ve.dm.Document} doc
  */
 ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
@@ -138,13 +137,16 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 
 	for ( const groupName in internalListGroups ) {
 		const group = internalListGroups[ groupName ];
-		group.getKeysInIndexOrder().forEach( ( key, i ) => {
-			group.getAllReuses( key ).forEach( ( node ) => {
-				doc.data.modifyData( node.getOffset(), ( item ) => {
+		const groupIndexOrder = group.indexOrder;
+		for ( let i = 0, ilen = groupIndexOrder.length; i < ilen; i++ ) {
+			const nodeIndex = groupIndexOrder[ i ];
+			const refNodes = group.keyedNodes[ group.firstNodes[ nodeIndex ].registeredListKey ];
+			for ( let j = 0, jlen = refNodes.length; j < jlen; j++ ) {
+				doc.data.modifyData( refNodes[ j ].getOffset(), ( item ) => {
 					ve.setProp( item, 'internal', 'overrideIndex', i + 1 );
 				} );
-			} );
-		} );
+			}
+		}
 	}
 };
 
