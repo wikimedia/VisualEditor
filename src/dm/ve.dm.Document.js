@@ -669,13 +669,13 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			//  contextOpenings + balanceOpenings + data slice + balanceClosings + contextClosings
 			linearData = new ve.dm.LinearData(
 				this.getStore(),
-				[].concat(
-					contextOpenings.reverse(),
-					balanceOpenings.reverse(),
-					this.data.slice( range.start, range.end ),
-					balanceClosings,
-					contextClosings
-				)
+				[
+					...contextOpenings.reverse(),
+					...balanceOpenings.reverse(),
+					...this.data.slice( range.start, range.end ),
+					...balanceClosings,
+					...contextClosings
+				]
 			);
 			originalRange = new ve.Range(
 				contextOpenings.length + balanceOpenings.length,

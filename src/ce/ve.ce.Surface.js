@@ -3877,10 +3877,8 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 				this.model.selection.range.start + 1
 			)
 		);
-		models = OO.unique( [].concat(
-			models,
-			fragmentAfter.getSelectedModels()
-		) );
+		models.push( ...fragmentAfter.getSelectedModels() );
+		models = OO.unique( models );
 	}
 
 	const activeModels = this.activeAnnotations.map( ( view ) => view.getModel() );

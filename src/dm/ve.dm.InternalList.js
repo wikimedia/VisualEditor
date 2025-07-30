@@ -218,11 +218,11 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 		if ( itemHtmlQueue[ i ] !== '' ) {
 			const div = doc.createElement( 'div' );
 			div.innerHTML = itemHtmlQueue[ i ];
-			const itemData = [].concat(
+			const itemData = [
 				{ type: 'internalItem' },
-				converter.getDataFromDomSubtree( div ),
+				...converter.getDataFromDomSubtree( div ),
 				{ type: '/internalItem' }
-			);
+			];
 			if ( !converter.isFromClipboard() ) {
 				itemData[ 0 ].attributes = { originalHtml: itemHtmlQueue[ i ] };
 			}

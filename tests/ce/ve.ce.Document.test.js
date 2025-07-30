@@ -186,11 +186,11 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 					ceDoc.getNodeAndOffset( offset ),
 					{ ignore: '.ve-ce-branchNode-slug>*' }
 				),
-				[].concat(
-					parts.slice( 0, offset + 1 ),
-					[ '|' ],
-					parts.slice( offset + 1 )
-				).join( '' ),
+				[
+					...parts.slice( 0, offset + 1 ),
+					'|',
+					...parts.slice( offset + 1 )
+				].join( '' ),
 				caseItem.title + ' (' + offset + ')'
 			);
 		}

@@ -441,10 +441,7 @@ ve.ui.DebugBar.prototype.testSquasher = function () {
 	for ( let i = 1, iLen = transactions.length - 1; i < iLen; i++ ) {
 		const squashedBefore = squashTransactions( transactions.slice( 0, i ) );
 		const squashedAfter = squashTransactions( transactions.slice( i ) );
-		const doubleSquashed = squashTransactions( [].concat(
-			squashedBefore,
-			squashedAfter
-		) );
+		const doubleSquashed = squashTransactions( [ ...squashedBefore, ...squashedAfter ] );
 		const dump = JSON.stringify( squashed );
 		const doubleDump = JSON.stringify( doubleSquashed );
 		if ( dump !== doubleDump ) {
