@@ -212,30 +212,27 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
  * @param {string} groupName Item group
  * @param {string} key Item key
  * @param {ve.dm.LinearData.Item[]} data Linear model data
- * @return {Object} Object containing the transaction (or null if none required)
- * and the new item's index within the list
+ * @return {{transaction: ve.dm.Transaction|null, index: number}} Object containing the transaction
+ *  (or null if none required) and the new item's index within the list
  */
 ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data ) {
 	let index = this.getKeyIndex( groupName, key );
-
-	let tx;
-	if ( index === undefined ) {
-		index = this.getItemNodeCount();
-		this.keyIndexes[ groupName + '/' + key ] = index;
-
-		const itemData = [].concat( { type: 'internalItem' }, data, { type: '/internalItem' } );
-		tx = ve.dm.TransactionBuilder.static.newFromInsertion(
-			this.getDocument(),
-			this.getListNode().getRange().end,
-			itemData
-		);
-	} else {
-		tx = null;
+	if ( index !== undefined ) {
+		return {
+			transaction: null,
+			index
+		};
 	}
 
+	index = this.getItemNodeCount();
+	this.keyIndexes[ groupName + '/' + key ] = index;
 	return {
-		transaction: tx,
-		index: index
+		transaction: ve.dm.TransactionBuilder.static.newFromInsertion(
+			this.getDocument(),
+			this.getListNode().getRange().end,
+			[ { type: 'internalItem' }, ...data, { type: '/internalItem' } ]
+		),
+		index
 	};
 };
 
