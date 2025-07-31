@@ -237,17 +237,19 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 
 			if ( options.showBounding ) {
 				const boundingRect = selection.getSelectionBoundingRect();
-				$selection.append(
-					$( '<div>' )
-						.addClass( 've-ce-surface-selection-bounding' )
-						.css( {
-							top: boundingRect.top,
-							left: boundingRect.left,
-							width: boundingRect.width,
-							height: boundingRect.height,
-							backgroundColor: options.color || undefined
-						} )
-				);
+				if ( boundingRect ) {
+					$selection.append(
+						$( '<div>' )
+							.addClass( 've-ce-surface-selection-bounding' )
+							.css( {
+								top: boundingRect.top,
+								left: boundingRect.left,
+								width: boundingRect.width,
+								height: boundingRect.height,
+								backgroundColor: options.color || undefined
+							} )
+					);
+				}
 			}
 
 			let cursorRect;
