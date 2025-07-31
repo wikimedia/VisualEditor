@@ -319,8 +319,8 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff, meta
 	documentSpacerNode.appendChild( document.createTextNode( '⋮' ) );
 
 	const internalListSpacerNode = document.createElement( 'li' );
-	internalListSpacerNode.setAttribute( 'class', 've-ui-diffElement-spacer' );
-	internalListSpacerNode.appendChild( document.createTextNode( '⋮' ) );
+	internalListSpacerNode.setAttribute( 'class', 've-ui-diffElement-spacer-listWrapper' );
+	internalListSpacerNode.appendChild( documentSpacerNode.cloneNode( true ) );
 
 	const referencesListDiffs = {};
 	Object.keys( internalListDiff.groups ).forEach( ( group ) => {
@@ -897,7 +897,8 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 
 		if ( !item.diff ) {
 			if ( !item.node ) {
-				contentData = [ { type: 'paragraph', internal: { generated: 'wrapper' } }, '⋮', { type: '/paragraph' } ];
+				contentData = [ { type: 'div' }, '⋮', { type: '/div' } ];
+				this.addAttributesToElement( contentData, 0, { class: 've-ui-diffElement-spacer' } );
 				isSpacer = true;
 			} else {
 				// Get the linear data for the list item's content
@@ -935,7 +936,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 		// Get linear data of list item
 		let listItemData = this.constructor.static.getDataFromNode( listItemNode );
 		if ( isSpacer ) {
-			this.addAttributesToElement( listItemData, 0, { class: 've-ui-diffElement-spacer' } );
+			this.addAttributesToElement( listItemData, 0, { class: 've-ui-diffElement-spacer-listWrapper' } );
 		} else {
 			// TODO: Make this a node property, instead of a magic attribute
 			if ( listNode.getAttribute( 'style' ) === 'number' ) {

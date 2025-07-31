@@ -10,7 +10,7 @@ QUnit.module( 've.ui.DiffElement' );
 
 QUnit.test( 'Diffing', ( assert ) => {
 	const spacer = '<div class="ve-ui-diffElement-spacer">⋮</div>',
-		listSpacer = '<li class="ve-ui-diffElement-spacer">⋮</li>',
+		listSpacer = `<li class="ve-ui-diffElement-spacer-listWrapper">${ spacer }</li>`,
 		listSpacerOpen = listSpacer.slice( 0, -5 ),
 		noChanges = '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>',
 		comment = ve.dm.example.commentNodePreview,
