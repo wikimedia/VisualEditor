@@ -168,6 +168,7 @@ ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
  * @param {boolean} [options.showRects=true] Show individual selection rectangles (default)
  * @param {boolean} [options.showBounding=false] Show a bounding rectangle around the selection
  * @param {boolean} [options.showCursor=false] Show a separate rectangle at the cursor ('to' position in a non-collapsed selection)
+ * @param {boolean} [options.showGutter=false] Show a vertical gutter bar matching the bounding rect
  * @param {boolean} [options.overlay=false] Render all of the selection above the text
  * @param {string} [options.label] Label shown above each selection
  */
@@ -245,6 +246,21 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 								top: boundingRect.top,
 								left: boundingRect.left,
 								width: boundingRect.width,
+								height: boundingRect.height,
+								backgroundColor: options.color || undefined
+							} )
+					);
+				}
+			}
+
+			if ( options.showGutter ) {
+				const boundingRect = selection.getSelectionBoundingRect();
+				if ( boundingRect ) {
+					$selection.append(
+						$( '<div>' )
+							.addClass( 've-ce-surface-selection-gutter' )
+							.css( {
+								top: boundingRect.top,
 								height: boundingRect.height,
 								backgroundColor: options.color || undefined
 							} )
@@ -340,6 +356,7 @@ ve.ce.SelectionManager.prototype.getSelectionCacheKey = function ( name, selecti
 		showRects: !!options.showRects,
 		showBounding: !!options.showBounding,
 		showCursor: !!options.showCursor,
+		showGutter: !!options.showGutter,
 		overlay: !!options.overlay,
 		label: options.label || ''
 	} ) );
