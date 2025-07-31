@@ -885,6 +885,7 @@
 			"tests/dm/ve.dm.Document.test.js",
 			"tests/dm/ve.dm.HashValueStore.test.js",
 			"tests/dm/ve.dm.InternalList.test.js",
+			"tests/dm/ve.dm.InternalListNodeGroup.test.js",
 			"tests/dm/ve.dm.LinearData.test.js",
 			"tests/dm/ve.dm.Transaction.test.js",
 			"tests/dm/ve.dm.TransactionBuilder.test.js",
