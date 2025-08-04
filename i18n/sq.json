@@ -12,7 +12,8 @@
 			"Liridon",
 			"TMg",
 			"Techlik",
-			"Vyolla"
+			"Vyolla",
+			"Xhulianoo"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -147,7 +148,7 @@
 	"visualeditor-linkcontext-label-label": "Tekst",
 	"visualeditor-linkcontext-remove": "Hiqe lidhjen",
 	"visualeditor-linkinspector-title": "Lidhje",
-	"visualeditor-linkinspector-title-add": "Shtoni një lidhje",
+	"visualeditor-linkinspector-title-add": "Shto një lidhje",
 	"visualeditor-linkinspector-title-edit": "Përpunoni lidhje",
 	"visualeditor-listbutton-bullet-tooltip": "Listë me toptha",
 	"visualeditor-listbutton-check-tooltip": "Listë me kutiza",
@@ -205,7 +206,7 @@
 	"visualeditor-tablecell-tooltip": "Dyklikoni që të përpunoni kutizën",
 	"visualeditor-toolbar-format-tooltip": "Formatoni paragraf",
 	"visualeditor-toolbar-history": "Historik",
-	"visualeditor-toolbar-insert": "Shtoni",
+	"visualeditor-toolbar-insert": "Vendos",
 	"visualeditor-toolbar-paragraph-format": "Formatim",
 	"visualeditor-toolbar-structure": "Strukturë",
 	"visualeditor-toolbar-style-tooltip": "Stil teksti",
