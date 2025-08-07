@@ -63,3 +63,35 @@ QUnit.test( 'appendNodeWithKnownIndex & unsetNode', ( assert ) => {
 	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node2 ] );
 	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key2' ] );
 } );
+
+QUnit.test( 'insertNodeInDocumentOrder in reverse document order', ( assert ) => {
+	const nodeGroup = new ve.dm.InternalListNodeGroup();
+
+	const node2 = new ve.dm.TextNode( 2 );
+	// Node 2 is later in the document but added first
+	node2.getOffset = () => 100;
+	nodeGroup.insertNodeInDocumentOrder( 'key', node2 );
+
+	const node1 = new ve.dm.TextNode( 1 );
+	nodeGroup.insertNodeInDocumentOrder( 'key', node1 );
+
+	// Even if added in reverse order, document order was respected
+	assert.deepEqual( nodeGroup.getAllReuses( 'key' ), [ node1, node2 ] );
+	assert.deepEqual( nodeGroup.getFirstNode( 'key' ), node1 );
+} );
+
+QUnit.test( 'insertNodeInDocumentOrder with known index', ( assert ) => {
+	const nodeGroup = new ve.dm.InternalListNodeGroup();
+	const node1 = new ve.dm.TextNode( 1 );
+	const node2 = new ve.dm.TextNode( 2 );
+
+	nodeGroup.insertNodeInDocumentOrder( 'key2', node2, 2 );
+	nodeGroup.insertNodeInDocumentOrder( 'key1', node1, 1 );
+
+	// TODO: Can we hide these private properties? We don't need the "known index" above then!
+	assert.deepEqual( nodeGroup.firstNodes, [ undefined, node1, node2 ] );
+	assert.deepEqual( nodeGroup.indexOrder, [ 2, 1 ] );
+
+	// This will always be the same, no matter what the known indexes above are
+	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key2', 'key1' ] );
+} );

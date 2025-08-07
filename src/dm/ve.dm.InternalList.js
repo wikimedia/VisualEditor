@@ -301,7 +301,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 		// need to worry about sorting.
 		group.appendNodeWithKnownIndex( key, node, index );
 	} else {
-		group.insertNodeInDocumentOrder( key, node );
+		group.insertNodeInDocumentOrder( key, node, index );
 	}
 	this.markGroupAsChanged( groupName );
 };

@@ -171,19 +171,24 @@ ve.dm.InternalListNodeGroup.prototype.appendNodeWithKnownIndex = function ( key,
 /**
  * @param {string} key
  * @param {ve.dm.Node} newNode Node to insert at document position
+ * @param {number} [index] Existing index; ignored when this is not the first node for this key
  */
-ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( key, newNode ) {
+ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( key, newNode, index ) {
 	const nodes = this.getAllReuses( key );
 	// Fall back to the cheaper method if possible
 	if ( !nodes ) {
-		this.appendNode( key, newNode );
+		if ( index === undefined ) {
+			this.appendNode( key, newNode );
+		} else {
+			this.appendNodeWithKnownIndex( key, newNode, index );
+		}
 		return;
 	}
 
 	const start = newNode.getRange().start;
 	let i = 0;
 	// Warning, this assumes the nodes array is in document order!
-	while ( nodes[ i ] && nodes[ i ].getRange().start > start ) {
+	while ( nodes[ i ] && nodes[ i ].getRange().start <= start ) {
 		i++;
 	}
 
