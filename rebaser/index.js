@@ -1,10 +1,10 @@
 $( () => {
 	new ve.init.sa.Platform( ve.messagePaths ).initialize().done( () => {
 		const documentNameInput = new OO.ui.TextInputWidget( {
-				placeholder: OO.ui.msg( 'visualeditor-rebase-client-document-name' )
+				placeholder: ve.msg( 'visualeditor-rebase-client-document-name' )
 			} ),
 			submitButton = new OO.ui.ButtonWidget( {
-				label: OO.ui.msg( 'visualeditor-rebase-client-document-create-edit' ),
+				label: ve.msg( 'visualeditor-rebase-client-document-create-edit' ),
 				flags: [ 'primary', 'progressive' ]
 			} ),
 			documentNameField = new OO.ui.ActionFieldLayout( documentNameInput, submitButton, {
