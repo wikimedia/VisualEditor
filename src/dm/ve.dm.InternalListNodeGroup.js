@@ -332,6 +332,16 @@ ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, 
 };
 
 /**
+ * @return {ve.dm.InternalListNodeGroup.RefInfo[]}
+ */
+ve.dm.InternalListNodeGroup.prototype.getSortedReflistNumbering = function () {
+	return this.buildReflistNumbering()
+		.sort( ( a, b ) => ( a.topLevelNumber - b.topLevelNumber ) ||
+			( a.subrefNumber || 0 ) - ( b.subrefNumber || 0 )
+		);
+};
+
+/**
  * Calculate the numbering that will be assigned to each reference in the internal list group.
  *
  * @return {ve.dm.InternalListNodeGroup.RefInfo[]}
