@@ -144,8 +144,10 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
  */
 ve.ui.PreviewElement.prototype.afterRender = function () {
 	// Cleanup
-	this.view.destroy();
-	this.view = null;
+	if ( this.view ) {
+		this.view.destroy();
+		this.view = null;
+	}
 
 	// Event
 	this.emit( 'render' );
