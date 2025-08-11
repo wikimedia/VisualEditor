@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Aca",
 			"Winston Sung"
 		]
 	},
@@ -119,7 +120,7 @@
 	"visualeditor-table-contextitem-properties": "Svojstva",
 	"visualeditor-table-delete-col": "Izbriši {{PLURAL:$1|kolonu|kolone}}",
 	"visualeditor-table-delete-row": "Izbriši {{PLURAL:$1|red|redove}}",
-	"visualeditor-table-format-data": "Polje sa sadržinom",
+	"visualeditor-table-format-data": "Polje sa sadržajem",
 	"visualeditor-table-format-header": "Polje zaglavlja",
 	"visualeditor-table-insert-col-after": "Umetni iza",
 	"visualeditor-table-insert-col-before": "Umetni ispred",
