@@ -1,5 +1,5 @@
 /*!
- * VisualEditor DataModel StubReferenceNode class.
+ * Testing stub which closely follows ve.dm.MWReferenceNode
  *
  * @copyright See AUTHORS.txt
  * @license MIT

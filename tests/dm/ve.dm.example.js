@@ -670,6 +670,41 @@ ve.dm.example.internalData = [
 	// 27
 ];
 
+ve.dm.example.references = [
+	// 0
+	{ type: 'paragraph' },
+	{ type: 'stubReference', attributes: { listKey: 'literal/:3', listGroup: 'g1' } },
+	{ type: '/stubReference' },
+	{ type: 'stubReference', attributes: { listGroup: 'g2' } },
+	{ type: '/stubReference' },
+	{ type: '/paragraph' },
+	// 6
+	{ type: 'internalList' },
+	// 7
+	{ type: 'internalItem' },
+	// 8
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	...'Bar',
+	{ type: '/paragraph' },
+	// 13
+	{ type: '/internalItem' },
+	// 14
+	{ type: 'internalItem' },
+	// 15
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	...'Baz',
+	{ type: '/paragraph' },
+	// 20
+	{ type: '/internalItem' },
+	// 21
+	{ type: '/internalList' },
+	// 22
+	{ type: 'paragraph' },
+	...'Quux',
+	{ type: '/paragraph' }
+	// 28
+];
+
 ve.dm.example.internalData.internalItems = [
 	{ group: 'test', key: 'bar', body: 'Bar' },
 	{ group: 'test', key: 'baz', body: 'Baz' }
