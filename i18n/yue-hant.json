@@ -1,6 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
+			"H78c67c",
+			"JeffreyKim",
 			"Winston Sung",
 			"Yueman"
 		]
@@ -30,7 +32,7 @@
 	"visualeditor-changedesc-align": "對齊由$1改咗做$2",
 	"visualeditor-changedesc-changed": "$1由$2改咗做$3",
 	"visualeditor-changedesc-changed-diff": "$1改咗做：$2",
-	"visualeditor-changedesc-comment": "意見由$1改咗做$2",
+	"visualeditor-changedesc-comment": "註釋由$1改咗做$2",
 	"visualeditor-changedesc-comment-diff": "意見改咗做：$1",
 	"visualeditor-changedesc-direction": "方向覆蓋由$1改咗做$2",
 	"visualeditor-changedesc-image-size": "大細由$1改咗做$2",
@@ -39,12 +41,15 @@
 	"visualeditor-changedesc-link-href": "連結目標由$1改咗做$2",
 	"visualeditor-changedesc-link-href-diff": "連結目標改咗：$1",
 	"visualeditor-changedesc-link-removed": "連結剷咗：$1",
+	"visualeditor-changedesc-list-indent": "列表項嘅縮排嘅增加",
+	"visualeditor-changedesc-list-outdent": "列表項嘅縮排嘅減少",
 	"visualeditor-changedesc-list-style-indent": "縮排",
 	"visualeditor-changedesc-no-key": "$1改咗做$2",
 	"visualeditor-changedesc-set": "$1設定咗做$2",
 	"visualeditor-changedesc-textstyle-added": "文字風格加咗：$1",
 	"visualeditor-changedesc-textstyle-removed": "文字風格剷咗：$1",
 	"visualeditor-changedesc-unknown": "$1改咗",
+	"visualeditor-changedesc-unset": "$1取消設定咗（原本係$2）",
 	"visualeditor-changedir": "改方向",
 	"visualeditor-changedir-tool-ltr": "由左到右睇",
 	"visualeditor-changedir-tool-rtl": "由右到左睇",
