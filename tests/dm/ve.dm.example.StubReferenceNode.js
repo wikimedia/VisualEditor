@@ -17,9 +17,6 @@ ve.dm.example.StubReferenceNode = function VeDmStubReferenceNode() {
 	// Parent constructor
 	ve.dm.example.StubReferenceNode.super.apply( this, arguments );
 
-	// Mixin constructors
-	ve.dm.FocusableNode.call( this );
-
 	// Event handlers
 	this.connect( this, {
 		root: 'onRoot',
@@ -30,19 +27,13 @@ ve.dm.example.StubReferenceNode = function VeDmStubReferenceNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.example.StubReferenceNode, ve.dm.LeafNode );
-
-OO.mixinClass( ve.dm.example.StubReferenceNode, ve.dm.FocusableNode );
+OO.inheritClass( ve.dm.example.StubReferenceNode, ve.dm.ReferenceNode );
 
 /* Static members */
 
 ve.dm.example.StubReferenceNode.static.name = 'stubReference';
 
 ve.dm.example.StubReferenceNode.static.matchTagNames = [ 'ref' ];
-
-ve.dm.example.StubReferenceNode.static.isContent = true;
-
-ve.dm.example.StubReferenceNode.static.handlesOwnChildren = true;
 
 /**
  * Regular expression for parsing the listKey attribute

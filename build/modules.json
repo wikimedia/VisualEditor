@@ -429,6 +429,7 @@
 			"src/dm/nodes/ve.dm.ListNode.js",
 			"src/dm/nodes/ve.dm.ParagraphNode.js",
 			"src/dm/nodes/ve.dm.PreformattedNode.js",
+			"src/dm/nodes/ve.dm.ReferenceNode.js",
 			"src/dm/nodes/ve.dm.SectionNode.js",
 			"src/dm/nodes/ve.dm.TableCaptionNode.js",
 			"src/dm/nodes/ve.dm.TableCellNode.js",
