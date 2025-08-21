@@ -104,10 +104,9 @@ ve.dm.InternalListNodeGroup.prototype.getKeysInIndexOrder = function () {
 	const remainingKeys = Object.keys( this.keyedNodes );
 	return this.getFirstNodesInIndexOrder().map(
 		// FIXME: This should be a fast lookup, but we currently don't have a map for that
-		( node ) => remainingKeys.find( ( listKey, i ) => {
-			// TODO: Can we be sure the first node via this.firstNodes is always at position 0?
-			// If this is guaranteed we can replace this search with a single comparison.
-			if ( this.keyedNodes[ listKey ].includes( node ) ) {
+		( firstNode ) => remainingKeys.find( ( listKey, i ) => {
+			// Note: This works with the guarantee that the "first node" is actually the first
+			if ( firstNode === this.keyedNodes[ listKey ][ 0 ] ) {
 				// Performance optimization: Don't search again for the key we just found
 				remainingKeys.splice( i, 1 );
 				return true;
@@ -243,10 +242,16 @@ ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( lis
 	}
 
 	const start = newNode.getRange().start;
-	let i = 0;
-	// Warning, this assumes the nodes array is in document order!
-	while ( nodes[ i ] && nodes[ i ].getRange().start <= start ) {
-		i++;
+	let i = nodes.length;
+	// Search from the end, for optimal performance when nodes are added in order
+	while ( i && nodes[ i - 1 ].getRange().start > start ) {
+		i--;
+	}
+
+	// Nodes are apparently added in order, just append to the end and be done
+	if ( !nodes[ i ] ) {
+		nodes.push( newNode );
+		return;
 	}
 
 	// Check if the old node we are going to move was a first node
@@ -269,23 +274,24 @@ ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( listKey, node ) {
 		return;
 	}
 
-	let i = nodes.indexOf( node );
-	if ( i !== -1 ) {
-		nodes.splice( i, 1 );
+	// Drop node from the primary data structure, and possibly drop the key when nothing is left
+	const reuse = nodes.indexOf( node );
+	if ( reuse !== -1 ) {
+		nodes.splice( reuse, 1 );
 		if ( !nodes.length ) {
 			delete this.keyedNodes[ listKey ];
 		}
 	}
 
 	// This is extra defensive for the moment because we have no control over all callers
-	i = this.firstNodes.indexOf( node );
-	if ( i !== -1 ) {
-		this.firstNodes[ i ] = nodes[ 0 ];
+	const listIndex = this.firstNodes.indexOf( node );
+	if ( listIndex !== -1 ) {
+		this.firstNodes[ listIndex ] = nodes[ 0 ];
 		if ( !nodes.length ) {
 			// This intentionally leaves a gap in the array behind. Needed so that the numbers of
 			// the other elements don't change.
-			delete this.firstNodes[ i ];
-			i = this.indexOrder.indexOf( i );
+			delete this.firstNodes[ listIndex ];
+			const i = this.indexOrder.indexOf( listIndex );
 			if ( i !== -1 ) {
 				this.indexOrder.splice( i, 1 );
 			}
