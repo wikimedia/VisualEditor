@@ -26,12 +26,14 @@
  *       changed. This is useful for variable-length sequences (defined with RegExps).
  * @param {boolean} [config.checkOnPaste=false] Whether the sequence should also be matched after paste.
  * @param {boolean} [config.checkOnDelete=false] Whether the sequence should also be matched after delete.
+ * @param {number} [config.startStrip=0] Number of data elements to strip from the start after execution
  */
 ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip = 0, config = {} ) {
 	this.name = name;
 	this.commandName = commandName;
 	this.data = data;
 	this.strip = strip;
+	this.startStrip = config.startStrip;
 	this.setSelection = !!config.setSelection;
 	this.delayed = !!config.delayed;
 	this.checkOnPaste = !!config.checkOnPaste;
@@ -92,10 +94,10 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		return false;
 	}
 
-	let stripFragment;
+	let endStripFragment;
 	if ( this.strip ) {
 		const stripRange = surfaceModel.getSelection().getRange();
-		stripFragment = surfaceModel.getLinearFragment(
+		endStripFragment = surfaceModel.getLinearFragment(
 			// noAutoSelect = true, excludeInsertions = true
 			new ve.Range( stripRange.end, stripRange.end - this.strip ), true, true
 		);
@@ -110,6 +112,11 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		surfaceModel.setLinearSelection( range );
 	}
 
+	let startStripFragment;
+	if ( this.startStrip ) {
+		startStripFragment = surfaceModel.getFragment().truncateLinearSelection( this.startStrip ).setAutoSelect( false );
+	}
+
 	let args;
 	// For sequences that trigger dialogs, pass an extra flag so the window knows
 	// to un-strip the sequence if it is closed without action. See ve.ui.WindowAction.
@@ -119,10 +126,13 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		args[ 1 ].strippedSequence = !!this.strip;
 	}
 
-	if ( stripFragment ) {
+	if ( endStripFragment ) {
 		// Strip the typed text. This will be undone if the action triggered was
 		// window/open and the window is dismissed
-		stripFragment.removeContent();
+		endStripFragment.removeContent();
+	}
+	if ( startStripFragment ) {
+		startStripFragment.removeContent();
 	}
 
 	// `args` can be passed undefined, and the defaults will be used
@@ -135,7 +145,7 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		originalSelectionFragment.select();
 	}
 
-	if ( stripFragment && !executed ) {
+	if ( ( endStripFragment || startStripFragment ) && !executed ) {
 		surfaceModel.undo();
 		// Prevent redoing (which would remove the typed text)
 		surfaceModel.truncateUndoStack();
