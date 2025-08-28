@@ -183,7 +183,7 @@
 	"visualeditor-rebase-client-author-name": "Ваше име",
 	"visualeditor-rebase-client-connecting": "Повезивање…",
 	"visualeditor-rebase-client-document-create-edit": "Направи/уреди",
-	"visualeditor-rebase-client-document-name": "Име документа (опционално)",
+	"visualeditor-rebase-client-document-name": "Име документа (необавезно)",
 	"visualeditor-rebase-corrupted-document-error": "Документ је постао оштећен: $1",
 	"visualeditor-rebase-corrupted-document-title": "Оштећен документ",
 	"visualeditor-rebase-missing-document-error": "Документ недостаје на серверу. Да бисте избегли губитак података, копирајте и налепите садржај.",
