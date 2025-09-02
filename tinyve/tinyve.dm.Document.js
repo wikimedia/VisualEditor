@@ -88,6 +88,54 @@ tinyve.dm.Document.prototype.rebuildTreeNode = function ( branchNode, lengthChan
 };
 
 /**
+ * Apply a transaction's modifications on the document data.
+ *
+ * This implementation just changes the linear data then rebuilds the node trees afresh.
+ *
+ * In real VE, this is far more complex. See `ve.dm.TreeModifier`.
+ *
+ * 1. The list of linear operations are rewritten into a sequence of "tree operations". Unlike
+ * linear operations, *each* tree operation preserves tree well-formedness. This means the tree
+ * can be modified step by step instead of rebuilt afresh.
+ *
+ * 2. Each tree operation is applied individually, to the linear model, then to the DM tree,
+ * then (via 'splice' events) to the CE tree. These modifications are *synchronous* — i.e. the
+ * current operation finishes being processed before the next operation is processed, and all
+ * are processed before #commit returns.
+ *
+ * @param {tinyve.dm.Transaction} transaction The transaction to apply
+ */
+tinyve.dm.Document.prototype.commit = function ( transaction ) {
+	const newData = OO.copy( this.data );
+
+	// Apply the transaction to this.data
+	let i = 0;
+	let replaceStart = null;
+	let replaceEnd = null;
+	let lengthChange = 0;
+	transaction.operations.forEach( ( op ) => {
+		if ( op.type === 'retain' ) {
+			i += op.length;
+			return;
+		}
+		// Else op.type === 'replace'
+		if ( replaceStart === null ) {
+			replaceStart = i;
+		}
+		replaceEnd = i + op.remove.length;
+		const willRemove = newData.slice( i, i + op.remove.length );
+		if ( !OO.compare( willRemove, op.remove ) ) {
+			throw new Error( 'Removal mismatch' );
+		}
+		lengthChange += op.insert.length - op.remove.length;
+		newData.splice( i, op.remove.length, ...OO.copy( op.insert ) );
+	} );
+	this.data = newData;
+	const node = this.getContainingNode( new tinyve.Range( replaceStart, replaceEnd ) );
+	this.rebuildTreeNode( node, lengthChange );
+};
+
+/**
  * Get the smallest node that entirely contains the given range
  *
  * @param {tinyve.Range} range The range
