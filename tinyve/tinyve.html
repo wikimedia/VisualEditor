@@ -11,8 +11,8 @@
 		<script src="tinyve.dm.Node.js"></script>
 		<script src="tinyve.dm.BranchNode.js"></script>
 		<script src="tinyve.dm.ContentBranchNode.js"></script>
-		<script src="tinyve.dm.Document.js"></script>
 		<script src="tinyve.dm.Transaction.js"></script>
+		<script src="tinyve.dm.Document.js"></script>
 		<script src="tinyve.dm.Surface.js"></script>
 		<script src="tinyve.ce.Node.js"></script>
 		<script src="tinyve.ce.BranchNode.js"></script>
@@ -31,16 +31,19 @@
 					<p>This is a <b>test</b> of <a href="http://example.com/tinyve">TinyVE</a>.</p>
 				</li>
 				<li>
-					<p>Open the debugger to see what's happening.</p>
+					<p>Try editing the content within a paragraph.</p>
+				</li>
+				<li>
+					<p>Editing outside paragraphs does not work correctly.</p>
 				</li>
 			</ul>
 		</div>
 	</body>
 	<script>
 		const $container = $( '.tinyve-demo' );
-		const linearData = tinyve.dm.converter.getDataFromDomSubtree( $container[ 0 ] );
-		const dmDoc = new tinyve.dm.Document( linearData );
-		const dmSurface = new tinyve.dm.Surface( dmDoc );
+		const html = $container.html();
+		tinyve.init( $container, html );
+		const dmDoc = tinyve.init.target.surface.model.documentModel;
 		console.log( 'Original:', dmDoc.data );
 		const tx = new tinyve.dm.Transaction( [
 			{ type: 'retain', length: 2 },
@@ -52,8 +55,6 @@
 		] );
 		dmDoc.commit( tx );
 		console.log( 'After tx:', dmDoc.data );
-		const ceSurface = new tinyve.ce.Surface( dmSurface );
-		console.log( 'renderedContents:', ceSurface.documentView.documentNode.children[0].children[0].children[1].getRenderedContents() );
 
 	</script>
 </html>
