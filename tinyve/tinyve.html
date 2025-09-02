@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>TinyVE</title>
+		<script src="../lib/jquery/jquery.js"></script>
+                <script src="../lib/oojs/oojs.js"></script>
+                <script src="../lib/oojs-ui/oojs-ui-core.js"></script>
+		<script src="tinyve.js"></script>
+		<script src="tinyve.dm.converter.js"></script>
+		<style>.tinyve-demo { height: 10em; border: solid gray 1px }</style>
+	</head>
+	<body>
+		<h1>TinyVE</h1>
+		<p>This is a toy demo of VisualEditor concepts, for use as an introduction to the VE codebase.</p>
+		<div class="tinyve-demo">
+			<ul>
+				<li>
+					<p>This is a <b>test</b> of <a href="http://example.com/tinyve">TinyVE</a>.</p>
+				</li>
+				<li>
+					<p>Open the debugger to see what's happening.</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script>
+		const $container = $( '.tinyve-demo' );
+		console.log( 'Linear data:', tinyve.dm.converter.getDataFromDomSubtree( $container[ 0 ] ) );
+	</script>
+</html>
