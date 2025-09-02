@@ -17,6 +17,8 @@
 		<script src="tinyve.ce.Node.js"></script>
 		<script src="tinyve.ce.BranchNode.js"></script>
 		<script src="tinyve.ce.ContentBranchNode.js"></script>
+		<script src="tinyve.ce.Document.js"></script>
+		<script src="tinyve.ce.Surface.js"></script>
 		<style>.tinyve-demo { height: 10em; border: solid gray 1px }</style>
 	</head>
 	<body>
@@ -36,9 +38,9 @@
 	<script>
 		const $container = $( '.tinyve-demo' );
 		const linearData = tinyve.dm.converter.getDataFromDomSubtree( $container[ 0 ] );
-		const doc = new tinyve.dm.Document( linearData );
-		const surface = new tinyve.dm.Surface( doc );
-		console.log( 'Original:', doc.data );
+		const dmDoc = new tinyve.dm.Document( linearData );
+		const dmSurface = new tinyve.dm.Surface( dmDoc );
+		console.log( 'Original:', dmDoc.data );
 		const tx = new tinyve.dm.Transaction( [
 			{ type: 'retain', length: 2 },
 			{
@@ -47,7 +49,10 @@
 				insert: [ { type: 'p' }, ...'foo', { type: '/p' } ]
 			}
 		] );
-		doc.commit( tx );
-		console.log( 'After tx:', doc.data );
+		dmDoc.commit( tx );
+		console.log( 'After tx:', dmDoc.data );
+		const ceSurface = new tinyve.ce.Surface( dmSurface );
+		console.log( 'renderedContents:', ceSurface.documentView.documentNode.children[0].children[0].children[1].getRenderedContents() );
+
 	</script>
 </html>
