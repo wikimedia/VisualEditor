@@ -13,6 +13,7 @@
 		<script src="tinyve.dm.ContentBranchNode.js"></script>
 		<script src="tinyve.dm.Document.js"></script>
 		<script src="tinyve.dm.Transaction.js"></script>
+		<script src="tinyve.dm.Surface.js"></script>
 		<style>.tinyve-demo { height: 10em; border: solid gray 1px }</style>
 	</head>
 	<body>
@@ -33,6 +34,7 @@
 		const $container = $( '.tinyve-demo' );
 		const linearData = tinyve.dm.converter.getDataFromDomSubtree( $container[ 0 ] );
 		const doc = new tinyve.dm.Document( linearData );
+		const surface = new tinyve.dm.Surface( doc );
 		console.log( 'Original:', doc.data );
 		const tx = new tinyve.dm.Transaction( [
 			{ type: 'retain', length: 2 },
