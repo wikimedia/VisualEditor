@@ -23,6 +23,14 @@ tinyve.dm.Document = function TinyVeDmDocument( linearData ) {
 	 */
 	this.documentNode = null;
 
+	/**
+	 * @property {tinyve.dm.Transaction[]} completeHistory Complete transaction history
+	 */
+	this.completeHistory = [
+		// Start with a single transaction that retains the whole document
+		new tinyve.dm.Transaction( [ { type: 'retain', length: this.data.length } ] )
+	];
+
 	this.buildNodeTree();
 };
 
@@ -133,6 +141,7 @@ tinyve.dm.Document.prototype.commit = function ( transaction ) {
 	this.data = newData;
 	const node = this.getContainingNode( new tinyve.Range( replaceStart, replaceEnd ) );
 	this.rebuildTreeNode( node, lengthChange );
+	this.completeHistory.push( transaction );
 };
 
 /**
