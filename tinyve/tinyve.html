@@ -11,6 +11,7 @@
 		<script src="tinyve.dm.Node.js"></script>
 		<script src="tinyve.dm.BranchNode.js"></script>
 		<script src="tinyve.dm.ContentBranchNode.js"></script>
+		<script src="tinyve.dm.Document.js"></script>
 		<style>.tinyve-demo { height: 10em; border: solid gray 1px }</style>
 	</head>
 	<body>
@@ -29,6 +30,8 @@
 	</body>
 	<script>
 		const $container = $( '.tinyve-demo' );
-		console.log( 'Linear data:', tinyve.dm.converter.getDataFromDomSubtree( $container[ 0 ] ) );
+		const linearData = tinyve.dm.converter.getDataFromDomSubtree( $container[ 0 ] );
+		const doc = new tinyve.dm.Document( linearData );
+		console.log( doc );
 	</script>
 </html>
