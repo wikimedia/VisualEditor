@@ -746,6 +746,56 @@ QUnit.test( 'changeAttributes', ( assert ) => {
 	);
 } );
 
+QUnit.test( 'annotateContent', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument(),
+		surface = new ve.dm.Surface( doc );
+	let fragment = surface.getLinearFragment( new ve.Range( 10, 11 ) );
+
+	fragment.annotateContent( 'set', ve.dm.example.createAnnotationSet( doc.getStore(), [ ve.dm.example.bold ] ) );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 10, 11 ) ),
+		ve.dm.example.preprocessAnnotations(
+			ve.dm.example.annotateText( 'd', ve.dm.example.bold ),
+			doc.getStore()
+		).data,
+		'setting annotation (bold)'
+	);
+
+	fragment.annotateContent( 'set', ve.dm.example.createAnnotationSet( doc.getStore(), [ ve.dm.example.italic ] ) );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 10, 11 ) ),
+		ve.dm.example.preprocessAnnotations(
+			ve.dm.example.annotateText( 'd', [ ve.dm.example.bold, ve.dm.example.italic ] ),
+			doc.getStore()
+		).data,
+		'setting annotation (italic)'
+	);
+
+	fragment.annotateContent( 'clear', 'textStyle/italic' );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 10, 11 ) ),
+		ve.dm.example.preprocessAnnotations(
+			ve.dm.example.annotateText( 'd', [ ve.dm.example.bold ] ),
+			doc.getStore()
+		).data,
+		'clearing annotation (italic)'
+	);
+
+	// Check insertion annotation toggling
+	function assertInsertionAnnotations( expected ) {
+		assert.deepEqual(
+			// actualAnnotations,
+			surface.getInsertionAnnotations().get().map( ( annotation ) => annotation.name ),
+			ve.dm.example.preprocessAnnotations( expected ).data,
+			'Insertion annotations match expected state'
+		);
+	}
+	fragment = surface.getLinearFragment( new ve.Range( 11, 11 ) );
+	assertInsertionAnnotations( [ 'textStyle/bold' ] );
+	fragment.annotateContent( 'clear', 'textStyle/bold' );
+	assertInsertionAnnotations( [] );
+} );
+
 QUnit.test( 'wrapNodes/unwrapNodes', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),

@@ -749,6 +749,10 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 				annotations.addSet(
 					this.document.data.getAnnotationsFromRange( ranges[ i ], true ).getAnnotationsByName( annotation.name )
 				);
+				if ( ranges[ i ].isCollapsed() ) {
+					// Also check the insertion annotations, since they won't be included in the range
+					annotations.addSet( this.surface.getInsertionAnnotations().getAnnotationsByName( annotation.name ) );
+				}
 			}
 		}
 	}
@@ -760,7 +764,17 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 				const tx = ve.dm.TransactionBuilder.static.newFromAnnotation( this.document, range, method, annotations.get( j ) );
 				txs.push( tx );
 			}
-		} else {
+		}
+	}
+	if ( txs.length ) {
+		this.change( txs );
+	}
+
+	// Insertion annotations need to be updated after this.change, because the
+	// selection updating resets them:
+	for ( let i = 0, ilen = ranges.length; i < ilen; i++ ) {
+		const range = ranges[ i ];
+		if ( range.isCollapsed() ) {
 			// Apply annotation to stack
 			if ( method === 'set' ) {
 				this.surface.addInsertionAnnotations( annotations );
@@ -769,7 +783,6 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 			}
 		}
 	}
-	this.change( txs );
 
 	return this;
 };
