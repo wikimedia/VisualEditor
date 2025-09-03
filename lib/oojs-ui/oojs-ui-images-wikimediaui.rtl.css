@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.52.0
+ * OOUI v0.53.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-06-12T12:46:39Z
+ * Date: 2025-09-03T22:03:24Z
  */
 .oo-ui-icon-arrowDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
@@ -2970,6 +2970,15 @@
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/mapTrail-progressive.svg);
 }
 
+.oo-ui-icon-bookmarkList {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bookmarkList-rtl.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-bookmarkList {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bookmarkList-rtl-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-bookmarkList {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/bookmarkList-rtl-progressive.svg);
+}
 .oo-ui-icon-userAdd {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userAdd-rtl.svg);
 }
