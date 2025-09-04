@@ -16,11 +16,6 @@
  * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
  */
 ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, selection, noAutoSelect, excludeInsertions ) {
-	// Short-circuit for missing-surface null fragment
-	if ( !surface ) {
-		return this;
-	}
-
 	// Properties
 	this.document = surface.getDocument();
 	this.noAutoSelect = !!noAutoSelect;
@@ -135,7 +130,7 @@ ve.dm.SurfaceFragment.prototype.change = function ( txs, selection ) {
 /**
  * Get the surface the fragment is a part of.
  *
- * @return {ve.dm.Surface|null} Surface of fragment
+ * @return {ve.dm.Surface} Surface of fragment
  */
 ve.dm.SurfaceFragment.prototype.getSurface = function () {
 	return this.surface;
@@ -144,7 +139,7 @@ ve.dm.SurfaceFragment.prototype.getSurface = function () {
 /**
  * Get the document of the surface the fragment is a part of.
  *
- * @return {ve.dm.Document|null} Document of surface of fragment
+ * @return {ve.dm.Document} Document of surface of fragment
  */
 ve.dm.SurfaceFragment.prototype.getDocument = function () {
 	return this.document;
