@@ -257,11 +257,15 @@ ve.ce.ClipboardHandler.prototype.onCopy = function ( e, selection ) {
 /**
  * Get the annotation set that was a the user focus before a paste started
  *
+ * Returns annotations with applyToInsertedContent set (e.g. not importedData).
+ *
  * @return {ve.dm.AnnotationSet} Annotation set
  */
 ve.ce.ClipboardHandler.prototype.getBeforePasteAnnotationSet = function () {
 	const store = this.getSurface().getModel().getDocument().getStore();
-	const dmAnnotations = this.beforePasteAnnotationsAtFocus.map( ( view ) => view.getModel() );
+	const dmAnnotations = this.beforePasteAnnotationsAtFocus
+		.map( ( view ) => view.getModel() )
+		.filter( ( ann ) => ann.constructor.static.applyToInsertedContent );
 	return new ve.dm.AnnotationSet( store, store.hashAll( dmAnnotations ) );
 };
 
