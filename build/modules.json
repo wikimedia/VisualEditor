@@ -293,16 +293,24 @@
 			"src/ve.js"
 		]
 	},
+	"visualEditor.track": {
+		"scripts": [
+			"src/ve.track.js"
+		],
+		"dependencies": [
+			"visualEditor.core.ve"
+		]
+	},
 	"visualEditor.core.utils": {
 		"scripts": [
 			"src/ve.utils.js",
 			"src/ve.TriggerListener.js",
 			{ "file": "src/ve.debug.js", "debug": true },
-			{ "file": "src/ve.freeze.js", "debug": true },
-			"src/ve.track.js"
+			{ "file": "src/ve.freeze.js", "debug": true }
 		],
 		"dependencies": [
-			"visualEditor.core.ve"
+			"visualEditor.core.ve",
+			"visualEditor.track"
 		]
 	},
 	"visualEditor.core.utils.parsing": {
