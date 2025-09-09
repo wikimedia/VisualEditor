@@ -472,6 +472,7 @@ ve.ce.ClipboardHandler.prototype.beforePaste = function ( e ) {
  *
  * @param {jQuery.Event} e Paste event
  * @return {jQuery.Promise} Promise which resolves when the content has been pasted
+ * @fires ve.ce.Surface#paste
  */
 ve.ce.ClipboardHandler.prototype.afterPaste = function () {
 	const surface = this.getSurface(),
@@ -545,6 +546,11 @@ ve.ce.ClipboardHandler.prototype.afterPaste = function () {
 			targetFragment.collapseToEnd().select();
 			surface.findAndExecuteSequences( /* isPaste */ true );
 		}
+
+		surface.emit( 'paste', {
+			source: beforePasteData.source,
+			fragment: fragment
+		} );
 	} );
 };
 

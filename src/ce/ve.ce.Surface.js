@@ -235,6 +235,18 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  * @event ve.ce.Surface#activation
  */
 
+/**
+ * When the surface or its contents changes position
+ * (only after initialize has already been called).
+ *
+ * @event ve.ce.Surface#paste
+ * @param {Object} details
+ * @param {string|null} details.source Paste source if known, per
+ *  ve.ce.ClipboardHandler.static.pasteSourceDetectors
+ * @param {ve.dm.SurfaceFragment} details.fragment Fragment covering the
+ *  pasted content
+ */
+
 /* Static properties */
 
 /**
