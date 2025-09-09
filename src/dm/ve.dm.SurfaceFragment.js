@@ -52,16 +52,9 @@ ve.dm.SurfaceFragment.prototype.getSelectedModels = function ( all ) {
 	// Filter out nodes with collapsed ranges
 	let nodes;
 	if ( all ) {
-		nodes = this.getCoveredNodes();
-		for ( let i = 0, len = nodes.length; i < len; i++ ) {
-			if ( nodes[ i ].range && nodes[ i ].range.isCollapsed() ) {
-				nodes.splice( i, 1 );
-				len--;
-				i--;
-			} else {
-				nodes[ i ] = nodes[ i ].node;
-			}
-		}
+		nodes = this.getCoveredNodes()
+			.filter( ( nodeInfo ) => !( nodeInfo.range && nodeInfo.range.isCollapsed() ) )
+			.map( ( nodeInfo ) => nodeInfo.node );
 	} else {
 		nodes = [];
 		const selectedNode = this.getSelectedNode();
@@ -457,10 +450,10 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 	} else {
 		let annotations = null;
 		const ranges = selection.getRanges( this.getDocument() );
-		for ( let i = 0, l = ranges.length; i < l; i++ ) {
-			const rangeAnnotations = this.getDocument().data.getAnnotationsFromRange( ranges[ i ], all, true );
+		ranges.every( ( range ) => {
+			const rangeAnnotations = this.getDocument().data.getAnnotationsFromRange( range, all, true );
 			if ( !rangeAnnotations ) {
-				continue;
+				return true;
 			}
 			if ( !annotations ) {
 				annotations = rangeAnnotations;
@@ -471,14 +464,15 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 				if ( matchingAnnotations.isEmpty() ) {
 					// Nothing matched so our intersection is empty
 					annotations = matchingAnnotations;
-					break;
+					return false;
 				} else {
 					// Match in the other direction, to keep all distinct compatible annotations (e.g. both b and strong)
 					annotations = annotations.getComparableAnnotationsFromSet( rangeAnnotations );
 					annotations.addSet( matchingAnnotations );
 				}
 			}
-		}
+			return true;
+		} );
 		return annotations || new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	}
 };
@@ -494,12 +488,7 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
 	const ranges = this.getSelection().getRanges( this.getDocument() );
 
-	for ( let i = 0, l = ranges.length; i < l; i++ ) {
-		if ( this.getDocument().data.hasAnnotationsInRange( ranges[ i ] ) ) {
-			return true;
-		}
-	}
-	return false;
+	return ranges.some( ( range ) => this.getDocument().data.hasAnnotationsInRange( range ) );
 };
 
 /**
@@ -530,14 +519,11 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
  * @return {ve.dm.Node[]} List of nodes and related information
  */
 ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes = function () {
-	const selectedLeafNodes = [],
-		leafNodes = this.getLeafNodes();
-	for ( let i = 0, len = leafNodes.length; i < len; i++ ) {
-		if ( len === 1 || !leafNodes[ i ].range || !leafNodes[ i ].range.isCollapsed() ) {
-			selectedLeafNodes.push( leafNodes[ i ].node );
-		}
-	}
-	return selectedLeafNodes;
+	const leafNodes = this.getLeafNodes();
+	const len = leafNodes.length;
+	return leafNodes
+		.filter( ( nodeInfo ) => len === 1 || !nodeInfo.range || !nodeInfo.range.isCollapsed() )
+		.map( ( nodeInfo ) => nodeInfo.node );
 };
 
 /**
@@ -607,36 +593,22 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
 ve.dm.SurfaceFragment.prototype.hasMatchingAncestor = function ( type, attributes, matchFirstAncestorOfType ) {
 	const selection = this.getSelection();
 
-	let all;
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		const nodes = this.getSelectedLeafNodes();
-		all = !!nodes.length;
-		for ( let i = 0, len = nodes.length; i < len; i++ ) {
+		return nodes.length && nodes.every( ( node ) => {
 			if ( matchFirstAncestorOfType ) {
-				const node = nodes[ i ].findMatchingAncestor( type );
-				if ( !( node && node.compareAttributes( attributes ) ) ) {
-					all = false;
-					break;
-				}
+				const ancestor = node.findMatchingAncestor( type );
+				return ancestor && ancestor.compareAttributes( attributes );
 			} else {
-				if ( !nodes[ i ].hasMatchingAncestor( type, attributes ) ) {
-					all = false;
-					break;
-				}
+				return node.hasMatchingAncestor( type, attributes );
 			}
-		}
+		} );
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		const cells = selection.getMatrixCells( this.getDocument() );
-		all = true;
-		for ( let j = cells.length - 1; j >= 0; j-- ) {
-			if ( !cells[ j ].node.matches( type, attributes ) ) {
-				all = false;
-				break;
-			}
-		}
+		return cells.every( ( cell ) => cell.node.matches( type, attributes ) );
 	}
 
-	return all;
+	return false;
 };
 
 /**
@@ -684,27 +656,18 @@ ve.dm.SurfaceFragment.prototype.select = function () {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
-	const txs = [],
-		covered = this.getCoveredNodes();
-
-	for ( let i = 0, len = covered.length; i < len; i++ ) {
-		const result = covered[ i ];
-		if (
-			// Non-wrapped nodes have no attributes
-			!result.node.isWrapped() ||
+	const covered = this.getCoveredNodes();
+	const txs = covered.filter(
+		// Non-wrapped nodes have no attributes
+		( nodeInfo ) => nodeInfo.node.isWrapped() &&
 			// Filtering by node type
-			( type && result.node.getType() !== type ) ||
+			( !type || nodeInfo.node.getType() === type ) &&
 			// Ignore zero-length results
-			( result.range && result.range.isCollapsed() )
-		) {
-			continue;
-		}
-		txs.push(
-			ve.dm.TransactionBuilder.static.newFromAttributeChanges(
-				this.document, result.nodeOuterRange.start, attr
-			)
-		);
-	}
+			( !nodeInfo.range || !nodeInfo.range.isCollapsed() )
+	).map( ( nodeInfo ) => ve.dm.TransactionBuilder.static.newFromAttributeChanges(
+		this.document, nodeInfo.nodeOuterRange.start, attr
+	) );
+
 	if ( txs.length ) {
 		this.change( txs );
 	}
@@ -740,35 +703,33 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 		if ( method === 'set' ) {
 			annotations.push( annotation );
 		} else if ( method === 'clear' ) {
-			for ( let i = 0, ilen = ranges.length; i < ilen; i++ ) {
+			ranges.forEach( ( range ) => {
 				annotations.addSet(
-					this.document.data.getAnnotationsFromRange( ranges[ i ], true ).getAnnotationsByName( annotation.name )
+					this.document.data.getAnnotationsFromRange( range, true ).getAnnotationsByName( annotation.name )
 				);
-				if ( ranges[ i ].isCollapsed() ) {
+				if ( range.isCollapsed() ) {
 					// Also check the insertion annotations, since they won't be included in the range
 					annotations.addSet( this.surface.getInsertionAnnotations().getAnnotationsByName( annotation.name ) );
 				}
-			}
+			} );
 		}
 	}
-	for ( let i = 0, ilen = ranges.length; i < ilen; i++ ) {
-		const range = ranges[ i ];
+	ranges.forEach( ( range ) => {
 		if ( !range.isCollapsed() ) {
 			// Apply to selection
-			for ( let j = 0, jlen = annotations.getLength(); j < jlen; j++ ) {
-				const tx = ve.dm.TransactionBuilder.static.newFromAnnotation( this.document, range, method, annotations.get( j ) );
+			annotations.get().forEach( ( ann ) => {
+				const tx = ve.dm.TransactionBuilder.static.newFromAnnotation( this.document, range, method, ann );
 				txs.push( tx );
-			}
+			} );
 		}
-	}
+	} );
 	if ( txs.length ) {
 		this.change( txs );
 	}
 
 	// Insertion annotations need to be updated after this.change, because the
 	// selection updating resets them:
-	for ( let i = 0, ilen = ranges.length; i < ilen; i++ ) {
-		const range = ranges[ i ];
+	ranges.forEach( ( range ) => {
 		if ( range.isCollapsed() ) {
 			// Apply annotation to stack
 			if ( method === 'set' ) {
@@ -777,7 +738,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 				this.surface.removeInsertionAnnotations( annotations );
 			}
 		}
-	}
+	} );
 
 	return this;
 };
@@ -832,13 +793,13 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotateOrSe
 
 		if ( lines.length > 1 ) {
 			content = [];
-			for ( let i = 0, l = lines.length; i < l; i++ ) {
-				if ( lines[ i ].length ) {
+			lines.forEach( ( line ) => {
+				if ( line.length ) {
 					content.push( { type: 'paragraph' } );
-					ve.batchPush( content, lines[ i ].split( '' ) );
+					ve.batchPush( content, line.split( '' ) );
 					content.push( { type: '/paragraph' } );
 				}
-			}
+			} );
 		} else {
 			content = content.split( '' );
 		}
@@ -1361,14 +1322,14 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		const data = [];
 
 		let adjustment = 0;
-		for ( let i = 0, length = splitNodes.length; i < length; i++ ) {
-			data.unshift( { type: '/' + splitNodes[ i ].type } );
-			data.push( splitNodes[ i ].getClonedElement() );
+		splitNodes.forEach( ( splitNode ) => {
+			data.unshift( { type: '/' + splitNode.type } );
+			data.push( splitNode.getClonedElement() );
 
 			if ( insertBefore ) {
 				adjustment += 2;
 			}
-		}
+		} );
 
 		// Queue up transaction data
 		insertions.push( {

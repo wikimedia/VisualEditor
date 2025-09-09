@@ -184,12 +184,11 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
 	const nodes = this.getSelectedLeafNodes();
 
 	const content = wrapOuter.map( getOpening );
-	for ( let i = 0; i < nodes.length; i++ ) {
-		const node = nodes[ i ];
+	nodes.forEach( ( node ) => {
 		ve.batchPush( content, wrapEach.map( getOpening ) );
 		ve.batchPush( content, this.getSurface().getLinearFragment( node.getRange() ).getText().split( '' ) );
 		ve.batchPush( content, wrapEach.reverse().map( getClosing ) );
-	}
+	} );
 	ve.batchPush( content, wrapOuter.reverse().map( getClosing ) );
 
 	this.insertContent( content );
