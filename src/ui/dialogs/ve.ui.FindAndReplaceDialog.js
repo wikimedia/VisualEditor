@@ -33,13 +33,6 @@ ve.ui.FindAndReplaceDialog.static.title =
 
 ve.ui.FindAndReplaceDialog.static.handlesSource = true;
 
-/**
- * Maximum number of results to render
- *
- * @property {number}
- */
-ve.ui.FindAndReplaceDialog.static.maxRenderedResults = 100;
-
 /* Methods */
 
 /**
@@ -56,7 +49,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.startOffset = 0;
 	this.fragments = [];
 	this.results = 0;
-	this.isClipped = false;
 	this.replacing = false;
 	this.focusedIndex = 0;
 	this.query = null;
@@ -154,9 +146,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	const $replaceRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
 
 	// Events
-	this.onWindowScrollThrottled = ve.throttle( this.onWindowScroll.bind( this ), 250 );
 	this.updateFragmentsThrottled = ve.throttle( this.updateFragments.bind( this ), 250 );
-	this.renderFragmentsThrottled = ve.throttle( this.renderFragments.bind( this ), 250 );
 	this.findText.connect( this, {
 		change: 'onFindChange',
 		enter: 'onFindReplaceTextEnter'
@@ -210,12 +200,9 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 			this.surface = data.surface;
 
 			// Events
-			this.surface.getModel().connect( this, { documentUpdate: 'onSurfaceModelDocumentUpdate' } );
-			this.surface.getView().connect( this, { position: 'onSurfaceViewPosition' } );
-			this.surface.$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollThrottled, { passive: true } );
+			this.surface.getView().connect( this, { position: 'onSurfaceModelDocumentUpdate' } );
 
 			this.updateFragments();
-			this.renderFragments();
 		} );
 };
 
@@ -239,9 +226,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 				surfaceModel = this.surface.getModel();
 
 			// Events
-			this.surface.getModel().disconnect( this );
 			surfaceView.disconnect( this );
-			this.surface.$scrollListener[ 0 ].removeEventListener( 'scroll', this.onWindowScrollThrottled );
 
 			let selection;
 			if ( this.fragments.length ) {
@@ -255,6 +240,8 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 
 			// Generates ve-ce-surface-selections-findResults CSS class
 			surfaceView.getSelectionManager().drawSelections( 'findResults', [] );
+			// Generates ve-ce-surface-selections-findResultFocused CSS class
+			surfaceView.getSelectionManager().drawSelections( 'findResultFocused', [] );
 			this.fragments = [];
 			this.surface = null;
 			this.focusedIndex = 0;
@@ -272,31 +259,10 @@ ve.ui.FindAndReplaceDialog.prototype.onSurfaceModelDocumentUpdate = function () 
 };
 
 /**
- * Handle position events from the surface view
- */
-ve.ui.FindAndReplaceDialog.prototype.onSurfaceViewPosition = function () {
-	if ( this.replacing ) {
-		return;
-	}
-	this.renderFragmentsThrottled();
-};
-
-/**
- * Handle window scroll events
- */
-ve.ui.FindAndReplaceDialog.prototype.onWindowScroll = function () {
-	if ( this.isClipped ) {
-		// If viewport clipping is being used, reposition results based on the current viewport
-		this.renderFragments();
-	}
-};
-
-/**
  * Handle change events to the find inputs (text or match case)
  */
 ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
 	this.updateFragments();
-	this.renderFragments();
 	this.highlightFocused( true );
 	this.diacriticToggle.setDisabled( this.regexToggle.getValue() );
 	this.updateUserConfigDebounced();
@@ -341,8 +307,10 @@ ve.ui.FindAndReplaceDialog.prototype.onFindReplaceTextEnter = function ( e ) {
 
 /**
  * Update search result fragments
+ *
+ * @param {boolean} [noRender] Don't render the fragments after updating
  */
-ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
+ve.ui.FindAndReplaceDialog.prototype.updateFragments = function ( noRender ) {
 	const surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		isReadOnly = surfaceModel.isReadOnly(),
@@ -391,62 +359,20 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 	this.replaceText.setDisabled( isReadOnly );
 	this.replaceButton.setDisabled( !this.results || isReadOnly );
 	this.replaceAllButton.setDisabled( !this.results || isReadOnly );
+
+	if ( !noRender ) {
+		this.renderFragments();
+	}
 };
 
 /**
  * Position results markers
  */
 ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
-	// The methods is called after a delay (renderFragmentsThrottled/onWindowScrollThrottled)
-	// Check the dialog hasn't been torn down, or that the surface view hasn't been destroyed
-	if ( !this.surface || !this.surface.getView().attachedRoot.isLive() ) {
-		return;
-	}
-
-	let start = 0;
-	let end = this.results;
-
-	// When there are a large number of results, calculate the viewport range for clipping
-	if ( this.results > 50 ) {
-		const viewportRange = this.surface.getView().getViewportRange( true, 50 );
-		for ( let i = 0; i < this.results; i++ ) {
-			const selection = this.fragments[ i ].getSelection();
-			if ( viewportRange && selection.getRange().start < viewportRange.start ) {
-				start = i + 1;
-				continue;
-			}
-			if ( viewportRange && selection.getRange().end > viewportRange.end ) {
-				end = i;
-				break;
-			}
-		}
-	}
-
-	// When there are too many results to render, just render the current one
-	if ( end - start <= this.constructor.static.maxRenderedResults ) {
-		this.renderRangeOfFragments( new ve.Range( start, end ) );
-	} else {
-		this.renderRangeOfFragments( new ve.Range( this.focusedIndex, this.focusedIndex + 1 ) );
-	}
-};
-
-/**
- * Render subset of search result fragments
- *
- * @param {ve.Range} range Range of fragments to render. N.B. This is a range in the
- *  results array, not a document range.
- */
-ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range ) {
-	const selections = [];
 	const surfaceView = this.surface.getView();
-	for ( let i = range.start; i < range.end; i++ ) {
-		selections.push(
-			surfaceView.getSelection( this.fragments[ i ].getSelection() )
-		);
-	}
+	const selections = this.fragments.map( ( fragment ) => surfaceView.getSelection( fragment.getSelection() ) );
 	// Generates ve-ce-surface-selections-findResults CSS class
 	surfaceView.getSelectionManager().drawSelections( 'findResults', selections );
-	this.isClipped = range.getLength() < this.results;
 	this.highlightFocused();
 };
 
@@ -472,29 +398,14 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		return;
 	}
 
-	if ( this.focusedSelection ) {
-		const focusedSelectionElements = surfaceView.getSelectionManager().getCachedSelection( 'findResults', this.focusedSelection );
-		if ( focusedSelectionElements ) {
-			focusedSelectionElements.$selection.removeClass( 've-ce-surface-selections-findResult-focused' );
-		}
-	}
-
 	const selection = this.fragments[ this.focusedIndex ].getSelection();
 	this.startOffset = selection.getCoveringRange().start;
 
-	const selectionElements = surfaceView.getSelectionManager().getCachedSelection( 'findResults', selection );
-	if ( selectionElements ) {
-		selectionElements.$selection.addClass( 've-ce-surface-selections-findResult-focused' );
-	}
+	surfaceView.getSelectionManager().drawSelections( 'findResultFocused', [ surfaceView.getSelection( selection ) ] );
 
 	if ( scrollIntoView ) {
-		surfaceView.getSurface().scrollSelectionIntoView(
-			this.fragments[ this.focusedIndex ].getSelection(),
-			{ animate: true }
-		);
+		surfaceView.getSurface().scrollSelectionIntoView( selection, { animate: true } );
 	}
-
-	this.focusedSelection = selection;
 };
 
 /**
@@ -553,7 +464,7 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
 	// 'foo' with 'foofoo' we don't select the just-inserted text.
 	const end = this.fragments[ this.focusedIndex ].getSelection().getRange().end;
 
-	this.updateFragments();
+	this.updateFragments( true );
 
 	while ( this.fragments[ this.focusedIndex ] && this.fragments[ this.focusedIndex ].getSelection().getRange().end <= end ) {
 		this.focusedIndex++;
@@ -585,7 +496,6 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceAllButtonClick = function () {
 	}
 
 	this.updateFragments();
-	this.renderFragments();
 };
 
 /**

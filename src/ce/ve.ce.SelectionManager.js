@@ -40,6 +40,13 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	// Cache of recently drawn selections
 	this.selectionCache = {};
 
+	// Number of rects in a group that can be drawn before viewport clipping applies
+	this.viewportClippingLimit = 50;
+	// Vertical pixels above and below the viewport to load rects for when viewport clipping applies
+	this.viewportClippingPadding = 50;
+	// Maximum selections in a group to render (after viewport clipping)
+	this.maxRenderedSelections = 100;
+
 	this.deactivatedSelectionVisible = true;
 	this.showDeactivatedAsActivated = false;
 
@@ -58,6 +65,9 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	// Debounce to prevent trying to draw every cursor position in history.
 	this.onSurfacePositionDebounced = ve.debounce( this.onSurfacePosition.bind( this ) );
 	this.getSurface().connect( this, { position: this.onSurfacePositionDebounced } );
+
+	this.onWindowScrollDebounced = ve.debounce( this.onWindowScroll.bind( this ), 250 );
+	this.getSurface().getSurface().$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollDebounced, { passive: true } );
 };
 
 /* Inheritance */
@@ -85,6 +95,7 @@ ve.ce.SelectionManager.prototype.destroy = function () {
 	}
 	this.$element.remove();
 	this.$overlay.remove();
+	this.getSurface().getSurface().$scrollListener[ 0 ].removeEventListener( 'scroll', this.onWindowScrollDebounced );
 };
 
 /**
@@ -189,9 +200,14 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 		// * ve-ce-surface-selections-<name>
 		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$overlay );
 
-	const oldFragments = selectionData.fragments || [];
+	const oldSelections = selectionData.selections || [];
 	const oldOptions = selectionData.options || {};
 
+	// Store selections so we can selectively remove anything that hasn't been
+	// redrawn at the exact same selection (oldSelections)
+	selectionData.selections = selections;
+	// Store fragments so we can automatically update selections even after
+	// the document has been modified (which eventually fires a position event)
 	selectionData.fragments = selections.map( ( selection ) => this.surface.getModel().getFragment( selection.getModel(), true, true ) );
 	selectionData.options = options;
 
@@ -201,6 +217,22 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 		've-ce-surface-selections ve-ce-surface-selections-' + name + ' ' +
 		( options.wrapperClass || '' )
 	);
+
+	selectionData.clipped = false;
+	if ( selections.length > this.viewportClippingLimit ) {
+		const viewportRange = this.getSurface().getViewportRange( true, this.viewportClippingPadding );
+		if ( viewportRange ) {
+			selections = selections.filter( ( selection ) => viewportRange.containsRange( selection.getModel().getCoveringRange() ) );
+			selectionData.clipped = true;
+		} else {
+			// Surface not attached - nothing to render
+			selections = [];
+		}
+	}
+
+	if ( selections.length > this.maxRenderedSelections ) {
+		selections = selections.slice( 0, this.maxRenderedSelections );
+	}
 
 	const selectionsJustShown = new Set();
 	selections.forEach( ( selection ) => {
@@ -323,13 +355,13 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 	} );
 
 	// Remove any selections that were not in the latest list of selections
-	oldFragments.forEach( ( oldFragment ) => {
-		const cacheKey = this.getSelectionCacheKey( name, oldFragment.getSelection(), oldOptions );
+	oldSelections.forEach( ( oldSelection ) => {
+		const cacheKey = this.getSelectionCacheKey( name, oldSelection.getModel(), oldOptions );
 		if ( !selectionsJustShown.has( cacheKey ) ) {
-			const oldSelection = this.getCachedSelection( name, oldFragment.getSelection(), oldOptions );
-			if ( oldSelection ) {
-				oldSelection.$selection.detach();
-				oldSelection.$overlay.detach();
+			const cachedSelection = this.getCachedSelection( name, oldSelection.getModel(), oldOptions );
+			if ( cachedSelection ) {
+				cachedSelection.$selection.detach();
+				cachedSelection.$overlay.detach();
 			}
 		}
 	} );
@@ -397,16 +429,20 @@ ve.ce.SelectionManager.prototype.cacheSelection = function ( selectionElements, 
  * changes size, or when the document is modified. The selectionCache is
  * cleared as these two things will cause any previously calculated rectangles
  * to be incorrect.
+ *
+ * @param {boolean} [fromScroll=false] The redraw was triggered by a scroll event
  */
-ve.ce.SelectionManager.prototype.redrawSelections = function () {
-	Object.keys( this.currentSelectionData ).forEach( ( name ) => {
-		const selectionData = this.currentSelectionData[ name ];
-		selectionData.$selections.empty();
-	} );
+ve.ce.SelectionManager.prototype.redrawSelections = function ( fromScroll = false ) {
+	if ( !fromScroll ) {
+		this.selectionCache = {};
+	}
 
-	this.selectionCache = {};
 	Object.keys( this.currentSelectionData ).forEach( ( name ) => {
 		const selectionData = this.currentSelectionData[ name ];
+		if ( fromScroll && !selectionData.clipped ) {
+			return;
+		}
+		selectionData.$selections.empty();
 		const selections = selectionData.fragments.map( ( fragments ) => this.surface.getSelection( fragments.getSelection() ) );
 		this.drawSelections( name, selections, selectionData.options );
 	} );
@@ -489,4 +525,11 @@ ve.ce.SelectionManager.prototype.onSurfacePosition = function () {
 			}
 		} );
 	}
+};
+
+/**
+ * Handle window scroll events
+ */
+ve.ce.SelectionManager.prototype.onWindowScroll = function () {
+	this.redrawSelections( true );
 };
