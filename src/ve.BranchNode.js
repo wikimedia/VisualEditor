@@ -35,14 +35,12 @@ OO.initClass( ve.BranchNode );
  * @param {ve.Node} callback.node Node being traversed
  */
 ve.BranchNode.prototype.traverse = function ( callback ) {
-	const children = this.getChildren();
-
-	for ( let i = 0, len = children.length; i < len; i++ ) {
-		callback.call( this, children[ i ] );
-		if ( children[ i ].hasChildren() ) {
-			children[ i ].traverse( callback );
+	this.getChildren().forEach( ( child ) => {
+		callback.call( this, child );
+		if ( child.hasChildren() ) {
+			child.traverse( callback );
 		}
-	}
+	} );
 };
 
 /**
@@ -90,9 +88,7 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
 		// That way, at emit time, all this node's ancestors and descendants have
 		// null root.
 		this.root = null;
-		for ( let i = 0, len = this.children.length; i < len; i++ ) {
-			this.children[ i ].setRoot( null );
-		}
+		this.children.forEach( ( child ) => child.setRoot( null ) );
 		this.emit( 'unroot', oldRoot );
 	}
 	this.root = root;
@@ -100,9 +96,7 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
 		// We've set the new root, so recurse into children, then emit root.
 		// That way, at emit time, all this node's ancestors and descendants have
 		// the new root.
-		for ( let i = 0, len = this.children.length; i < len; i++ ) {
-			this.children[ i ].setRoot( root );
-		}
+		this.children.forEach( ( child ) => child.setRoot( root ) );
 		this.emit( 'root', root );
 	}
 };
@@ -119,15 +113,12 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
 		// Nothing to do, don't recurse into all descendants
 		return;
 	}
-	let i, len;
 	if ( oldDoc ) {
 		// Null the doc, then recurse into children, then notify the doc.
 		// That way, at notify time, all this node's ancestors and descendants have
 		// null doc.
 		this.doc = null;
-		for ( i = 0, len = this.children.length; i < len; i++ ) {
-			this.children[ i ].setDocument( null );
-		}
+		this.children.forEach( ( child ) => child.setDocument( null ) );
 		oldDoc.nodeDetached( this );
 	}
 	this.doc = doc;
@@ -135,9 +126,7 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
 		// We've set the new doc, so recurse into children, then notify the doc.
 		// That way, at notify time, all this node's ancestors and descendants have
 		// the new doc.
-		for ( i = 0, len = this.children.length; i < len; i++ ) {
-			this.children[ i ].setDocument( doc );
-		}
+		this.children.forEach( ( child ) => child.setDocument( doc ) );
 		doc.nodeAttached( this );
 	}
 };
