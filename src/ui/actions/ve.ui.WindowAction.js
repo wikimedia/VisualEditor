@@ -118,6 +118,16 @@ ve.ui.WindowAction.prototype.open = function ( name, data = {}, action = null ) 
 
 		ve.promiseAll( autoClosePromises ).always( () => {
 			windowManager.getWindow( name ).then( ( win ) => {
+				if ( windowManager.getCurrentWindow() === win ) {
+					// If the window was already open we are just passing a command
+					// to it, e.g. 'findNext' in FindAndReplaceDialog, so there is
+					// no need to touch the selection.
+					if ( action ) {
+						win.executeAction( action );
+					}
+					return;
+				}
+
 				const instance = windowManager.openWindow( win, data );
 
 				if ( sourceMode ) {
