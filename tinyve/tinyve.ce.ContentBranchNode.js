@@ -26,6 +26,8 @@ tinyve.ce.ContentBranchNode = function TinyVeCeContentBranchNode( model, surface
 	tinyve.ce.ContentBranchNode.super.call( this, model, surface );
 
 	this.$element.addClass( 'tinyve-ce-ContentBranchNode' );
+
+	model.connect( this, { update: 'onModelUpdate' } );
 };
 
 /* Inheritance */
@@ -35,6 +37,18 @@ OO.inheritClass( tinyve.ce.ContentBranchNode, tinyve.ce.BranchNode );
 /* Methods */
 
 tinyve.ce.ContentBranchNode.prototype.initialize = function () {
+	this.onModelUpdate();
+};
+
+/**
+ * Re-render on model updates.
+ *
+ * In real VE, the `ve.dm.ContentBranchNode` has children like `ve.dm.TextNode`, and its
+ * onModelUpdate method actually listens to those children.
+ *
+ * @see {ve.dm.ContentBranchNode#onModelUpdate}
+ */
+tinyve.ce.ContentBranchNode.prototype.onModelUpdate = function () {
 	this.$element[ 0 ].innerHTML = this.getRenderedContents();
 };
 

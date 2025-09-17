@@ -10,6 +10,10 @@
  * In real VE, each branch node type has its own subclass of `ve.dm.ContentBranchNode`, and the
  * subclasses are instantiated through a node factory so extensions can at types.
  *
+ * In real VE, the linearized contents are stored inside `.children` in nodes of type
+ * `ve.dm.TextNode`, `ve.dm.InlineImageNode` etc. By contrast, `tinyve.dm.ContentBranchNode`
+ * does not have children (so it's slightly odd that it's a subclass of BranchNode at all).
+ *
  * @class
  * @see {ve.dm.ContentBranchNode}
  * @see {ve.dm.NodeFactory}

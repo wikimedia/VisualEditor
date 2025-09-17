@@ -46,7 +46,17 @@
 		tinyve.init( $container, html );
 		const dmDoc = tinyve.init.target.surface.model.documentModel;
 		console.log( 'Original:', dmDoc.data );
-		const tx = new tinyve.dm.Transaction( [
+		const tx1 = new tinyve.dm.Transaction( [
+			{ type: 'retain', length: 3 },
+			{
+				type: 'replace',
+				remove: [ ...'This' ],
+				insert: [ ...'THIS' ]
+			}
+		] );
+		dmDoc.commit( tx1 );
+		console.log( 'After tx1:', dmDoc.data );
+		const tx2 = new tinyve.dm.Transaction( [
 			{ type: 'retain', length: 2 },
 			{
 				type: 'replace',
@@ -54,8 +64,8 @@
 				insert: [ { type: 'p' }, ...'foo', { type: '/p' } ]
 			}
 		] );
-		dmDoc.commit( tx );
-		console.log( 'After tx:', dmDoc.data );
+		dmDoc.commit( tx2 );
+		console.log( 'After tx2:', dmDoc.data );
 
 	</script>
 </html>

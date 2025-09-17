@@ -78,6 +78,7 @@ tinyve.dm.Document.prototype.buildNodeTree = function () {
 tinyve.dm.Document.prototype.rebuildTreeNode = function ( branchNode, lengthChange ) {
 	if ( branchNode instanceof tinyve.dm.ContentBranchNode ) {
 		branchNode.adjustLength( lengthChange );
+		branchNode.emit( 'update' );
 		return;
 	}
 	const range = branchNode.getRange();
