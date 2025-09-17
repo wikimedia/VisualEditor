@@ -39,7 +39,7 @@ OO.inheritClass( tinyve.ce.BranchNode, tinyve.ce.Node );
 tinyve.ce.BranchNode.prototype.initialize = function () {
 	this.children = [];
 	this.onSplice( 0, 0, ...this.model.children );
-	this.model.connect( this, { splice: this.onSplice.bind( this ) } );
+	this.model.connect( this, { splice: 'onSplice' } );
 };
 
 /**
