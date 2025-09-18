@@ -34,10 +34,7 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	// Properties
 	this.surface = surface;
 
-	// Data about currently rendered selections, keyed by selection name
-	// Each entry contains $selections, $overlays, fragments and options
 	this.selectionGroups = new Map();
-	// Cache of recently drawn selections
 	this.selectionElementsCache = new Map();
 
 	// Number of rects in a group that can be drawn before viewport clipping applies
@@ -126,47 +123,24 @@ ve.ce.SelectionManager.prototype.getSurface = function () {
  * @param {boolean} [options.overlay=false] Render all of the selection above the text
  * @param {string} [options.label] Label shown above each selection
  */
-ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options = {} ) {
+ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options ) {
+	options = options || {};
 	if ( !this.selectionGroups.has( name ) ) {
-		this.selectionGroups.set( name, {} );
+		this.selectionGroups.set( name, new ve.ce.SelectionManager.SelectionGroup( name, this ) );
 	}
 	const selectionGroup = this.selectionGroups.get( name );
 
-	selectionGroup.$selections = selectionGroup.$selections ||
-		// The following classes are used here:
-		// * ve-ce-surface-selections-deactivated
-		// * ve-ce-surface-selections-<name>
-		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$element );
-	selectionGroup.$overlays = selectionGroup.$overlays ||
-		// The following classes are used here:
-		// * ve-ce-surface-selections-deactivated
-		// * ve-ce-surface-selections-<name>
-		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$overlay );
+	const oldVisibleSelections = selectionGroup.visibleSelections;
+	const oldOptions = selectionGroup.options;
 
-	const oldSelections = selectionGroup.selections || [];
-	const oldOptions = selectionGroup.options || {};
+	selectionGroup.setSelections( selections );
+	selectionGroup.setOptions( options );
 
-	// Store selections so we can selectively remove anything that hasn't been
-	// redrawn at the exact same selection (oldSelections)
-	selectionGroup.selections = selections;
-	// Store fragments so we can automatically update selections even after
-	// the document has been modified (which eventually fires a position event)
-	selectionGroup.fragments = selections.map( ( selection ) => this.surface.getModel().getFragment( selection.getModel(), true, true ) );
-	selectionGroup.options = options;
-
-	// Always set the 'class' attribute to ensure previously-set classes are cleared.
-	selectionGroup.$selections.add( selectionGroup.$overlays ).attr(
-		'class',
-		've-ce-surface-selections ve-ce-surface-selections-' + name + ' ' +
-		( options.wrapperClass || '' )
-	);
-
-	selectionGroup.clipped = false;
 	if ( selections.length > this.viewportClippingLimit ) {
 		const viewportRange = this.getSurface().getViewportRange( true, this.viewportClippingPadding );
 		if ( viewportRange ) {
 			selections = selections.filter( ( selection ) => viewportRange.containsRange( selection.getModel().getCoveringRange() ) );
-			selectionGroup.clipped = true;
+			selectionGroup.setVisibleSelections( selections );
 		} else {
 			// Surface not attached - nothing to render
 			selections = [];
@@ -175,18 +149,14 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 
 	if ( selections.length > this.maxRenderedSelections ) {
 		selections = selections.slice( 0, this.maxRenderedSelections );
+		selectionGroup.setVisibleSelections( selections );
 	}
 
 	const selectionsJustShown = new Set();
 	selections.forEach( ( selection ) => {
 		let selectionElements = this.getCachedSelectionElements( name, selection.getModel(), options );
 		if ( !selectionElements ) {
-			const $selection = $( '<div>' ).addClass( 've-ce-surface-selection' );
-			const $overlay = $( '<div>' ).addClass( 've-ce-surface-selection' );
-			selectionElements = {
-				$selection,
-				$overlay
-			};
+			selectionElements = new ve.ce.SelectionManager.SelectionElements();
 
 			if ( options.showRects !== false ) {
 				let rects = selection.getSelectionRects();
@@ -207,14 +177,14 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 								} )
 						);
 					} );
-					$selection.append( $rects );
+					selectionElements.$selection.append( $rects );
 				}
 			}
 
 			if ( options.showBounding ) {
 				const boundingRect = selection.getSelectionBoundingRect();
 				if ( boundingRect ) {
-					$selection.append(
+					selectionElements.$selection.append(
 						$( '<div>' )
 							.addClass( 've-ce-surface-selection-bounding' )
 							.css( {
@@ -231,7 +201,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 			if ( options.showGutter ) {
 				const boundingRect = selection.getSelectionBoundingRect();
 				if ( boundingRect ) {
-					$selection.append(
+					selectionElements.$selection.append(
 						$( '<div>' )
 							.addClass( 've-ce-surface-selection-gutter' )
 							.css( {
@@ -255,7 +225,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 					this.getSurface()
 				);
 				cursorRect = cursorSelection.getSelectionBoundingRect();
-				$selection.append(
+				selectionElements.$selection.append(
 					$( '<div>' )
 						.addClass( 've-ce-surface-selection-cursor' )
 						.css( {
@@ -273,7 +243,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 				const labelRect = cursorRect || ( selection.getSelectionStartAndEndRects() || {} ).start;
 
 				if ( labelRect ) {
-					$overlay.append(
+					selectionElements.$overlay.append(
 						$( '<div>' )
 							.addClass( 've-ce-surface-selection-label' )
 							.text( options.label )
@@ -286,33 +256,23 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 				}
 			}
 		}
-		if ( options.overlay ) {
-			selectionGroup.$overlays.append( selectionElements.$selection );
-		} else {
-			selectionGroup.$selections.append( selectionElements.$selection );
-		}
-		selectionGroup.$overlays.append( selectionElements.$overlay );
+		selectionGroup.append( selectionElements );
 
 		const cacheKey = this.cacheSelectionElements( selectionElements, name, selection.getModel(), options );
 		selectionsJustShown.add( cacheKey );
 	} );
 
-	// Remove any selections that were not in the latest list of selections
-	oldSelections.forEach( ( oldSelection ) => {
+	// Remove any selections that are no longer visible
+	oldVisibleSelections.forEach( ( oldSelection ) => {
 		const cacheKey = this.getSelectionElementsCacheKey( name, oldSelection.getModel(), oldOptions );
 		if ( !selectionsJustShown.has( cacheKey ) ) {
-			const cachedSelection = this.getCachedSelectionElements( name, oldSelection.getModel(), oldOptions );
-			if ( cachedSelection ) {
-				cachedSelection.$selection.detach();
-				cachedSelection.$overlay.detach();
+			const selectionElements = this.getCachedSelectionElements( name, oldSelection.getModel(), oldOptions );
+			if ( selectionElements ) {
+				selectionElements.detach();
 			}
 		}
 	} );
-	const hasSelections = Array.from( this.selectionGroups.values() ).some(
-		( group ) => group.fragments.some(
-			( fragment ) => !fragment.getSelection().isCollapsed()
-		)
-	);
+	const hasSelections = Array.from( this.selectionGroups.values() ).some( ( group ) => group.hasSelections() );
 	this.emit( 'update', hasSelections );
 };
 
@@ -343,7 +303,7 @@ ve.ce.SelectionManager.prototype.getSelectionElementsCacheKey = function ( name,
  * @param {string} name Name of selection group
  * @param {ve.dm.Selection} selectionModel Selection model
  * @param {Object} [options] Selection options
- * @return {Object|null} Selection elements containing $selection and $overlay, null if not found
+ * @return {ve.ce.SelectionElements|null} Selection elements containing $selection and $overlay, null if not found
  */
 ve.ce.SelectionManager.prototype.getCachedSelectionElements = function ( name, selectionModel, options ) {
 	const cacheKey = this.getSelectionElementsCacheKey( name, selectionModel, options );
@@ -353,7 +313,7 @@ ve.ce.SelectionManager.prototype.getCachedSelectionElements = function ( name, s
 /**
  * Store an recently drawn selection in the cache
  *
- * @param {Object} selectionElements Selection elements containing $selection and $overlay
+ * @param {ve.ce.SelectionElements} selectionElements Selection elements containing $selection and $overlay
  * @param {string} name Name of selection group
  * @param {ve.dm.Selection} selectionModel Selection model
  * @param {Object} [options] Selection options
@@ -381,15 +341,20 @@ ve.ce.SelectionManager.prototype.cacheSelectionElements = function ( selectionEl
 ve.ce.SelectionManager.prototype.redrawSelections = function ( fromScroll = false ) {
 	if ( !fromScroll ) {
 		this.selectionElementsCache.clear();
+		for ( const selectionGroup of this.selectionGroups.values() ) {
+			selectionGroup.empty();
+		}
 	}
 
-	for ( const [ name, selectionGroup ] of this.selectionGroups.entries() ) {
-		if ( fromScroll && !selectionGroup.clipped ) {
+	for ( const selectionGroup of this.selectionGroups.values() ) {
+		if ( !fromScroll ) {
+			selectionGroup.empty();
+		}
+		if ( fromScroll && !selectionGroup.isClipped() ) {
 			continue;
 		}
-		selectionGroup.$selections.empty();
 		const selections = selectionGroup.fragments.map( ( fragments ) => this.surface.getSelection( fragments.getSelection() ) );
-		this.drawSelections( name, selections, selectionGroup.options );
+		this.drawSelections( selectionGroup.name, selections, selectionGroup.options );
 	}
 };
 
@@ -541,4 +506,142 @@ ve.ce.SelectionManager.prototype.onSynchronizerAuthorUpdate = function ( authorI
  */
 ve.ce.SelectionManager.prototype.onSynchronizerAuthorDisconnect = function ( authorId ) {
 	this.drawSelections( 'otherUserSelection-' + authorId, [] );
+};
+
+/**
+ * SelectionGroup: Holds all data for a rendered selection group.
+ *
+ * @class
+ * @constructor
+ * @param {string} name Name of the selection group
+ * @param {ve.ce.SelectionManager} selectionManager Selection manager
+ */
+ve.ce.SelectionManager.SelectionGroup = function VeCeSelectionManagerSelectionGroup( name, selectionManager ) {
+	this.name = name;
+	this.selectionManager = selectionManager;
+
+	// The following classes are used here:
+	// * ve-ce-surface-selections-deactivated
+	// * ve-ce-surface-selections-<name>
+	this.$selections = $( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.selectionManager.$element );
+	// The following classes are used here:
+	// * ve-ce-surface-selections-deactivated
+	// * ve-ce-surface-selections-<name>
+	this.$overlays = $( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.selectionManager.$overlay );
+
+	/** @type {Array<ve.ce.Selection>} */
+	this.selections = [];
+	/** @type {Array<ve.ce.Selection>} */
+	this.visibleSelections = [];
+	/** @type {Array<ve.dm.SurfaceFragment>} */
+	this.fragments = [];
+	/** @type {Object} */
+	this.options = {};
+};
+
+/**
+ * Set the rendering options for this selection group
+ *
+ * @param {Object} options
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.setOptions = function ( options ) {
+	this.options = options;
+
+	// Always set the 'class' attribute to ensure previously-set classes are cleared.
+	this.$selections.add( this.$overlays ).attr(
+		'class',
+		've-ce-surface-selections ve-ce-surface-selections-' + this.name + ' ' +
+		( this.options.wrapperClass || '' )
+	);
+};
+
+/**
+ * Clear all rendered selections
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.empty = function () {
+	this.$selections.empty();
+	this.$overlays.empty();
+	this.setVisibleSelections( [] );
+};
+
+/**
+ * Set the selections for this selection group
+ *
+ * @param {ve.ce.Selection[]} selections
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.setSelections = function ( selections ) {
+	// Store selections so we can selectively remove anything that hasn't been
+	// redrawn at the exact same selection (oldSelections)
+	this.selections = selections;
+	// Assume all selections will be visible, unless clipped later
+	this.visibleSelections = selections;
+
+	const surfacemodel = this.selectionManager.getSurface().getModel();
+	// Store fragments so we can automatically update selections even after
+	// the document has been modified (which eventually fires a position event)
+	this.fragments = selections.map( ( selection ) => surfacemodel.getFragment( selection.getModel(), true, true ) );
+};
+
+/**
+ * Set the visible selections for this selection group
+ *
+ * Must be a subset of the selections set by setSelections.
+ *
+ * @param {ve.ce.Selection[]} visibleSelections
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.setVisibleSelections = function ( visibleSelections ) {
+	this.visibleSelections = visibleSelections;
+};
+
+/**
+ * Check if the selection group is clipped
+ *
+ * @return {boolean}
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.isClipped = function () {
+	return this.selections.length !== this.visibleSelections.length;
+};
+
+/**
+ * Append selection elements to the DOM
+ *
+ * @param {ve.ce.SelectionManager.SelectionElements} selectionElements
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.append = function ( selectionElements ) {
+	if ( this.options.overlay ) {
+		this.$overlays.append( selectionElements.$selection );
+	} else {
+		this.$selections.append( selectionElements.$selection );
+	}
+	this.$overlays.append( selectionElements.$overlay );
+};
+
+/**
+ * Check if the selection group has some non-collapsed selections
+ *
+ * @return {boolean}
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.hasSelections = function () {
+	return this.visibleSelections.some(
+		( selection ) => !selection.getModel().isCollapsed()
+	);
+};
+
+/**
+ * SelectionElements: Holds cached selection/overlay jQuery elements.
+ *
+ * @class
+ * @constructor
+ */
+ve.ce.SelectionManager.SelectionElements = function VeCeSelectionManagerSelectionElements() {
+	this.$selection = $( '<div>' ).addClass( 've-ce-surface-selection' );
+	this.$overlay = $( '<div>' ).addClass( 've-ce-surface-selection' );
+};
+
+/**
+ * Detach the selection elements from the DOM
+ */
+ve.ce.SelectionManager.SelectionElements.prototype.detach = function () {
+	this.$selection.detach();
+	this.$overlay.detach();
 };
