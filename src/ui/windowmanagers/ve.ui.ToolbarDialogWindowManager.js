@@ -17,7 +17,10 @@
  */
 ve.ui.ToolbarDialogWindowManager = function VeUiToolbarDialogWindowManager( surface, config = {} ) {
 	// Parent constructor
-	ve.ui.ToolbarDialogWindowManager.super.call( this, surface, ve.extendObject( { modal: false }, config ) );
+	ve.ui.ToolbarDialogWindowManager.super.call( this, surface, ve.extendObject( {
+		modal: false,
+		forceTrapFocus: true
+	}, config ) );
 };
 
 /* Inheritance */

@@ -17,7 +17,10 @@
  */
 ve.ui.SidebarDialogWindowManager = function VeUiSidebarDialogWindowManager( surface, config = {} ) {
 	// Parent constructor
-	ve.ui.SidebarDialogWindowManager.super.call( this, surface, ve.extendObject( { modal: false }, config ) );
+	ve.ui.SidebarDialogWindowManager.super.call( this, surface, ve.extendObject( {
+		modal: false,
+		forceTrapFocus: true
+	}, config ) );
 
 	this.$element.addClass( 've-ui-sidebarDialogWindowManager' );
 

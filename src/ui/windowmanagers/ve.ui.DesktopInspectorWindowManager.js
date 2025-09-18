@@ -17,7 +17,10 @@
  */
 ve.ui.DesktopInspectorWindowManager = function VeUiDesktopInspectorWindowManager( surface, config = {} ) {
 	// Parent constructor
-	ve.ui.DesktopInspectorWindowManager.super.call( this, surface, ve.extendObject( { modal: false }, config ) );
+	ve.ui.DesktopInspectorWindowManager.super.call( this, surface, ve.extendObject( {
+		modal: false,
+		forceTrapFocus: true
+	}, config ) );
 };
 
 /* Inheritance */
