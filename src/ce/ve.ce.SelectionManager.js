@@ -36,9 +36,9 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 
 	// Data about currently rendered selections, keyed by selection name
 	// Each entry contains $selections, $overlays, fragments and options
-	this.currentSelectionData = {};
+	this.selectionGroups = {};
 	// Cache of recently drawn selections
-	this.selectionCache = {};
+	this.selectionElementsCache = {};
 
 	// Number of rects in a group that can be drawn before viewport clipping applies
 	this.viewportClippingLimit = 50;
@@ -127,46 +127,46 @@ ve.ce.SelectionManager.prototype.getSurface = function () {
  * @param {string} [options.label] Label shown above each selection
  */
 ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options = {} ) {
-	if ( !Object.prototype.hasOwnProperty.call( this.currentSelectionData, name ) ) {
-		this.currentSelectionData[ name ] = {};
+	if ( !Object.prototype.hasOwnProperty.call( this.selectionGroups, name ) ) {
+		this.selectionGroups[ name ] = {};
 	}
-	const selectionData = this.currentSelectionData[ name ];
+	const selectionGroup = this.selectionGroups[ name ];
 
-	selectionData.$selections = selectionData.$selections ||
+	selectionGroup.$selections = selectionGroup.$selections ||
 		// The following classes are used here:
 		// * ve-ce-surface-selections-deactivated
 		// * ve-ce-surface-selections-<name>
 		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$element );
-	selectionData.$overlays = selectionData.$overlays ||
+	selectionGroup.$overlays = selectionGroup.$overlays ||
 		// The following classes are used here:
 		// * ve-ce-surface-selections-deactivated
 		// * ve-ce-surface-selections-<name>
 		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.$overlay );
 
-	const oldSelections = selectionData.selections || [];
-	const oldOptions = selectionData.options || {};
+	const oldSelections = selectionGroup.selections || [];
+	const oldOptions = selectionGroup.options || {};
 
 	// Store selections so we can selectively remove anything that hasn't been
 	// redrawn at the exact same selection (oldSelections)
-	selectionData.selections = selections;
+	selectionGroup.selections = selections;
 	// Store fragments so we can automatically update selections even after
 	// the document has been modified (which eventually fires a position event)
-	selectionData.fragments = selections.map( ( selection ) => this.surface.getModel().getFragment( selection.getModel(), true, true ) );
-	selectionData.options = options;
+	selectionGroup.fragments = selections.map( ( selection ) => this.surface.getModel().getFragment( selection.getModel(), true, true ) );
+	selectionGroup.options = options;
 
 	// Always set the 'class' attribute to ensure previously-set classes are cleared.
-	selectionData.$selections.add( selectionData.$overlays ).attr(
+	selectionGroup.$selections.add( selectionGroup.$overlays ).attr(
 		'class',
 		've-ce-surface-selections ve-ce-surface-selections-' + name + ' ' +
 		( options.wrapperClass || '' )
 	);
 
-	selectionData.clipped = false;
+	selectionGroup.clipped = false;
 	if ( selections.length > this.viewportClippingLimit ) {
 		const viewportRange = this.getSurface().getViewportRange( true, this.viewportClippingPadding );
 		if ( viewportRange ) {
 			selections = selections.filter( ( selection ) => viewportRange.containsRange( selection.getModel().getCoveringRange() ) );
-			selectionData.clipped = true;
+			selectionGroup.clipped = true;
 		} else {
 			// Surface not attached - nothing to render
 			selections = [];
@@ -179,7 +179,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 
 	const selectionsJustShown = new Set();
 	selections.forEach( ( selection ) => {
-		let selectionElements = this.getCachedSelection( name, selection.getModel(), options );
+		let selectionElements = this.getCachedSelectionElements( name, selection.getModel(), options );
 		if ( !selectionElements ) {
 			const $selection = $( '<div>' ).addClass( 've-ce-surface-selection' );
 			const $overlay = $( '<div>' ).addClass( 've-ce-surface-selection' );
@@ -287,29 +287,29 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 			}
 		}
 		if ( options.overlay ) {
-			selectionData.$overlays.append( selectionElements.$selection );
+			selectionGroup.$overlays.append( selectionElements.$selection );
 		} else {
-			selectionData.$selections.append( selectionElements.$selection );
+			selectionGroup.$selections.append( selectionElements.$selection );
 		}
-		selectionData.$overlays.append( selectionElements.$overlay );
+		selectionGroup.$overlays.append( selectionElements.$overlay );
 
-		const cacheKey = this.cacheSelection( selectionElements, name, selection.getModel(), options );
+		const cacheKey = this.cacheSelectionElements( selectionElements, name, selection.getModel(), options );
 		selectionsJustShown.add( cacheKey );
 	} );
 
 	// Remove any selections that were not in the latest list of selections
 	oldSelections.forEach( ( oldSelection ) => {
-		const cacheKey = this.getSelectionCacheKey( name, oldSelection.getModel(), oldOptions );
+		const cacheKey = this.getSelectionElementsCacheKey( name, oldSelection.getModel(), oldOptions );
 		if ( !selectionsJustShown.has( cacheKey ) ) {
-			const cachedSelection = this.getCachedSelection( name, oldSelection.getModel(), oldOptions );
+			const cachedSelection = this.getCachedSelectionElements( name, oldSelection.getModel(), oldOptions );
 			if ( cachedSelection ) {
 				cachedSelection.$selection.detach();
 				cachedSelection.$overlay.detach();
 			}
 		}
 	} );
-	const hasSelections = Object.keys( this.currentSelectionData ).some(
-		( n ) => this.currentSelectionData[ n ].fragments.some(
+	const hasSelections = Object.keys( this.selectionGroups ).some(
+		( n ) => this.selectionGroups[ n ].fragments.some(
 			( fragment ) => !fragment.getSelection().isCollapsed()
 		)
 	);
@@ -324,7 +324,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
  * @param {Object} [options] Selection options
  * @return {string} Cache key
  */
-ve.ce.SelectionManager.prototype.getSelectionCacheKey = function ( name, selectionModel, options = {} ) {
+ve.ce.SelectionManager.prototype.getSelectionElementsCacheKey = function ( name, selectionModel, options = {} ) {
 	return name + '-' + JSON.stringify( selectionModel ) + '-' + JSON.stringify( Object.assign( {}, options, {
 		// Normalize values for cache key
 		color: options.color || '',
@@ -345,9 +345,9 @@ ve.ce.SelectionManager.prototype.getSelectionCacheKey = function ( name, selecti
  * @param {Object} [options] Selection options
  * @return {Object|null} Selection elements containing $selection and $overlay, null if not found
  */
-ve.ce.SelectionManager.prototype.getCachedSelection = function ( name, selectionModel, options ) {
-	const cacheKey = this.getSelectionCacheKey( name, selectionModel, options );
-	return Object.prototype.hasOwnProperty.call( this.selectionCache, cacheKey ) ? this.selectionCache[ cacheKey ] : null;
+ve.ce.SelectionManager.prototype.getCachedSelectionElements = function ( name, selectionModel, options ) {
+	const cacheKey = this.getSelectionElementsCacheKey( name, selectionModel, options );
+	return Object.prototype.hasOwnProperty.call( this.selectionElementsCache, cacheKey ) ? this.selectionElementsCache[ cacheKey ] : null;
 };
 
 /**
@@ -359,9 +359,9 @@ ve.ce.SelectionManager.prototype.getCachedSelection = function ( name, selection
  * @param {Object} [options] Selection options
  * @return {string} Cache key
  */
-ve.ce.SelectionManager.prototype.cacheSelection = function ( selectionElements, name, selectionModel, options ) {
-	const cacheKey = this.getSelectionCacheKey( name, selectionModel, options );
-	this.selectionCache[ cacheKey ] = selectionElements;
+ve.ce.SelectionManager.prototype.cacheSelectionElements = function ( selectionElements, name, selectionModel, options ) {
+	const cacheKey = this.getSelectionElementsCacheKey( name, selectionModel, options );
+	this.selectionElementsCache[ cacheKey ] = selectionElements;
 	return cacheKey;
 };
 
@@ -369,7 +369,7 @@ ve.ce.SelectionManager.prototype.cacheSelection = function ( selectionElements, 
  * Redraw selections
  *
  * When triggered by a surface 'position' event (which fires when the surface
- * changes size, or when the document is modified), the selectionCache is
+ * changes size, or when the document is modified), the selectionElementsCache is
  * cleared as these two things will cause any previously calculated rectangles
  * to be incorrect.
  *
@@ -380,17 +380,17 @@ ve.ce.SelectionManager.prototype.cacheSelection = function ( selectionElements, 
  */
 ve.ce.SelectionManager.prototype.redrawSelections = function ( fromScroll = false ) {
 	if ( !fromScroll ) {
-		this.selectionCache = {};
+		this.selectionElementsCache = {};
 	}
 
-	Object.keys( this.currentSelectionData ).forEach( ( name ) => {
-		const selectionData = this.currentSelectionData[ name ];
-		if ( fromScroll && !selectionData.clipped ) {
+	Object.keys( this.selectionGroups ).forEach( ( name ) => {
+		const selectionGroup = this.selectionGroups[ name ];
+		if ( fromScroll && !selectionGroup.clipped ) {
 			return;
 		}
-		selectionData.$selections.empty();
-		const selections = selectionData.fragments.map( ( fragments ) => this.surface.getSelection( fragments.getSelection() ) );
-		this.drawSelections( name, selections, selectionData.options );
+		selectionGroup.$selections.empty();
+		const selections = selectionGroup.fragments.map( ( fragments ) => this.surface.getSelection( fragments.getSelection() ) );
+		this.drawSelections( name, selections, selectionGroup.options );
 	} );
 };
 
@@ -502,8 +502,8 @@ ve.ce.SelectionManager.prototype.paintAuthor = function ( authorId ) {
 	if ( !Object.prototype.hasOwnProperty.call( this.userSelectionDeactivate, authorId ) ) {
 		this.userSelectionDeactivate[ authorId ] = ve.debounce( () => {
 			// TODO: Transition away the user label when inactive, maybe dim selection
-			if ( Object.prototype.hasOwnProperty.call( this.currentSelectionData, 'otherUserSelection-' + authorId ) ) {
-				this.currentSelectionData[ 'otherUserSelection-' + authorId ].$selections.addClass( 've-ce-surface-selections-otherUserSelection-inactive' );
+			if ( Object.prototype.hasOwnProperty.call( this.selectionGroups, 'otherUserSelection-' + authorId ) ) {
+				this.selectionGroups[ 'otherUserSelection-' + authorId ].$selections.addClass( 've-ce-surface-selections-otherUserSelection-inactive' );
 			}
 		}, 5000 );
 	}
