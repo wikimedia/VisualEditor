@@ -166,7 +166,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	doneButton.connect( this, { click: 'close' } );
 
 	this.tabIndexScope = new ve.ui.TabIndexScope( {
-		root: this.$element
+		root: this.$content,
+		wrapAround: true
 	} );
 
 	// Initialization

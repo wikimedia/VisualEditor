@@ -12,17 +12,22 @@
  *
  * @param {Object} [config] Configuration options
  * @param {jQuery} [config.root] Initial root element to scope tabIndex within
- * @param {boolean} [config.skipAriaDisabled] Whether to skip elements that are just aria-disabled from the order
+ * @param {boolean} [config.skipAriaDisabled=true] Whether to skip elements that are just aria-disabled from the order
+ * @param {boolean} [config.skipAriaHidden=true] Whether to skip elements that are just aria-hidden from the order
+ * @param {boolean} [config.wrapAround=false] If true, navigating forward from the last element will return to the first
+ *   element instead of leaving the scope, and navigating back from the first element will return to the last one
  */
 ve.ui.TabIndexScope = function VeUiTabIndexScope( config = {} ) {
 	config = ve.extendObject( {
-		root: false,
+		root: null,
 		skipAriaDisabled: true,
-		skipAriaHidden: true
+		skipAriaHidden: true,
+		wrapAround: false
 	}, config );
 
 	this.skipAriaDisabled = config.skipAriaDisabled;
 	this.skipAriaHidden = config.skipAriaHidden;
+	this.wrapAround = config.wrapAround;
 
 	this.onRootKeyDownBound = this.onRootKeyDown.bind( this );
 
@@ -111,6 +116,10 @@ ve.ui.TabIndexScope.prototype.onRootKeyDown = function ( e ) {
 	}
 
 	index += e.shiftKey ? -1 : 1;
+
+	if ( this.wrapAround ) {
+		index = ( index + elements.length ) % elements.length;
+	}
 
 	if ( ( index < 0 || index >= elements.length ) ) {
 		return;
