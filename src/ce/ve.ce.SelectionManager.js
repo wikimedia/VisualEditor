@@ -31,9 +31,9 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
+	// Properties
 	this.surface = surface;
 
-	this.userSelectionDeactivate = {};
 	// Data about currently rendered selections, keyed by selection name
 	// Each entry contains $selections, $overlays, fragments and options
 	this.currentSelectionData = {};
@@ -47,9 +47,12 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	// Maximum selections in a group to render (after viewport clipping)
 	this.maxRenderedSelections = 100;
 
+	// Deactivated selection
 	this.deactivatedSelectionVisible = true;
 	this.showDeactivatedAsActivated = false;
 
+	// Other users' selections
+	this.userSelectionDeactivate = {};
 	const synchronizer = this.getSurface().getModel().synchronizer;
 	if ( synchronizer ) {
 		synchronizer.connect( this, {
@@ -59,15 +62,16 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 		} );
 	}
 
-	this.$element.addClass( 've-ce-selectionManager' );
-	this.$overlay = $( '<div>' ).addClass( 've-ce-selectionManager-overlay' );
-
+	// Events
 	// Debounce to prevent trying to draw every cursor position in history.
 	this.onSurfacePositionDebounced = ve.debounce( this.onSurfacePosition.bind( this ) );
 	this.getSurface().connect( this, { position: this.onSurfacePositionDebounced } );
 
 	this.onWindowScrollDebounced = ve.debounce( this.onWindowScroll.bind( this ), 250 );
 	this.getSurface().getSurface().$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollDebounced, { passive: true } );
+
+	this.$element.addClass( 've-ce-selectionManager' );
+	this.$overlay = $( '<div>' ).addClass( 've-ce-selectionManager-overlay' );
 };
 
 /* Inheritance */
@@ -105,67 +109,6 @@ ve.ce.SelectionManager.prototype.destroy = function () {
  */
 ve.ce.SelectionManager.prototype.getSurface = function () {
 	return this.surface;
-};
-
-/**
- * Start showing the deactivated selection
- *
- * @param {boolean} [showAsActivated=true] Selection should still show as activated
- */
-ve.ce.SelectionManager.prototype.showDeactivatedSelection = function ( showAsActivated = true ) {
-	this.deactivatedSelectionVisible = true;
-	this.showDeactivatedAsActivated = !!showAsActivated;
-
-	this.updateDeactivatedSelection();
-};
-
-/**
- * Hide the deactivated selection
- */
-ve.ce.SelectionManager.prototype.hideDeactivatedSelection = function () {
-	this.deactivatedSelectionVisible = false;
-
-	// Generates ve-ce-surface-selections-deactivated CSS class
-	this.drawSelections( 'deactivated', [] );
-};
-
-ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
-	if ( !this.deactivatedSelectionVisible ) {
-		return;
-	}
-	const surface = this.getSurface();
-	const selection = surface.getSelection();
-
-	// Check we have a deactivated surface and a native selection
-	if ( selection.isNativeCursor() ) {
-		let textColor;
-		// For collapsed selections, work out the text color to use for the cursor
-		const isCollapsed = selection.getModel().isCollapsed();
-		if ( isCollapsed ) {
-			const currentNode = surface.getDocument().getBranchNodeFromOffset(
-				selection.getModel().getCoveringRange().start
-			);
-			if ( currentNode ) {
-				// This isn't perfect as it doesn't take into account annotations.
-				textColor = currentNode.$element.css( 'color' );
-			}
-		}
-		const classes = [];
-		if ( !this.showDeactivatedAsActivated ) {
-			classes.push( 've-ce-surface-selections-deactivated-showAsDeactivated' );
-		}
-		if ( isCollapsed ) {
-			classes.push( 've-ce-surface-selections-deactivated-collapsed' );
-		}
-		// Generates ve-ce-surface-selections-deactivated CSS class
-		this.drawSelections( 'deactivated', [ selection ], {
-			color: textColor,
-			wrapperClass: classes.join( ' ' )
-		} );
-	} else {
-		// Generates ve-ce-surface-selections-deactivated CSS class
-		this.drawSelections( 'deactivated', [] );
-	}
 };
 
 /**
@@ -452,6 +395,95 @@ ve.ce.SelectionManager.prototype.redrawSelections = function ( fromScroll = fals
 };
 
 /**
+ * Respond to a position event on this surface
+ */
+ve.ce.SelectionManager.prototype.onSurfacePosition = function () {
+	this.redrawSelections();
+
+	const synchronizer = this.getSurface().getModel().synchronizer;
+	if ( synchronizer ) {
+		// Defer to allow surface synchronizer to adjust for transactions
+		setTimeout( () => {
+			const authorSelections = synchronizer.authorSelections;
+			for ( const authorId in authorSelections ) {
+				this.onSynchronizerAuthorUpdate( +authorId );
+			}
+		} );
+	}
+};
+
+/**
+ * Handle window scroll events
+ */
+ve.ce.SelectionManager.prototype.onWindowScroll = function () {
+	this.redrawSelections( true );
+};
+
+/**
+ * Start showing the deactivated selection
+ *
+ * @param {boolean} [showAsActivated=true] Selection should still show as activated
+ */
+ve.ce.SelectionManager.prototype.showDeactivatedSelection = function ( showAsActivated = true ) {
+	this.deactivatedSelectionVisible = true;
+	this.showDeactivatedAsActivated = !!showAsActivated;
+
+	this.updateDeactivatedSelection();
+};
+
+/**
+ * Hide the deactivated selection
+ */
+ve.ce.SelectionManager.prototype.hideDeactivatedSelection = function () {
+	this.deactivatedSelectionVisible = false;
+
+	// Generates ve-ce-surface-selections-deactivated CSS class
+	this.drawSelections( 'deactivated', [] );
+};
+
+/**
+ * Update the deactivated selection
+ */
+ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
+	if ( !this.deactivatedSelectionVisible ) {
+		return;
+	}
+	const surface = this.getSurface();
+	const selection = surface.getSelection();
+
+	// Check we have a deactivated surface and a native selection
+	if ( selection.isNativeCursor() ) {
+		let textColor;
+		// For collapsed selections, work out the text color to use for the cursor
+		const isCollapsed = selection.getModel().isCollapsed();
+		if ( isCollapsed ) {
+			const currentNode = surface.getDocument().getBranchNodeFromOffset(
+				selection.getModel().getCoveringRange().start
+			);
+			if ( currentNode ) {
+				// This isn't perfect as it doesn't take into account annotations.
+				textColor = currentNode.$element.css( 'color' );
+			}
+		}
+		const classes = [];
+		if ( !this.showDeactivatedAsActivated ) {
+			classes.push( 've-ce-surface-selections-deactivated-showAsDeactivated' );
+		}
+		if ( isCollapsed ) {
+			classes.push( 've-ce-surface-selections-deactivated-collapsed' );
+		}
+		// Generates ve-ce-surface-selections-deactivated CSS class
+		this.drawSelections( 'deactivated', [ selection ], {
+			color: textColor,
+			wrapperClass: classes.join( ' ' )
+		} );
+	} else {
+		// Generates ve-ce-surface-selections-deactivated CSS class
+		this.drawSelections( 'deactivated', [] );
+	}
+};
+
+/**
  * Paint a remote author's current selection, as stored in the synchronizer
  *
  * @param {number} authorId The author ID
@@ -510,29 +542,4 @@ ve.ce.SelectionManager.prototype.onSynchronizerAuthorUpdate = function ( authorI
  */
 ve.ce.SelectionManager.prototype.onSynchronizerAuthorDisconnect = function ( authorId ) {
 	this.drawSelections( 'otherUserSelection-' + authorId, [] );
-};
-
-/**
- * Respond to a position event on this surface
- */
-ve.ce.SelectionManager.prototype.onSurfacePosition = function () {
-	this.redrawSelections();
-
-	const synchronizer = this.getSurface().getModel().synchronizer;
-	if ( synchronizer ) {
-		// Defer to allow surface synchronizer to adjust for transactions
-		setTimeout( () => {
-			const authorSelections = synchronizer.authorSelections;
-			for ( const authorId in authorSelections ) {
-				this.onSynchronizerAuthorUpdate( +authorId );
-			}
-		} );
-	}
-};
-
-/**
- * Handle window scroll events
- */
-ve.ce.SelectionManager.prototype.onWindowScroll = function () {
-	this.redrawSelections( true );
 };
