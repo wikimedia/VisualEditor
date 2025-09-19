@@ -42,7 +42,7 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	// Vertical pixels above and below the viewport to load rects for when viewport clipping applies
 	this.viewportClippingPadding = 50;
 	// Maximum selections in a group to render (after viewport clipping)
-	this.maxRenderedSelections = 100;
+	this.maxRenderedSelections = 50;
 
 	// Deactivated selection
 	this.deactivatedSelectionVisible = true;
@@ -136,6 +136,8 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 	selectionGroup.setSelections( selections );
 	selectionGroup.setOptions( options );
 
+	selectionGroup.cancelIdleCallbacks();
+
 	if ( selections.length > this.viewportClippingLimit ) {
 		const viewportRange = this.getSurface().getViewportRange( true, this.viewportClippingPadding );
 		if ( viewportRange ) {
@@ -147,131 +149,147 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 		}
 	}
 
-	if ( selections.length > this.maxRenderedSelections ) {
-		selections = selections.slice( 0, this.maxRenderedSelections );
-		selectionGroup.setVisibleSelections( selections );
-	}
+	const renderSelections = ( selectionsToRender ) => {
+		selectionsToRender.forEach( ( selection ) => {
+			let selectionElements = this.getCachedSelectionElements( name, selection.getModel(), options );
+			if ( !selectionElements ) {
+				selectionElements = new ve.ce.SelectionManager.SelectionElements();
 
-	const selectionsJustShown = new Set();
-	selections.forEach( ( selection ) => {
-		let selectionElements = this.getCachedSelectionElements( name, selection.getModel(), options );
-		if ( !selectionElements ) {
-			selectionElements = new ve.ce.SelectionManager.SelectionElements();
+				if ( options.showRects !== false ) {
+					let rects = selection.getSelectionRects();
+					if ( rects ) {
+						rects = ve.minimizeRects( rects );
+						const $rects = $( '<div>' ).addClass( 've-ce-surface-selection-rects' );
+						rects.forEach( ( rect ) => {
+							$rects.append(
+								$( '<div>' )
+									.addClass( 've-ce-surface-selection-rect' )
+									.css( {
+										top: rect.top,
+										left: rect.left,
+										// Collapsed selections can have a width of 0, so expand
+										width: Math.max( rect.width, 1 ),
+										height: rect.height,
+										backgroundColor: options.color || undefined
+									} )
+							);
+						} );
+						selectionElements.$selection.append( $rects );
+					}
+				}
 
-			if ( options.showRects !== false ) {
-				let rects = selection.getSelectionRects();
-				if ( rects ) {
-					rects = ve.minimizeRects( rects );
-					const $rects = $( '<div>' ).addClass( 've-ce-surface-selection-rects' );
-					rects.forEach( ( rect ) => {
-						$rects.append(
+				if ( options.showBounding ) {
+					const boundingRect = selection.getSelectionBoundingRect();
+					if ( boundingRect ) {
+						selectionElements.$selection.append(
 							$( '<div>' )
-								.addClass( 've-ce-surface-selection-rect' )
+								.addClass( 've-ce-surface-selection-bounding' )
 								.css( {
-									top: rect.top,
-									left: rect.left,
-									// Collapsed selections can have a width of 0, so expand
-									width: Math.max( rect.width, 1 ),
-									height: rect.height,
+									top: boundingRect.top,
+									left: boundingRect.left,
+									width: boundingRect.width,
+									height: boundingRect.height,
 									backgroundColor: options.color || undefined
 								} )
 						);
-					} );
-					selectionElements.$selection.append( $rects );
+					}
 				}
-			}
 
-			if ( options.showBounding ) {
-				const boundingRect = selection.getSelectionBoundingRect();
-				if ( boundingRect ) {
+				if ( options.showGutter ) {
+					const boundingRect = selection.getSelectionBoundingRect();
+					if ( boundingRect ) {
+						selectionElements.$selection.append(
+							$( '<div>' )
+								.addClass( 've-ce-surface-selection-gutter' )
+								.css( {
+									top: boundingRect.top,
+									height: boundingRect.height,
+									backgroundColor: options.color || undefined
+								} )
+						);
+					}
+				}
+
+				let cursorRect;
+
+				if ( options.showCursor ) {
+					const selectionModel = selection.getModel();
+					const cursorSelection = ve.ce.Selection.static.newFromModel(
+						( selectionModel instanceof ve.dm.LinearSelection && this.getSurface().getFocusedNode( selectionModel.getRange() ) ?
+							selectionModel :
+							selectionModel.collapseToTo()
+						),
+						this.getSurface()
+					);
+					cursorRect = cursorSelection.getSelectionBoundingRect();
 					selectionElements.$selection.append(
 						$( '<div>' )
-							.addClass( 've-ce-surface-selection-bounding' )
+							.addClass( 've-ce-surface-selection-cursor' )
 							.css( {
-								top: boundingRect.top,
-								left: boundingRect.left,
-								width: boundingRect.width,
-								height: boundingRect.height,
-								backgroundColor: options.color || undefined
+								top: cursorRect.top,
+								left: cursorRect.left,
+								width: cursorRect.width,
+								height: cursorRect.height,
+								borderColor: options.color || undefined
 							} )
 					);
 				}
-			}
 
-			if ( options.showGutter ) {
-				const boundingRect = selection.getSelectionBoundingRect();
-				if ( boundingRect ) {
-					selectionElements.$selection.append(
-						$( '<div>' )
-							.addClass( 've-ce-surface-selection-gutter' )
-							.css( {
-								top: boundingRect.top,
-								height: boundingRect.height,
-								backgroundColor: options.color || undefined
-							} )
-					);
+				if ( options.label ) {
+					// Position the label at the cursor if shown, otherwise use the start rect.
+					const labelRect = cursorRect || ( selection.getSelectionStartAndEndRects() || {} ).start;
+
+					if ( labelRect ) {
+						selectionElements.$overlay.append(
+							$( '<div>' )
+								.addClass( 've-ce-surface-selection-label' )
+								.text( options.label )
+								.css( {
+									top: labelRect.top,
+									left: labelRect.left,
+									backgroundColor: options.color || undefined
+								} )
+						);
+					}
 				}
 			}
+			selectionGroup.append( selectionElements );
 
-			let cursorRect;
+			this.cacheSelectionElements( selectionElements, name, selection.getModel(), options );
+		} );
+	};
 
-			if ( options.showCursor ) {
-				const selectionModel = selection.getModel();
-				const cursorSelection = ve.ce.Selection.static.newFromModel(
-					( selectionModel instanceof ve.dm.LinearSelection && this.getSurface().getFocusedNode( selectionModel.getRange() ) ?
-						selectionModel :
-						selectionModel.collapseToTo()
-					),
-					this.getSurface()
-				);
-				cursorRect = cursorSelection.getSelectionBoundingRect();
-				selectionElements.$selection.append(
-					$( '<div>' )
-						.addClass( 've-ce-surface-selection-cursor' )
-						.css( {
-							top: cursorRect.top,
-							left: cursorRect.left,
-							width: cursorRect.width,
-							height: cursorRect.height,
-							borderColor: options.color || undefined
-						} )
-				);
+	if ( selections.length > this.maxRenderedSelections ) {
+		const renderBatch = ( start ) => {
+			if ( start < selections.length ) {
+				selectionGroup.addIdleCallback( () => {
+					renderSelections( selections.slice( start, start + this.maxRenderedSelections ) );
+					renderBatch( start + this.maxRenderedSelections );
+				} );
 			}
+		};
+		renderBatch( 0 );
+	} else {
+		renderSelections( selections );
+	}
 
-			if ( options.label ) {
-				// Position the label at the cursor if shown, otherwise use the start rect.
-				const labelRect = cursorRect || ( selection.getSelectionStartAndEndRects() || {} ).start;
-
-				if ( labelRect ) {
-					selectionElements.$overlay.append(
-						$( '<div>' )
-							.addClass( 've-ce-surface-selection-label' )
-							.text( options.label )
-							.css( {
-								top: labelRect.top,
-								left: labelRect.left,
-								backgroundColor: options.color || undefined
-							} )
-					);
-				}
-			}
-		}
-		selectionGroup.append( selectionElements );
-
-		const cacheKey = this.cacheSelectionElements( selectionElements, name, selection.getModel(), options );
-		selectionsJustShown.add( cacheKey );
+	const selectionsToShow = new Set();
+	selections.forEach( ( selection ) => {
+		const cacheKey = this.getSelectionElementsCacheKey( name, selection.getModel(), options );
+		selectionsToShow.add( cacheKey );
 	} );
 
 	// Remove any selections that are no longer visible
 	oldVisibleSelections.forEach( ( oldSelection ) => {
 		const cacheKey = this.getSelectionElementsCacheKey( name, oldSelection.getModel(), oldOptions );
-		if ( !selectionsJustShown.has( cacheKey ) ) {
+		if ( !selectionsToShow.has( cacheKey ) ) {
 			const selectionElements = this.getCachedSelectionElements( name, oldSelection.getModel(), oldOptions );
 			if ( selectionElements ) {
 				selectionElements.detach();
 			}
 		}
 	} );
+
 	const hasSelections = Array.from( this.selectionGroups.values() ).some( ( group ) => group.hasSelections() );
 	this.emit( 'update', hasSelections );
 };
@@ -537,6 +555,8 @@ ve.ce.SelectionManager.SelectionGroup = function VeCeSelectionManagerSelectionGr
 	this.fragments = [];
 	/** @type {Object} */
 	this.options = {};
+	/** @type {Number[]} */
+	this.idleCallbacks = [];
 };
 
 /**
@@ -625,6 +645,29 @@ ve.ce.SelectionManager.SelectionGroup.prototype.hasSelections = function () {
 	return this.visibleSelections.some(
 		( selection ) => !selection.getModel().isCollapsed()
 	);
+};
+
+/**
+ * Add an idle callback to be executed later
+ *
+ * @param {Function} callback Callback function
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.addIdleCallback = function ( callback ) {
+	// Support: Safari
+	const request = requestIdleCallback || setTimeout;
+	const timeout = requestIdleCallback ? undefined : 100;
+	this.idleCallbacks.push( request( callback, timeout ) );
+};
+
+/**
+ * Cancel any pending idle callbacks
+ */
+ve.ce.SelectionManager.SelectionGroup.prototype.cancelIdleCallbacks = function () {
+	// Support: Safari
+	const cancel = cancelIdleCallback || clearTimeout;
+	while ( this.idleCallbacks.length ) {
+		cancel( this.idleCallbacks.pop() );
+	}
 };
 
 /**
