@@ -714,53 +714,6 @@ ve.dm.Surface.prototype.setNullSelection = function () {
 };
 
 /**
- * Grows a range so that any partially selected links are totally selected
- *
- * @param {ve.Range} range The range to regularize
- * @return {ve.Range} Regularized range, possibly object-identical to the original
- */
-ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
-	if ( range.isCollapsed() ) {
-		return range;
-	}
-
-	const linearData = this.getDocument().data;
-
-	function getLinks( offset ) {
-		return linearData.getAnnotationsFromOffset( offset ).filter( ( ann ) => ann.name === 'link' );
-	}
-
-	// Search for links at start/end that don't cover the whole range.
-	// Assume at most one such link at each end.
-	let start = range.start;
-	let end = range.end;
-	const rangeAnnotations = linearData.getAnnotationsFromRange( range );
-	const startLink = getLinks( start ).diffWith( rangeAnnotations ).getHash( 0 );
-	const endLink = getLinks( end ).diffWith( rangeAnnotations ).getHash( 0 );
-
-	if ( startLink === undefined && endLink === undefined ) {
-		return range;
-	}
-
-	if ( startLink !== undefined ) {
-		while ( start > 0 && getLinks( start - 1 ).containsHash( startLink ) ) {
-			start--;
-		}
-	}
-	if ( endLink !== undefined ) {
-		while ( end < linearData.getLength() && getLinks( end ).containsHash( endLink ) ) {
-			end++;
-		}
-	}
-
-	if ( range.isBackwards() ) {
-		return new ve.Range( end, start );
-	} else {
-		return new ve.Range( start, end );
-	}
-};
-
-/**
  * Change the selection
  *
  * @param {ve.dm.Selection} selection New selection
