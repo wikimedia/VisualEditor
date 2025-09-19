@@ -425,10 +425,13 @@ ve.ce.SelectionManager.prototype.cacheSelection = function ( selectionElements, 
 /**
  * Redraw selections
  *
- * This is triggered by a surface 'position' event, which fires when the surface
- * changes size, or when the document is modified. The selectionCache is
+ * When triggered by a surface 'position' event (which fires when the surface
+ * changes size, or when the document is modified), the selectionCache is
  * cleared as these two things will cause any previously calculated rectangles
  * to be incorrect.
+ *
+ * When triggered by a scroll event, the cache is not cleared, and only
+ * selection groups that are clipped to the viewport are redrawn.
  *
  * @param {boolean} [fromScroll=false] The redraw was triggered by a scroll event
  */
