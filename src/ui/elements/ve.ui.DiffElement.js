@@ -1525,15 +1525,15 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 
 				// Insert annotation above annotations that span the entire range
 				// and at least one character more
+				const expandedRange = new ve.Range(
+					Math.max( 0, range.start - 1 ),
+					Math.min( range.end + 1, diffDoc.data.getLength() )
+				);
 				const annHashLists = [];
-				for (
-					let j = Math.max( 0, range.start - 1 );
-					j < Math.min( range.end + 1, diffDoc.data.getLength() );
-					j++
-				) {
-					annHashLists[ j ] =
-						diffDoc.data.getAnnotationHashesFromOffset( j );
-				}
+				expandedRange.forEach( ( j ) => {
+					annHashLists[ j ] = diffDoc.data.getAnnotationHashesFromOffset( j );
+				} );
+
 				const height = Math.min(
 					ve.getCommonStartSequenceLength(
 						annHashLists.slice(
@@ -1548,13 +1548,13 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 						)
 					)
 				);
-				for ( let j = range.start; j < range.end; j++ ) {
+				range.forEach( ( j ) => {
 					annHashLists[ j ].splice( height, 0, annHash );
 					diffDoc.data.setAnnotationHashesAtOffset(
 						j,
 						annHashLists[ j ]
 					);
-				}
+				} );
 			}
 		}
 		start = end;

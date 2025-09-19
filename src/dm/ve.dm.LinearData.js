@@ -772,12 +772,11 @@ ve.dm.LinearData.prototype.getAnnotationRanges = function ( range ) {
 	const annotationRanges = [];
 	const startOffsets = {};
 	const annotationStack = new ve.dm.AnnotationSet( this.getStore() );
-	let i;
-	const open = ( ann ) => {
+	const open = ( i, ann ) => {
 		const key = JSON.stringify( ann.getComparableObject() );
 		startOffsets[ key ] = i;
 	};
-	const close = ( ann ) => {
+	const close = ( i, ann ) => {
 		const key = JSON.stringify( ann.getComparableObject() );
 		const startOffset = startOffsets[ key ];
 		annotationRanges.push( {
@@ -785,20 +784,20 @@ ve.dm.LinearData.prototype.getAnnotationRanges = function ( range ) {
 			range: new ve.Range( startOffset, i )
 		} );
 	};
-	for ( i = range.start; i < range.end; i++ ) {
+	range.forEach( ( i ) => {
 		const annotations = this.getAnnotationsFromOffset( i );
 		ve.dm.Converter.static.openAndCloseAnnotations(
 			annotationStack, annotations,
-			open,
-			close
+			open.bind( this, i ),
+			close.bind( this, i )
 		);
-	}
+	} );
 	// Close remaining annotations
 	const emptySet = new ve.dm.AnnotationSet( this.getStore() );
 	ve.dm.Converter.static.openAndCloseAnnotations(
 		annotationStack, emptySet,
-		open,
-		close
+		open.bind( this, range.end ),
+		close.bind( this, range.end )
 	);
 	annotationRanges.sort( ( a, b ) => a.range.start - b.range.start || a.range.end - b.range.end );
 	return annotationRanges;
@@ -891,25 +890,10 @@ ve.dm.LinearData.prototype.getCharacterData = function ( offset ) {
  * @return {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
  */
 ve.dm.LinearData.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
-	let start = offset,
-		end = offset;
 	if ( this.getAnnotationsFromOffset( offset ).contains( annotation ) === false ) {
 		return null;
 	}
-	while ( start > 0 ) {
-		start--;
-		if ( this.getAnnotationsFromOffset( start ).contains( annotation ) === false ) {
-			start++;
-			break;
-		}
-	}
-	while ( end < this.getLength() ) {
-		if ( this.getAnnotationsFromOffset( end ).contains( annotation ) === false ) {
-			break;
-		}
-		end++;
-	}
-	return new ve.Range( start, end );
+	return new ve.Range( offset ).expandCallback( ( i ) => this.getAnnotationsFromOffset( i ).contains( annotation ), new ve.Range( 0, this.getLength() ) );
 };
 
 /**
@@ -920,22 +904,7 @@ ve.dm.LinearData.prototype.getAnnotatedRangeFromOffset = function ( offset, anno
  * @return {ve.Range|null} Range of content covered by annotation, or a copy of the range
  */
 ve.dm.LinearData.prototype.getAnnotatedRangeFromRange = function ( range, annotation ) {
-	let start = range.start,
-		end = range.end;
-	while ( start > 0 ) {
-		start--;
-		if ( this.getAnnotationsFromOffset( start ).contains( annotation ) === false ) {
-			start++;
-			break;
-		}
-	}
-	while ( end < this.getLength() ) {
-		if ( this.getAnnotationsFromOffset( end ).contains( annotation ) === false ) {
-			break;
-		}
-		end++;
-	}
-	return new ve.Range( start, end );
+	return range.expandCallback( ( i ) => this.getAnnotationsFromOffset( i ).contains( annotation ), new ve.Range( 0, this.getLength() ) );
 };
 
 // Deprecated alias
@@ -1053,12 +1022,7 @@ ve.dm.LinearData.prototype.getInsertionAnnotationsFromRange = function ( range, 
  * @return {boolean} The range contains at least one annotation
  */
 ve.dm.LinearData.prototype.hasAnnotationsInRange = function ( range ) {
-	for ( let i = range.start; i < range.end; i++ ) {
-		if ( this.getAnnotationHashesFromOffset( i, true ).length ) {
-			return true;
-		}
-	}
-	return false;
+	return range.some( ( i ) => this.getAnnotationHashesFromOffset( i, true ).length );
 };
 
 /**
@@ -1068,15 +1032,7 @@ ve.dm.LinearData.prototype.hasAnnotationsInRange = function ( range ) {
  * @return {Object} Trimmed range
  */
 ve.dm.LinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
-	let start = range.start,
-		end = range.end;
-	while ( /^\s+$/.test( this.getCharacterData( end - 1 ) ) ) {
-		end--;
-	}
-	while ( start < end && /^\s+$/.test( this.getCharacterData( start ) ) ) {
-		start++;
-	}
-	return range.to < range.end ? new ve.Range( end, start ) : new ve.Range( start, end );
+	return range.trimCallback( ( i ) => /^\s+$/.test( this.getCharacterData( i ) ) );
 };
 
 /**
@@ -1097,34 +1053,33 @@ ve.dm.LinearData.prototype.isPlainText = function ( range, ignoreNonContentNodes
 		annotations = this.getAnnotationsFromRange( range );
 	}
 
-	for ( let i = range.start; i < range.end; i++ ) {
+	return range.every( ( i ) => {
 		if ( typeof this.data[ i ] === 'string' ) {
 			// Un-annotated text
-			continue;
+			return true;
 		} else if ( Array.isArray( this.data[ i ] ) ) {
 			// Annotated text
 			if ( ignoreAllAnnotations ) {
-				continue;
+				return true;
 			}
 			if (
 				ignoreCoveringAnnotations &&
 				annotations.containsAllOf( this.getAnnotationsFromOffset( i ) )
 			) {
-				continue;
+				return true;
 			}
 		} else if ( ignoreNonContentNodes || ignoredTypes ) {
 			// Element data
 			const type = this.getType( i );
 			if ( ignoredTypes && ignoredTypes.includes( type ) ) {
-				continue;
+				return true;
 			}
 			if ( ignoreNonContentNodes && !ve.dm.nodeFactory.isNodeContent( type ) ) {
-				continue;
+				return true;
 			}
 		}
 		return false;
-	}
-	return true;
+	} );
 };
 
 /**
@@ -1138,7 +1093,7 @@ ve.dm.LinearData.prototype.isPlainText = function ( range, ignoreNonContentNodes
  */
 ve.dm.LinearData.prototype.forEachRunOfContent = function ( range, callback ) {
 	let text = '';
-	for ( let i = range.start; i < range.end; i++ ) {
+	range.forEach( ( i ) => {
 		if ( !this.isElementData( i ) ) {
 			text += this.getCharacterData( i );
 		} else if ( ve.dm.nodeFactory.isNodeContent( this.getType( i ) ) ) {
@@ -1149,7 +1104,7 @@ ve.dm.LinearData.prototype.forEachRunOfContent = function ( range, callback ) {
 			}
 			text = '';
 		}
-	}
+	} );
 	if ( text ) {
 		callback( range.end - text.length, text );
 	}
@@ -1166,13 +1121,13 @@ ve.dm.LinearData.prototype.getText = function ( maintainIndices, range ) {
 	range = range || new ve.Range( 0, this.getLength() );
 
 	let text = '';
-	for ( let i = range.start; i < range.end; i++ ) {
+	range.forEach( ( i ) => {
 		if ( !this.isElementData( i ) ) {
 			text += this.getCharacterData( i );
 		} else if ( maintainIndices ) {
 			text += '\n';
 		}
-	}
+	} );
 	return text;
 };
 
@@ -1836,9 +1791,6 @@ ve.dm.LinearData.prototype.hasContent = function () {
  * @return {number} Common start sequence length (0 if the range is empty)
  */
 ve.dm.LinearData.prototype.getCommonAnnotationArrayLength = function ( range ) {
-	const annotationHashesForOffset = [];
-	for ( let i = range.start; i < range.end; i++ ) {
-		annotationHashesForOffset.push( this.getAnnotationHashesFromOffset( i ) );
-	}
+	const annotationHashesForOffset = range.map( ( i ) => this.getAnnotationHashesFromOffset( i ) );
 	return ve.getCommonStartSequenceLength( annotationHashesForOffset );
 };

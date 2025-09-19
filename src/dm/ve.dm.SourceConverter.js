@@ -74,7 +74,7 @@ ve.dm.SourceConverter.prototype.getSourceTextFromDataRange = function ( data, ra
 
 	range = range || new ve.Range( 0, data.length );
 
-	for ( let i = range.start; i < range.end; i++ ) {
+	range.forEach( ( i ) => {
 		// Check for the most common case first for best performance
 		if ( !data[ i ].type ) {
 			text += data[ i ];
@@ -84,7 +84,7 @@ ve.dm.SourceConverter.prototype.getSourceTextFromDataRange = function ( data, ra
 			// (T243606) Append a newline after each full paragraph, including the last one in the range
 			text += '\n';
 		}
-	}
+	} );
 
 	return text;
 };

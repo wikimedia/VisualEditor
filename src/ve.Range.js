@@ -263,3 +263,106 @@ ve.Range.prototype.toJSON = function () {
 		to: this.to
 	};
 };
+
+/**
+ * Iterate over the range, calling a function for each index, to build an array.
+ *
+ * @param {function(number): any} callback Function called for each index
+ * @return {Array} Array of results
+ */
+ve.Range.prototype.map = function ( callback ) {
+	const result = [];
+	for ( let i = this.start; i < this.end; i++ ) {
+		result.push( callback( i ) );
+	}
+	return result;
+};
+
+/**
+ * Iterate over the range, calling a function for each index
+ *
+ * @param {function(number): void} callback Function called for each index
+ */
+ve.Range.prototype.forEach = function ( callback ) {
+	for ( let i = this.start; i < this.end; i++ ) {
+		callback( i );
+	}
+};
+
+/**
+ * Test whether at least one index in the range passes the test implemented by the provided function.
+ *
+ * @param {function(number): boolean} callback Function called for each index
+ * @return {boolean} True if the callback returns true for any index
+ */
+ve.Range.prototype.some = function ( callback ) {
+	for ( let i = this.start; i < this.end; i++ ) {
+		if ( callback( i ) ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Test whether all indices in the range pass the test implemented by the provided function.
+ *
+ * @param {function(number): boolean} callback Function called for each index
+ * @return {boolean} True if the callback returns true for all indices
+ */
+ve.Range.prototype.every = function ( callback ) {
+	for ( let i = this.start; i < this.end; i++ ) {
+		if ( !callback( i ) ) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
+ * Trim elements from both ends of the range using a callback.
+ *
+ * Walks from start forwards and end backwards, removing elements for which callback returns true.
+ * Stops trimming at each end when callback returns false. Returns a new trimmed range.
+ *
+ * @param {function(number): boolean} callback Called with index
+ * @return {ve.Range} New trimmed range
+ */
+ve.Range.prototype.trimCallback = function ( callback ) {
+	let newStart = this.start;
+	let newEnd = this.end;
+
+	while ( newEnd > newStart && callback( newEnd - 1 ) ) {
+		newEnd--;
+	}
+
+	while ( newStart < newEnd && callback( newStart ) ) {
+		newStart++;
+	}
+
+	return this.isBackwards() ? new ve.Range( newEnd, newStart ) : new ve.Range( newStart, newEnd );
+};
+
+/**
+ * Expand the range outwards from both ends while callback returns true.
+ * Walks from start-1 backwards and end forwards, expanding as long as callback returns true.
+ * Stops expanding at each end when callback returns false. Returns a new expanded range.
+ *
+ * @param {function(number, number): boolean} callback Called with (index, iFromStartOrEnd)
+ * @param {ve.Range} maxRange Maximum range to expand to
+ * @return {ve.Range} New expanded range
+ */
+ve.Range.prototype.expandCallback = function ( callback, maxRange ) {
+	let newStart = this.start;
+	let newEnd = this.end;
+
+	while ( newEnd < maxRange.end && callback( newEnd ) ) {
+		newEnd++;
+	}
+
+	while ( newStart > maxRange.start && callback( newStart - 1 ) ) {
+		newStart--;
+	}
+
+	return this.isBackwards() ? new ve.Range( newEnd, newStart ) : new ve.Range( newStart, newEnd );
+};
