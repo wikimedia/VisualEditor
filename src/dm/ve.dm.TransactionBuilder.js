@@ -164,13 +164,13 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 			// newDoc is brand new, so use doc's internal list as a base
 			listData = doc.getData( listNodeRange, true );
 		}
-		for ( let i = 0, len = listMerge.newItemRanges.length; i < len; i++ ) {
+		listMerge.newItemRanges.forEach( ( newItemRange ) => {
 			linearData = new ve.dm.LinearData(
 				doc.getStore(),
-				newDoc.getData( listMerge.newItemRanges[ i ], true )
+				newDoc.getData( newItemRange, true )
 			);
 			ve.batchPush( listData, linearData.data );
-		}
+		} );
 	}
 
 	const txBuilder = new ve.dm.TransactionBuilder();
@@ -457,12 +457,11 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 	}
 
 	// Replace the wrappings of each content branch in the range
-	for ( let i = 0, len = selection.length; i < len; i++ ) {
-		const selected = selection[ i ];
+	selection.forEach( ( selected ) => {
 		// TODO: This duplicates the logic of ve.dm.SurfaceFragment#getSelectedLeafNodes
 		// This could perhaps be a new mode in ve.Document#selectNodes?
-		if ( !( len === 1 || !selected.range || !selected.range.isCollapsed() ) ) {
-			continue;
+		if ( !( selection.length === 1 || !selected.range || !selected.range.isCollapsed() ) ) {
+			return;
 		}
 
 		const branch = selected.node.isContent() ? selected.node.getParent() : selected.node;
@@ -473,12 +472,12 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 				ve.compare( attr, branch.getAttributes() ) &&
 				ve.compare( internal, branch.element.internal || {} )
 			) {
-				continue;
+				return;
 			}
 			const branchOuterRange = branch.getOuterRange();
 			// Don't convert the same branch twice
 			if ( branch === previousBranch ) {
-				continue;
+				return;
 			}
 
 			// Retain up to this branch, considering where the previous one left off
@@ -506,7 +505,7 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 			previousBranch = branch;
 			previousBranchOuterRange = branchOuterRange;
 		}
-	}
+	} );
 	// Retain until the end
 	txBuilder.pushFinalRetain( doc, previousBranch ? previousBranchOuterRange.end : 0 );
 	return txBuilder.getTransaction();
@@ -601,11 +600,7 @@ ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter
 
 	// Function to generate arrays of closing elements in reverse order
 	function closingArray( openings ) {
-		const closings = [];
-		for ( let j = 0, jlen = openings.length; j < jlen; j++ ) {
-			closings[ closings.length ] = { type: '/' + openings[ jlen - j - 1 ].type };
-		}
-		return closings;
+		return openings.slice().reverse().map( ( opening ) => ( { type: '/' + opening.type } ) );
 	}
 
 	const closingUnwrapEach = closingArray( unwrapEach );
@@ -950,16 +945,16 @@ ve.dm.TransactionBuilder.prototype.pushRemoval = function ( doc, currentOffset, 
 
 	// The selection wasn't mergeable, so remove nodes that are completely covered, and strip
 	// nodes that aren't
-	for ( let i = 0; i < selection.length; i++ ) {
+	selection.forEach( ( selected ) => {
 		let nodeStart, nodeEnd;
-		if ( !selection[ i ].range ) {
+		if ( !selected.range ) {
 			// Entire node is covered, remove it
-			nodeStart = selection[ i ].nodeOuterRange.start;
-			nodeEnd = selection[ i ].nodeOuterRange.end;
+			nodeStart = selected.nodeOuterRange.start;
+			nodeEnd = selected.nodeOuterRange.end;
 		} else {
 			// Part of the node is covered, remove that range
-			nodeStart = selection[ i ].range.start;
-			nodeEnd = selection[ i ].range.end;
+			nodeStart = selected.range.start;
+			nodeEnd = selected.range.end;
 		}
 
 		// Merge contiguous removals. Only apply a removal when a gap appears, or at the
@@ -982,7 +977,7 @@ ve.dm.TransactionBuilder.prototype.pushRemoval = function ( doc, currentOffset, 
 			removeStart = nodeStart;
 			removeEnd = nodeEnd;
 		}
-	}
+	} );
 	// Apply the last removal, if any
 	if ( removeEnd !== null ) {
 		this.pushRetain( removeStart - offset );

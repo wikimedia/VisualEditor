@@ -95,9 +95,9 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	// First process each operation to gather modifications in the modification queue.
 	// If an exception occurs during this stage, we don't need to do anything to recover,
 	// because no modifications were made yet.
-	for ( let i = 0; i < this.operations.length; i++ ) {
-		this.executeOperation( this.operations[ i ] );
-	}
+	this.operations.forEach( ( op ) => {
+		this.executeOperation( op );
+	} );
 	if ( !this.balanced ) {
 		throw new Error( 'Unbalanced set of replace operations found' );
 	}
@@ -164,10 +164,10 @@ ve.dm.TransactionProcessor.prototype.applyModifications = function () {
 	const modifications = this.modificationQueue;
 
 	this.modificationQueue = [];
-	for ( let i = 0, len = modifications.length; i < len; i++ ) {
-		const modifier = ve.dm.TransactionProcessor.modifiers[ modifications[ i ].type ];
-		modifier.apply( this, modifications[ i ].args || [] );
-	}
+	modifications.forEach( ( modification ) => {
+		const modifier = ve.dm.TransactionProcessor.modifiers[ modification.type ];
+		modifier.apply( this, modification.args || [] );
+	} );
 };
 
 /**
@@ -334,12 +334,12 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
 	if ( !this.balanced ) {
 		// Track the depth of retained data when in the middle of an unbalanced replace
 		const retainedData = this.document.getData( new ve.Range( this.cursor, this.cursor + op.length ) );
-		for ( let i = 0; i < retainedData.length; i++ ) {
-			const type = retainedData[ i ].type;
+		retainedData.forEach( ( item ) => {
+			const type = item.type;
 			if ( type !== undefined ) {
 				this.retainDepth += type.charAt( 0 ) === '/' ? -1 : 1;
 			}
-		}
+		} );
 	}
 	this.advanceCursor( op.length );
 };
@@ -383,9 +383,8 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	// and keep track of the element depth change (level)
 	// for each of these two separately. The model is
 	// only consistent if both levels are zero.
-	let i, type;
-	for ( i = 0; i < op.remove.length; i++ ) {
-		type = op.remove[ i ].type;
+	op.remove.forEach( ( item ) => {
+		const type = item.type;
 		if ( type !== undefined ) {
 			if ( type.charAt( 0 ) === '/' ) {
 				// Closing element
@@ -395,9 +394,9 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				this.replaceRemoveLevel++;
 			}
 		}
-	}
-	for ( i = 0; i < op.insert.length; i++ ) {
-		type = op.insert[ i ].type;
+	} );
+	op.insert.forEach( ( item ) => {
+		const type = item.type;
 		if ( type !== undefined ) {
 			if ( type.charAt( 0 ) === '/' ) {
 				// Closing element
@@ -407,7 +406,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				this.replaceInsertLevel++;
 			}
 		}
-	}
+	} );
 	this.advanceCursor( op.remove.length );
 
 	this.balanced =

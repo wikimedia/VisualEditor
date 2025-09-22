@@ -101,9 +101,9 @@ OO.initClass( ve.dm.TreeModifier );
  * @param {Object[]} treeOps The tree operations
  */
 ve.dm.TreeModifier.static.applyTreeOperations = function ( isReversed, document, treeOps ) {
-	for ( let i = 0, iLen = treeOps.length; i < iLen; i++ ) {
-		this.applyTreeOperation( isReversed, document, treeOps[ i ] );
-	}
+	treeOps.forEach( ( treeOp ) => {
+		this.applyTreeOperation( isReversed, document, treeOp );
+	} );
 };
 
 /**
@@ -239,9 +239,9 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		let node = document.documentNode;
 
 		// Find node
-		for ( let i = 0, iLen = path.length; i < iLen; i++ ) {
-			node = node.children[ path[ i ] ];
-		}
+		path.forEach( ( pathItem ) => {
+			node = node.children[ pathItem ];
+		} );
 		let position;
 		if ( isContent ) {
 			// Determine position from (linearized) content offset
@@ -422,9 +422,9 @@ ve.dm.TreeModifier.prototype.setup = function ( document ) {
  */
 ve.dm.TreeModifier.prototype.calculateTreeOperations = function ( transaction ) {
 	const linearOps = transaction.operations;
-	for ( let i = 0, iLen = linearOps.length; i < iLen; i++ ) {
-		this.processLinearOperation( linearOps[ i ] );
-	}
+	linearOps.forEach( ( linearOp ) => {
+		this.processLinearOperation( linearOp );
+	} );
 	this.processImplicitFinalRetain();
 };
 
@@ -898,14 +898,13 @@ ve.dm.TreeModifier.prototype.pushRemoveTextOp = function ( removerStep ) {
  */
 ve.dm.TreeModifier.prototype.findOrCreateAdjustmentNode = function ( position ) {
 	let adjustmentNode = this.adjustmentTree;
-	for ( let i = 0, len = position.length; i < len; i++ ) {
-		const offset = position[ i ];
+	position.forEach( ( offset ) => {
 		if ( !adjustmentNode[ offset ] ) {
 			adjustmentNode[ offset ] = { offsetsUsed: [] };
 			adjustmentNode.offsetsUsed.push( offset );
 		}
 		adjustmentNode = adjustmentNode[ offset ];
-	}
+	} );
 	return adjustmentNode;
 };
 

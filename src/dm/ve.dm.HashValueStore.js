@@ -92,9 +92,9 @@ ve.dm.HashValueStore.prototype.getLength = function () {
 
 ve.dm.HashValueStore.prototype.truncate = function ( start ) {
 	const removedHashes = this.hashes.splice( start );
-	for ( let i = 0, len = removedHashes.length; i < len; i++ ) {
-		delete this.hashStore[ removedHashes[ i ] ];
-	}
+	removedHashes.forEach( ( hash ) => {
+		delete this.hashStore[ hash ];
+	} );
 };
 
 /**
@@ -108,10 +108,9 @@ ve.dm.HashValueStore.prototype.slice = function ( start, end ) {
 	const sliced = new this.constructor();
 
 	sliced.hashes = this.hashes.slice( start, end );
-	for ( let i = 0, len = sliced.hashes.length; i < len; i++ ) {
-		const hash = sliced.hashes[ i ];
+	sliced.hashes.forEach( ( hash ) => {
 		sliced.hashStore[ hash ] = this.hashStore[ hash ];
-	}
+	} );
 	return sliced;
 };
 
@@ -206,11 +205,7 @@ ve.dm.HashValueStore.prototype.hashOfValue = function ( value, stringified ) {
  * @return {string[]} The hashes of the values in the store
  */
 ve.dm.HashValueStore.prototype.hashAll = function ( values ) {
-	const hashes = [];
-	for ( let i = 0, length = values.length; i < length; i++ ) {
-		hashes.push( this.hash( values[ i ] ) );
-	}
-	return hashes;
+	return values.map( ( value ) => this.hash( value ) );
 };
 
 /**
@@ -232,11 +227,7 @@ ve.dm.HashValueStore.prototype.value = function ( hash ) {
  * @return {Array} Values for these hashes (undefined for any not present)
  */
 ve.dm.HashValueStore.prototype.values = function ( hashes ) {
-	const values = [];
-	for ( let i = 0, length = hashes.length; i < length; i++ ) {
-		values.push( this.value( hashes[ i ] ) );
-	}
-	return values;
+	return hashes.map( ( hash ) => this.value( hash ) );
 };
 
 /**
@@ -256,13 +247,12 @@ ve.dm.HashValueStore.prototype.merge = function ( other ) {
 		return;
 	}
 
-	for ( let i = 0, len = other.hashes.length; i < len; i++ ) {
-		const hash = other.hashes[ i ];
+	other.hashes.forEach( ( hash ) => {
 		if ( !Object.prototype.hasOwnProperty.call( this.hashStore, hash ) ) {
 			this.hashStore[ hash ] = other.hashStore[ hash ];
 			this.hashes.push( hash );
 		}
-	}
+	} );
 };
 
 /**
@@ -277,12 +267,11 @@ ve.dm.HashValueStore.prototype.difference = function ( omit ) {
 	if ( omit instanceof ve.dm.HashValueStore ) {
 		omit = omit.hashStore;
 	}
-	for ( let i = 0, len = this.hashes.length; i < len; i++ ) {
-		const hash = this.hashes[ i ];
+	this.hashes.forEach( ( hash ) => {
 		if ( !Object.prototype.hasOwnProperty.call( omit, hash ) ) {
 			store.hashes.push( hash );
 			store.hashStore[ hash ] = this.hashStore[ hash ];
 		}
-	}
+	} );
 	return store;
 };

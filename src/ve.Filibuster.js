@@ -125,8 +125,7 @@ ve.Filibuster.prototype.observe = function ( action ) {
 	if ( Object.keys( changes ).length > 0 ) {
 		// Navigate along tree branch, creating as necessary
 		let ptr = this.observationTree;
-		for ( let j = 0, jLen = this.callPath.length; j < jLen; j++ ) {
-			const offset = this.callPath[ j ];
+		this.callPath.forEach( ( offset ) => {
 			if ( !ptr.children ) {
 				ptr.children = {};
 			}
@@ -134,7 +133,7 @@ ve.Filibuster.prototype.observe = function ( action ) {
 				ptr.children[ offset ] = {};
 			}
 			ptr = ptr.children[ offset ];
-		}
+		} );
 		if ( !ptr.changes ) {
 			ptr.changes = {};
 		}
@@ -257,20 +256,19 @@ ve.Filibuster.prototype.wrapFunction = function ( container, klassName, fnName )
 ve.Filibuster.prototype.wrapClass = function ( klass, nowrapList ) {
 	const container = klass.prototype;
 	const fnNames = Object.getOwnPropertyNames( container );
-	for ( let i = 0, len = fnNames.length; i < len; i++ ) {
-		const fnName = fnNames[ i ];
+	fnNames.forEach( ( fnName ) => {
 		if ( fnName === 'prototype' || fnName === 'constructor' ) {
-			continue;
+			return;
 		}
 		const fn = container[ fnName ];
 		if ( typeof fn !== 'function' || fn.wrappedFunction ) {
-			continue;
+			return;
 		}
 		if ( nowrapList && nowrapList.includes( fn ) ) {
-			continue;
+			return;
 		}
 		this.wrapFunction( container, klass.name, fnName );
-	}
+	} );
 	return this;
 };
 
@@ -285,11 +283,10 @@ ve.Filibuster.prototype.wrapClass = function ( klass, nowrapList ) {
  */
 ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, nowrapList ) {
 	const propNames = Object.getOwnPropertyNames( ns );
-	for ( let i = 0, len = propNames.length; i < len; i++ ) {
-		const propName = propNames[ i ];
+	propNames.forEach( ( propName ) => {
 		const prop = ns[ propName ];
 		if ( nowrapList && nowrapList.includes( prop ) ) {
-			continue;
+			return;
 		}
 		const isConstructor = (
 			typeof prop === 'function' &&
@@ -303,7 +300,7 @@ ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, nowrapList ) {
 			// Might be a namespace; recurse
 			this.wrapNamespace( prop, nsName + '.' + propName, nowrapList );
 		}
-	}
+	} );
 	return this;
 };
 
@@ -387,8 +384,7 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 	function getFragments( frames, observations, path ) {
 		const html = [];
 		html.push( '<ul>' );
-		for ( let j = 0, jLen = frames.length; j < jLen; j++ ) {
-			const frame = frames[ j ];
+		frames.forEach( ( frame, j ) => {
 			const observation = observations[ j ];
 			if ( observation && observation.changes && observation.changes.enter ) {
 				html.push( showChanges( observation.changes.enter, 'enter' ) );
@@ -418,7 +414,7 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 			if ( observation && observation.changes && observation.changes.exit ) {
 				html.push( showChanges( observation.changes.exit, 'exit' ) );
 			}
-		}
+		} );
 		html.push( '</ul>' );
 		return html;
 	}
@@ -429,15 +425,15 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 	if ( !branchPath ) {
 		branchPath = [];
 	}
-	for ( let i = 0, iLen = branchPath.length; i < iLen; i++ ) {
-		callTree = callTree.children[ branchPath[ i ] ];
+	branchPath.forEach( ( offset ) => {
+		callTree = callTree.children[ offset ];
 		if ( observationTree && observationTree.children ) {
-			observationTree = observationTree.children[ branchPath[ i ] ];
+			observationTree = observationTree.children[ offset ];
 		} else {
 			// No observations on this branch
 			observationTree = undefined;
 		}
-	}
+	} );
 
 	return getFragments(
 		callTree.children || [],

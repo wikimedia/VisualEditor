@@ -82,21 +82,18 @@ ve.Range.static.newCoveringRange = function ( ranges, backwards ) {
 	}
 	let minStart = ranges[ 0 ].start;
 	let maxEnd = ranges[ 0 ].end;
-	for ( let i = 1; i < ranges.length; i++ ) {
-		if ( ranges[ i ].start < minStart ) {
-			minStart = ranges[ i ].start;
+	ranges.forEach( ( range, i ) => {
+		if ( i === 0 ) {
+			return;
 		}
-		if ( ranges[ i ].end > maxEnd ) {
-			maxEnd = ranges[ i ].end;
+		if ( range.start < minStart ) {
+			minStart = range.start;
 		}
-	}
-	let range;
-	if ( backwards ) {
-		range = new ve.Range( maxEnd, minStart );
-	} else {
-		range = new ve.Range( minStart, maxEnd );
-	}
-	return range;
+		if ( range.end > maxEnd ) {
+			maxEnd = range.end;
+		}
+	} );
+	return backwards ? new ve.Range( maxEnd, minStart ) : new ve.Range( minStart, maxEnd );
 };
 
 /* Methods */

@@ -84,13 +84,12 @@ ve.EventSequencer = function VeEventSequencer( eventNames ) {
 	 */
 	this.afterOneListenersForEvent = {};
 
-	for ( let i = 0, len = eventNames.length; i < len; i++ ) {
-		const eventName = eventNames[ i ];
+	eventNames.forEach( ( eventName ) => {
 		this.onListenersForEvent[ eventName ] = [];
 		this.afterListenersForEvent[ eventName ] = [];
 		this.afterOneListenersForEvent[ eventName ] = [];
 		this.eventHandlers[ eventName ] = makeEventHandler( eventName );
-	}
+	} );
 
 	/**
 	 * @property {Function[]}
@@ -171,9 +170,9 @@ ve.EventSequencer.prototype.onLoop = function ( listeners ) {
  * @chainable
  */
 ve.EventSequencer.prototype.on = function ( listeners ) {
-	for ( const eventName in listeners ) {
-		this.onListenersForEvent[ eventName ].push( listeners[ eventName ] );
-	}
+	Object.entries( listeners ).forEach( ( [ eventName, fn ] ) => {
+		this.onListenersForEvent[ eventName ].push( fn );
+	} );
 	return this;
 };
 
@@ -185,9 +184,9 @@ ve.EventSequencer.prototype.on = function ( listeners ) {
  * @chainable
  */
 ve.EventSequencer.prototype.after = function ( listeners ) {
-	for ( const eventName in listeners ) {
-		this.afterListenersForEvent[ eventName ].push( listeners[ eventName ] );
-	}
+	Object.entries( listeners ).forEach( ( [ eventName, fn ] ) => {
+		this.afterListenersForEvent[ eventName ].push( fn );
+	} );
 	return this;
 };
 
@@ -199,9 +198,9 @@ ve.EventSequencer.prototype.after = function ( listeners ) {
  * @chainable
  */
 ve.EventSequencer.prototype.afterOne = function ( listeners ) {
-	for ( const eventName in listeners ) {
-		this.afterOneListenersForEvent[ eventName ].push( listeners[ eventName ] );
-	}
+	Object.entries( listeners ).forEach( ( [ eventName, fn ] ) => {
+		this.afterOneListenersForEvent[ eventName ].push( fn );
+	} );
 	return this;
 };
 
@@ -252,10 +251,9 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	// Listener list: take snapshot (for immutability if a listener adds another listener)
 	const onListeners = ( this.onListenersForEvent[ eventName ] || [] ).slice();
 
-	for ( let i = 0, len = onListeners.length; i < len; i++ ) {
-		const onListener = onListeners[ i ];
+	onListeners.forEach( ( onListener, i ) => {
 		this.callListener( 'on', eventName, i, onListener, ev );
-	}
+	} );
 	// Create a cancellable pending call. We need one even if there are no after*Listeners, to
 	// call resetAfterLoopTimeout which resets doneOneLoop to false.
 	// - Create the pendingCall object first
@@ -288,13 +286,13 @@ ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
 	// One-time listener list: take snapshot (for immutability) and blank the list
 	const afterOneListeners = ( this.afterOneListenersForEvent[ eventName ] || [] ).splice( 0 );
 
-	for ( let i = 0, len = afterListeners.length; i < len; i++ ) {
-		this.callListener( 'after', eventName, i, afterListeners[ i ], ev );
-	}
+	afterListeners.forEach( ( listener, i ) => {
+		this.callListener( 'after', eventName, i, listener, ev );
+	} );
 
-	for ( let i = 0, len = afterOneListeners.length; i < len; i++ ) {
-		this.callListener( 'afterOne', eventName, i, afterOneListeners[ i ], ev );
-	}
+	afterOneListeners.forEach( ( listener, i ) => {
+		this.callListener( 'afterOne', eventName, i, listener, ev );
+	} );
 };
 
 /**
@@ -304,9 +302,9 @@ ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
  */
 ve.EventSequencer.prototype.doOnLoop = function () {
 	// Length cache 'len' is required, as the functions called may add another listener
-	for ( let i = 0, len = this.onLoopListeners.length; i < len; i++ ) {
-		this.callListener( 'onLoop', null, i, this.onLoopListeners[ i ], null );
-	}
+	this.onLoopListeners.forEach( ( listener, i ) => {
+		this.callListener( 'onLoop', null, i, listener, null );
+	} );
 };
 
 /**
@@ -327,13 +325,13 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 	// One-time loop listener list: take snapshot (for immutability) and blank the list
 	const afterLoopOneListeners = this.afterLoopOneListeners.splice( 0 );
 
-	for ( let i = 0, len = afterLoopListeners.length; i < len; i++ ) {
-		this.callListener( 'afterLoop', null, i, this.afterLoopListeners[ i ], null );
-	}
+	afterLoopListeners.forEach( ( listener, i ) => {
+		this.callListener( 'afterLoop', null, i, listener, null );
+	} );
 
-	for ( let i = 0, len = afterLoopOneListeners.length; i < len; i++ ) {
-		this.callListener( 'afterLoopOne', null, i, afterLoopOneListeners[ i ], null );
-	}
+	afterLoopOneListeners.forEach( ( listener, i ) => {
+		this.callListener( 'afterLoopOne', null, i, listener, null );
+	} );
 	this.doneOnLoop = false;
 };
 
@@ -361,19 +359,18 @@ ve.EventSequencer.prototype.resetAfterLoopTimeout = function () {
 ve.EventSequencer.prototype.runPendingCalls = function ( eventName ) {
 	const afterKeyDownCalls = [];
 
-	for ( let i = 0; i < this.pendingCalls.length; i++ ) {
+	this.pendingCalls.forEach( ( pendingCall ) => {
 		// Length cache not possible, as a pending call appends another pending call.
 		// It's important that this list remains mutable, in the case that this
 		// function indirectly recurses.
-		const pendingCall = this.pendingCalls[ i ];
 		if ( pendingCall.id === null ) {
 			// The call has already run
-			continue;
+			return;
 		}
 		if ( eventName === 'keypress' && pendingCall.eventName === 'keydown' ) {
 			// Delay afterKeyDown till after keypress
 			afterKeyDownCalls.push( pendingCall );
-			continue;
+			return;
 		}
 
 		this.cancelPostponed( pendingCall.id );
@@ -381,7 +378,7 @@ ve.EventSequencer.prototype.runPendingCalls = function ( eventName ) {
 		// Force to run now. It's important that we set id to null before running,
 		// so that there's no chance a recursive call will call the listener again.
 		this.afterEvent( pendingCall.eventName, pendingCall.ev );
-	}
+	} );
 	// This is safe: we only ever appended to the list, so it's definitely exhausted now.
 	this.pendingCalls.length = 0;
 	this.pendingCalls.push( ...afterKeyDownCalls );

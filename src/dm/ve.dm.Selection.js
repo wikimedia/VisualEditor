@@ -140,9 +140,9 @@ ve.dm.Selection.prototype.translateByTransactionWithAuthor = null;
  */
 ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInsertion ) {
 	let selection = this;
-	for ( let i = 0, l = txs.length; i < l; i++ ) {
-		selection = selection.translateByTransaction( txs[ i ], excludeInsertion );
-	}
+	txs.forEach( ( tx ) => {
+		selection = selection.translateByTransaction( tx, excludeInsertion );
+	} );
 	return selection;
 };
 
@@ -155,12 +155,12 @@ ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInser
  */
 ve.dm.Selection.prototype.translateByChange = function ( change, authorId ) {
 	let selection = this;
-	for ( let i = 0, len = change.transactions.length; i < len; i++ ) {
+	change.transactions.forEach( ( tx ) => {
 		selection = selection.translateByTransactionWithAuthor(
-			change.transactions[ i ],
+			tx,
 			authorId
 		);
-	}
+	} );
 	return selection;
 };
 

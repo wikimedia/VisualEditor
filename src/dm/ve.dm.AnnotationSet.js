@@ -175,12 +175,7 @@ ve.dm.AnnotationSet.prototype.containsHash = function ( storeHash ) {
 ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
 	const setHashes = set.getHashes(),
 		thisHashes = this.getHashes();
-	for ( let i = 0, length = setHashes.length; i < length; i++ ) {
-		if ( thisHashes.includes( setHashes[ i ] ) ) {
-			return true;
-		}
-	}
-	return false;
+	return setHashes.some( ( hash ) => thisHashes.includes( hash ) );
 };
 
 /**
@@ -192,12 +187,7 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
 ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
 	const setHashes = set.getHashes(),
 		thisHashes = this.getHashes();
-	for ( let i = 0, length = setHashes.length; i < length; i++ ) {
-		if ( !thisHashes.includes( setHashes[ i ] ) ) {
-			return false;
-		}
-	}
-	return true;
+	return setHashes.every( ( hash ) => thisHashes.includes( hash ) );
 };
 
 /**
@@ -358,15 +348,9 @@ ve.dm.AnnotationSet.prototype.withoutComparableSet = function ( set ) {
 ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
 	const ourHashes = this.getHashes(),
 		theirHashes = set.getHashes();
-	if ( ourHashes.length !== theirHashes.length ) {
-		return false;
-	}
-	for ( let i = 0, len = ourHashes.length; i < len; i++ ) {
-		if ( ourHashes[ i ] !== theirHashes[ i ] ) {
-			return false;
-		}
-	}
-	return true;
+
+	return ourHashes.length === theirHashes.length &&
+		ourHashes.every( ( ourHash, i ) => ourHash === theirHashes[ i ] );
 };
 
 /**

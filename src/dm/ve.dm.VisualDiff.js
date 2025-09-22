@@ -116,14 +116,7 @@ ve.dm.VisualDiff.static.compareNodes = function ( oldNode, newNode ) {
 	const oldStore = oldNode.getRoot().getDocument().getStore();
 	const newStore = newNode.getRoot().getDocument().getStore();
 
-	for ( let i = 0, ilen = oldData.length; i < ilen; i++ ) {
-		if ( oldData[ i ] !== newData[ i ] &&
-			!ve.dm.LinearData.static.compareElements( oldData[ i ], newData[ i ], oldStore, newStore ) ) {
-			return false;
-		}
-	}
-
-	return true;
+	return oldData.every( ( oldItem, i ) => ve.dm.LinearData.static.compareElements( oldItem, newData[ i ], oldStore, newStore ) );
 };
 
 /**
@@ -537,20 +530,19 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 	this.flattenList( oldNode, oldFlatList, 0 );
 	this.flattenList( newNode, newFlatList, 0 );
 
-	let i, ilen;
-	for ( i = 0, ilen = oldFlatList.nodes.length; i < ilen; i++ ) {
+	oldFlatList.nodes.forEach( ( node, i ) => {
 		oldFlatList.indices.push( { indexOrder: i } );
-	}
-	for ( i = 0, ilen = newFlatList.nodes.length; i < ilen; i++ ) {
+	} );
+	newFlatList.nodes.forEach( ( node, i ) => {
 		newFlatList.indices.push( { indexOrder: i } );
-	}
+	} );
 
 	const listDiff = this.diffList( oldFlatList.nodes, newFlatList.nodes );
 	listDiff.oldList = oldFlatList;
 	listDiff.newList = newFlatList;
 
 	// Do metadata diff of all aligned nodes
-	for ( i in listDiff.oldToNew ) {
+	for ( const i in listDiff.oldToNew ) {
 		const newItem = listDiff.oldToNew[ i ];
 		const isNewItemIndex = typeof newItem === 'number';
 		const j = isNewItemIndex ? newItem : newItem.node;
@@ -628,9 +620,7 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) {
 	const listItems = listNode.children;
 
-	for ( let i = 0, ilen = listItems.length; i < ilen; i++ ) {
-		const listItem = listItems[ i ];
-
+	listItems.forEach( ( listItem ) => {
 		// If listItem has no children, make the item itself the contents (e.g. an AlienBlockNode in a list)
 		if ( !listItem.children ) {
 			flatList.metadata.push( {
@@ -639,7 +629,7 @@ ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) 
 				depth: depth
 			} );
 			flatList.nodes.push( listItem );
-			continue;
+			return;
 		}
 
 		const listContents = listItem.children;
@@ -650,8 +640,7 @@ ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) 
 			firstListIndex--;
 		}
 
-		for ( let j = 0, jlen = listContents.length; j < jlen; j++ ) {
-			const listContent = listContents[ j ];
+		listContents.forEach( ( listContent, j ) => {
 			if ( j >= firstListIndex ) {
 				this.flattenList( listContent, flatList, depth + 1 );
 			} else {
@@ -663,8 +652,8 @@ ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) 
 				} );
 				flatList.nodes.push( listContent );
 			}
-		}
-	}
+		} );
+	} );
 };
 
 /**
@@ -743,11 +732,11 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 	// tags for each node
 	changeRecord.keepLength = oldTreeNode.length - 2 * ( oldTree.orderedNodes.length - 1 );
 
-	for ( let i = 0, ilen = treeDiff.length; i < ilen; i++ ) {
-		if ( treeDiff[ i ][ 0 ] !== null && treeDiff[ i ][ 1 ] !== null ) {
+	treeDiff.forEach( ( pair, i ) => {
+		if ( pair[ 0 ] !== null && pair[ 1 ] !== null ) {
 			// There is a change
-			const oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
-			const newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
+			const oldNode = oldTree.orderedNodes[ pair[ 0 ] ].node;
+			const newNode = newTree.orderedNodes[ pair[ 1 ] ].node;
 
 			if ( !oldNode.isDiffedAsTree() && !newNode.isDiffedAsTree() ) {
 				diffInfo[ i ] = this.diffNodes( oldNode, newNode, true );
@@ -761,21 +750,21 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 				}
 			}
 
-		} else if ( treeDiff[ i ][ 0 ] !== null ) {
+		} else if ( pair[ 0 ] !== null ) {
 			// Node was removed
-			const oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
+			const oldNode = oldTree.orderedNodes[ pair[ 0 ] ].node;
 			if ( !oldNode.isDiffedAsTree() ) {
 				this.updateChangeRecord( oldNode.length, true, changeRecord );
 			}
 
 		} else {
 			// Node was inserted
-			const newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
+			const newNode = newTree.orderedNodes[ pair[ 1 ] ].node;
 			if ( !newNode.isDiffedAsTree() ) {
 				this.updateChangeRecord( newNode.length, false, changeRecord );
 			}
 		}
-	}
+	} );
 
 	// Only return the diff if a high enough proportion of the content is
 	// unchanged; otherwise, these nodes don't correspond and shouldn't be
@@ -882,13 +871,13 @@ ve.dm.VisualDiff.prototype.updateChangeRecordLinearDiff = function ( linearDiff,
 	const DIFF_INSERT = ve.DiffMatchPatch.static.DIFF_INSERT,
 		DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE;
 
-	for ( let i = 0, ilen = linearDiff.length; i < ilen; i++ ) {
-		if ( linearDiff[ i ][ 0 ] === DIFF_INSERT ) {
-			this.updateChangeRecord( linearDiff[ i ][ 1 ].length, false, changeRecord );
-		} else if ( linearDiff[ i ][ 0 ] === DIFF_DELETE ) {
-			this.updateChangeRecord( linearDiff[ i ][ 1 ].length, true, changeRecord );
+	linearDiff.forEach( ( diff ) => {
+		if ( diff[ 0 ] === DIFF_INSERT ) {
+			this.updateChangeRecord( diff[ 1 ].length, false, changeRecord );
+		} else if ( diff[ 0 ] === DIFF_DELETE ) {
+			this.updateChangeRecord( diff[ 1 ].length, true, changeRecord );
 		}
-	}
+	} );
 };
 
 /**
@@ -978,8 +967,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 		const toDiff = [];
 		const indices = [];
 
-		for ( let j = 0, jlen = indexOrder.length; j < jlen; j++ ) {
-			const nodeIndex = indexOrder[ j ];
+		indexOrder.forEach( ( nodeIndex, j ) => {
 			if ( nodeIndex !== null ) {
 				toDiff.push( nodes[ nodeIndex ] );
 				indices.push( {
@@ -988,7 +976,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 					nodeIndex: nodeIndex
 				} );
 			}
-		}
+		} );
 
 		return { toDiff, indices };
 	}
@@ -1013,9 +1001,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 	}
 
 	// Diff the internal list items for each group
-	for ( let i = 0, ilen = groups.length; i < ilen; i++ ) {
-		const group = groups[ i ];
-
+	groups.forEach( ( group ) => {
 		let diff = null;
 		switch ( group.action ) {
 			case 'diff':
@@ -1067,7 +1053,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 			diff.newList = newDocInternalListNode;
 			groupDiffs[ group.group ] = diff;
 		}
-	}
+	} );
 
 	return {
 		groups: groupDiffs,

@@ -272,11 +272,7 @@ ve.dm.Transaction.prototype.clone = function () {
  * @return {ve.dm.Transaction} Reverse of this transaction
  */
 ve.dm.Transaction.prototype.reversed = function () {
-	const tx = new this.constructor();
-
-	tx.isReversed = !this.isReversed;
-	for ( let i = 0, len = this.operations.length; i < len; i++ ) {
-		const op = this.operations[ i ];
+	const reversedOps = this.operations.map( ( op ) => {
 		const newOp = ve.copy( op );
 		const reverse = this.constructor.static.reversers[ op.type ] || {};
 		for ( const prop in reverse ) {
@@ -286,9 +282,10 @@ ve.dm.Transaction.prototype.reversed = function () {
 				newOp[ prop ] = reverse[ prop ][ op[ prop ] ];
 			}
 		}
-		tx.operations.push( newOp );
-	}
-	tx.authorId = this.authorId;
+		return newOp;
+	} );
+	const tx = new this.constructor( reversedOps, this.authorId );
+	tx.isReversed = !this.isReversed;
 	return tx;
 };
 
@@ -326,12 +323,7 @@ ve.dm.Transaction.prototype.getOperations = function () {
  * @return {boolean} Has operations of a given type
  */
 ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
-	for ( let i = 0, len = this.operations.length; i < len; i++ ) {
-		if ( this.operations[ i ].type === type ) {
-			return true;
-		}
-	}
-	return false;
+	return this.operations.some( ( op ) => op.type === type );
 };
 
 /**
