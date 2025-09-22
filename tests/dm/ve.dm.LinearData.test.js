@@ -146,11 +146,11 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', ( assert ) => {
 		isOpen = [ 0 ],
 		isClose = [ 3 ];
 
-	for ( let i = 0; i < data.getLength(); i++ ) {
+	data.getRange().forEach( ( i ) => {
 		assert.strictEqual( data.getType( i ), types[ i ], 'Type at offset ' + i );
 		assert.strictEqual( data.isOpenElementData( i ), isOpen.includes( i ), 'isOpen ' + i );
 		assert.strictEqual( data.isCloseElementData( i ), isClose.includes( i ), 'isClose ' + i );
-	}
+	} );
 } );
 
 QUnit.test( 'isElementData', ( assert ) => {
@@ -538,7 +538,7 @@ QUnit.test( 'getAnnotationsFromRange', ( assert ) => {
 		const data = ve.dm.example.preprocessAnnotations( caseItem.data );
 		const doc = new ve.dm.Document( data );
 		assert.deepEqual(
-			doc.data.getAnnotationsFromRange( new ve.Range( 0, caseItem.data.length ), caseItem.all ).getHashes(),
+			doc.data.getAnnotationsFromRange( undefined, caseItem.all ).getHashes(),
 			ve.dm.example.createAnnotationSet( doc.getStore(), caseItem.expected ).getHashes(),
 			caseItem.msg
 		);

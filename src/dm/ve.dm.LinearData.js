@@ -389,6 +389,15 @@ ve.dm.LinearData.prototype.getLength = function () {
 };
 
 /**
+ * Gets a range covering the entire linear data
+ *
+ * @return {ve.Range} Range covering the entire linear data
+ */
+ve.dm.LinearData.prototype.getRange = function () {
+	return new ve.Range( 0, this.getLength() );
+};
+
+/**
  * Gets the hash-value store
  *
  * @return {ve.dm.HashValueStore} The hash-value store
@@ -893,7 +902,7 @@ ve.dm.LinearData.prototype.getAnnotatedRangeFromOffset = function ( offset, anno
 	if ( this.getAnnotationsFromOffset( offset ).contains( annotation ) === false ) {
 		return null;
 	}
-	return new ve.Range( offset ).expandCallback( ( i ) => this.getAnnotationsFromOffset( i ).contains( annotation ), new ve.Range( 0, this.getLength() ) );
+	return new ve.Range( offset ).expandCallback( ( i ) => this.getAnnotationsFromOffset( i ).contains( annotation ), this.getRange() );
 };
 
 /**
@@ -904,7 +913,7 @@ ve.dm.LinearData.prototype.getAnnotatedRangeFromOffset = function ( offset, anno
  * @return {ve.Range|null} Range of content covered by annotation, or a copy of the range
  */
 ve.dm.LinearData.prototype.getAnnotatedRangeFromRange = function ( range, annotation ) {
-	return range.expandCallback( ( i ) => this.getAnnotationsFromOffset( i ).contains( annotation ), new ve.Range( 0, this.getLength() ) );
+	return range.expandCallback( ( i ) => this.getAnnotationsFromOffset( i ).contains( annotation ), this.getRange() );
 };
 
 // Deprecated alias
@@ -913,13 +922,15 @@ ve.dm.LinearData.prototype.getAnnotatedRangeFromSelection = ve.dm.LinearData.pro
 /**
  * Get annotations common to all content in a range.
  *
- * @param {ve.Range} range Range to get annotations for
+ * @param {ve.Range} [range] Range to get annotations for. The whole data set if not specified.
  * @param {boolean} [all=false] Get all annotations found within the range, not just those that cover it
  * @param {boolean} [nullIfContentEmpty=false] Returns null (instead of an empty ve.dm.AnnotationSet) if
  *  there is no content in the range.
  * @return {ve.dm.AnnotationSet|null} All annotation objects range is covered by.
  */
 ve.dm.LinearData.prototype.getAnnotationsFromRange = function ( range, all, nullIfContentEmpty ) {
+	range = range || this.getRange();
+
 	let ignoreChildrenDepth = 0;
 	let left, right;
 	// Iterator over the range, looking for annotations, starting at the 2nd character
@@ -1046,7 +1057,7 @@ ve.dm.LinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  * @return {boolean} The data is plain text
  */
 ve.dm.LinearData.prototype.isPlainText = function ( range, ignoreNonContentNodes, ignoredTypes, ignoreCoveringAnnotations, ignoreAllAnnotations ) {
-	range = range || new ve.Range( 0, this.getLength() );
+	range = range || this.getRange();
 
 	let annotations;
 	if ( ignoreCoveringAnnotations ) {
@@ -1118,7 +1129,7 @@ ve.dm.LinearData.prototype.forEachRunOfContent = function ( range, callback ) {
  * @return {string} Data as plain text
  */
 ve.dm.LinearData.prototype.getText = function ( maintainIndices, range ) {
-	range = range || new ve.Range( 0, this.getLength() );
+	range = range || this.getRange();
 
 	let text = '';
 	range.forEach( ( i ) => {
@@ -1497,7 +1508,7 @@ ve.dm.LinearData.prototype.remapAnnotationHash = function ( oldHash, newHash ) {
 ve.dm.LinearData.prototype.sanitize = function ( rules ) {
 	const elementStack = [],
 		store = this.getStore(),
-		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
+		allAnnotations = this.getAnnotationsFromRange( this.getRange(), true );
 
 	let emptySet, setToRemove;
 	if ( rules.plainText ) {

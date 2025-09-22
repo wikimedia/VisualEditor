@@ -978,13 +978,13 @@ QUnit.test( 'getNearestCursorOffset', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		for ( let dir = -1; dir <= 1; dir += 2 ) {
-			for ( let i = 0; i < caseItem.doc.data.getLength(); i++ ) {
+			caseItem.doc.data.getRange().forEach( ( i ) => {
 				assert.strictEqual(
 					caseItem.doc.getNearestCursorOffset( i, dir ),
 					caseItem.expected[ dir ][ i ],
 					'Document "' + caseItem.name + '" - Direction: ' + dir + ' Offset: ' + i
 				);
-			}
+			} );
 		}
 	} );
 } );

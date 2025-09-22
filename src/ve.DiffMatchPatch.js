@@ -364,8 +364,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 				( ( aAction === DIFF_DELETE && bAction === DIFF_INSERT ) || ( aAction === DIFF_INSERT && bAction === DIFF_DELETE ) )
 			) {
 				if ( aData.every( equalUnannotated.bind( this, bData ) ) ) {
-					const aAnnotations = new ve.dm.LinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
-					const bAnnotations = new ve.dm.LinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
+					const aAnnotations = new ve.dm.LinearData( store, aData ).getAnnotationsFromRange( undefined, true );
+					const bAnnotations = new ve.dm.LinearData( store, bData ).getAnnotationsFromRange( undefined, true );
 
 					const annotationChanges = [];
 					bAnnotations.get().forEach( ( b ) => {

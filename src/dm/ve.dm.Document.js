@@ -145,12 +145,12 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, rep
 	}
 
 	// Apply annotations to data
-	for ( let i = 0, length = data.getLength(); i < length; i++ ) {
+	data.getRange().forEach( ( i ) => {
 		if ( data.isElementData( i ) && ve.dm.nodeFactory.shouldIgnoreChildren( data.getType( i ) ) ) {
 			ignoreChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
 		}
 		if ( ignoreChildrenDepth ) {
-			continue;
+			return;
 		}
 		const allowedAnnotations = annotationSet.filter( ( ann ) => data.canTakeAnnotationAtOffset( i, ann, true ) );
 		const existingAnnotations = data.getAnnotationsFromOffset( i, true );
@@ -165,7 +165,7 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, rep
 			newAnnotationSet = allowedAnnotations;
 		}
 		data.setAnnotationsAtOffset( i, newAnnotationSet );
-	}
+	} );
 };
 
 /**
@@ -772,8 +772,9 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
 ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 	const insertedMetaItems = [],
 		insertions = {},
-		iLen = range ? range.end : this.data.getLength(),
 		result = [];
+
+	range = range || this.data.getRange();
 
 	function stripMetaLoadInfo( element ) {
 		if ( !element || !element.internal ) {
@@ -791,7 +792,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 		return element;
 	}
 
-	for ( let i = range ? range.start : 0; i < iLen; i++ ) {
+	for ( let i = range.start; i < range.end; i++ ) {
 		const item = this.data.getData( i );
 		if (
 			ve.dm.LinearData.static.isOpenElementData( item ) &&
