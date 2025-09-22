@@ -519,9 +519,9 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		const data = [];
 		const ranges = selection.getTableSliceRanges( this );
-		for ( let i = 0, l = ranges.length; i < l; i++ ) {
-			ve.batchPush( data, this.data.slice( ranges[ i ].start, ranges[ i ].end ) );
-		}
+		ranges.forEach( ( range ) => {
+			ve.batchPush( data, this.data.getDataSlice( range ) );
+		} );
 		const linearData = new ve.dm.LinearData( this.getStore(), data );
 
 		const tableRange = new ve.Range( 0, data.length );
@@ -642,13 +642,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 		if ( !balancedRange ) {
 			// Check if any of the balanced siblings need more context for insertion anywhere
-			let needsContext = false;
-			for ( i = balancedNodes.length - 1; i >= 0; i-- ) {
-				if ( nodeNeedsContext( balancedNodes[ i ].node ) ) {
-					needsContext = true;
-					break;
-				}
-			}
+			const needsContext = balancedNodes.some( ( balancedNode ) => nodeNeedsContext( balancedNode.node ) );
 
 			if ( needsContext ) {
 				startNode = balancedNodes[ 0 ].node;
@@ -812,7 +806,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 			i += 1;
 			continue;
 		}
-		let metaItem, metaItems, internal;
+		let metaItems, internal;
 		if (
 			mode === 'roundTrip' &&
 			( internal = item.internal ) &&
@@ -823,8 +817,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 					// Re-fetch unfrozen metaItems.
 					metaItems = dataItem.internal.metaItems;
 					// No changes, so restore meta item offsets
-					for ( let j = 0, jLen = metaItems.length; j < jLen; j++ ) {
-						metaItem = metaItems[ j ];
+					metaItems.forEach( ( metaItem ) => {
 						const offset = i + metaItem.internal.loadMetaParentOffset;
 						if ( !insertions[ offset ] ) {
 							insertions[ offset ] = [];
@@ -841,27 +834,24 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 						}
 						insertions[ offset ].push( stripMetaLoadInfo( metaItem ) );
 						insertedMetaItems.push( metaItem.originalDomElementsHash );
-					}
+					} );
 				} );
 			} else {
 				// Had changes, so remove removable meta items that are out of place now
-				for ( let j = 0, jLen = metaItems.length; j < jLen; j++ ) {
-					metaItem = metaItems[ j ];
+				metaItems.forEach( ( metaItem ) => {
 					if ( ve.dm.nodeFactory.isRemovableMetaData( metaItem.type ) ) {
 						insertedMetaItems.push( metaItem.originalDomElementsHash );
 					}
-				}
+				} );
 			}
 		}
 		result.push( stripMetaLoadInfo( item ) );
 		if ( mode === 'roundTrip' && insertions[ i ] ) {
 			// There are meta items to reinsert outside of ContentBranchNodes.
 			// TODO: we should strip annotations from such meta items
-			for ( let j = 0, jLen = insertions[ i ].length; j < jLen; j++ ) {
-				metaItem = insertions[ i ][ j ];
-				result.push( metaItem );
-				result.push( { type: '/' + metaItem.type } );
-			}
+			insertions[ i ].forEach( ( metaItem ) => {
+				result.push( metaItem, { type: '/' + metaItem.type } );
+			} );
 		}
 	}
 	return result;
@@ -1526,7 +1516,8 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				}
 			} while ( !childrenOK );
 
-			for ( let j = 0; j < closings.length; j++ ) {
+			// eslint-disable-next-line no-loop-func
+			closings.forEach( ( closing ) => {
 				// writeElement() would update openingStack/closingStack, but we've already done
 				// that for closings
 				if ( i === 0 ) {
@@ -1534,16 +1525,17 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				} else {
 					insertedDataLength++;
 				}
-				newData.push( closings[ j ] );
-			}
-			for ( let j = 0; j < openings.length; j++ ) {
+				newData.push( closing );
+			} );
+			// eslint-disable-next-line no-loop-func
+			openings.forEach( ( opening ) => {
 				if ( i === 0 ) {
 					insertedDataOffset++;
 				} else {
 					insertedDataLength++;
 				}
-				writeElement( openings[ j ], i );
-			}
+				writeElement( opening, i );
+			} );
 			writeElement( data[ i ], i );
 			if ( data[ i ].type === undefined ) {
 				// Special treatment for text nodes
