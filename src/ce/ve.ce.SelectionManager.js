@@ -284,6 +284,20 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 };
 
 /**
+ * Change the rendering options for a selection group, if it exists
+ *
+ * @param {string} name Name of selection group
+ * @param {Object} options
+ */
+ve.ce.SelectionManager.prototype.setOptions = function ( name, options ) {
+	const selectionGroup = this.selectionGroups.get( name );
+
+	if ( selectionGroup ) {
+		selectionGroup.setOptions( options );
+	}
+};
+
+/**
  * Get a cache key for a recently drawn selection
  *
  * @param {string} name Name of selection group
@@ -292,7 +306,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
  * @return {string} Cache key
  */
 ve.ce.SelectionManager.prototype.getSelectionElementsCacheKey = function ( name, selectionModel, options = {} ) {
-	return name + '-' + JSON.stringify( selectionModel ) + '-' + JSON.stringify( Object.assign( {}, options, {
+	return name + '-' + JSON.stringify( selectionModel ) + '-' + JSON.stringify( {
 		// Normalize values for cache key
 		color: options.color || '',
 		showRects: !!options.showRects,
@@ -301,7 +315,8 @@ ve.ce.SelectionManager.prototype.getSelectionElementsCacheKey = function ( name,
 		showGutter: !!options.showGutter,
 		overlay: !!options.overlay,
 		label: options.label || ''
-	} ) );
+		// Excluded: wrapperClass - this can be modified dynamically without re-rendering
+	} );
 };
 
 /**

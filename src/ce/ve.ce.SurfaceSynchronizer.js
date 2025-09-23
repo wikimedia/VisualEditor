@@ -69,12 +69,19 @@ ve.ce.SurfaceSynchronizer.prototype.paintAuthor = function ( authorId ) {
 
 	const color = '#' + authorData.color;
 
+	const selectionOptions = {
+		wrapperClass: 've-ce-surface-selections-otherUserSelection',
+		color: color,
+		showCursor: true,
+		label: authorData.name
+	};
+	const selectionOptionsInactive = Object.assign( {}, selectionOptions, {
+		wrapperClass: 've-ce-surface-selections-otherUserSelection ve-ce-surface-selections-otherUserSelection-inactive'
+	} );
+
 	if ( !this.userSelectionDeactivateTimers.has( authorId ) ) {
 		this.userSelectionDeactivateTimers.set( authorId, ve.debounce( () => {
-			// TODO: Transition away the user label when inactive, maybe dim selection
-			if ( selectionManager.selectionGroups.has( 'otherUserSelection-' + authorId ) ) {
-				selectionManager.selectionGroups.get( 'otherUserSelection-' + authorId ).$selections.addClass( 've-ce-surface-selections-otherUserSelection-inactive' );
-			}
+			selectionManager.setOptions( 'otherUserSelection-' + authorId, selectionOptionsInactive );
 		}, 5000 ) );
 	}
 	this.userSelectionDeactivateTimers.get( authorId )();
@@ -87,12 +94,7 @@ ve.ce.SurfaceSynchronizer.prototype.paintAuthor = function ( authorId ) {
 	selectionManager.drawSelections(
 		'otherUserSelection-' + authorId,
 		[ ve.ce.Selection.static.newFromModel( selection, this.getSurface() ) ],
-		{
-			wrapperClass: 've-ce-surface-selections-otherUserSelection',
-			color: color,
-			showCursor: true,
-			label: authorData.name
-		}
+		selectionOptions
 	);
 };
 
