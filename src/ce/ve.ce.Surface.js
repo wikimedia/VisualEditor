@@ -102,10 +102,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config = {} ) {
 
 	const synchronizer = this.getModel().synchronizer;
 	if ( synchronizer ) {
-		synchronizer.connect( this, {
-			wrongDoc: 'onSynchronizerWrongDoc',
-			pause: 'onSynchronizerPause'
-		} );
+		this.synchronizer = new ve.ce.SurfaceSynchronizer( this, synchronizer );
 	}
 
 	this.onDocumentMouseUpHandler = this.onDocumentMouseUp.bind( this );
@@ -3916,26 +3913,6 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 ve.ce.Surface.prototype.selectionSplitsNailedAnnotation = function () {
 	return ve.ce.nailedAnnotationAt( this.nativeSelection.anchorNode ) !==
 		ve.ce.nailedAnnotationAt( this.nativeSelection.focusNode );
-};
-
-/**
- * Called when the synchronizer reconnects and their is a server doc ID mismatch
- */
-ve.ce.Surface.prototype.onSynchronizerWrongDoc = function () {
-	OO.ui.alert(
-		ve.msg( 'visualeditor-rebase-missing-document-error' ),
-		{ title: ve.msg( 'visualeditor-rebase-missing-document-title' ) }
-	);
-};
-
-/**
- * Handle pause events from the synchronizer
- *
- * Drops the opacity of the surface to indicate that no updates are
- * being received from other users.
- */
-ve.ce.Surface.prototype.onSynchronizerPause = function () {
-	this.$element.toggleClass( 've-ce-surface-paused', !!this.model.synchronizer.paused );
 };
 
 /**

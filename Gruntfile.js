@@ -457,6 +457,7 @@ module.exports = function ( grunt ) {
 								// CE
 								'src/ce/ve.ce.DragDropHandler.js',
 								'src/ce/ve.ce.SelectionManager.js',
+								'src/ce/ve.ce.SurfaceSynchronizer.js',
 								'src/ce/annotations/ve.ce.DeleteAnnotation.js',
 								'src/ce/annotations/ve.ce.InsertAnnotation.js',
 								'src/ce/nodes/ve.ce.CheckListItemNode.js',

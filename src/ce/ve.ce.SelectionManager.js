@@ -48,17 +48,6 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	this.deactivatedSelectionVisible = true;
 	this.showDeactivatedAsActivated = false;
 
-	// Other users' selections
-	this.userSelectionDeactivate = new Map();
-	const synchronizer = this.getSurface().getModel().synchronizer;
-	if ( synchronizer ) {
-		synchronizer.connect( this, {
-			authorSelect: 'onSynchronizerAuthorUpdate',
-			authorChange: 'onSynchronizerAuthorUpdate',
-			authorDisconnect: 'onSynchronizerAuthorDisconnect'
-		} );
-	}
-
 	// Events
 	// Debounce to prevent trying to draw every cursor position in history.
 	this.onSurfacePositionDebounced = ve.debounce( this.onSurfacePosition.bind( this ) );
@@ -377,21 +366,10 @@ ve.ce.SelectionManager.prototype.redrawSelections = function ( fromScroll = fals
 };
 
 /**
- * Respond to a position event on this surface
+ * Handle position events from the surface
  */
 ve.ce.SelectionManager.prototype.onSurfacePosition = function () {
 	this.redrawSelections();
-
-	const synchronizer = this.getSurface().getModel().synchronizer;
-	if ( synchronizer ) {
-		// Defer to allow surface synchronizer to adjust for transactions
-		setTimeout( () => {
-			const authorSelections = synchronizer.authorSelections;
-			for ( const authorId in authorSelections ) {
-				this.onSynchronizerAuthorUpdate( +authorId );
-			}
-		} );
-	}
 };
 
 /**
@@ -466,67 +444,6 @@ ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
 };
 
 /**
- * Paint a remote author's current selection, as stored in the synchronizer
- *
- * @param {number} authorId The author ID
- */
-ve.ce.SelectionManager.prototype.paintAuthor = function ( authorId ) {
-	const synchronizer = this.getSurface().getModel().synchronizer,
-		authorData = synchronizer.getAuthorData( authorId ),
-		selection = synchronizer.authorSelections[ authorId ];
-
-	if ( !authorData || !selection || authorId === synchronizer.getAuthorId() ) {
-		return;
-	}
-
-	const color = '#' + authorData.color;
-
-	if ( !this.userSelectionDeactivate.has( authorId ) ) {
-		this.userSelectionDeactivate.set( authorId, ve.debounce( () => {
-			// TODO: Transition away the user label when inactive, maybe dim selection
-			if ( this.selectionGroups.has( 'otherUserSelection-' + authorId ) ) {
-				this.selectionGroups.get( 'otherUserSelection-' + authorId ).$selections.addClass( 've-ce-surface-selections-otherUserSelection-inactive' );
-			}
-		}, 5000 ) );
-	}
-	this.userSelectionDeactivate.get( authorId )();
-
-	if ( !selection || selection.isNull() ) {
-		this.drawSelections( 'otherUserSelection-' + authorId, [] );
-		return;
-	}
-
-	this.drawSelections(
-		'otherUserSelection-' + authorId,
-		[ ve.ce.Selection.static.newFromModel( selection, this.getSurface() ) ],
-		{
-			wrapperClass: 've-ce-surface-selections-otherUserSelection',
-			color: color,
-			showCursor: true,
-			label: authorData.name
-		}
-	);
-};
-
-/**
- * Called when the synchronizer receives a remote author selection or name change
- *
- * @param {number} authorId The author ID
- */
-ve.ce.SelectionManager.prototype.onSynchronizerAuthorUpdate = function ( authorId ) {
-	this.paintAuthor( authorId );
-};
-
-/**
- * Called when the synchronizer receives a remote author disconnect
- *
- * @param {number} authorId The author ID
- */
-ve.ce.SelectionManager.prototype.onSynchronizerAuthorDisconnect = function ( authorId ) {
-	this.drawSelections( 'otherUserSelection-' + authorId, [] );
-};
-
-/**
  * SelectionGroup: Holds all data for a rendered selection group.
  *
  * @class
@@ -555,7 +472,7 @@ ve.ce.SelectionManager.SelectionGroup = function VeCeSelectionManagerSelectionGr
 	this.fragments = [];
 	/** @type {Object} */
 	this.options = {};
-	/** @type {Number[]} */
+	/** @type {number[]} */
 	this.idleCallbacks = [];
 };
 

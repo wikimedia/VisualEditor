@@ -834,10 +834,12 @@
 			"src/ve.FakePeer.js",
 			"src/dm/ve.dm.RebaseClient.js",
 			"src/dm/ve.dm.SurfaceSynchronizer.js",
+			"src/ce/ve.ce.SurfaceSynchronizer.js",
 			"src/ui/widgets/ve.ui.AuthorItemWidget.js",
 			"src/ui/tools/ve.ui.AuthorListPopupTool.js"
 		],
 		"styles": [
+			"src/ce/styles/ve.ce.SurfaceSynchronizer.less",
 			"src/ui/styles/widgets/ve.ui.AuthorItemWidget.less"
 		],
 		"dependencies": [
@@ -1146,6 +1148,7 @@
 			"rebaser/src/dm/ve.dm.ProtocolServer.js",
 			"src/dm/ve.dm.RebaseClient.js",
 			"src/dm/ve.dm.SurfaceSynchronizer.js",
+			"src/ce/ve.ce.SurfaceSynchronizer.js",
 			"src/ui/widgets/ve.ui.AuthorItemWidget.js",
 			"src/ui/tools/ve.ui.AuthorListPopupTool.js",
 			"src/ve.FakePeer.js",
@@ -1155,6 +1158,7 @@
 			"collab/ve.ui.CollabTool.js"
 		],
 		"styles": [
+			"src/ce/styles/ve.ce.SurfaceSynchronizer.less",
 			"src/ui/styles/widgets/ve.ui.AuthorItemWidget.less"
 		],
 		"styleGroup": "read",
