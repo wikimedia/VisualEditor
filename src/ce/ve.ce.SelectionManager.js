@@ -654,8 +654,10 @@ ve.ce.SelectionManager.SelectionGroup.prototype.hasSelections = function () {
  */
 ve.ce.SelectionManager.SelectionGroup.prototype.addIdleCallback = function ( callback ) {
 	// Support: Safari
-	const request = requestIdleCallback || setTimeout;
-	const timeout = requestIdleCallback ? undefined : 100;
+	// eslint-disable-next-line compat/compat
+	const request = window.requestIdleCallback || setTimeout;
+	// eslint-disable-next-line compat/compat
+	const timeout = window.requestIdleCallback ? undefined : 100;
 	this.idleCallbacks.push( request( callback, timeout ) );
 };
 
@@ -664,7 +666,7 @@ ve.ce.SelectionManager.SelectionGroup.prototype.addIdleCallback = function ( cal
  */
 ve.ce.SelectionManager.SelectionGroup.prototype.cancelIdleCallbacks = function () {
 	// Support: Safari
-	const cancel = cancelIdleCallback || clearTimeout;
+	const cancel = window.cancelIdleCallback || clearTimeout;
 	while ( this.idleCallbacks.length ) {
 		cancel( this.idleCallbacks.pop() );
 	}
