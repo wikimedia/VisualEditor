@@ -202,26 +202,20 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 				let cursorRect;
 
 				if ( options.showCursor ) {
-					const selectionModel = selection.getModel();
-					const cursorSelection = ve.ce.Selection.static.newFromModel(
-						( selectionModel instanceof ve.dm.LinearSelection && this.getSurface().getFocusedNode( selectionModel.getRange() ) ?
-							selectionModel :
-							selectionModel.collapseToTo()
-						),
-						this.getSurface()
-					);
-					cursorRect = cursorSelection.getSelectionBoundingRect();
-					selectionElements.$selection.append(
-						$( '<div>' )
-							.addClass( 've-ce-surface-selection-cursor' )
-							.css( {
-								top: cursorRect.top,
-								left: cursorRect.left,
-								width: cursorRect.width,
-								height: cursorRect.height,
-								borderColor: options.color || undefined
-							} )
-					);
+					cursorRect = selection.getSelectionFocusRect();
+					if ( cursorRect ) {
+						selectionElements.$selection.append(
+							$( '<div>' )
+								.addClass( 've-ce-surface-selection-cursor' )
+								.css( {
+									top: cursorRect.top,
+									left: cursorRect.left,
+									width: cursorRect.width,
+									height: cursorRect.height,
+									borderColor: options.color || undefined
+								} )
+						);
+					}
 				}
 
 				if ( options.label ) {

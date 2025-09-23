@@ -222,10 +222,16 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
  * @inheritdoc
  */
 ve.ce.LinearSelection.prototype.getSelectionFocusRect = function () {
-	return !this.isNativeCursor() ?
+	if ( this.isNativeCursor() ) {
+		const toSelection = new this.constructor( this.getModel().collapseToTo(), this.surface );
+		// Don't using bounding rects as these break at the end of a line for
+		// collapsed native rects.
+		const startAndEndRects = toSelection.getSelectionStartAndEndRects();
+		return startAndEndRects ? startAndEndRects.end : null;
+	} else {
 		// Don't collapse selection for focus rect if we are on a focusable node.
-		this.getSelectionBoundingRect() :
-		ve.ce.LinearSelection.super.prototype.getSelectionFocusRect.call( this );
+		return this.getSelectionBoundingRect();
+	}
 };
 
 /**

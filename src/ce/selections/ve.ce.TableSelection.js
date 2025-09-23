@@ -96,6 +96,15 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 };
 
 /**
+ * @inheritdoc
+ */
+ve.ce.TableSelection.prototype.getSelectionFocusRect = function () {
+	// Table selections render the focus at 'from', instead of 'to'.
+	const fromSelection = new this.constructor( this.getModel().collapseToFrom(), this.surface );
+	return fromSelection.getSelectionBoundingRect();
+};
+
+/**
  * Get the bounding rectangle of the parent table
  *
  * @return {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
