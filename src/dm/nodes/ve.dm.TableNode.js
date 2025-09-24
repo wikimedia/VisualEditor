@@ -46,15 +46,19 @@ ve.dm.TableNode.static.matchTagNames = [ 'table' ];
 
 /**
  * Handle splicing of child nodes
+ *
+ * @param {number} index
+ * @param {number} deleteCount
+ * @param {...ve.dm.Node} [nodes]
  */
-ve.dm.TableNode.prototype.onSplice = function () {
-	const nodes = Array.prototype.slice.call( arguments, 2 );
+ve.dm.TableNode.prototype.onSplice = function ( index, deleteCount, ...nodes ) {
 	this.getMatrix().invalidate();
-	for ( let i = 0; i < nodes.length; i++ ) {
-		nodes[ i ].connect( this, {
+
+	nodes.forEach( ( node ) => {
+		node.connect( this, {
 			cellAttributeChange: 'onCellAttributeChange'
 		} );
-	}
+	} );
 };
 
 /**

@@ -153,10 +153,10 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		addedNodes = [],
 		changedBranchNodes = [];
 
-	function splice( parentNode ) {
-		const removed = parentNode.splice.apply( parentNode, Array.prototype.slice.call( arguments, 1 ) );
+	function splice( parentNode, offset, deleteCount, ...nodes ) {
+		const removed = parentNode.splice( offset, deleteCount, ...nodes );
 		ve.batchPush( removedNodes, removed );
-		ve.batchPush( addedNodes, Array.prototype.slice.call( arguments, 3 ) );
+		ve.batchPush( addedNodes, nodes );
 		return removed;
 	}
 

@@ -64,17 +64,21 @@ ve.dm.TableSectionNode.static.toDomElements = function ( dataElement, doc ) {
 
 /**
  * Handle splicing of child nodes
+ *
+ * @param {number} index
+ * @param {number} deleteCount
+ * @param {...ve.dm.Node} [nodes]
  */
-ve.dm.TableSectionNode.prototype.onSplice = function () {
+ve.dm.TableSectionNode.prototype.onSplice = function ( index, deleteCount, ...nodes ) {
 	if ( this.getRoot() ) {
 		this.getParent().getMatrix().invalidate();
 	}
-	const nodes = Array.prototype.slice.call( arguments, 2 );
-	for ( let i = 0; i < nodes.length; i++ ) {
-		nodes[ i ].connect( this, {
+
+	nodes.forEach( ( node ) => {
+		node.connect( this, {
 			cellAttributeChange: 'onCellAttributeChange'
 		} );
-	}
+	} );
 };
 
 /**
