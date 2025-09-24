@@ -52,14 +52,13 @@ ve.dm.ClassAttributeNode.static.setClassAttributes = function ( attributes, clas
 	}
 
 	const unrecognizedClasses = [];
-	for ( let i = 0, l = classNames.length; i < l; i++ ) {
-		const className = classNames[ i ];
+	classNames.forEach( ( className ) => {
 		if ( Object.prototype.hasOwnProperty.call( this.classAttributes, className ) ) {
 			attributes = ve.extendObject( attributes, this.classAttributes[ className ] );
 		} else {
 			unrecognizedClasses.push( className );
 		}
-	}
+	} );
 
 	attributes.originalClasses = classAttr;
 	attributes.unrecognizedClasses = unrecognizedClasses;

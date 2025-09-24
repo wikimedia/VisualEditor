@@ -215,16 +215,15 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
 	}
 
 	const add = [],
-		remove = [],
-		allDirections = [ 'nw', 'ne', 'sw', 'se' ];
+		remove = [];
 
-	for ( let i = 0, len = allDirections.length; i < len; i++ ) {
-		if ( handles === undefined || handles.includes( allDirections[ i ] ) ) {
-			remove.push( 've-ce-resizableNode-hide-' + allDirections[ i ] );
+	[ 'nw', 'ne', 'sw', 'se' ].forEach( ( direction ) => {
+		if ( handles === undefined || handles.includes( direction ) ) {
+			remove.push( 've-ce-resizableNode-hide-' + direction );
 		} else {
-			add.push( 've-ce-resizableNode-hide-' + allDirections[ i ] );
+			add.push( 've-ce-resizableNode-hide-' + direction );
 		}
-	}
+	} );
 
 	// The following classes are used here:
 	// * ve-ce-resizableNode-hide-nw

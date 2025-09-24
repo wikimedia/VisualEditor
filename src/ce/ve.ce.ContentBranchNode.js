@@ -283,9 +283,9 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	};
 
 	// Gather annotated HTML from the child nodes
-	for ( let i = 0, ilen = this.children.length; i < ilen; i++ ) {
-		ve.batchPush( annotatedHtml, this.children[ i ].getAnnotatedHtml() );
-	}
+	this.children.forEach( ( child ) => {
+		ve.batchPush( annotatedHtml, child.getAnnotatedHtml() );
+	} );
 
 	// Set relCursor to collapsed selection offset, or -1 if none
 	// (in which case we don't need to worry about preannotation)

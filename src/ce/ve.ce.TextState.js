@@ -140,12 +140,7 @@ ve.ce.TextState.prototype.isEqual = function ( other ) {
 	if ( !other || this.chunks.length !== other.chunks.length ) {
 		return false;
 	}
-	for ( let i = 0, len = this.chunks.length; i < len; i++ ) {
-		if ( !( this.chunks[ i ].isEqual( other.chunks[ i ] ) ) ) {
-			return false;
-		}
-	}
-	return true;
+	return this.chunks.every( ( chunk, i ) => chunk.isEqual( other.chunks[ i ] ) );
 };
 
 /**

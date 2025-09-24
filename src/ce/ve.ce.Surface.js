@@ -1671,63 +1671,63 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 	//  - HTML generated from some clients has an image fallback(!) that is a screenshot of the HTML snippet (e.g. LibreOffice Calc)
 	if ( !htmlStringData ) {
 		if ( dataTransfer.items ) {
-			for ( let i = 0, l = dataTransfer.items.length; i < l; i++ ) {
-				if ( dataTransfer.items[ i ].kind !== 'string' ) {
-					items.push( ve.ui.DataTransferItem.static.newFromItem( dataTransfer.items[ i ], htmlStringData ) );
+			Array.prototype.forEach.call( dataTransfer.items, ( item ) => {
+				if ( item.kind !== 'string' ) {
+					items.push( ve.ui.DataTransferItem.static.newFromItem( item, htmlStringData ) );
 				}
-			}
+			} );
 		} else if ( dataTransfer.files && dataTransfer.files.length ) {
-			for ( let i = 0, l = dataTransfer.files.length; i < l; i++ ) {
-				items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[ i ], htmlStringData ) );
-			}
+			Array.prototype.forEach.call( dataTransfer.files, ( file ) => {
+				items.push( ve.ui.DataTransferItem.static.newFromBlob( file, htmlStringData ) );
+			} );
 		}
 	} else if ( dataTransfer.files && dataTransfer.files.length ) {
 		const htmlPreParse = $.parseHTML( htmlStringData );
 
 		let imgCount = 0;
 		let hasContent = false;
-		for ( let i = 0; i < htmlPreParse.length; i++ ) {
+		htmlPreParse.forEach( ( node ) => {
 			// Count images in root nodes
-			if ( htmlPreParse[ i ].nodeName === 'IMG' ) {
+			if ( node.nodeName === 'IMG' ) {
 				imgCount++;
 			} else if (
-				( htmlPreParse[ i ].nodeType === 1 || htmlPreParse[ i ].nodeType === 3 ) &&
-				htmlPreParse[ i ].textContent &&
-				htmlPreParse[ i ].textContent.trim() !== ''
+				( node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE ) &&
+				node.textContent &&
+				node.textContent.trim() !== ''
 			) {
-				// Only count element nodes (type 1) or text nodes (type 3)
+				// Only count element nodes or text nodes
 				// that have non empty text content.
 				hasContent = true;
 			}
 
 			// Count images in children
-			if ( typeof htmlPreParse[ i ].querySelectorAll === 'function' ) {
-				imgCount += htmlPreParse[ i ].querySelectorAll( 'img' ).length;
+			if ( typeof node.querySelectorAll === 'function' ) {
+				imgCount += node.querySelectorAll( 'img' ).length;
 			}
-		}
+		} );
 
 		if ( !hasContent && imgCount === dataTransfer.files.length ) {
-			for ( let i = 0, l = dataTransfer.files.length; i < l; i++ ) {
+			Array.prototype.forEach.call( dataTransfer.files, ( file ) => {
 				// TODO: should we use image node outerHTML instead of htmlStringData?
-				items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[ i ], htmlStringData ) );
-			}
+				items.push( ve.ui.DataTransferItem.static.newFromBlob( file, htmlStringData ) );
+			} );
 		}
 	}
 
 	if ( dataTransfer.items ) {
 		// Extract "string" types.
-		for ( let i = 0, l = dataTransfer.items.length; i < l; i++ ) {
+		Array.prototype.forEach.call( dataTransfer.items, ( item ) => {
 			if (
-				dataTransfer.items[ i ].kind === 'string' &&
-				dataTransfer.items[ i ].type.startsWith( 'text/' )
+				item.kind === 'string' &&
+				item.type.startsWith( 'text/' )
 			) {
 				items.push( ve.ui.DataTransferItem.static.newFromString(
-					dataTransfer.getData( dataTransfer.items[ i ].type ),
-					dataTransfer.items[ i ].type,
+					dataTransfer.getData( item.type ),
+					item.type,
 					htmlStringData
 				) );
 			}
-		}
+		} );
 	}
 
 	// We care a little bit about the order of items, as the first one matched
@@ -1786,8 +1786,7 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 
 	const dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory;
 	let handled = false;
-	for ( let i = 0, l = items.length; i < l; i++ ) {
-		const item = items[ i ];
+	for ( const item of items ) {
 		const name = dataTransferHandlerFactory.getHandlerNameForItem( item, isPaste, this.clipboardHandler.isPasteSpecial() );
 		if ( name ) {
 			dataTransferHandlerFactory.create( name, this.surface, item )
@@ -2598,22 +2597,22 @@ ve.ce.Surface.prototype.findAndExecuteDelayedSequences = function () {
 		matchingSequences = this.findMatchingSequences();
 	}
 	const matchingByName = {};
-	let i;
-	for ( i = 0; i < matchingSequences.length; i++ ) {
-		matchingByName[ matchingSequences[ i ].sequence.getName() ] = matchingSequences[ i ];
-	}
 
-	for ( i = 0; i < this.delayedSequences.length; i++ ) {
-		const matchingSeq = matchingByName[ this.delayedSequences[ i ].sequence.getName() ];
+	matchingSequences.forEach( ( matchingSequence ) => {
+		matchingByName[ matchingSequence.sequence.getName() ] = matchingSequence;
+	} );
+
+	this.delayedSequences.forEach( ( delayedSequence ) => {
+		const matchingSeq = matchingByName[ delayedSequence.sequence.getName() ];
 		if (
 			!matchingSeq ||
-			matchingSeq.range.start !== this.delayedSequences[ i ].range.start
+			matchingSeq.range.start !== delayedSequence.range.start
 		) {
 			// This sequence stopped matching; execute it with the previously saved range
-			this.delayedSequences[ i ].wasDelayed = true;
-			sequences.push( this.delayedSequences[ i ] );
+			delayedSequence.wasDelayed = true;
+			sequences.push( delayedSequence );
 		}
-	}
+	} );
 	// Discard any delayed sequences; they will be checked for again when the user starts typing
 	this.delayedSequences = [];
 
@@ -2626,20 +2625,19 @@ ve.ce.Surface.prototype.checkDelayedSequences = ve.ce.Surface.prototype.findAndE
 /**
  * Execute matched sequences
  *
- * @param {ve.ui.SequenceRegistry.Match[]} sequences
+ * @param {ve.ui.SequenceRegistry.Match[]} sequenceMatches
  */
-ve.ce.Surface.prototype.executeSequences = function ( sequences ) {
+ve.ce.Surface.prototype.executeSequences = function ( sequenceMatches ) {
 	let executed = false;
 
-	// sequences.length will likely be 0 or 1 so don't cache
-	for ( let i = 0; i < sequences.length; i++ ) {
-		if ( sequences[ i ].sequence.delayed && !sequences[ i ].wasDelayed ) {
+	sequenceMatches.forEach( ( sequenceMatch ) => {
+		if ( sequenceMatch.sequence.delayed && !sequenceMatch.wasDelayed ) {
 			// Save the sequence and match range for execution later
-			this.delayedSequences.push( sequences[ i ] );
+			this.delayedSequences.push( sequenceMatch );
 		} else {
-			executed = sequences[ i ].sequence.execute( this.surface, sequences[ i ].range ) || executed;
+			executed = sequenceMatch.sequence.execute( this.surface, sequenceMatch.range ) || executed;
 		}
-	}
+	} );
 	if ( executed ) {
 		this.delayedSequences = [];
 		this.showModelSelection();

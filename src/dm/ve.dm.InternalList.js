@@ -127,13 +127,7 @@ ve.dm.InternalList.prototype.getDocument = function () {
 ve.dm.InternalList.prototype.getListNode = function () {
 	// Find listNode if not set, or unattached
 	if ( !this.listNode || !this.listNode.doc ) {
-		const nodes = this.getDocument().getDocumentNode().children;
-		for ( let i = nodes.length; i--; ) {
-			if ( nodes[ i ] instanceof ve.dm.InternalListNode ) {
-				this.listNode = nodes[ i ];
-				break;
-			}
-		}
+		this.listNode = this.getDocument().getNodesByType( 'internalList' )[ 0 ];
 	}
 	return this.listNode;
 };
@@ -212,23 +206,23 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 
 	const list = [];
 	list.push( { type: 'internalList' } );
-	for ( let i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
-		if ( itemHtmlQueue[ i ] !== '' ) {
+	itemHtmlQueue.forEach( ( html ) => {
+		if ( html !== '' ) {
 			const div = doc.createElement( 'div' );
-			div.innerHTML = itemHtmlQueue[ i ];
+			div.innerHTML = html;
 			const itemData = [
 				{ type: 'internalItem' },
 				...converter.getDataFromDomSubtree( div ),
 				{ type: '/internalItem' }
 			];
 			if ( !converter.isFromClipboard() ) {
-				itemData[ 0 ].attributes = { originalHtml: itemHtmlQueue[ i ] };
+				itemData[ 0 ].attributes = { originalHtml: html };
 			}
 			ve.batchPush( list, itemData );
 		} else {
 			list.push( { type: 'internalItem' }, { type: '/internalItem' } );
 		}
-	}
+	} );
 	list.push( { type: '/internalList' } );
 	// After conversion we no longer need the HTML
 	this.itemHtmlQueue = [];

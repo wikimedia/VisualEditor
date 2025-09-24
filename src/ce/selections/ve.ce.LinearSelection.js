@@ -70,12 +70,7 @@ ve.ce.LinearSelection.prototype.getSelectionRects = function () {
 		return null;
 	}
 
-	// TODO: Use .map
-	const relativeRects = [];
-	for ( let i = 0, l = rects.length; i < l; i++ ) {
-		relativeRects.push( ve.translateRect( rects[ i ], -surfaceRect.left, -surfaceRect.top ) );
-	}
-	return relativeRects;
+	return Array.prototype.map.call( rects, ( rect ) => ve.translateRect( rect, -surfaceRect.left, -surfaceRect.top ) );
 };
 
 /**

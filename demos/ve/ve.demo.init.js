@@ -131,9 +131,9 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 		// HACK: Re-initialize page to load message files
 		ve.init.target.teardownToolbar();
 		ve.init.platform.initialize().done( () => {
-			for ( let i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
-				ve.demo.surfaceContainers[ i ].reload( currentLang, currentDir );
-			}
+			ve.demo.surfaceContainers.forEach( ( surfaceContainer ) => {
+				surfaceContainer.reload( currentLang, currentDir );
+			} );
 		} );
 	} );
 
@@ -158,9 +158,9 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 			return false;
 		}
 		const pages = [];
-		for ( let i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
-			pages.push( ve.demo.surfaceContainers[ i ].pageMenu.findSelectedItem().getData() );
-		}
+		ve.demo.surfaceContainers.forEach( ( surfaceContainer ) => {
+			pages.push( surfaceContainer.pageMenu.findSelectedItem().getData() );
+		} );
 		history.replaceState( null, '', '#!' + pages.join( ',' ) );
 	}
 
@@ -185,9 +185,9 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 			pages = hash.slice( 2 ).split( ',' ).map( decodeURIComponent );
 		}
 		if ( pages.length ) {
-			for ( let i = 0; i < pages.length; i++ ) {
-				addSurfaceContainer( pages[ i ] );
-			}
+			pages.forEach( ( page ) => {
+				addSurfaceContainer( page );
+			} );
 		} else {
 			addSurfaceContainer( 'simple' );
 		}

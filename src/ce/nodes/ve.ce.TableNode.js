@@ -609,15 +609,9 @@ ve.ce.TableNode.prototype.getFirstSectionNode = function () {
  * @return {ve.ce.TableCellNode[]} Cell nodes
  */
 ve.ce.TableNode.prototype.getCellNodesFromSelection = function ( selection ) {
-	const cells = selection.getMatrixCells( this.getModel().getDocument() ),
-		nodes = [];
+	const cells = selection.getMatrixCells( this.getModel().getDocument() );
 
-	for ( let i = 0, l = cells.length; i < l; i++ ) {
-		const cellModel = cells[ i ].node;
-		const cellView = this.getNodeFromOffset( cellModel.getOffset() - this.model.getOffset() );
-		nodes.push( cellView );
-	}
-	return nodes;
+	return cells.map( ( cell ) => this.getNodeFromOffset( cell.node.getOffset() - this.model.getOffset() ) );
 };
 
 /* Static Properties */

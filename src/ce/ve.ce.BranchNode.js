@@ -361,13 +361,11 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 	if ( offset === startOffset ) {
 		return this.slugNodes[ 0 ] || null;
 	}
-	for ( let i = 0; i < this.children.length; i++ ) {
-		startOffset += this.children[ i ].model.getOuterLength();
-		if ( offset === startOffset ) {
-			return this.slugNodes[ i + 1 ] || null;
-		}
-	}
-	return null;
+	const childIndex = this.children.findIndex( ( child ) => {
+		startOffset += child.model.getOuterLength();
+		return offset === startOffset;
+	} );
+	return childIndex === -1 ? null : this.slugNodes[ childIndex + 1 ] || null;
 };
 
 /**
@@ -379,18 +377,18 @@ ve.ce.BranchNode.prototype.setLive = function ( live ) {
 	// Parent method
 	ve.ce.BranchNode.super.prototype.setLive.apply( this, arguments );
 
-	for ( let i = 0; i < this.children.length; i++ ) {
-		this.children[ i ].setLive( live );
-	}
+	this.children.forEach( ( child ) => {
+		child.setLive( live );
+	} );
 };
 
 /**
  * Release all memory.
  */
 ve.ce.BranchNode.prototype.destroy = function () {
-	for ( let i = 0, len = this.children.length; i < len; i++ ) {
-		this.children[ i ].destroy();
-	}
+	this.children.forEach( ( child ) => {
+		child.destroy();
+	} );
 
 	// Parent method
 	ve.ce.BranchNode.super.prototype.destroy.call( this );
@@ -400,9 +398,9 @@ ve.ce.BranchNode.prototype.destroy = function () {
  * @inheritdoc
  */
 ve.ce.BranchNode.prototype.detach = function () {
-	for ( let i = 0, len = this.children.length; i < len; i++ ) {
-		this.children[ i ].detach();
-	}
+	this.children.forEach( ( child ) => {
+		child.detach();
+	} );
 
 	// Parent method
 	ve.ce.BranchNode.super.prototype.detach.call( this );

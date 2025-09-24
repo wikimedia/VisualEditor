@@ -726,17 +726,17 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		// Append something selectable for right-click copy
 		.append( $( '<span>' ).addClass( 've-ce-focusableNode-highlight-selectable' ).text( '\u00a0' ) );
 
-	for ( let i = 0, l = this.rects.length; i < l; i++ ) {
+	this.rects.forEach( ( rect ) => {
 		const $highlight = this.createHighlight();
 		this.$highlights.append(
 			$highlight.css( {
-				top: this.rects[ i ].top,
-				left: this.rects[ i ].left,
-				width: this.rects[ i ].width,
-				height: this.rects[ i ].height
+				top: rect.top,
+				left: rect.left,
+				width: rect.width,
+				height: rect.height
 			} )
 		);
-	}
+	} );
 };
 
 /**

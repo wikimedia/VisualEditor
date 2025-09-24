@@ -53,20 +53,20 @@ ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		return true;
 	}
 
-	for ( let i = 0, l = cells.length; i < l; i++ ) {
-		if ( cells[ i ].node.isCellEditable() ) {
+	cells.forEach( ( cell ) => {
+		if ( cell.node.isCellEditable() ) {
 			// Create auto-updating fragments from ranges
-			fragments.push( surfaceModel.getLinearFragment( cells[ i ].node.getRange(), true ) );
+			fragments.push( surfaceModel.getLinearFragment( cell.node.getRange(), true ) );
 		}
-	}
+	} );
 
-	for ( let i = 0, l = fragments.length; i < l; i++ ) {
+	fragments.forEach( ( fragment ) => {
 		// Replace contents with empty wrapper paragraphs
-		fragments[ i ].insertContent( [
+		fragment.insertContent( [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{ type: '/paragraph' }
 		] );
-	}
+	} );
 
 	return true;
 };

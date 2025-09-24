@@ -86,12 +86,7 @@ ve.dm.TableNode.prototype.getMatrix = function () {
  * @return {ve.dm.TableCaptionNode|null} The table's caption node, or null if not found
  */
 ve.dm.TableNode.prototype.getCaptionNode = function () {
-	for ( let i = 0, l = this.children.length; i < l; i++ ) {
-		if ( this.children[ i ] instanceof ve.dm.TableCaptionNode ) {
-			return this.children[ i ];
-		}
-	}
-	return null;
+	return this.children.find( ( child ) => child instanceof ve.dm.TableCaptionNode ) || null;
 };
 
 /**

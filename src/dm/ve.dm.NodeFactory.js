@@ -201,12 +201,7 @@ ve.dm.NodeFactory.prototype.canNodeTakeAnnotation = function ( type, annotation 
 	}
 	const disallowedList = this.registry[ type ].static.disallowedAnnotationTypes;
 
-	for ( let i = 0, len = disallowedList.length; i < len; i++ ) {
-		if ( annotation instanceof ve.dm.annotationFactory.lookup( disallowedList[ i ] ) ) {
-			return false;
-		}
-	}
-	return true;
+	return disallowedList.every( ( disallowedType ) => !( annotation instanceof ve.dm.annotationFactory.lookup( disallowedType ) ) );
 };
 
 /**

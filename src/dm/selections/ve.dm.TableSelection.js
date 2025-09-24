@@ -112,13 +112,13 @@ ve.dm.TableSelection.prototype.expand = function ( doc ) {
 		cells = this.getMatrixCells( doc );
 
 	while ( cells.length > lastCellCount ) {
-		for ( let i = 0; i < cells.length; i++ ) {
-			const cell = cells[ i ];
+		// eslint-disable-next-line no-loop-func
+		cells.forEach( ( cell ) => {
 			startCol = Math.min( startCol, cell.col );
 			startRow = Math.min( startRow, cell.row );
 			endCol = Math.max( endCol, cell.col + cell.node.getColspan() - 1 );
 			endRow = Math.max( endRow, cell.row + cell.node.getRowspan() - 1 );
-		}
+		} );
 
 		lastCellCount = cells.length;
 		cells = this.constructor.static.getTableMatrixCells( matrix, {
@@ -198,12 +198,7 @@ ve.dm.TableSelection.prototype.collapseToTo = function () {
  * @param {ve.dm.Document} doc The document to which this selection applies
  */
 ve.dm.TableSelection.prototype.getRanges = function ( doc ) {
-	const ranges = [],
-		cells = this.getMatrixCells( doc );
-	for ( let i = 0, l = cells.length; i < l; i++ ) {
-		ranges.push( cells[ i ].node.getRange() );
-	}
-	return ranges;
+	return this.getMatrixCells( doc ).map( ( cell ) => cell.node.getRange() );
 };
 
 /**
@@ -270,12 +265,7 @@ ve.dm.TableSelection.prototype.getTableSliceRanges = function ( doc ) {
  * @return {ve.Range[]} Outer ranges
  */
 ve.dm.TableSelection.prototype.getOuterRanges = function ( doc ) {
-	const ranges = [],
-		cells = this.getMatrixCells( doc );
-	for ( let i = 0, l = cells.length; i < l; i++ ) {
-		ranges.push( cells[ i ].node.getOuterRange() );
-	}
-	return ranges;
+	return this.getMatrixCells( doc ).map( ( cell ) => cell.node.getOuterRange() );
 };
 
 /**

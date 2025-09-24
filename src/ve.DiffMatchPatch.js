@@ -37,10 +37,20 @@ ve.DiffMatchPatch.static.DIFF_CHANGE_INSERT = 2;
 
 /* Methods */
 
+/**
+ * @param {ve.dm.LinearData.Item} a
+ * @param {ve.dm.LinearData.Item} b
+ * @return {boolean}
+ */
 ve.DiffMatchPatch.prototype.isEqualChar = function ( a, b ) {
 	return a === b || ve.dm.LinearData.static.compareElements( a, b, this.store, this.store );
 };
 
+/**
+ * @param {ve.dm.LinearData.Item[]} a
+ * @param {ve.dm.LinearData.Item[]} b
+ * @return {boolean}
+ */
 ve.DiffMatchPatch.prototype.isEqualString = function ( a, b ) {
 	if ( a === b ) {
 		return true;
@@ -134,17 +144,15 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	 * is always immediately followed by its close element.
 	 *
 	 * @param {ve.dm.LinearData.Item[]} data Linear data
-	 * @return {ve.dm.LinearData.Item[]} Linear data without close elements
 	 */
 	function removeCloseElements( data ) {
 		for ( let i = 0, ilen = data.length; i < ilen; i++ ) {
-			if ( data[ i ].type && data[ i ].type[ 0 ] === '/' ) {
+			if ( ve.dm.LinearData.static.isCloseElementData( data[ i ] ) ) {
 				data.splice( i, 1 );
 				ilen--;
 				i--;
 			}
 		}
-		return data;
 	}
 
 	/**
@@ -419,8 +427,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	}
 
 	// Remove the close elements
-	oldData = removeCloseElements( oldData );
-	newData = removeCloseElements( newData );
+	removeCloseElements( oldData );
+	removeCloseElements( newData );
 
 	// Get the diff
 	const finalDiff = getCleanDiff( this.diff_main( oldData, newData, options ) );

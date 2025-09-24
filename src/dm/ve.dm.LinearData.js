@@ -1421,14 +1421,14 @@ ve.dm.LinearData.prototype.getWordRange = function ( offset ) {
  *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
  */
 ve.dm.LinearData.prototype.remapInternalListIndexes = function ( mapping, internalList ) {
-	for ( let i = 0, ilen = this.data.length; i < ilen; i++ ) {
+	this.getRange().forEach( ( i ) => {
 		if ( this.isOpenElementData( i ) ) {
 			const nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			this.modifyData( i, ( item ) => {
 				nodeClass.static.remapInternalListIndexes( item, mapping, internalList );
 			} );
 		}
-	}
+	} );
 };
 
 /**
@@ -1439,14 +1439,14 @@ ve.dm.LinearData.prototype.remapInternalListIndexes = function ( mapping, intern
  * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
  */
 ve.dm.LinearData.prototype.remapInternalListKeys = function ( internalList ) {
-	for ( let i = 0, ilen = this.data.length; i < ilen; i++ ) {
+	this.getRange().forEach( ( i ) => {
 		if ( this.isOpenElementData( i ) ) {
 			const nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			this.modifyData( i, ( item ) => {
 				nodeClass.static.remapInternalListKeys( item, internalList );
 			} );
 		}
-	}
+	} );
 };
 
 /**
@@ -1466,10 +1466,10 @@ ve.dm.LinearData.prototype.remapAnnotationHash = function ( oldHash, newHash ) {
 			}
 		}
 	}
-	for ( let i = 0, ilen = this.data.length; i < ilen; i++ ) {
-		if ( this.data[ i ] === undefined || typeof this.data[ i ] === 'string' ) {
+	this.data.forEach( ( dataItem, i ) => {
+		if ( dataItem === undefined || typeof dataItem === 'string' ) {
 			// Common case, cheap, avoid the isArray check
-			continue;
+			return;
 		} else {
 			this.modifyData( i, ( item ) => {
 				if ( Array.isArray( item ) ) {
@@ -1479,15 +1479,15 @@ ve.dm.LinearData.prototype.remapAnnotationHash = function ( oldHash, newHash ) {
 				}
 				if ( ve.getProp( item, 'internal', 'metaItems' ) ) {
 					const data = ve.getProp( item, 'internal', 'metaItems' );
-					for ( let j = 0, jlen = data.length; j < jlen; j++ ) {
-						if ( data[ j ].annotations !== undefined ) {
-							remap( data[ j ].annotations );
+					data.forEach( ( metaItem ) => {
+						if ( metaItem.annotations !== undefined ) {
+							remap( metaItem.annotations );
 						}
-					}
+					} );
 				}
 			} );
 		}
-	}
+	} );
 };
 
 /**
@@ -1740,14 +1740,14 @@ ve.dm.LinearData.prototype.sanitize = function ( rules ) {
  */
 ve.dm.LinearData.prototype.cloneElements = function ( preserveGenerated ) {
 	const store = this.getStore();
-	for ( let i = 0, len = this.getLength(); i < len; i++ ) {
+	this.getRange().forEach( ( i ) => {
 		if ( this.isOpenElementData( i ) ) {
 			const nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			if ( nodeClass ) {
 				this.setData( i, nodeClass.static.cloneElement( this.getData( i ), store, preserveGenerated ) );
 			}
 		}
-	}
+	} );
 };
 
 /**

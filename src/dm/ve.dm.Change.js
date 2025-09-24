@@ -742,12 +742,11 @@ ve.dm.Change.prototype.push = function ( other ) {
 			' but other starts at ' + other.start );
 	}
 	const stores = other.getStores();
-	for ( let i = 0, iLen = other.transactions.length; i < iLen; i++ ) {
-		const transaction = other.transactions[ i ];
+	other.transactions.forEach( ( transaction, i ) => {
 		const store = stores[ i ];
 		this.store.merge( store );
 		this.pushTransaction( transaction, this.store.getLength() );
-	}
+	} );
 	this.selections = OO.cloneObject( other.selections );
 };
 
@@ -892,8 +891,7 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	const getTransactionInfo = this.constructor.static.getTransactionInfo,
-		selections = {},
-		transactions = [];
+		selections = {};
 
 	// Recursively serialize, so this method is the inverse of deserialize
 	// without having to use JSON.stringify (which is also recursive).
@@ -904,9 +902,9 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		this.constructor.static.serializeValue;
 	const serializeStore = ( store ) => store.serialize( serializeStoreValues );
 	let prevInfo;
-	for ( let i = 0, iLen = this.transactions.length; i < iLen; i++ ) {
-		const tx = this.transactions[ i ];
+	const transactions = this.transactions.map( ( tx, i, arr ) => {
 		const info = getTransactionInfo( tx );
+		let result;
 		if (
 			info &&
 			prevInfo &&
@@ -916,16 +914,17 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 			prevInfo.uniformInsert &&
 			info.uniformInsert.annotationString === prevInfo.uniformInsert.annotationString
 		) {
-			transactions.push( info.uniformInsert.text );
+			result = info.uniformInsert.text;
 		} else {
 			const txSerialized = tx.toJSON();
-			if ( i > 0 && tx.authorId === this.transactions[ i - 1 ].authorId ) {
+			if ( i > 0 && tx.authorId === arr[ i - 1 ].authorId ) {
 				delete txSerialized.authorId;
 			}
-			transactions.push( txSerialized );
+			result = txSerialized;
 		}
 		prevInfo = info;
-	}
+		return result;
+	} );
 	const stores = this.getStores().map( serializeStore );
 	const data = {
 		start: this.start,

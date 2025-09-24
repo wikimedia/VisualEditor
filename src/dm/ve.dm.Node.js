@@ -342,21 +342,12 @@ ve.dm.Node.static.remapInternalListKeys = function () {
  * @return {boolean} The element is inline
  */
 ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
-	let allTagsInline = true;
-
-	for ( let i = 0, length = domElements.length; i < length; i++ ) {
-		if ( ve.isBlockElement( domElements[ i ] ) ) {
-			allTagsInline = false;
-			break;
-		}
-	}
-
 	// Force inline in content locations (but not wrappers)
 	return ( converter.isExpectingContent() && !converter.isInWrapper() ) ||
 		// ..also force inline in wrappers that we can't close
 		( converter.isInWrapper() && !converter.canCloseWrapper() ) ||
 		// ..otherwise just look at the tag names
-		allTagsInline;
+		Array.prototype.every.call( domElements, ( el ) => !ve.isBlockElement( el ) );
 };
 
 /**

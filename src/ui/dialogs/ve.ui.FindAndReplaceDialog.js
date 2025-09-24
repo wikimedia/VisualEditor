@@ -493,9 +493,9 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceAllButtonClick = function () {
 	if ( wasActivated ) {
 		surfaceView.deactivate();
 	}
-	for ( let i = 0, l = this.results; i < l; i++ ) {
+	this.fragments.forEach( ( fragment, i ) => {
 		this.replace( i );
-	}
+	} );
 	if ( wasActivated ) {
 		surfaceView.activate();
 	}
