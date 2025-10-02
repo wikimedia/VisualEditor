@@ -1100,6 +1100,30 @@ QUnit.test( 'findText (plain text)', ( assert ) => {
 				]
 			},
 			{
+				msg: 'Set query: case insensitive',
+				query: new Set( [ 'foo', 'baz' ] ),
+				options: {
+					caseSensitiveString: false
+				},
+				ranges: [
+					new ve.Range( 1, 4 ),
+					new ve.Range( 9, 12 ),
+					new ve.Range( 16, 19 ),
+					new ve.Range( 20, 23 )
+				]
+			},
+			{
+				msg: 'Set query: case sensitive',
+				query: new Set( [ 'Foo', 'baz' ] ),
+				options: {
+					caseSensitiveString: true
+				},
+				ranges: [
+					new ve.Range( 1, 4 ),
+					new ve.Range( 16, 19 )
+				]
+			},
+			{
 				msg: 'Literal newline',
 				query: /\n/g,
 				options: {},
@@ -1261,7 +1285,7 @@ QUnit.test( 'findText (plain text)', ( assert ) => {
 	cases.forEach( ( caseItem ) => {
 		doc.lang = caseItem.lang || 'en';
 		const ranges = doc.findText( caseItem.query, caseItem.options );
-		assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
+		assert.deepEqual( ranges.map( ( r ) => r.toJSON() ), caseItem.ranges.map( ( r ) => r.toJSON() ), caseItem.msg );
 	} );
 } );
 
@@ -1339,7 +1363,7 @@ QUnit.test( 'findText (non-text content)', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		const ranges = doc.findText( caseItem.query, caseItem.options );
-		assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
+		assert.deepEqual( ranges.map( ( r ) => r.toJSON() ), caseItem.ranges.map( ( r ) => r.toJSON() ), caseItem.msg );
 	} );
 } );
 

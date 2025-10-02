@@ -1630,11 +1630,11 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 /**
  * Find a text string within the document
  *
- * @param {string|RegExp} query Text to find. Either a string, or a RegExp with the /g flag
+ * @param {string|Set<string>|RegExp} query Text to find. Either a string, set of strings, or a RegExp with the /g flag
  * @param {Object} [options] Search options
  * @param {boolean} [options.searchRange] Range to search. Defaults to the attached root.
  * @param {boolean} [options.caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
- * @param {boolean} [options.diacriticInsensitiveString] Diacritic insensitive search for a string query. Ignored by regexes.
+ * @param {boolean} [options.diacriticInsensitiveString] Diacritic insensitive search for a string query. Ignored by regexes and sets of strings.
  *  Only works in browsers which support the Internationalization API
  * @param {boolean} [options.noOverlaps] Avoid overlapping matches
  * @param {boolean} [options.wholeWord] Only match whole-word occurrences
@@ -1701,6 +1701,40 @@ ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 				) );
 				if ( !options.noOverlaps ) {
 					query.lastIndex = match.index + 1;
+				}
+			}
+		} );
+	} else if ( query instanceof Set ) {
+		if ( query.size === 0 ) {
+			return [];
+		}
+
+		if ( !options.caseSensitiveString ) {
+			query = new Set( Array.from( query ).map( ( s ) => s.toLowerCase() ) );
+		}
+
+		let minLen = Infinity,
+			maxLen = 0;
+		query.forEach( ( s ) => {
+			minLen = Math.min( minLen, s.length );
+			maxLen = Math.max( maxLen, s.length );
+		} );
+
+		data.forEachRunOfContent( searchRange, ( off, line ) => {
+			if ( !options.caseSensitiveString ) {
+				line = line.toLowerCase();
+			}
+
+			// For each possible length, do a sliding window search on the normalized line
+			for ( let len = minLen; len <= maxLen; len++ ) {
+				for ( let i = 0; i <= line.length - len; i++ ) {
+					const substr = line.slice( i, i + len );
+					if ( query.has( substr ) ) {
+						ranges.push( new ve.Range( off + i, off + i + len ) );
+						if ( options.noOverlaps ) {
+							i += len - 1;
+						}
+					}
 				}
 			}
 		} );
