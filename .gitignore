@@ -18,3 +18,4 @@ rebaser/rebaser.log
 
 # OS
 .DS_Store
+/.stylelintcache
