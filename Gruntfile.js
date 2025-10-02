@@ -379,13 +379,14 @@ module.exports = function ( grunt ) {
 		},
 		stylelint: {
 			options: {
-				reportNeedlessDisables: true
+				reportNeedlessDisables: true,
+				cache: true
 			},
-			all: fg.globSync( [
+			all: [
 				'**/*.{css,less}',
 				'!lib/**',
 				'!**/{coverage,dist,docs,node_modules}/**'
-			] )
+			]
 		},
 		banana: {
 			all: 'i18n/'
