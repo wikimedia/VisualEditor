@@ -9,5 +9,8 @@
 		"Node": "readonly",
 		"document": "readonly",
 		"$": "off"
+	},
+	"rules": {
+		"local/no-unsanitized-href": "off"
 	}
 }

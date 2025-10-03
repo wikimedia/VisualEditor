@@ -149,6 +149,8 @@ ve.createDocumentFromHtml = function ( html ) {
  * @param {string} [fallbackBase] Base URL to use if resolving the base URL fails or there is no <base> tag
  */
 ve.fixBase = function ( targetDoc, sourceDoc, fallbackBase ) {
+	// Skip security warnings, as these are for user input being passed to link href's
+	/* eslint-disable local/no-unsanitized-href */
 	let baseNode = targetDoc.getElementsByTagName( 'base' )[ 0 ];
 	if ( baseNode ) {
 		// Support: Safari
@@ -177,6 +179,7 @@ ve.fixBase = function ( targetDoc, sourceDoc, fallbackBase ) {
 		baseNode.setAttribute( 'href', fallbackBase );
 		targetDoc.head.appendChild( baseNode );
 	}
+	/* eslint-enable local/no-unsanitized-href */
 };
 
 /**
@@ -275,6 +278,7 @@ ve.normalizeAttributeValue = function ( name, value, nodeName = 'div' ) {
  */
 ve.resolveUrl = function ( url, base ) {
 	const node = base.createElement( 'a' );
+	// eslint-disable-next-line local/no-unsanitized-href
 	node.setAttribute( 'href', url );
 	// If doc.baseURI isn't set, node.href will be an empty string
 	// This is crazy, returning the original URL is better

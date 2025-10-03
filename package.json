@@ -25,6 +25,7 @@
 	"devDependencies": {
 		"eslint-config-wikimedia": "0.31.0",
 		"eslint-plugin-html": "8.1.1",
+		"eslint-plugin-local": "^4.2.2",
 		"fast-glob": "3.3.2",
 		"grunt": "1.6.1",
 		"grunt-banana-checker": "0.13.0",
