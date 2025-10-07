@@ -4,6 +4,8 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 .ve-ui-linearContextItem {
 	&-head {
 		min-height: 32px;
@@ -47,7 +49,7 @@
 	.ve-ui-linearContextItem-body-action-wrapper {
 		/* Wrapper to vertically center body-action in a min-heighted container */
 		/* We use a wrapper so that body-action itself can main top-alignment of its items */
-		border-top: 1px solid #eaecf0;
+		border-top: @border-subtle;
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
@@ -73,7 +75,7 @@
 	}
 
 	.ve-ui-linearContextItem-foot:not( :empty ) {
-		border-top: 1px solid #eaecf0;
+		border-top: @border-subtle;
 		padding: 0.25em 1em;
 		text-align: right;
 	}

@@ -4,6 +4,8 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 .ve-ui-contextItem {
 	/* Use cursor::default as this label text, and not intended to
 	be selected, but don't prevent it (with user-select:none) if
@@ -11,6 +13,6 @@
 	cursor: default;
 
 	& + & {
-		border-top: 1px solid #eaecf0;
+		border-top: @border-subtle;
 	}
 }
