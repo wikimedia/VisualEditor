@@ -171,6 +171,22 @@ ve.dm.example.annHash = function ( tagName ) {
 	return ve.dm.HashValueStore.prototype.hashOfValue( ann );
 };
 
+/**
+ * Get an importedData annotation for a given source.
+ *
+ * Tests using this should mock ve.init.platform.generateUniqueId to return a stable value.
+ *
+ * @param {string|null} [source=null]
+ * @return {Object}
+ */
+ve.dm.example.getImportedAnnotation = ( source = null ) => ( {
+	type: 'meta/importedData',
+	attributes: {
+		source: source,
+		eventId: ve.init.platform.generateUniqueId()
+	}
+} );
+
 // hash = store.hashOfValue( ve.dm.example.bold )
 ve.dm.example.boldHash = 'h49981eab0f8056ff';
 ve.dm.example.italicHash = 'hefd27ef3bf2041dd';

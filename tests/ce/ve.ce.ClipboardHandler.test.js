@@ -308,8 +308,6 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 		bold = ve.dm.example.bold,
 		italic = ve.dm.example.italic,
 		link = ve.dm.example.link( 'Foo' ),
-		// generateUniqueId is deterministic on the DummyPlatform
-		imported = ( source ) => ( { type: 'meta/importedData', attributes: { source: source, eventId: ve.init.platform.generateUniqueId() } } ),
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1 ),
@@ -2035,7 +2033,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', imported( null ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation() )
 							],
 							remove: []
 						},
@@ -2064,7 +2062,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', imported( null ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation() )
 							],
 							remove: []
 						},
@@ -2095,7 +2093,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', [ bold, imported( null ) ] )
+								...ve.dm.example.annotateText( 'Foo', [ bold, ve.dm.example.getImportedAnnotation() ] )
 							],
 							remove: []
 						},
@@ -2115,7 +2113,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', imported( 'googleDocs' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'googleDocs' ) )
 							],
 							remove: []
 						},
@@ -2136,7 +2134,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', imported( 'visualEditor' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'visualEditor' ) )
 							],
 							remove: []
 						},
@@ -2156,7 +2154,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', imported( 'libreOffice' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'libreOffice' ) )
 							],
 							remove: []
 						},
@@ -2176,7 +2174,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', imported( 'microsoftOffice' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'microsoftOffice' ) )
 							],
 							remove: []
 						},
@@ -2196,7 +2194,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', imported( 'plainText' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'plainText' ) )
 							],
 							remove: []
 						},
