@@ -19,40 +19,40 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 
 	// Properties
 	/**
-	 * @private Please use {@link getDocument} instead
+	 * @private Please use {@link #getDocument} instead
 	 * @property {ve.dm.Document} document The document this internal list is in a 1:1 relationship
 	 * with
 	 */
 	this.document = doc;
 
 	/**
-	 * @private See {@link queueItemHtml}
-	 * @property {string[]} itemHtmlQueue Array of HTML strings. Emptied after {@link convertToData}
+	 * @private See {@link #queueItemHtml}
+	 * @property {string[]} itemHtmlQueue Array of HTML strings. Emptied after {@link #convertToData}
 	 * is called.
 	 */
 	this.itemHtmlQueue = [];
 
 	/**
-	 * @private See {@link getListNode}
+	 * @private See {@link #getListNode}
 	 * @property {ve.dm.InternalListNode|null} listNode The corresponding data model node this meta
-	 * item belongs to. Lazy-initialized via {@link getListNode}.
+	 * item belongs to. Lazy-initialized via {@link #getListNode}.
 	 */
 	this.listNode = null;
 
 	/**
-	 * @private Please use {@link getNodeGroups} instead
+	 * @private Please use {@link #getNodeGroups} instead
 	 * @property {Object.<string,ve.dm.InternalListNodeGroup>} nodes Keyed by group name
 	 */
 	this.nodes = {};
 
 	/**
-	 * @private See {@link markGroupAsChanged}
+	 * @private See {@link #markGroupAsChanged}
 	 * @property {string[]} groupsChanged Array of group names; array index is meaningless
 	 */
 	this.groupsChanged = [];
 
 	/**
-	 * @private Please use {@link getKeyIndex} instead
+	 * @private Please use {@link #getKeyIndex} instead
 	 * @property {Object.<string,number>} keyIndexes Internal item index, keyed by "groupName/key"
 	 */
 	this.keyIndexes = {};
