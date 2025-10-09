@@ -43,6 +43,10 @@ ve.init.sa.Target = function VeInitSaTarget( config = {} ) {
 
 OO.inheritClass( ve.init.sa.Target, ve.init.Target );
 
+/* Static properties */
+
+ve.init.sa.Target.static.annotateImportedData = true;
+
 /* Methods */
 
 /**
