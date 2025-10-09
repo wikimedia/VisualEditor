@@ -4,14 +4,29 @@
  * @copyright See AUTHORS.txt
  */
 
-QUnit.module( 've.ce.TextState' );
+QUnit.module( 've.ce.TextState', {
+	beforeEach: function () {
+		ve.test.utils.DummyPlatform.prototype.generateUniqueIdOrig = ve.test.utils.DummyPlatform.prototype.generateUniqueId;
+		ve.test.utils.DummyPlatform.prototype.generateUniqueId = () => 'testid';
+	},
+	afterEach: function () {
+		ve.test.utils.DummyPlatform.prototype.generateUniqueId = ve.test.utils.DummyPlatform.prototype.generateUniqueIdOrig;
+	}
+} );
 
 /* Tests */
 
 QUnit.test( 'getChangeTransaction', ( assert ) => {
 	const underlineHash = ve.dm.example.underlineHash,
 		boldHash = ve.dm.example.boldHash,
-		annHash = ve.dm.example.annHash;
+		annHash = ve.dm.example.annHash,
+		store = new ve.dm.HashValueStore(),
+		importedHash = ( source ) => ve.dm.example.createAnnotationSet(
+			store,
+			[ ve.dm.example.getImportedAnnotation( source ) ]
+		).getHashes()[ 0 ],
+		charactersThreshold = ve.ce.TextState.static.pasteThresholds.characters,
+		wordbreaksThreshold = ve.ce.TextState.static.pasteThresholds.wordbreaks;
 
 	const cases = [
 		{
@@ -57,6 +72,93 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 					insert: [ ...ve.dm.example.annotateText( 'bar', boldHash ) ]
 				},
 				{ type: 'retain', length: 7 }
+			]
+		},
+		{
+			msg: `Simple insert with ${ wordbreaksThreshold } wordbreaks is annotated as IME paste`,
+			oldRawHtml: '<p>quux</p>',
+			oldInnerHtml: 'quux',
+			newInnerHtml: 'foo '.repeat( wordbreaksThreshold ).slice( 0, -1 ),
+			annotateImportedData: true,
+			operations: [
+				{ type: 'retain', length: 1 },
+				{
+					type: 'replace',
+					remove: [ ...'quux' ],
+					insert: [ ...ve.dm.example.annotateText(
+						'foo '.repeat( wordbreaksThreshold ).slice( 0, -1 ),
+						importedHash( 'ime' )
+					) ]
+				},
+				{ type: 'retain', length: 3 }
+			]
+		},
+		{
+			msg: `Insert with ${ wordbreaksThreshold } wordbreaks into existing annotation is annotated as IME paste`,
+			oldRawHtml: '<p><b>foo whee</b></p>',
+			oldInnerHtml: '<b class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation">foo whee</b>',
+			newInnerHtml: '<b class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation">foo ' +
+				'bar '.repeat( wordbreaksThreshold ) + 'whee</b>',
+			annotateImportedData: true,
+			operations: [
+				{ type: 'retain', length: 5 },
+				{
+					type: 'replace',
+					remove: [],
+					insert: [ ...ve.dm.example.annotateText(
+						'bar '.repeat( wordbreaksThreshold ),
+						[ annHash( 'b' ), importedHash( 'ime' ) ]
+					) ]
+				},
+				{ type: 'retain', length: 7 }
+			]
+		},
+		{
+			msg: `Simple insert with ${ wordbreaksThreshold - 1 } wordbreaks is not annotated as IME paste`,
+			oldRawHtml: '<p>quux</p>',
+			oldInnerHtml: 'quux',
+			newInnerHtml: 'foo '.repeat( wordbreaksThreshold - 1 ).slice( 0, -1 ),
+			annotateImportedData: true,
+			operations: [
+				{ type: 'retain', length: 1 },
+				{
+					type: 'replace',
+					remove: [ ...'quux' ],
+					insert: [ ...( 'foo '.repeat( wordbreaksThreshold - 1 ).slice( 0, -1 ) ) ]
+				},
+				{ type: 'retain', length: 3 }
+			]
+		},
+		{
+			msg: `Simple insert with ${ charactersThreshold } characters is annotated as IME paste`,
+			oldRawHtml: '<p>quux</p>',
+			oldInnerHtml: 'quux',
+			newInnerHtml: 'z'.repeat( charactersThreshold ),
+			annotateImportedData: true,
+			operations: [
+				{ type: 'retain', length: 1 },
+				{
+					type: 'replace',
+					remove: [ ...'quux' ],
+					insert: [ ...ve.dm.example.annotateText( 'z'.repeat( charactersThreshold ), importedHash( 'ime' ) ) ]
+				},
+				{ type: 'retain', length: 3 }
+			]
+		},
+		{
+			msg: `Simple insert with ${ charactersThreshold - 1 } characters is not annotated as IME paste`,
+			oldRawHtml: '<p>quux</p>',
+			oldInnerHtml: 'quux',
+			newInnerHtml: 'z'.repeat( charactersThreshold - 1 ),
+			annotateImportedData: true,
+			operations: [
+				{ type: 'retain', length: 1 },
+				{
+					type: 'replace',
+					remove: [ ...'quux' ],
+					insert: [ ...( 'z'.repeat( charactersThreshold - 1 ) ) ]
+				},
+				{ type: 'retain', length: 3 }
 			]
 		},
 		{
@@ -325,6 +427,12 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		const view = ve.test.utils.createSurfaceViewFromHtml( caseItem.oldRawHtml );
+		const target = view.getSurface().getTarget();
+		let wasAnnotatingImportedData;
+		if ( caseItem.annotateImportedData ) {
+			wasAnnotatingImportedData = target.constructor.static.annotateImportedData;
+			target.constructor.static.annotateImportedData = caseItem.annotateImportedData;
+		}
 		const documentView = view.getDocument();
 		const documentNode = documentView.getDocumentNode();
 		const contentNode = documentNode.children[ 0 ];
@@ -351,6 +459,9 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 			caseItem.msg + ' (operations)'
 		);
 		view.destroy();
+		if ( caseItem.annotateImportedData ) {
+			target.constructor.static.annotateImportedData = wasAnnotatingImportedData;
+		}
 	} );
 } );
 

@@ -23,6 +23,17 @@ ve.ce.TextState = function VeCeTextState( element ) {
 
 OO.initClass( ve.ce.TextState );
 
+/**
+ * Thresholds for treating a detected change as an IME paste.
+ *
+ * Mobile IMEs allow the user to paste text without firing a paste event.
+ * Any insertion above these thresholds will be annotated as a paste.
+ */
+ve.ce.TextState.static.pasteThresholds = {
+	characters: 100,
+	wordbreaks: 10
+};
+
 /* Static methods */
 
 /**
@@ -410,6 +421,47 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		}
 		ve.dm.Document.static.addAnnotationsToData( data, annotations );
 		ve.batchPush( newData, data );
+	}
+
+	if ( ve.init.target.constructor.static.annotateImportedData ) {
+		let annotate = false;
+		if ( newData.length >= ve.ce.TextState.static.pasteThresholds.characters ) {
+			annotate = true;
+		} else if (
+			// You need at least n+1 characters for n wordbreaks
+			newData.length >= ve.ce.TextState.static.pasteThresholds.wordbreaks + 1
+		) {
+			const dataString = new ve.dm.DataString( newData );
+
+			let lastOffset, offset = 0, wordbreaks = 0;
+			while ( true ) {
+				lastOffset = offset;
+				offset = unicodeJS.wordbreak.moveBreakOffset( 1, dataString, offset, true );
+				if ( lastOffset === offset ) {
+					break;
+				}
+				wordbreaks++;
+				if ( wordbreaks >= ve.ce.TextState.static.pasteThresholds.wordbreaks ) {
+					annotate = true;
+					break;
+				}
+			}
+		}
+
+		if ( annotate ) {
+			const store = modelData.getStore();
+			const importedAnn = ve.dm.annotationFactory.createFromElement( {
+				type: 'meta/importedData',
+				attributes: {
+					source: 'ime',
+					eventId: ve.init.platform.generateUniqueId()
+				}
+			} );
+			const annSet = new ve.dm.AnnotationSet( store );
+			annSet.push( importedAnn );
+			// Apply to all inserted data
+			ve.dm.Document.static.addAnnotationsToData( newData, annSet, false, store );
+		}
 	}
 
 	return ve.dm.TransactionBuilder.static.newFromReplacement( modelDoc, removeRange, newData );
