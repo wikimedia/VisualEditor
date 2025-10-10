@@ -58,8 +58,8 @@ ve.dm.InternalListNodeGroup.prototype.isEmpty = function () {
 
 /**
  * @param {string} key
- * @return {ve.dm.Node[]|undefined} All nodes (1 or more, never 0) that (re)use the same key.
- *  Undefined when the key is unknown.
+ * @return {ve.dm.Node[]|undefined} All reference nodes (1 or more, never 0) that (re)use the same
+ *  key. Undefined when the key is unknown.
  */
 ve.dm.InternalListNodeGroup.prototype.getAllReuses = function ( key ) {
 	return this.keyedNodes[ key ];
@@ -155,7 +155,7 @@ ve.dm.InternalListNodeGroup.prototype.appendNode = function ( key, newNode ) {
 
 /**
  * @param {string} key
- * @param {ve.dm.Node} newNode
+ * @param {ve.dm.Node} newNode Reference node to add
  * @param {number} index Existing index; ignored when this is not the first node for this key
  */
 ve.dm.InternalListNodeGroup.prototype.appendNodeWithKnownIndex = function ( key, newNode, index ) {
@@ -170,7 +170,7 @@ ve.dm.InternalListNodeGroup.prototype.appendNodeWithKnownIndex = function ( key,
 
 /**
  * @param {string} key
- * @param {ve.dm.Node} newNode Node to insert at document position
+ * @param {ve.dm.Node} newNode Reference node to insert at document position
  * @param {number} [index] Existing index; ignored when this is not the first node for this key
  */
 ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( key, newNode, index ) {
@@ -204,7 +204,7 @@ ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( key
 
 /**
  * @param {string} key
- * @param {ve.dm.Node} node
+ * @param {ve.dm.Node} node Reference node to remove
  */
 ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( key, node ) {
 	const nodes = this.getAllReuses( key );

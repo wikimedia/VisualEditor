@@ -153,7 +153,7 @@ ve.dm.InternalList.prototype.getItemNodeCount = function () {
  * Get the item node from a specific index.
  *
  * @param {number} index Item index, use {@link getKeyIndex} to map group and key to an index
- * @return {ve.dm.InternalItemNode} Item node
+ * @return {ve.dm.InternalItemNode|undefined}
  */
 ve.dm.InternalList.prototype.getItemNode = function ( index ) {
 	return this.getListNode().children[ index ];
@@ -285,7 +285,7 @@ ve.dm.InternalList.prototype.getKeyIndex = function ( groupName, key ) {
  * @param {string} groupName Item group
  * @param {string} key Item name
  * @param {number} index New item index, or an existing one to replace an item
- * @param {ve.dm.Node} node Item node to add
+ * @param {ve.dm.Node} node Reference node to add
  */
 ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) {
 	let group = this.nodes[ groupName ];
@@ -343,7 +343,7 @@ ve.dm.InternalList.prototype.onTransact = function () {
  * @param {string} groupName Item group
  * @param {string} key Item name
  * @param {number} index Item index
- * @param {ve.dm.Node} node Item node
+ * @param {ve.dm.Node} node Reference node to remove
  */
 ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node ) {
 	this.getNodeGroup( groupName ).unsetNode( key, node );
@@ -354,7 +354,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
  * Clone this internal list.
  *
  * @param {ve.dm.Document} [doc] The new list's document. Defaults to this list's document.
- * @return {ve.dm.InternalList} Clone of this internal
+ * @return {ve.dm.InternalList}
  */
 ve.dm.InternalList.prototype.clone = function ( doc ) {
 	const clone = new this.constructor( doc || this.getDocument() );
