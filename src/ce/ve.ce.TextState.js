@@ -168,7 +168,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 	 */
 	function countMissing( newArray, oldArray, equals ) {
 		let count = 0;
-		for ( let i = 0, iLen = newArray.length; i < iLen; i++ ) {
+		for ( let i = 0; i < newArray.length; i++ ) {
 			let j, jLen;
 			for ( j = 0, jLen = oldArray.length; j < jLen; j++ ) {
 				if ( equals( newArray[ i ], oldArray[ j ] ) ) {
@@ -252,7 +252,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 
 	// Starting just inside the node, skip past matching chunks at the array starts
 	let changeOffset = modelOffset + 1;
-	for ( let i = 0, iLen = change.start; i < iLen; i++ ) {
+	for ( let i = 0; i < change.start; i++ ) {
 		changeOffset += oldChunks[ i ].text.length;
 	}
 
@@ -374,7 +374,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			// directionality spans; in other situations it would be cleaner to
 			// duplicate.
 			annotations = new ve.dm.AnnotationSet( modelData.getStore() );
-			for ( let j = 0, jLen = newChunk.elements.length; j < jLen; j++ ) {
+			for ( let j = 0; j < newChunk.elements.length; j++ ) {
 				const element = newChunk.elements[ j ];
 				// Recover the node from jQuery data store. This can only break if the browser
 				// completely rebuilds the node, but should work in cases like typing into

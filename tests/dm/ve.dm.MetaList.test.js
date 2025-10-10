@@ -25,7 +25,7 @@ ve.test.utils.validateMetaListCache = function ( assert, metaList, msg ) {
 		}
 	} );
 	let match = true;
-	for ( let i = 0, len = newList.length; i < len; i++ ) {
+	for ( let i = 0; i < newList.length; i++ ) {
 		if ( newList[ i ] !== oldList[ i ] ) {
 			match = false;
 			break;

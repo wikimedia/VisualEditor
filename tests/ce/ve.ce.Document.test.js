@@ -171,7 +171,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 
 		if ( caseItem.replacement ) {
 			let node = rootNode;
-			for ( let j = 0, jLen = caseItem.replacement.path.length; j < jLen; j++ ) {
+			for ( let j = 0; j < caseItem.replacement.path.length; j++ ) {
 				node = node.childNodes[ caseItem.replacement.path[ j ] ];
 			}
 			$( node ).closest(

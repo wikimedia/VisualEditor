@@ -880,7 +880,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		}
 	}
 
-	for ( let i = 0, l = cells.length; i < l; i++ ) {
+	for ( let i = 0; i < cells.length; i++ ) {
 		const cell = cells[ i ];
 		if ( !cell ) {
 			continue;

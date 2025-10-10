@@ -324,7 +324,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 			);
 		}
 		run.data = doc.getData( new ve.Range( run.start, run.end ) );
-		for ( let j = 0, jLen = run.data.length; j < jLen; j++ ) {
+		for ( let j = 0; j < run.data.length; j++ ) {
 			let item = ve.copy( run.data[ j ] );
 			const anns = new ve.dm.AnnotationSet(
 				doc.getStore(),

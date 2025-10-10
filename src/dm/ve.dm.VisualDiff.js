@@ -214,7 +214,7 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 
 	// STEP 1: Find identical nodes
 
-	for ( let i = 0, ilen = oldNodes.length; i < ilen; i++ ) {
+	for ( let i = 0; i < oldNodes.length; i++ ) {
 		for ( let j = 0, jlen = newNodes.length; j < jlen; j++ ) {
 			if ( !Object.prototype.hasOwnProperty.call( diff.newToOld, j ) &&
 				this.constructor.static.compareNodes( oldNodes[ i ], newNodes[ j ] )
@@ -230,7 +230,7 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 		}
 	}
 
-	for ( let j = 0, jlen = newNodes.length; j < jlen; j++ ) {
+	for ( let j = 0; j < newNodes.length; j++ ) {
 		if ( !Object.prototype.hasOwnProperty.call( diff.newToOld, j ) ) {
 			newNodesToDiff.push( j );
 		}
@@ -307,7 +307,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 		finalIndices[ 0 ] = 0;
 
 		// Perform algorithm (i.e. populate finalIndices and previousIndices)
-		for ( let j = 0, jlen = sequence.length; j < jlen; j++ ) {
+		for ( let j = 0; j < sequence.length; j++ ) {
 			let low = 1;
 			let high = currentLength;
 			while ( low <= high ) {
@@ -340,7 +340,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 
 	// Get oldDoc indices, sorted according to their order in the new doc
 	const sortedKeys = Object.keys( newToOld ).sort( ( a, b ) => Number( a ) - Number( b ) );
-	for ( let i = 0, ilen = sortedKeys.length; i < ilen; i++ ) {
+	for ( let i = 0; i < sortedKeys.length; i++ ) {
 		const oldIndex = getIndex( newToOld[ sortedKeys[ i ] ] );
 		oldPermuted.push( oldIndex );
 	}

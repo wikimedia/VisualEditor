@@ -49,7 +49,7 @@ ve.dm.ModelFromDomConverter.static.getDataContentFromText = function ( text, ann
 		return characters;
 	}
 	// Apply annotations to characters
-	for ( let i = 0, len = characters.length; i < len; i++ ) {
+	for ( let i = 0; i < characters.length; i++ ) {
 		// Just store the annotations' hashes from the hash-value store
 		characters[ i ] = [ characters[ i ], annotations.getHashes().slice() ];
 	}

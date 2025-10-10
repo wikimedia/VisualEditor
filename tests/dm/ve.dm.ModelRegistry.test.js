@@ -251,7 +251,7 @@ QUnit.test( 'isAnnotation', ( assert ) => {
 		);
 	}
 
-	for ( let i = 0, len = nonAnnotationTags.length; i < len; i++ ) {
+	for ( let i = 0; i < nonAnnotationTags.length; i++ ) {
 		const node = document.createElement( nonAnnotationTags[ i ] );
 		assert.false(
 			ve.dm.modelRegistry.isAnnotation( node ),

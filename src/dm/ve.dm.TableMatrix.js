@@ -264,7 +264,7 @@ ve.dm.TableMatrix.prototype.lookupCell = function ( cellNode ) {
 		return null;
 	}
 	const rowCells = matrix[ row ];
-	for ( let col = 0, cols = rowCells.length; col < cols; col++ ) {
+	for ( let col = 0; col < rowCells.length; col++ ) {
 		if ( rowCells[ col ] && rowCells[ col ].node === cellNode ) {
 			return rowCells[ col ];
 		}

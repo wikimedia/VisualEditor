@@ -939,7 +939,7 @@ ve.getCommonStartSequenceLength = function ( sequences ) {
 			break;
 		}
 		const val = sequences[ 0 ][ commonLength ];
-		for ( let i = 1, len = sequences.length; i < len; i++ ) {
+		for ( let i = 1; i < sequences.length; i++ ) {
 			if (
 				sequences[ i ].length <= commonLength ||
 				sequences[ i ][ commonLength ] !== val

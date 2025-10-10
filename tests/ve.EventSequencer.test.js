@@ -34,7 +34,7 @@ ve.TestEventSequencer.prototype.runPostponed = function () {
 	let ids;
 	while ( ( ids = Object.keys( this.postponedCallbacks ) ).length > 0 ) {
 		ids.sort( sortStringIds );
-		for ( let i = 0, len = ids.length; i < len; i++ ) {
+		for ( let i = 0; i < ids.length; i++ ) {
 			const callback = this.postponedCallbacks[ ids[ i ] ];
 			delete this.postponedCallbacks[ ids[ i ] ];
 			// Check for existence, because a previous iteration may have cancelled

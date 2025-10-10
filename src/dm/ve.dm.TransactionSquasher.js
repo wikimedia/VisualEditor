@@ -112,7 +112,7 @@ ve.dm.TransactionSquasher.static.squash = function ( transactions ) {
 		throw new Error( 'Cannot squash empty transaction array' );
 	}
 	const squasher = new ve.dm.TransactionSquasher( transactions[ 0 ] );
-	for ( let i = 1, iLen = transactions.length; i < iLen; i++ ) {
+	for ( let i = 1; i < transactions.length; i++ ) {
 		squasher.squashIn( transactions[ i ] );
 	}
 	return squasher.getTransaction();

@@ -492,7 +492,7 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options = {} ) {
 
 	let start, end;
 	opLoop:
-	for ( let i = 0, len = this.operations.length; i < len; i++ ) {
+	for ( let i = 0; i < this.operations.length; i++ ) {
 		const op = this.operations[ i ];
 		switch ( op.type ) {
 			case 'retain':
@@ -569,7 +569,7 @@ ve.dm.Transaction.prototype.getActiveRangeAndLengthDiff = function () {
 		diff = 0;
 
 	let start, end, startOpIndex, endOpIndex;
-	for ( let i = 0, len = this.operations.length; i < len; i++ ) {
+	for ( let i = 0; i < this.operations.length; i++ ) {
 		const op = this.operations[ i ];
 		const active = op.type !== 'retain';
 		// Place start marker

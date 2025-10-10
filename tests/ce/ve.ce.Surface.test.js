@@ -748,7 +748,7 @@ QUnit.test( 'getViewportRange', ( assert ) => {
 QUnit.test( 'afterMutations', ( assert ) => {
 	let cases = null, done = null;
 	function getDescendant( node, path ) {
-		for ( let i = 0, len = path.length; i < len; i++ ) {
+		for ( let i = 0; i < path.length; i++ ) {
 			node = node.children[ path[ i ] ];
 		}
 		return node;

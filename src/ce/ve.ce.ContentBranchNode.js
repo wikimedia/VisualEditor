@@ -335,7 +335,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	}
 
 	// Render HTML with annotations
-	for ( let i = 0, ilen = annotatedHtml.length; i < ilen; i++ ) {
+	for ( let i = 0; i < annotatedHtml.length; i++ ) {
 		let item;
 		let itemAnnotations;
 		if ( Array.isArray( annotatedHtml[ i ] ) ) {
@@ -390,7 +390,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 				buffer = '';
 			}
 			// DOM equivalent of $( current ).append( item.clone() );
-			for ( let j = 0, jlen = item.length; j < jlen; j++ ) {
+			for ( let j = 0; j < item.length; j++ ) {
 				// Append a clone so as to not relocate the original node
 				const clone = item[ j ].cloneNode( true );
 				// Store a reference to the original node in a property
@@ -471,7 +471,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	this.unicorns = unicornInfo.unicorns || null;
 
 	// Detach all child nodes from this.$element
-	for ( let i = 0, len = this.$element.length; i < len; i++ ) {
+	for ( let i = 0; i < this.$element.length; i++ ) {
 		const element = this.$element[ i ];
 		while ( element.firstChild ) {
 			element.removeChild( element.firstChild );

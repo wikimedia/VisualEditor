@@ -1736,7 +1736,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 	// we want to text/html and text/plain to be at the end of the list, as
 	// they tend to show up as common fallbacks.
 	const pushItemToBack = function ( array, type ) {
-		for ( let j = 0, jlen = array.length; j < jlen; j++ ) {
+		for ( let j = 0; j < array.length; j++ ) {
 			if ( array[ j ].type === type ) {
 				return array.push( array.splice( j, 1 )[ 0 ] );
 			}
@@ -3951,7 +3951,7 @@ ve.ce.Surface.prototype.afterMutations = function ( mutationRecords ) {
 	} );
 	const removals = removedNodes.map( ( node ) => ( { node, range: node.getOuterRange() } ) );
 	removals.sort( ( x, y ) => x.range.start - y.range.start );
-	for ( let i = 0, iLen = removals.length; i < iLen; i++ ) {
+	for ( let i = 0; i < removals.length; i++ ) {
 		// Remove any overlapped range (which in a tree must be a nested range)
 		if ( i > 0 && removals[ i ].range.start < removals[ i - 1 ].range.end ) {
 			removals.splice( i, 1 );

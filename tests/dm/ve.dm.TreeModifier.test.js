@@ -162,7 +162,7 @@ QUnit.test( 'treeDiff', ( assert ) => {
 	const doc = surface.documentModel;
 	ve.dm.treeModifier.setup( doc );
 	let j = 0;
-	for ( let i = 0, iLen = tx.operations.length; i < iLen; i++ ) {
+	for ( let i = 0; i < tx.operations.length; i++ ) {
 		ve.dm.treeModifier.processLinearOperation( tx.operations[ i ] );
 		assert.deepEqual(
 			ve.dm.treeModifier.treeOps.slice( j ),

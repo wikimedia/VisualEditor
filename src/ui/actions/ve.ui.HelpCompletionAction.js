@@ -145,7 +145,7 @@ ve.ui.HelpCompletionAction.prototype.compareSuggestionToInput = function ( sugge
 	// Allow character skipping in input, so for example "head2" matches "heading 2" and
 	// "blist" matches "bullet list"
 	let matchedIndex = 0;
-	for ( let i = 0, l = normalizedInput.length; i < l; i++ ) {
+	for ( let i = 0; i < normalizedInput.length; i++ ) {
 		matchedIndex = normalizedSuggestion.indexOf( normalizedInput[ i ], matchedIndex );
 		if ( matchedIndex === -1 ) {
 			return {

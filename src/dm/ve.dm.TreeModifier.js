@@ -1044,7 +1044,7 @@ ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInsert
 
 		const jLen = positionI + 1;
 		const offsetsUsed = node.offsetsUsed;
-		for ( let k = 0, kLen = offsetsUsed.length; k < kLen; k++ ) {
+		for ( let k = 0; k < offsetsUsed.length; k++ ) {
 			const j = offsetsUsed[ k ];
 			if ( j >= jLen ) {
 				continue;

@@ -1211,7 +1211,7 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, new
 
 		} else if ( correspondingNodes.newToOld[ newIndex ] === oldIndex ) {
 			// The new node was changed.
-			for ( let k = 0, klen = treeDiff.length; k < klen; k++ ) {
+			for ( let k = 0; k < treeDiff.length; k++ ) {
 				if ( treeDiff[ k ][ 0 ] === oldIndex && treeDiff[ k ][ 1 ] === newIndex ) {
 					if ( !diffInfo[ k ] ) {
 						// We are treating these nodes as removed and inserted

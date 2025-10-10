@@ -118,7 +118,7 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 		if ( !annotations || !annotations.length ) {
 			return;
 		}
-		for ( let j = 0, jLen = items.length; j < jLen; j++ ) {
+		for ( let j = 0; j < items.length; j++ ) {
 			items[ j ] = [ items[ j ], annotations.slice() ];
 		}
 	}
@@ -133,7 +133,7 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 		preserveStoreValues ? ( x ) => x : ( x ) => deserializeValue( x, unsafe )
 	);
 	let prevInfo;
-	for ( let i = 0, iLen = data.transactions.length; i < iLen; i++ ) {
+	for ( let i = 0; i < data.transactions.length; i++ ) {
 		const txSerialized = data.transactions[ i ];
 		let tx;
 		if ( typeof txSerialized === 'string' ) {
@@ -393,12 +393,12 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 	// - transposedHistory: history rebased onto (uncommitted sliced up to i)
 	// - rejected: uncommitted sliced from i onwards
 	bLoop:
-	for ( let i = 0, iLen = transactionsB.length; i < iLen; i++ ) {
+	for ( let i = 0; i < transactionsB.length; i++ ) {
 		let b = transactionsB[ i ];
 		let storeB = storesB[ i ];
 		const rebasedTransactionsA = [];
 		const rebasedStoresA = [];
-		for ( let j = 0, jLen = transactionsA.length; j < jLen; j++ ) {
+		for ( let j = 0; j < transactionsA.length; j++ ) {
 			const a = transactionsA[ j ];
 			const storeA = storesA[ j ];
 			let rebases;
@@ -534,7 +534,7 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 		codeUnits.push( codeUnit );
 		const annotations = getAnnotations( items[ 0 ] );
 		const annotationString = annotations.join( ',' );
-		for ( let i = 1, iLen = items.length; i < iLen; i++ ) {
+		for ( let i = 1; i < items.length; i++ ) {
 			codeUnit = getSingleCodeUnit( items[ i ] );
 			if ( codeUnit === null ) {
 				return null;

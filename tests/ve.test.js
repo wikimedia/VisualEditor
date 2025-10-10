@@ -206,7 +206,7 @@ QUnit.test( 'sparseSplice', ( assert ) => {
 	// This is needed because QUnit.equiv treats holes as equivalent to undefined.
 	function mapToString( flatArray ) {
 		const strings = [];
-		for ( let j = 0, jLen = flatArray.length; j < jLen; j++ ) {
+		for ( let j = 0; j < flatArray.length; j++ ) {
 			strings.push( Object.prototype.hasOwnProperty.call( flatArray, j ) ? String( flatArray[ j ] ) : '' );
 		}
 		return strings;

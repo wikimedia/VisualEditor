@@ -132,7 +132,7 @@ ve.dm.DomFromModelConverter.static.renderHtmlAttributeList = function ( original
 		return;
 	}
 
-	for ( let i = 0, ilen = originalDomElements.length; i < ilen; i++ ) {
+	for ( let i = 0; i < originalDomElements.length; i++ ) {
 		if ( !targetDomElements[ i ] ) {
 			continue;
 		}
@@ -140,7 +140,7 @@ ve.dm.DomFromModelConverter.static.renderHtmlAttributeList = function ( original
 		if ( !attrs ) {
 			continue;
 		}
-		for ( let j = 0, jlen = attrs.length; j < jlen; j++ ) {
+		for ( let j = 0; j < attrs.length; j++ ) {
 			if (
 				targetDomElements[ i ].nodeType === Node.ELEMENT_NODE &&
 				!targetDomElements[ i ].hasAttribute( attrs[ j ].name ) &&

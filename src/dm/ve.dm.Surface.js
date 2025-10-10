@@ -913,7 +913,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 			transactions = [ transactions ];
 		}
 		this.transacting = true;
-		for ( let i = 0, len = transactions.length; i < len; i++ ) {
+		for ( let i = 0; i < transactions.length; i++ ) {
 			if ( !transactions[ i ].isNoOp() ) {
 				let committed;
 				// The .commit() call below indirectly invokes setSelection()

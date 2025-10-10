@@ -356,7 +356,7 @@ QUnit.test( 'fakeImes', ( assert ) => {
 		const testRunner = new ve.ce.TestRunner( view );
 		// Start at 1 to omit the testInfo
 		let died = false;
-		for ( let j = 1, jlen = testActions.length; j < jlen; j++ ) {
+		for ( let j = 1; j < testActions.length; j++ ) {
 			const action = testActions[ j ].action;
 			const args = testActions[ j ].args;
 			const seq = testActions[ j ].seq;
@@ -446,7 +446,7 @@ QUnit.test( 'isAfterAnnotationBoundary', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		let node = div;
-		for ( let j = 0, jLen = caseItem.path.length; j < jLen; j++ ) {
+		for ( let j = 0; j < caseItem.path.length; j++ ) {
 			node = node.childNodes[ caseItem.path[ j ] ];
 		}
 		assert.strictEqual(

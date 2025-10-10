@@ -53,7 +53,7 @@ ve.ui.ModeledFactory.prototype.getRelatedItems = function ( models ) {
 			const candidate = registry[ n ];
 			if ( candidate.static.isCompatibleWith( m ) ) {
 				let add = true;
-				for ( let k = 0, kLen = candidates.length; k < kLen; k++ ) {
+				for ( let k = 0; k < candidates.length; k++ ) {
 					if (
 						candidate.prototype instanceof candidates[ k ] ||
 						( candidate.static.suppresses && candidate.static.suppresses.includes( candidates[ k ].static.name ) )
