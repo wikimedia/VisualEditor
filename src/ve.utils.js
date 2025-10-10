@@ -175,6 +175,29 @@ ve.copy = OO.copy;
 ve.debounce = OO.ui.debounce;
 
 /**
+ * Return a debounced function that will only be called if a test function passes
+ *
+ * A common pattern when using debounce is that you'll need to verify it's
+ * still appropriate to perform the debounced action, e.g. when an object
+ * might be torn down. This lets the test for that condition be centralized,
+ * so it doesn't need to be repeated in multiple functions across a class.
+ *
+ * @method
+ * @see ve.debounce
+ * @param {Function} test Callback which must return true if func is to be called
+ * @param {Function} func Debounced function
+ * @param {...any} debounceArgs Passed into ve.debounce
+ * @return {Function} Debounced function from ve.debounce
+ */
+ve.debounceWithTest = function ( test, func, ...debounceArgs ) {
+	return ve.debounce( ( ...args ) => {
+		if ( test( ...args ) ) {
+			return func( ...args );
+		}
+	}, ...debounceArgs );
+};
+
+/**
  * @method
  * @see OO.ui.throttle
  */
