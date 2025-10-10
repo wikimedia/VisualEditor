@@ -331,7 +331,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 		// Items in the longest increasing subsequence are oldDoc indices of unmoved nodes.
 		// Mark corresponding newDoc indices of these unmoved nodes, in mvs array.
 		let k = finalIndices[ currentLength ];
-		for ( let j = currentLength, jlen = 0; j > jlen; j-- ) {
+		for ( let j = currentLength; j--; ) {
 			const newIndex = getIndex( oldToNew[ sequence[ k ] ] );
 			mvs[ newIndex ] = unmoved;
 			k = previousIndices[ k ];

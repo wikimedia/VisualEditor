@@ -128,7 +128,7 @@ ve.dm.InternalList.prototype.getListNode = function () {
 	// Find listNode if not set, or unattached
 	if ( !this.listNode || !this.listNode.doc ) {
 		const nodes = this.getDocument().getDocumentNode().children;
-		for ( let i = nodes.length; i >= 0; i-- ) {
+		for ( let i = nodes.length; i--; ) {
 			if ( nodes[ i ] instanceof ve.dm.InternalListNode ) {
 				this.listNode = nodes[ i ];
 				break;
