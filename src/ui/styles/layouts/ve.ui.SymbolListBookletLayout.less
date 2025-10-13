@@ -28,6 +28,7 @@
 		white-space: normal;
 	}
 
+	// See T406982 for border/background color reasoning
 	&-symbol {
 		cursor: pointer;
 		font-size: 1.5em;
@@ -38,11 +39,19 @@
 		display: inline-block;
 		vertical-align: top;
 		margin: 0 3px 3px 0;
-		border: 1px solid #eaecf0;
+		// Should be @border-color-muted
+		border: 1px solid #dadde3;
 		transition: border-color 200ms;
+		border-radius: @border-radius-base;
 
 		&:hover {
-			border-color: #c8ccd1;
+			// Should be @background-color-interactive-subtle--hover
+			background-color: @background-color-interactive;
+		}
+
+		&:active {
+			// Should be @background-color-interactive-subtle--active
+			background-color: #dadde3;
 		}
 	}
 }
