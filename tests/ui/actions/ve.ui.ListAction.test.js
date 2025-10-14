@@ -62,7 +62,6 @@ QUnit.test( '(un)wrap', ( assert ) => {
 			{
 				actionName: 'list',
 				args: [ caseItem.style ],
-				createView: true,
 				...caseItem
 			}
 		);
@@ -103,7 +102,6 @@ QUnit.test( 'toggle', ( assert ) => {
 			{
 				actionName: 'list',
 				args: [ caseItem.style ],
-				createView: true,
 				...caseItem
 			}
 		);
