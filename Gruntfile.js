@@ -443,7 +443,6 @@ module.exports = function ( grunt ) {
 								'src/dm/ve.dm.Converter.js',
 								'src/dm/ve.dm.InternalList.js',
 								'src/dm/ve.dm.InternalListNodeGroup.js',
-								'src/dm/ve.dm.NodeFactory.js',
 								'src/dm/ve.dm.SourceSurfaceFragment.js',
 								'src/dm/ve.dm.SurfaceSynchronizer.js',
 								'src/dm/ve.dm.TableSlice.js',

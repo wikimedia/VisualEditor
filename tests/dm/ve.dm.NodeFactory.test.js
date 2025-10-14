@@ -116,6 +116,40 @@ QUnit.test( 'initialization', ( assert ) => {
 	assert.true( ve.dm.nodeFactory instanceof ve.dm.NodeFactory, 'factory is initialized at ve.dm.nodeFactory' );
 } );
 
+QUnit.test( 'Unknown node type', ( assert ) => {
+	const factory = ve.dm.nodeFactory;
+	[
+		'getDataElement',
+		'getChildNodeTypes',
+		'getParentNodeTypes',
+		'getSuggestedParentNodeTypes',
+		'canNodeHaveChildren',
+		'canNodeHaveChildrenNotContent',
+		'isNodeWrapped',
+		'isNodeUnwrappable',
+		'isMetaData',
+		'isRemovableMetaData',
+		'canNodeContainContent',
+		'canNodeTakeAnnotation',
+		'isNodeContent',
+		'canNodeSerializeAsContent',
+		'isNodeFocusable',
+		'doesNodeHaveSignificantWhitespace',
+		'doesNodeHandleOwnChildren',
+		'shouldIgnoreChildren',
+		'isNodeInternal',
+		'isNodeDeletable'
+	].forEach( ( method ) => {
+		assert.throws(
+			() => {
+				factory[ method ]( 'node-type-does-not-exist' );
+			},
+			/Unknown node type/,
+			`Throws an exception when calling ${ method } on an unregistered node type`
+		);
+	} );
+} );
+
 // TODO: getDataElement
 // TODO: getSuggestedParentNodeTypes
 // TODO: isNodeWrapped
