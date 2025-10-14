@@ -8,23 +8,57 @@ QUnit.module( 've.ui.FragmentInspector' );
 
 /* Tests */
 
-ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
+/**
+ * Runs all fragment inspector tests.
+ *
+ * Tests are grouped by platform and run sequentially to avoid
+ * interference due to the global mocking.
+ *
+ * @param {Object} assert
+ * @param {Object[]} cases
+ * @return {Promise}
+ */
+ve.test.utils.runFragmentInspectorTests = function ( assert, cases ) {
 	let promise = Promise.resolve();
+	[ true, false ].forEach( ( isMobile ) => {
+		promise = promise.then( () => ve.test.utils.runFragmentInspectorTestsByPlatform(
+			assert,
+			cases.filter( ( caseItem ) => !!caseItem.isMobile === isMobile ),
+			isMobile
+		) );
+	} );
+	return promise;
+};
 
-	surface.getView().showSelectionState = function () {};
+/**
+ * Runs all fragment inspector tests for a given platform in parallel.
+ *
+ * @param {Object} assert
+ * @param {Object[]} cases
+ * @param {boolean} isMobile
+ * @return {Promise}
+ */
+ve.test.utils.runFragmentInspectorTestsByPlatform = function ( assert, cases, isMobile ) {
+	const isMobileOrig = OO.ui.isMobile;
+	// Mock isMobile
+	OO.ui.isMobile = () => isMobile;
+	// Surface will try to append the overlay but this is not necessary
+	const getTeleportTargetOrig = OO.ui.getTeleportTarget;
+	OO.ui.getTeleportTarget = () => $( [] );
 
-	cases.forEach( ( caseItem ) => {
-		promise = promise.then( () => surface.context.inspectors.getWindow( caseItem.name ).then( ( inspector ) => {
-			const surfaceModel = surface.getModel(),
-				linearData = ve.copy( surfaceModel.getDocument().getFullData() );
+	const promises = cases.map( ( caseItem ) => {
+		const surface = ve.test.utils.createSurfaceFromHtml( caseItem.html || ve.dm.example.singleLine`
+			<p>Foo <a href="bar">bar</a> baz  x</p>
+			<p><!-- comment --> comment</p>
+			<p>Fo<a href="bar">o bar</a></p>
+		`, caseItem.config || {} );
+		surface.getView().showSelectionState = () => {};
+		return surface.context.inspectors.getWindow( caseItem.name ).then( ( inspector ) => {
+			const surfaceModel = surface.getModel();
+			const linearData = ve.copy( surfaceModel.getDocument().getFullData() );
 
 			surfaceModel.setLinearSelection( caseItem.range );
 			const setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
-			const isMobile = OO.ui.isMobile;
-			if ( caseItem.isMobile ) {
-				// Mock isMobile
-				OO.ui.isMobile = () => true;
-			}
 			return inspector.setup( setupData ).then( () => inspector.ready( setupData ).then( () => {
 				if ( caseItem.input ) {
 					caseItem.input.call( inspector );
@@ -52,23 +86,19 @@ ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
 					}
 					// Insertion annotations are not cleared by undo
 					surfaceModel.setInsertionAnnotations( null );
-
-					// Restore isMobile
-					OO.ui.isMobile = isMobile;
 				} );
 			} ) );
-		} ) );
+		} );
 	} );
-	return promise;
+	return Promise.all( promises ).then( () => {
+		// Restore mocks
+		OO.ui.isMobile = isMobileOrig;
+		OO.ui.getTeleportTarget = getTeleportTargetOrig;
+	} );
 };
 
 QUnit.test( 'Different selections and inputs', ( assert ) => {
 	const done = assert.async(),
-		surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.singleLine`
-			<p>Foo <a href="bar">bar</a> baz  x</p>
-			<p><!-- comment --> comment</p>
-			<p>Fo<a href="bar">o bar</a></p>
-		` ),
 		fooHash = 'hd5a13e54366d44db',
 		barHash = 'h071cb84c069d07a4',
 		quuxHash = 'hb085ebec56a162a4',
@@ -331,5 +361,5 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 			}
 		];
 
-	ve.test.utils.runFragmentInspectorTests( surface, assert, cases ).finally( () => done() );
+	ve.test.utils.runFragmentInspectorTests( assert, cases ).finally( () => done() );
 } );

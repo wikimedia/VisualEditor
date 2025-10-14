@@ -1008,6 +1008,7 @@
 			"jsdifflib",
 			"qunit",
 			"visualEditor.desktop.standalone.wikimediaui",
+			"visualEditor.mobile.build",
 			"visualEditor.rebase",
 			"visualEditor.collab"
 		]
