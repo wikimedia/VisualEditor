@@ -1324,7 +1324,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		// Queue up transaction data
 		insertions.push( {
 			offset: insertBefore ? startOffset : endOffset,
-			data: data
+			data
 		} );
 
 		startOffset += adjustment;

@@ -1136,16 +1136,16 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 				return {
 					node: null,
 					offset: null,
-					steps: steps
+					steps
 				};
 			}
 			offset = ve.parentIndex( node ) + ( forward ? 1 : 0 );
 			node = node.parentNode;
 			if ( stop( step ) ) {
 				return {
-					node: node,
-					offset: offset,
-					steps: steps
+					node,
+					offset,
+					steps
 				};
 			}
 			// Else take another step
@@ -1164,9 +1164,9 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 			offset += direction;
 			if ( stop( step ) ) {
 				return {
-					node: node,
-					offset: offset,
-					steps: steps
+					node,
+					offset,
+					steps
 				};
 			}
 			continue;
@@ -1187,9 +1187,9 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 			offset += forward ? 1 : -1;
 			if ( stop( step ) ) {
 				return {
-					node: node,
-					offset: offset,
-					steps: steps
+					node,
+					offset,
+					steps
 				};
 			}
 			// Else take another step
@@ -1203,9 +1203,9 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 		steps.push( posStep );
 		if ( stop( posStep ) ) {
 			return {
-				node: node,
-				offset: offset,
-				steps: steps
+				node,
+				offset,
+				steps
 			};
 		}
 	}
@@ -1292,5 +1292,5 @@ ve.countEdgeMatches = function ( before, after, equals ) {
 			break;
 		}
 	}
-	return { start: start, end: end };
+	return { start, end };
 };

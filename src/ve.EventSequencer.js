@@ -259,7 +259,7 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	// - Create the pendingCall object first
 	// - then create the setTimeout invocation to modify pendingCall.id
 	// - then set pendingCall.id to the setTimeout id, so the call can cancel itself
-	const pendingCall = { id: null, ev: ev, eventName: eventName };
+	const pendingCall = { id: null, ev, eventName };
 	const id = this.postpone( () => {
 		if ( pendingCall.id === null ) {
 			// clearTimeout seems not always to work immediately

@@ -122,10 +122,10 @@ ve.dm.TableSelection.prototype.expand = function ( doc ) {
 
 		lastCellCount = cells.length;
 		cells = this.constructor.static.getTableMatrixCells( matrix, {
-			startCol: startCol,
-			startRow: startRow,
-			endCol: endCol,
-			endRow: endRow
+			startCol,
+			startRow,
+			endCol,
+			endRow
 		} );
 	}
 	return new this.constructor(

@@ -124,7 +124,7 @@ ve.dm.RebaseClient.prototype.submitChange = function () {
 	// receiving the change before it receives the submitChange message.
 	this.logEvent( {
 		type: 'submitChange',
-		change: change,
+		change,
 		backtrack: this.backtrack
 	} );
 	this.sendChange( this.backtrack, change );
@@ -198,7 +198,7 @@ ve.dm.RebaseClient.prototype.acceptChange = function ( change ) {
 	}
 	this.logEvent( ve.extendObject( {
 		type: 'acceptChange',
-		authorId: authorId,
+		authorId,
 		change: [ change.start, change.getLength() ]
 	}, logResult ) );
 };

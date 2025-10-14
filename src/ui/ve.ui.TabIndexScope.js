@@ -83,7 +83,7 @@ ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
 			}
 			return OO.ui.isFocusableElement( $( element ) );
 		} )
-		.map( ( index, element ) => ( { element: element, index: index } ) )
+		.map( ( index, element ) => ( { element, index } ) )
 		.get();
 	elements.sort( ( a, b ) => {
 		if ( a.element.tabIndex < b.element.tabIndex ) {

@@ -308,7 +308,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, skipAut
 			mode,
 			{ lang: this.lang, dir: this.dir }
 		),
-		{ placeholder: 'Start your document', mode: mode }
+		{ placeholder: 'Start your document', mode }
 	);
 
 	this.target.setSurface( this.surface );

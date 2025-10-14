@@ -37,7 +37,7 @@ ve.dm.DefinitionListItemNode.static.matchTagNames = [ 'dt', 'dd' ];
 
 ve.dm.DefinitionListItemNode.static.toDataElement = function ( domElements ) {
 	const style = domElements[ 0 ].nodeName.toLowerCase() === 'dt' ? 'term' : 'definition';
-	return { type: this.name, attributes: { style: style } };
+	return { type: this.name, attributes: { style } };
 };
 
 ve.dm.DefinitionListItemNode.static.toDomElements = function ( dataElement, doc ) {

@@ -94,10 +94,7 @@ ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset, isPaste
 		}
 		const range = sequence.match( data, offset, plaintext );
 		if ( range !== null ) {
-			sequences.push( {
-				sequence: sequence,
-				range: range
-			} );
+			sequences.push( { sequence, range } );
 		}
 	}
 	return sequences;

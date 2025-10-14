@@ -133,7 +133,7 @@ ve.ce.nextCursorOffset = function ( node ) {
 		nextNode = node.parentNode;
 		offset = 1 + ve.parentIndex( node );
 	}
-	return { node: nextNode, offset: offset };
+	return { node: nextNode, offset };
 };
 
 /**
@@ -151,7 +151,7 @@ ve.ce.previousCursorOffset = function ( node ) {
 		previousNode = node.parentNode;
 		offset = ve.parentIndex( node );
 	}
-	return { node: previousNode, offset: offset };
+	return { node: previousNode, offset };
 };
 
 /**

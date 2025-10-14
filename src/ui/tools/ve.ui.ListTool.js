@@ -50,7 +50,7 @@ ve.ui.ListTool.prototype.onUpdateState = function ( fragment ) {
 	ve.ui.ListTool.super.prototype.onUpdateState.apply( this, arguments );
 
 	const style = this.constructor.static.style;
-	const isMatching = fragment.hasMatchingAncestor( 'list', { style: style }, true );
+	const isMatching = fragment.hasMatchingAncestor( 'list', { style }, true );
 	this.setActive( isMatching );
 };
 

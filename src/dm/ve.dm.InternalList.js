@@ -106,10 +106,8 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
 		this.itemHtmlQueue[ index ] = html;
 		isNew = true;
 	}
-	return {
-		index: index,
-		isNew: isNew
-	};
+
+	return { index, isNew };
 };
 
 /**
@@ -411,8 +409,5 @@ ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
 			newItemRanges.push( list.getItemNode( i ).getOuterRange() );
 		}
 	}
-	return {
-		mapping: mapping,
-		newItemRanges: newItemRanges
-	};
+	return { mapping, newItemRanges };
 };

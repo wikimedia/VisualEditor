@@ -1584,9 +1584,9 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	}
 
 	return {
-		offset: offset,
+		offset,
 		data: newData,
-		remove: remove,
+		remove,
 		insertedDataOffset: insertedDataOffset !== 0 ? insertedDataOffset : undefined,
 		insertedDataLength: insertedDataLength !== newData.length ? insertedDataLength : undefined
 	};
@@ -1785,7 +1785,7 @@ ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 			sensitivity = options.caseSensitiveString ? 'variant' : 'accent';
 		}
 		// Intl is only used browser clients
-		const compare = new Intl.Collator( this.lang, { sensitivity: sensitivity } ).compare;
+		const compare = new Intl.Collator( this.lang, { sensitivity } ).compare;
 		// Iterate up to (and including) offset textLength - queryLength. Beyond that point
 		// there is not enough room for the query to exist
 		for ( let offset = searchRange.start, l = searchRange.end - qLen; offset <= l; offset++ ) {
@@ -1876,7 +1876,7 @@ ve.dm.Document.prototype.getDir = function () {
 ve.dm.Document.prototype.setStorage = function ( keyOrStorage, value ) {
 	if ( typeof keyOrStorage === 'string' ) {
 		// Attempt to JSON-serialize the value now so an error can be thrown if necessary.
-		JSON.stringify( { value: value } );
+		JSON.stringify( { value } );
 		this.persistentStorage[ keyOrStorage ] = value;
 		this.emit( 'storage' );
 	} else {

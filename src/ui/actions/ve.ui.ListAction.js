@@ -38,7 +38,7 @@ ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle', 'wrapOnce' ];
  * @return {boolean} Current selection is all wrapped in a list
  */
 ve.ui.ListAction.prototype.allWrapped = function ( style, listType = 'list' ) {
-	const attributes = style ? { style: style } : undefined;
+	const attributes = style ? { style } : undefined;
 	return this.surface.getModel().getFragment().hasMatchingAncestor( listType, attributes, true );
 };
 
@@ -125,7 +125,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType = 'l
 			if ( group.grandparent !== previousList ) {
 				surfaceModel.getLinearFragment( group.grandparent.getOuterRange(), true )
 					// Change the list style
-					.changeAttributes( { style: style } );
+					.changeAttributes( { style } );
 				previousList = group.grandparent;
 			}
 		} else {
@@ -136,7 +136,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType = 'l
 			);
 			const element = { type: listType };
 			if ( style ) {
-				element.attributes = { style: style };
+				element.attributes = { style };
 			}
 			const itemElement = ve.dm.modelRegistry.lookup( listType ).static.createItem();
 			surfaceModel.getLinearFragment( groupRange, true )

@@ -219,7 +219,7 @@ ve.ui.commandRegistry.register(
 		ve.ui.commandRegistry.register(
 			new ve.ui.Command(
 				'heading' + level, 'format', 'convert',
-				{ args: [ 'heading', { level: level } ], supportedSelections: [ 'linear' ] }
+				{ args: [ 'heading', { level } ], supportedSelections: [ 'linear' ] }
 			)
 		);
 	}

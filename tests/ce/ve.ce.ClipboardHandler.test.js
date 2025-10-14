@@ -43,7 +43,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 	// Paste sequence
 	if ( item.internalSourceRangeOrSelection ) {
 		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( doc, item.internalSourceRangeOrSelection ) );
-		testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } );
+		testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData } );
 		let isClipboardDataFormatsSupported;
 		if ( item.noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
@@ -55,14 +55,14 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		if ( item.noClipboardData ) {
 			ve.isClipboardDataFormatsSupported = isClipboardDataFormatsSupported;
 		}
-		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
+		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData } );
 	} else {
 		if ( item.useClipboardData ) {
 			clipboardData.setData( view.clipboardHandler.constructor.static.clipboardKeyMimeType, 'useClipboardData-0' );
 		} else if ( item.fromVe ) {
 			clipboardData.setData( view.clipboardHandler.constructor.static.clipboardKeyMimeType, '0.123-0' );
 		}
-		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
+		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData } );
 	}
 	if ( item.middleClickRangeOrSelection ) {
 		view.lastNonCollapsedDocumentSelection = ve.test.utils.selectionFromRangeOrSelection( doc, item.middleClickRangeOrSelection );
@@ -249,7 +249,7 @@ QUnit.test( 'onCopy', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		const clipboardData = new ve.test.utils.MockDataTransfer(),
-			testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } ),
+			testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData } ),
 			view = ve.test.utils.createSurfaceViewFromDocument( caseItem.doc || ve.dm.example.createExampleDocument() ),
 			model = view.getModel();
 

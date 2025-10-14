@@ -75,8 +75,8 @@ function toTestCase( parsedLog ) {
 	}
 	return {
 		initialData: [],
-		clients: clients,
-		ops: ops
+		clients,
+		ops
 	};
 }
 

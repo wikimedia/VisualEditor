@@ -62,11 +62,11 @@ ve.dm.example.StubReferenceNode.static.toDataElement = function ( domElements, c
 	const dataElement = {
 		type: this.name,
 		attributes: {
-			listIndex: listIndex,
-			listGroup: listGroup,
-			listKey: listKey,
-			refGroup: refGroup,
-			contentsUsed: contentsUsed
+			listIndex,
+			listGroup,
+			listKey,
+			refGroup,
+			contentsUsed
 		}
 	};
 	return dataElement;

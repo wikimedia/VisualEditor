@@ -93,7 +93,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data = {}, action = null ) 
 		fragmentPromise = ve.createDeferred().resolve( surfaceFragment ).promise();
 	}
 
-	data = ve.extendObject( { dir: dir }, data, { surface: surface, $returnFocusTo: null } );
+	data = ve.extendObject( { dir }, data, { surface, $returnFocusTo: null } );
 
 	if ( windowType.name === 'toolbar' || windowType.name === 'inspector' ) {
 		// Auto-close the current window if it is different to the one we are
@@ -114,7 +114,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data = {}, action = null ) 
 	}
 
 	fragmentPromise.then( ( fragment ) => {
-		ve.extendObject( data, { fragment: fragment } );
+		ve.extendObject( data, { fragment } );
 
 		ve.promiseAll( autoClosePromises ).always( () => {
 			windowManager.getWindow( name ).then( ( win ) => {

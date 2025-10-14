@@ -28,11 +28,11 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', ( asser
 			height: 800
 		},
 		scalable = new ve.dm.Scalable( {
-			currentDimensions: currentDimensions,
-			originalDimensions: originalDimensions,
-			defaultDimensions: defaultDimensions,
-			minDimensions: minDimensions,
-			maxDimensions: maxDimensions
+			currentDimensions,
+			originalDimensions,
+			defaultDimensions,
+			minDimensions,
+			maxDimensions
 		} );
 
 	let eventEmitted = false,
@@ -153,10 +153,10 @@ QUnit.test( 'getBoundedDimensions/getCurrentScale/isCurrentDimensionsValid/isToo
 			height: 800
 		},
 		scalable = new ve.dm.Scalable( {
-			currentDimensions: currentDimensions,
-			originalDimensions: originalDimensions,
-			minDimensions: minDimensions,
-			maxDimensions: maxDimensions
+			currentDimensions,
+			originalDimensions,
+			minDimensions,
+			maxDimensions
 		} );
 
 	assert.deepEqual( scalable.getBoundedDimensions( { width: 600, height: 600 } ), { width: 600, height: 400 }, 'getBoundedDimensions' );

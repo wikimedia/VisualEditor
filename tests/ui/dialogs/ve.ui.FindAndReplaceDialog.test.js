@@ -76,7 +76,7 @@ QUnit.test( 'find fragments', ( assert ) => {
 
 	surface.getToolbarDialogs( 'above' ).getWindow( 'findAndReplace' ).then( ( dialog ) => {
 		dialog.open( {
-			surface: surface,
+			surface,
 			fragment: surface.getModel().getFragment()
 		} ).opening.then( () => {
 			cases.forEach( ( caseItem ) => {
@@ -120,7 +120,7 @@ QUnit.test( 'replace all', ( assert ) => {
 
 	surface.getToolbarDialogs( 'above' ).getWindow( 'findAndReplace' ).done( ( dialog ) => {
 		dialog.open( {
-			surface: surface,
+			surface,
 			fragment: surface.getModel().getFragment()
 		} ).opening.then( () => {
 			cases.forEach( ( caseItem ) => {

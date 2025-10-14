@@ -39,7 +39,7 @@ ve.dm.CheckListItemNode.static.toDataElement = function ( domElements, converter
 	const checked = domElements[ 0 ].hasAttribute( 'data-checked' ) ||
 		// Old HTML format used the invalid attribute "checked"
 		domElements[ 0 ].hasAttribute( 'checked' );
-	const element = { type: this.name, attributes: { checked: checked } };
+	const element = { type: this.name, attributes: { checked } };
 	return converter.getDataFromDomClean( domElements[ 0 ], element );
 };
 

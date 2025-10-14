@@ -23,8 +23,8 @@ ve.test.utils.makeStubTransferHandler = function ( name, handlesPaste, types, ki
 
 ve.test.utils.makeStubTransferItem = function ( type, kind, extension ) {
 	return {
-		type: type,
-		kind: kind,
+		type,
+		kind,
 		getExtension: () => extension
 	};
 };

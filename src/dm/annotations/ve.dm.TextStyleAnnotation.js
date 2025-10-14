@@ -30,9 +30,7 @@ ve.dm.TextStyleAnnotation.static.toDataElement = function ( domElements, convert
 	const nodeName = converter.isFromClipboard() ? this.matchTagNames[ 0 ] : domElements[ 0 ].nodeName.toLowerCase();
 	return {
 		type: this.name,
-		attributes: {
-			nodeName: nodeName
-		}
+		attributes: { nodeName }
 	};
 };
 

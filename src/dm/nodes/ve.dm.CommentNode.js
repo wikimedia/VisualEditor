@@ -43,9 +43,7 @@ ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
 	return {
 		// Disallows comment nodes between table rows and such
 		type: converter.isValidChildNodeType( 'comment' ) && text !== '' ? 'comment' : 'commentMeta',
-		attributes: {
-			text: text
-		}
+		attributes: { text }
 	};
 };
 

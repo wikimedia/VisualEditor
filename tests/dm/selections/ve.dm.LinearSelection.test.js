@@ -37,9 +37,9 @@ QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescriptio
 	const range = new ve.Range( 200, 100 ),
 		selection = new ve.dm.LinearSelection( range );
 
-	assert.deepEqual( selection.toJSON(), { type: 'linear', range: range }, 'toJSON' );
+	assert.deepEqual( selection.toJSON(), { type: 'linear', range }, 'toJSON' );
 	assert.deepEqual(
-		ve.dm.Selection.static.newFromJSON( JSON.stringify( { type: 'linear', range: range } ) ),
+		ve.dm.Selection.static.newFromJSON( JSON.stringify( { type: 'linear', range } ) ),
 		selection,
 		'newFromJSON'
 	);

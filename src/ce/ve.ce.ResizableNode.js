@@ -181,10 +181,10 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
 		.removeClass( 'oo-ui-element-hidden' )
 		.addClass( 've-ce-resizableNode-sizeLabel-resizing' )
 		.css( {
-			top: top,
+			top,
 			left: offset.left,
 			width: dimensions.width,
-			height: height,
+			height,
 			lineHeight: height + 'px'
 		} );
 	this.$sizeText.empty();

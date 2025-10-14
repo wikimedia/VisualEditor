@@ -96,7 +96,7 @@ ve.dm.TestRebaseClient.prototype.getChangeSince = function ( start ) {
 };
 
 ve.dm.TestRebaseClient.prototype.sendChange = function ( backtrack, change ) {
-	this.outgoing.push( { backtrack: backtrack, change: change } );
+	this.outgoing.push( { backtrack, change } );
 };
 
 ve.dm.TestRebaseClient.prototype.applyChange = function ( change ) {

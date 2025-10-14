@@ -34,7 +34,7 @@ function initApp( options ) {
 	// eslint-disable-next-line prefer-regex-literals
 	app.get( new RegExp( '/doc/edit/(.*)' ), ( req, res ) => {
 		const docName = req.params[ 0 ];
-		res.render( 'editor', { docName: docName } );
+		res.render( 'editor', { docName } );
 	} );
 
 	// eslint-disable-next-line prefer-regex-literals

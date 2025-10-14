@@ -87,7 +87,7 @@ ve.ui.ModeledFactory.prototype.getRelatedItems = function ( models ) {
 		classes.forEach( ( clss ) => {
 			const name = clss.static.name;
 			if ( !names[ name ] ) {
-				matches.push( { name: name, model: model } );
+				matches.push( { name, model } );
 			}
 			names[ name ] = true;
 		} );

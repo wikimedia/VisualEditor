@@ -58,7 +58,7 @@ ve.test.utils.runFragmentInspectorTestsByPlatform = function ( assert, cases, is
 			const linearData = ve.copy( surfaceModel.getDocument().getFullData() );
 
 			surfaceModel.setLinearSelection( caseItem.range );
-			const setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
+			const setupData = ve.extendObject( { surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
 			return inspector.setup( setupData ).then( () => inspector.ready( setupData ).then( () => {
 				if ( caseItem.input ) {
 					caseItem.input.call( inspector );

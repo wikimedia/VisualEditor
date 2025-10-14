@@ -248,7 +248,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertFromSource = function ( source ) {
 	} else {
 		return ve.createDeferred().resolve(
 			ve.dm.converter.getModelFromDom(
-				ve.createDocumentFromHtml( source, { lang: lang, dir: dir } )
+				ve.createDocumentFromHtml( source, { lang, dir } )
 			)
 		).promise();
 	}

@@ -147,7 +147,7 @@ QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescriptio
 		selection = new ve.dm.TableSelection( tableRange, 1, 2, 3, 4 ),
 		json = {
 			type: 'table',
-			tableRange: tableRange,
+			tableRange,
 			fromCol: 1,
 			fromRow: 2,
 			toCol: 3,

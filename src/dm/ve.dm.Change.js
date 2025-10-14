@@ -187,7 +187,7 @@ ve.dm.Change.static.serializeValue = function ( value ) {
 	} else if ( Array.isArray( value ) && value[ 0 ] instanceof Node ) {
 		return { type: 'domNodes', value: value.map( ve.getNodeHtml ).join( '' ) };
 	} else {
-		return { type: 'plain', value: value };
+		return { type: 'plain', value };
 	}
 };
 
@@ -448,9 +448,9 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 		transposedHistory.selections[ authorId ] = selectionsA[ authorId ].translateByChange( rebased, authorId );
 	}
 	return {
-		rebased: rebased,
-		transposedHistory: transposedHistory,
-		rejected: rejected
+		rebased,
+		transposedHistory,
+		rejected
 	};
 };
 
@@ -544,8 +544,8 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 		}
 		return {
 			text: codeUnits.join( '' ),
-			annotations: annotations,
-			annotationString: annotationString
+			annotations,
+			annotationString
 		};
 	}
 
@@ -579,9 +579,9 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 	}
 
 	return {
-		start: start,
-		end: end,
-		docLength: docLength,
+		start,
+		end,
+		docLength,
 		authorId: tx.authorId,
 		uniformInsert: getUniformText( replaceOp.insert )
 	};
@@ -930,7 +930,7 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	const stores = this.getStores().map( serializeStore );
 	const data = {
 		start: this.start,
-		transactions: transactions
+		transactions
 	};
 	// Only set stores if at least one is non-null
 	if ( stores.some( ( store ) => store !== null ) ) {

@@ -36,7 +36,7 @@ OO.initClass( ve.ui.DataTransferItem );
  * @return {ve.ui.DataTransferItem} New data transfer item
  */
 ve.ui.DataTransferItem.static.newFromBlob = function ( blob, htmlStringData ) {
-	return new ve.ui.DataTransferItem( 'file', blob.type, { blob: blob, htmlStringData: htmlStringData }, blob.name );
+	return new ve.ui.DataTransferItem( 'file', blob.type, { blob, htmlStringData }, blob.name );
 };
 
 /**
@@ -48,7 +48,7 @@ ve.ui.DataTransferItem.static.newFromBlob = function ( blob, htmlStringData ) {
  */
 ve.ui.DataTransferItem.static.newFromDataUri = function ( dataUri, htmlStringData ) {
 	const parts = dataUri.split( ',' );
-	return new ve.ui.DataTransferItem( 'file', parts[ 0 ].match( /^data:([^;]+)/ )[ 1 ], { dataUri: parts[ 1 ], htmlStringData: htmlStringData } );
+	return new ve.ui.DataTransferItem( 'file', parts[ 0 ].match( /^data:([^;]+)/ )[ 1 ], { dataUri: parts[ 1 ], htmlStringData } );
 };
 
 /**
@@ -60,7 +60,7 @@ ve.ui.DataTransferItem.static.newFromDataUri = function ( dataUri, htmlStringDat
  * @return {ve.ui.DataTransferItem} New data transfer item
  */
 ve.ui.DataTransferItem.static.newFromString = function ( stringData, type, htmlStringData ) {
-	return new ve.ui.DataTransferItem( 'string', type || 'text/plain', { stringData: stringData, htmlStringData: htmlStringData } );
+	return new ve.ui.DataTransferItem( 'string', type || 'text/plain', { stringData, htmlStringData } );
 };
 
 /**
@@ -71,7 +71,7 @@ ve.ui.DataTransferItem.static.newFromString = function ( stringData, type, htmlS
  * @return {ve.ui.DataTransferItem} New data transfer item
  */
 ve.ui.DataTransferItem.static.newFromItem = function ( item, htmlStringData ) {
-	return new ve.ui.DataTransferItem( item.kind, item.type, { item: item, htmlStringData: htmlStringData }, item.getAsFile().name );
+	return new ve.ui.DataTransferItem( item.kind, item.type, { item, htmlStringData }, item.getAsFile().name );
 };
 
 /**

@@ -49,11 +49,11 @@ ve.dm.ProtocolServer.prototype.ensureLoaded = function ( docName ) {
 	if ( loading ) {
 		return loading;
 	}
-	this.logger.logServerEvent( { type: 'ProtocolServer#load', docName: docName } );
+	this.logger.logServerEvent( { type: 'ProtocolServer#load', docName } );
 	loading = this.documentStore.load( docName ).then( ( change ) => {
 		this.logger.logServerEvent( {
 			type: 'ProtocolServer#loaded',
-			docName: docName,
+			docName,
 			length: change.getLength()
 		} );
 		rebaseServer.updateDocState( docName, null, change );
@@ -84,8 +84,8 @@ ve.dm.ProtocolServer.prototype.authenticate = function ( docName, authorId, toke
 	}
 	const context = {
 		serverId: this.documentStore.serverId,
-		docName: docName,
-		authorId: authorId
+		docName,
+		authorId
 	};
 	this.logger.logServerEvent( {
 		type: 'newClient',
@@ -136,12 +136,12 @@ ve.dm.ProtocolServer.prototype.welcomeClient = function ( context, startLength =
 	const authorData = state.authors.get( authorId );
 
 	context.sendAuthor( 'registered', {
-		serverId: serverId,
-		authorId: authorId,
+		serverId,
+		authorId,
 		token: authorData.token
 	} );
 	context.broadcast( 'authorChange', {
-		authorId: authorId,
+		authorId,
 		authorData: {
 			name: authorData.name,
 			color: authorData.color

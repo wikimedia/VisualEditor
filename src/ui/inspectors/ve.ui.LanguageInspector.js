@@ -42,10 +42,7 @@ ve.ui.LanguageInspector.prototype.getAnnotation = function () {
 	return ( lang || dir ?
 		new ve.dm.LanguageAnnotation( {
 			type: 'meta/language',
-			attributes: {
-				lang: lang,
-				dir: dir
-			}
+			attributes: { lang, dir }
 		} ) :
 		null
 	);

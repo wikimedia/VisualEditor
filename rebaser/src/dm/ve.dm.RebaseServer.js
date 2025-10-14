@@ -103,7 +103,7 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, authorId, 
 	if ( rejections > backtrack ) {
 		// Follow-on does not fully acknowledge outstanding conflicts: reject entirely
 		rejections = rejections - backtrack + change.transactions.length;
-		this.updateDocState( doc, authorId, null, { rejections: rejections } );
+		this.updateDocState( doc, authorId, null, { rejections } );
 		// FIXME argh this publishes an empty change, which is not what we want
 		appliedChange = state.history.truncate( 0 );
 	} else if ( rejections < backtrack ) {
@@ -121,19 +121,19 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, authorId, 
 		const result = ve.dm.Change.static.rebaseUncommittedChange( base, change );
 		rejections = result.rejected ? result.rejected.getLength() : 0;
 		this.updateDocState( doc, authorId, result.rebased, {
-			rejections: rejections,
+			rejections,
 			continueBase: result.transposedHistory
 		} );
 		appliedChange = result.rebased;
 	}
 	this.logEvent( {
 		type: 'applyChange',
-		doc: doc,
-		authorId: authorId,
+		doc,
+		authorId,
 		incoming: change,
 		applied: appliedChange,
-		backtrack: backtrack,
-		rejections: rejections
+		backtrack,
+		rejections
 	} );
 	return appliedChange;
 };

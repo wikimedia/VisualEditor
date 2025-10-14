@@ -60,12 +60,12 @@ ve.dm.DocumentStore.prototype.dropDatabase = function () {
 ve.dm.DocumentStore.prototype.load = function ( docName ) {
 	const documentStore = this;
 	return this.collection.findOneAndUpdate(
-		{ docName: docName },
+		{ docName },
 		{ $setOnInsert: { start: 0, transactions: [], stores: [] } },
 		{ upsert: true, returnDocument: 'after' }
 	).then( ( result ) => {
 		const length = result.value.transactions.length || 0;
-		documentStore.logger.logServerEvent( { type: 'DocumentStore#loaded', docName: docName, length: length } );
+		documentStore.logger.logServerEvent( { type: 'DocumentStore#loaded', docName, length } );
 		documentStore.startForDoc.set( docName, result.value.start + length );
 		return ve.dm.Change.static.deserialize( {
 			start: 0,
@@ -92,7 +92,7 @@ ve.dm.DocumentStore.prototype.onNewChange = function ( docName, change ) {
 	}
 	this.startForDoc.set( docName, serializedChange.start + serializedChange.transactions.length );
 	return this.collection.updateOne(
-		{ docName: docName },
+		{ docName },
 		{
 			$push: {
 				transactions: { $each: serializedChange.transactions },
@@ -102,7 +102,7 @@ ve.dm.DocumentStore.prototype.onNewChange = function ( docName, change ) {
 	).then( () => {
 		this.logger.logServerEvent( {
 			type: 'DocumentStore#onNewChange',
-			docName: docName,
+			docName,
 			start: serializedChange.start,
 			length: serializedChange.transactions.length
 		} );

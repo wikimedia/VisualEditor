@@ -83,10 +83,10 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 	}
 
 	const boundingRect = {
-		top: top,
-		bottom: bottom,
-		left: left,
-		right: right,
+		top,
+		bottom,
+		left,
+		right,
 		width: right - left,
 		height: bottom - top
 	};

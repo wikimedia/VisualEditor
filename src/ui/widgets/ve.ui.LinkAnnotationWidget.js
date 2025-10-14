@@ -62,9 +62,7 @@ ve.ui.LinkAnnotationWidget.static.getAnnotationFromText = function ( value ) {
 	} else {
 		return new ve.dm.LinkAnnotation( {
 			type: 'link',
-			attributes: {
-				href: href
-			}
+			attributes: { href }
 		} );
 	}
 };

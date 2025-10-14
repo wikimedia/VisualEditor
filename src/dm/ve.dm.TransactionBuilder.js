@@ -433,7 +433,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc, range, type, attr, internal ) {
 	const txBuilder = new ve.dm.TransactionBuilder(),
 		selection = doc.selectNodes( range, 'leaves' ),
-		opening = { type: type },
+		opening = { type },
 		closing = { type: '/' + type };
 	let previousBranch,
 		previousBranchOuterRange;
@@ -822,11 +822,7 @@ ve.dm.TransactionBuilder.prototype.pushReplacement = function ( doc, offset, rem
 		insert = lastOp.insert.concat( insert );
 	}
 
-	const op = {
-		type: 'replace',
-		remove: remove,
-		insert: insert
-	};
+	const op = { type: 'replace', remove, insert };
 	if ( insertedDataOffset !== undefined ) {
 		op.insertedDataOffset = insertedDataOffset;
 	}

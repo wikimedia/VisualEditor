@@ -163,10 +163,7 @@ ve.ce.DragDropHandler.prototype.onDocumentDragOver = function ( e ) {
 				top += $dropTarget.outerHeight();
 			}
 			this.$dropMarker
-				.css( {
-					top: top,
-					left: left
-				} )
+				.css( { top, left } )
 				.width( $dropTarget.outerWidth() )
 				.removeClass( 'oo-ui-element-hidden' );
 		}

@@ -151,7 +151,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 				}
 				node = ceChild.$element[ 0 ];
 				if ( node ) {
-					return { node: node, offset: 0 };
+					return { node, offset: 0 };
 				}
 				// Else ceChild has no DOM representation; step forwards
 				break;
@@ -166,10 +166,10 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		}
 		if ( !ceChild || !ceChild.$element[ 0 ] ) {
 			// Offset lies just at the end of branchNode
-			return { node: node, offset: node.childNodes.length };
+			return { node, offset: node.childNodes.length };
 		}
 		return {
-			node: node,
+			node,
 			offset: Array.prototype.indexOf.call(
 				node.childNodes,
 				ceChild.$element[ 0 ]
@@ -194,7 +194,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 			position,
 			1,
 			{
-				noDescend: noDescend,
+				noDescend,
 				stop: function () {
 					return true;
 				}
@@ -213,12 +213,12 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 			// TODO: what about zero-length text nodes?
 			if ( offset <= count + node.data.length ) {
 				// Match the appropriate offset in the text node
-				position = { node: node, offset: offset - count };
+				position = { node, offset: offset - count };
 				break;
 			} else {
 				// Skip over the text node
 				count += node.data.length;
-				position = { node: node, offset: node.data.length };
+				position = { node, offset: node.data.length };
 				continue;
 			}
 		} // else it is an element node (TODO: handle comment etc)
@@ -257,7 +257,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		} else if ( step.type === 'cross' ) {
 			if ( offset === count + 1 ) {
 				// The offset lies inside the crossed node
-				position = { node: node, offset: 0 };
+				position = { node, offset: 0 };
 				break;
 			}
 			count += 2;
@@ -303,7 +303,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		}
 		return false;
 	}
-	ve.adjacentDomPosition( position, 1, { stop: stop, noDescend: noDescend } ).steps
+	ve.adjacentDomPosition( position, 1, { stop, noDescend } ).steps
 		.slice( 0, -1 )
 		.forEach( ( s ) => {
 			if ( s.node.nodeType === Node.TEXT_NODE ) {

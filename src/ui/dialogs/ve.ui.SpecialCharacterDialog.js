@@ -99,7 +99,7 @@ ve.ui.SpecialCharacterDialog.prototype.getTeardownProcess = function ( data = {}
  */
 ve.ui.SpecialCharacterDialog.prototype.getActionProcess = function ( action ) {
 	return new OO.ui.Process( () => {
-		this.close( { action: action } );
+		this.close( { action } );
 	} );
 };
 

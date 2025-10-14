@@ -14,7 +14,7 @@ QUnit.test( 'toggle', ( assert ) => {
 		html = '<p>Foo<b>bar</b><strong>baz</strong><i>quux</i> white\u3000space</p>',
 		cases = [
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
@@ -26,7 +26,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				msg: 'toggle bold on plain text'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 7, 10 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
@@ -36,7 +36,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				msg: 'toggle bold on strong text'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 4, 10 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
@@ -46,7 +46,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				msg: 'toggle bold on bold then strong text'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 1, 14 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
@@ -61,7 +61,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				msg: 'toggle bold on plain, bold, strong then underlined text'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 14, 21 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
@@ -125,7 +125,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				msg: 'toggle bold off when first cell is content-less cell'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 4, 4 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
@@ -134,7 +134,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				msg: 'toggle bold adds bold insertion'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 4, 4 ),
 				method: 'toggle',
 				args: [ 'textStyle/bold' ],
@@ -143,7 +143,7 @@ QUnit.test( 'toggle', ( assert ) => {
 				msg: 'toggle bold removes bold insertion'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 4, 4 ),
 				method: 'toggle',
 				args: [ 'textStyle/italic' ],
@@ -171,7 +171,7 @@ QUnit.test( 'set and clear', ( assert ) => {
 		html = '<p>Foo <i>bar</i> baz</p>',
 		cases = [
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 5, 8 ),
 				method: 'set',
 				args: [ 'textStyle/bold' ],
@@ -183,7 +183,7 @@ QUnit.test( 'set and clear', ( assert ) => {
 				msg: 'Set bold'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 5, 8 ),
 				method: 'clear',
 				args: [ 'textStyle/italic' ],
@@ -193,7 +193,7 @@ QUnit.test( 'set and clear', ( assert ) => {
 				msg: 'Clear italic'
 			},
 			{
-				html: html,
+				html,
 				rangeOrSelection: new ve.Range( 5, 12 ),
 				method: 'set',
 				args: [ 'textStyle/italic' ],

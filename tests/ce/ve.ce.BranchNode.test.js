@@ -52,7 +52,7 @@ QUnit.test( 'updateTagName', ( assert ) => {
 	const attributes = { style: 'a' },
 		node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( {
 			type: 'branch-stub',
-			attributes: attributes
+			attributes
 		} ) );
 
 	// Add content to the node

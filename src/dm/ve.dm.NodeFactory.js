@@ -31,7 +31,7 @@ OO.inheritClass( ve.dm.NodeFactory, ve.dm.ModelFactory );
  * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
-	const element = { type: type };
+	const element = { type };
 	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		attributes = ve.extendObject( {}, this.registry[ type ].static.defaultAttributes, attributes );
 		if ( !ve.isEmptyObject( attributes ) ) {

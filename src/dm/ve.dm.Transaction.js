@@ -231,7 +231,7 @@ ve.dm.Transaction.prototype.serialize = ve.dm.Transaction.prototype.toJSON;
  * @param {number} length Length > 0 of content data to retain
  */
 ve.dm.Transaction.prototype.pushRetainOp = function ( length ) {
-	this.operations.push( { type: 'retain', length: length } );
+	this.operations.push( { type: 'retain', length } );
 };
 
 /**
@@ -242,7 +242,7 @@ ve.dm.Transaction.prototype.pushRetainOp = function ( length ) {
  * @param {any} to Value to change attribute to, or undefined to remove
  */
 ve.dm.Transaction.prototype.pushAttributeOp = function ( key, from, to ) {
-	this.operations.push( { type: 'attribute', key: key, from: from, to: to } );
+	this.operations.push( { type: 'attribute', key, from, to } );
 };
 
 /**
@@ -595,11 +595,11 @@ ve.dm.Transaction.prototype.getActiveRangeAndLengthDiff = function () {
 		}
 	}
 	return {
-		start: start,
-		end: end,
-		startOpIndex: startOpIndex,
-		endOpIndex: endOpIndex,
-		diff: diff
+		start,
+		end,
+		startOpIndex,
+		endOpIndex,
+		diff
 	};
 };
 

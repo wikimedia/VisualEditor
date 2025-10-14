@@ -2517,7 +2517,7 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
 	}
 	// Between nails: cross the one in the specified direction
 	let fixedPosition = ve.adjacentDomPosition(
-		{ node: node, offset: offset },
+		{ node, offset },
 		direction,
 		{ stop: ve.isHardCursorStep }
 	);
@@ -3948,7 +3948,7 @@ ve.ce.Surface.prototype.afterMutations = function ( mutationRecords ) {
 			}
 		} );
 	} );
-	const removals = removedNodes.map( ( node ) => ( { node: node, range: node.getOuterRange() } ) );
+	const removals = removedNodes.map( ( node ) => ( { node, range: node.getOuterRange() } ) );
 	removals.sort( ( x, y ) => x.range.start - y.range.start );
 	for ( let i = 0, iLen = removals.length; i < iLen; i++ ) {
 		// Remove any overlapped range (which in a tree must be a nested range)

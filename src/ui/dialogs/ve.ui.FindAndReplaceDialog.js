@@ -347,7 +347,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function ( noRender ) {
 			caseSensitiveString: matchCase,
 			diacriticInsensitiveString: diacriticInsensitive,
 			noOverlaps: true,
-			wholeWord: wholeWord
+			wholeWord
 		} );
 		ranges.forEach( ( range ) => {
 			this.fragments.push( surfaceModel.getLinearFragment( range, true, true ) );

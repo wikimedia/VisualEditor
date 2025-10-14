@@ -59,7 +59,7 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	} else {
 		const isInline = this.isHybridInline( domElements, converter );
 		const type = isInline ? 'alienInline' : 'alienBlock';
-		element = { type: type };
+		element = { type };
 	}
 
 	return element;

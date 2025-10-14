@@ -111,9 +111,9 @@ ve.dm.ModelFromDomConverter.static.moveInlineMetaItems = function ( data ) {
 				if ( metaParent ) {
 					metaParent.item.internal.metaItems.push( item );
 					pendingMetaItems.push( {
-						item: item,
+						item,
 						closeItem: data[ i + 1 ],
-						metaParent: metaParent,
+						metaParent,
 						offset: i - metaParent.offset - 1
 					} );
 					// Remove this item and the immediately following close item
@@ -128,7 +128,7 @@ ve.dm.ModelFromDomConverter.static.moveInlineMetaItems = function ( data ) {
 				}
 			} else {
 				ancestors.push( {
-					item: item,
+					item,
 					offset: i,
 					isMetaParent: !!ve.getProp( item, 'internal', 'metaItems' )
 				} );

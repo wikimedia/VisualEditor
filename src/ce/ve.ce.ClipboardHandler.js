@@ -221,7 +221,7 @@ ve.ce.ClipboardHandler.prototype.onCopy = function ( e, selection ) {
 
 	this.clipboardIndex++;
 	const clipboardKey = this.clipboardId + '-' + this.clipboardIndex;
-	this.clipboard = { slice: slice, hash: null };
+	this.clipboard = { slice, hash: null };
 	// Support: Firefox<48
 	// Writing a custom clipboard key won't work in Firefox<48, so write
 	// it to the HTML instead
@@ -548,7 +548,7 @@ ve.ce.ClipboardHandler.prototype.afterPaste = function () {
 
 		surface.emit( 'paste', {
 			source: beforePasteData.source,
-			fragment: fragment
+			fragment
 		} );
 	} );
 };
@@ -616,9 +616,9 @@ ve.ce.ClipboardHandler.prototype.afterPasteExtractClipboardData = function () {
 	}
 
 	return {
-		clipboardKey: clipboardKey,
-		$clipboardHtml: $clipboardHtml,
-		slice: slice
+		clipboardKey,
+		$clipboardHtml,
+		slice
 	};
 };
 

@@ -140,7 +140,7 @@
 			result: QUnit.equiv( actualSummary, expectedSummary ),
 			actual: actualSummary,
 			expected: expectedSummary,
-			message: message
+			message
 		} );
 	};
 
@@ -169,7 +169,7 @@
 			result: QUnit.equiv( actualSummary, expectedSummary ),
 			actual: actualSummary,
 			expected: expectedSummary,
-			message: message
+			message
 		} );
 	};
 
@@ -189,7 +189,7 @@
 			result: QUnit.equiv( actualSummary, expectedSummary ),
 			actual: actualSummaryHtml,
 			expected: expectedSummaryHtml,
-			message: message
+			message
 		} );
 	};
 
@@ -209,7 +209,7 @@
 			result: !QUnit.equiv( actualSummary, expectedSummary ),
 			actual: actualSummaryHtml,
 			expected: 'Not: ' + expectedSummaryHtml,
-			message: message
+			message
 		} );
 	};
 
@@ -239,9 +239,9 @@
 
 		this.pushResult( {
 			result: QUnit.equiv( actual, expected ),
-			actual: actual,
-			expected: expected,
-			message: message
+			actual,
+			expected,
+			message
 		} );
 	};
 
@@ -261,9 +261,9 @@
 
 		this.pushResult( {
 			result: QUnit.equiv( actual, expected ),
-			actual: actual,
-			expected: expected,
-			message: message
+			actual,
+			expected,
+			message
 		} );
 	};
 
@@ -282,9 +282,9 @@
 
 		this.pushResult( {
 			result: QUnit.equiv( actual, expected ),
-			actual: actual,
-			expected: expected,
-			message: message
+			actual,
+			expected,
+			message
 		} );
 	};
 
@@ -303,9 +303,9 @@
 
 		this.pushResult( {
 			result: QUnit.equiv( actual, expected ),
-			actual: actual,
-			expected: expected,
-			message: message
+			actual,
+			expected,
+			message
 		} );
 	};
 
@@ -329,9 +329,9 @@
 		};
 		this.pushResult( {
 			result: QUnit.equiv( actual, expected ),
-			actual: actual,
-			expected: expected,
-			message: message
+			actual,
+			expected,
+			message
 		} );
 	};
 
@@ -340,9 +340,9 @@
 		expected = JSON.parse( JSON.stringify( expected ) );
 		this.pushResult( {
 			result: QUnit.equiv( actual, expected ),
-			actual: actual,
-			expected: expected,
-			message: message
+			actual,
+			expected,
+			message
 		} );
 	};
 
@@ -366,7 +366,7 @@
 			result: notFrozen.length === 0,
 			actual: notFrozen,
 			expected: [],
-			message: message
+			message
 		} );
 	};
 
@@ -382,7 +382,7 @@
 		$div.append( diffview.buildView( {
 			baseTextLines: oLines,
 			newTextLines: nLines,
-			opcodes: opcodes,
+			opcodes,
 			baseTextName: 'Expected',
 			newTextName: 'Result',
 			contextSize: 10,

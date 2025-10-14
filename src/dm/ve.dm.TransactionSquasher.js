@@ -397,12 +397,7 @@ ve.dm.TransactionSquasher.prototype.processAttribute = function ( key, from, to 
 			// Modify in place
 			op.to = to;
 		} else {
-			op = {
-				type: 'attribute',
-				key: key,
-				from: from,
-				to: to
-			};
+			op = { type: 'attribute', key, from, to };
 			this.splitIfInterior();
 			this.operations.splice( this.index, 0, op );
 			this.attributeOperations[ key ] = op;

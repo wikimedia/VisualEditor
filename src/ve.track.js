@@ -22,7 +22,7 @@
 	 * @param {Object} [data] Additional data describing the event, encoded as an object
 	 */
 	ve.track = function ( topic, data ) {
-		queue.push( { topic: topic, timeStamp: ve.now(), data: data } );
+		queue.push( { topic, timeStamp: ve.now(), data } );
 		callbacks.fire( queue );
 	};
 

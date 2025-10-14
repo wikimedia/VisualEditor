@@ -117,7 +117,7 @@ ve.ui.ProgressDialog.prototype.getActionProcess = function ( action ) {
 		if ( action === 'cancel' ) {
 			this.cancelDeferreds.forEach( ( cancelDeferred ) => cancelDeferred.reject() );
 		}
-		this.close( { action: action } );
+		this.close( { action } );
 	} );
 };
 

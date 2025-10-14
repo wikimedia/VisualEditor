@@ -123,7 +123,7 @@ ve.ui.AuthorListPopupTool.prototype.onSelfItemChange = function () {
  * @param {string} color
  */
 ve.ui.AuthorListPopupTool.prototype.onSelfItemChangeColor = function ( color ) {
-	this.synchronizer.changeAuthor( { color: color } );
+	this.synchronizer.changeAuthor( { color } );
 };
 
 /**
@@ -150,7 +150,7 @@ ve.ui.AuthorListPopupTool.prototype.onSynchronizerAuthorUpdate = function ( auth
 
 	if ( authorId !== this.synchronizer.getAuthorId() ) {
 		if ( !authorItem ) {
-			authorItem = new ve.ui.AuthorItemWidget( this.synchronizer, this.popup.$element, { authorId: authorId } );
+			authorItem = new ve.ui.AuthorItemWidget( this.synchronizer, this.popup.$element, { authorId } );
 			this.authorItems[ authorId ] = authorItem;
 			this.updateAuthorCount();
 			this.$authorList.append( authorItem.$element );

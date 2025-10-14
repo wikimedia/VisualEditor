@@ -77,10 +77,7 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 
 	this.setClassAttributes( attributes, classAttr );
 
-	const dataElement = {
-		type: this.name,
-		attributes: attributes
-	};
+	const dataElement = { type: this.name, attributes };
 
 	if ( !caption ) {
 		return [

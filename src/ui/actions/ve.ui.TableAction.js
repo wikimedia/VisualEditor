@@ -49,7 +49,7 @@ ve.ui.TableAction.static.methods = [
  */
 ve.ui.TableAction.prototype.create = function ( options = {} ) {
 	const type = options.type || 'table';
-	const tableElement = { type: type };
+	const tableElement = { type };
 	const surfaceModel = this.surface.getModel();
 	const fragment = surfaceModel.getFragment();
 	const numberOfCols = options.cols || 4;
@@ -408,7 +408,7 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 	for ( let i = ranges.length - 1; i >= 0; i-- ) {
 		txBuilders.push(
 			ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null,
-				documentModel, ranges[ i ].start, { style: style }
+				documentModel, ranges[ i ].start, { style }
 			)
 		);
 	}
@@ -774,7 +774,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 			}
 			let cellData;
 			if ( !dataMatrixLine ) {
-				cellData = ve.dm.TableCellNode.static.createData( { style: style } );
+				cellData = ve.dm.TableCellNode.static.createData( { style } );
 			} else {
 				cell = dataMatrixLine.cells[ cell.row ];
 				cellData = [];
@@ -925,7 +925,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 
 		// Cell nodes only get deleted when deleting columns (otherwise row nodes)
 		if ( mode === 'col' ) {
-			actions.push( { action: 'delete', cell: cell } );
+			actions.push( { action: 'delete', cell } );
 		}
 	}
 

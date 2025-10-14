@@ -81,7 +81,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 			key = keyParts.pop(),
 			keyCode = OO.ui.Keys[ key ] || ve.test.utils.triggerKeys[ key ];
 		const keyData = {
-			keyCode: keyCode,
+			keyCode,
 			which: keyCode,
 			shiftKey: keyParts.includes( 'SHIFT' ),
 			ctrlKey: keyParts.includes( 'CTRL' ),
@@ -315,14 +315,14 @@ QUnit.test( 'handleObservedChanges (content changes)', ( assert ) => {
 			prevNode = $( prevHtml )[ 0 ],
 			nextNode = $( nextHtml )[ 0 ],
 			prev = {
-				node: node,
+				node,
 				text: ve.ce.getDomText( prevNode ),
 				textState: new ve.ce.TextState( prevNode ),
 				veRange: prevRange,
 				focusIsAfterAnnotationBoundary: prevFocusIsAfterAnnotationBoundary || false
 			},
 			next = {
-				node: node,
+				node,
 				text: ve.ce.getDomText( nextNode ),
 				textState: new ve.ce.TextState( nextNode ),
 				veRange: nextRange,

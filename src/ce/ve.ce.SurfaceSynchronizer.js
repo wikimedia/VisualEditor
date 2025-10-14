@@ -71,7 +71,7 @@ ve.ce.SurfaceSynchronizer.prototype.paintAuthor = function ( authorId ) {
 
 	const selectionOptions = {
 		wrapperClass: 've-ce-surface-selections-otherUserSelection',
-		color: color,
+		color,
 		showCursor: true,
 		label: authorData.name
 	};

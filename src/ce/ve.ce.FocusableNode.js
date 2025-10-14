@@ -170,10 +170,7 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 
 	const boundingRect = ve.getBoundingRect( rects );
 
-	return {
-		rects: rects,
-		boundingRect: boundingRect
-	};
+	return { rects, boundingRect };
 };
 
 /* Methods */

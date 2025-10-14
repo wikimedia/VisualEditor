@@ -48,7 +48,7 @@ ve.dm.ListNode.static.createItem = function () {
 
 ve.dm.ListNode.static.toDataElement = function ( domElements ) {
 	const style = domElements[ 0 ].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
-	return { type: this.name, attributes: { style: style } };
+	return { type: this.name, attributes: { style } };
 };
 
 ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {

@@ -112,10 +112,7 @@ ve.Filibuster.prototype.observe = function ( action ) {
 		if ( this.states[ name ] !== newState ) {
 			if ( Object.prototype.hasOwnProperty.call( this.states, name ) ) {
 				// State change: write observation
-				changes[ name ] = {
-					oldState: oldState,
-					newState: newState
-				};
+				changes[ name ] = { oldState, newState };
 			}
 			this.states[ name ] = newState;
 		}
@@ -169,7 +166,7 @@ ve.Filibuster.prototype.log = function ( funcName, action, args, returned ) {
 		this.callPath.push( parentFrame.children.length );
 		this.frame = {
 			count: this.count++,
-			funcName: funcName,
+			funcName,
 			args: this.constructor.static.clonePlain( args ),
 			// returned: xxx,
 			// thrown: xxx

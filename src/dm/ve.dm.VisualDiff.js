@@ -205,8 +205,8 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 	const oldNodesToDiff = [],
 		newNodesToDiff = [],
 		diff = {
-			oldNodes: oldNodes,
-			newNodes: newNodes,
+			oldNodes,
+			newNodes,
 			oldToNew: {},
 			newToOld: {},
 			remove: [],
@@ -575,9 +575,7 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 			if ( isNewItemIndex ) {
 				listDiff.oldToNew[ i ] = {
 					node: j,
-					diff: {
-						attributeChange: attributeChange
-					}
+					diff: { attributeChange }
 				};
 			} else {
 				listDiff.oldToNew[ i ].diff.attributeChange = attributeChange;
@@ -624,9 +622,9 @@ ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) 
 		// If listItem has no children, make the item itself the contents (e.g. an AlienBlockNode in a list)
 		if ( !listItem.children ) {
 			flatList.metadata.push( {
-				listNode: listNode,
-				listItem: listItem,
-				depth: depth
+				listNode,
+				listItem,
+				depth
 			} );
 			flatList.nodes.push( listItem );
 			return;
@@ -645,9 +643,9 @@ ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) 
 				this.flattenList( listContent, flatList, depth + 1 );
 			} else {
 				flatList.metadata.push( {
-					listNode: listNode,
-					listItem: listItem,
-					depth: depth,
+					listNode,
+					listItem,
+					depth,
 					isContinued: j > 0
 				} );
 				flatList.nodes.push( listContent );
@@ -774,8 +772,8 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 	}
 
 	return {
-		treeDiff: treeDiff,
-		diffInfo: diffInfo,
+		treeDiff,
+		diffInfo,
 		oldTreeOrderedNodes: oldTree.orderedNodes,
 		newTreeOrderedNodes: newTree.orderedNodes,
 		correspondingNodes: this.treeDiffer.Differ.prototype.getCorrespondingNodes(
@@ -811,10 +809,7 @@ ve.dm.VisualDiff.prototype.diffAttributes = function ( oldNode, newNode, diffTyp
 	if ( attributesUnchanged ) {
 		return false;
 	}
-	return {
-		oldAttributes: oldAttributes,
-		newAttributes: newAttributes
-	};
+	return { oldAttributes, newAttributes };
 };
 
 /**
@@ -973,7 +968,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 				indices.push( {
 					diff: action,
 					indexOrder: j,
-					nodeIndex: nodeIndex
+					nodeIndex
 				} );
 			}
 		} );
@@ -985,7 +980,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 	// Also find inserted groups
 	for ( const group in newDocNodeGroups ) {
 		groups.push( {
-			group: group,
+			group,
 			action: group in oldDocNodeGroups ? 'diff' : 'insert'
 		} );
 	}
@@ -994,7 +989,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 	for ( const group in oldDocNodeGroups ) {
 		if ( !( group in newDocNodeGroups ) ) {
 			groups.push( {
-				group: group,
+				group,
 				action: 'remove'
 			} );
 		}

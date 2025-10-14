@@ -56,10 +56,7 @@ ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
 	ve.dm.TableCellableNode.static.setAttributes( attributes, domElements );
 	ve.dm.TableCellNode.static.setAlignmentAttributes( attributes, domElements );
 
-	return {
-		type: this.name,
-		attributes: attributes
-	};
+	return { type: this.name, attributes };
 };
 
 ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {

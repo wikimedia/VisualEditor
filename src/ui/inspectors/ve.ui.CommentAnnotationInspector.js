@@ -91,9 +91,7 @@ ve.ui.CommentAnnotationInspector.prototype.getAnnotation = function () {
 	} );
 	return new ve.dm.CommentAnnotation( {
 		type: 'commentAnnotation',
-		attributes: {
-			comments: comments
-		}
+		attributes: { comments }
 	} );
 };
 

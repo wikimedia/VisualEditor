@@ -341,7 +341,7 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', ( assert ) => {
 
 	assert.deepEqual( change.toJSON(), serialized, 'Serialize' );
 	assert.deepEqual(
-		JSON.parse( JSON.stringify( { change: change } ) ),
+		JSON.parse( JSON.stringify( { change } ) ),
 		{ change: serialized },
 		'Serialize with JSON.stringify while nested (ensure arguments are no passed to serialize)'
 	);

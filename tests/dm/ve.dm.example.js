@@ -153,10 +153,10 @@ ve.dm.example.code = { type: 'textStyle/code', attributes: { nodeName: 'code' } 
 ve.dm.example.tt = { type: 'textStyle/code', attributes: { nodeName: 'tt' } };
 ve.dm.example.strong = { type: 'textStyle/bold', attributes: { nodeName: 'strong' } };
 ve.dm.example.link = function ( href ) {
-	return { type: 'link', attributes: { href: href } };
+	return { type: 'link', attributes: { href } };
 };
 ve.dm.example.language = function ( lang, dir, nodeName ) {
-	return { type: 'meta/language', attributes: { nodeName: nodeName || 'span', lang: lang, dir: dir } };
+	return { type: 'meta/language', attributes: { nodeName: nodeName || 'span', lang, dir } };
 };
 ve.dm.example.boldWithStyle = ve.extendObject( {}, ve.dm.example.bold, { originalDomElements: $.parseHTML( '<b style="color:red;" />' ) } );
 

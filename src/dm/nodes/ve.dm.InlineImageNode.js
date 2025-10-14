@@ -46,7 +46,7 @@ ve.dm.InlineImageNode.static.toDataElement = function ( domElements ) {
 		type: this.name,
 		attributes: {
 			src: domElement.getAttribute( 'src' ),
-			alt: alt,
+			alt,
 			width: width !== null && width !== '' ? +width : null,
 			height: height !== null && height !== '' ? +height : null
 		}

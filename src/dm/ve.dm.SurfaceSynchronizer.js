@@ -55,7 +55,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 				this.handlers.get( type ).push( handler );
 			},
 			send: function ( type, data ) {
-				this.peerConnection.send( { type: type, data: ve.collab.serialize( data ) } );
+				this.peerConnection.send( { type, data: ve.collab.serialize( data ) } );
 			},
 			disconnect: function () {
 				this.peerConnection.close();

@@ -212,7 +212,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		let i, offset, childLength, child;
 
 		if ( contentOffset === 0 ) {
-			return { node: node, offset: 0 };
+			return { node, offset: 0 };
 		}
 		// Find the child that will take us up to or past the contentOffset
 		offset = 0;
@@ -228,7 +228,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			}
 		}
 		if ( offset === contentOffset ) {
-			return { node: node, offset: i + 1 };
+			return { node, offset: i + 1 };
 		}
 		return { node: child, offset: contentOffset - offset + childLength };
 	}
@@ -251,7 +251,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 				position = ensureNotText( findContentPosition( node, offset ) );
 			}
 		} else {
-			position = { node: node, offset: offset };
+			position = { node, offset };
 		}
 		// Get linear offset
 		if ( position.node.type === 'text' || position.offset === 0 ) {
@@ -763,9 +763,9 @@ ve.dm.TreeModifier.prototype.pushInsertNodeOp = function ( element ) {
 
 	this.treeOps.push( {
 		type: 'insertNode',
-		isContent: isContent,
+		isContent,
 		at: this.adjustInserterPosition( rawInserterPosition ),
-		element: element
+		element
 	} );
 	if ( this.insertedPositions.length === 0 ) {
 		this.modifyAdjustmentTree( rawInserterPosition, isContent ? 2 : 1, false );
@@ -786,7 +786,7 @@ ve.dm.TreeModifier.prototype.pushInsertTextOp = function ( data ) {
 		type: 'insertText',
 		isContent: true,
 		at: this.adjustInserterPosition( rawInserterPosition ),
-		data: data
+		data
 	} );
 	if ( this.insertedPositions.length === 0 ) {
 		this.modifyAdjustmentTree( rawInserterPosition, data.length, false );
@@ -812,7 +812,7 @@ ve.dm.TreeModifier.prototype.pushMoveNodeOp = function ( removerStep ) {
 
 	this.treeOps.push( {
 		type: 'moveNode',
-		isContent: isContent,
+		isContent,
 		from: this.adjustRemoverPosition( rawRemoverPosition ),
 		to: this.adjustInserterPosition( rawInserterPosition )
 	} );
@@ -841,7 +841,7 @@ ve.dm.TreeModifier.prototype.pushMoveTextOp = function ( removerStep ) {
 		isContent: true,
 		from: this.adjustRemoverPosition( rawRemoverPosition ),
 		to: this.adjustInserterPosition( rawInserterPosition ),
-		length: length
+		length
 	} );
 	this.modifyAdjustmentTree( rawRemoverPosition, -length, false );
 	if ( this.insertedPositions.length === 0 ) {
@@ -859,7 +859,7 @@ ve.dm.TreeModifier.prototype.pushRemoveNodeOp = function ( removerStep ) {
 		isContent = this.doesTypeTakeContent( removerStep.node.type );
 	this.treeOps.push( {
 		type: 'removeNode',
-		isContent: isContent,
+		isContent,
 		at: this.adjustRemoverPosition( rawRemoverPosition ),
 		element: removerStep.item.getClonedElement( true )
 	} );

@@ -47,7 +47,7 @@ ve.dm.TableSectionNode.static.toDataElement = function ( domElements ) {
 			tfoot: 'footer'
 		},
 		style = styles[ domElements[ 0 ].nodeName.toLowerCase() ] || 'body';
-	return { type: this.name, attributes: { style: style } };
+	return { type: this.name, attributes: { style } };
 };
 
 ve.dm.TableSectionNode.static.toDomElements = function ( dataElement, doc ) {

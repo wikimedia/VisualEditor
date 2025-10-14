@@ -835,7 +835,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 				node: newNode,
 				metadata: diff.newList.metadata[ index ],
 				action: 'none',
-				move: move
+				move
 			} );
 		},
 		changed: ( nodeDiff, oldNode, newNode, move, oldIndex, newIndex ) => {
@@ -843,7 +843,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 				node: newNode,
 				metadata: diff.newList.metadata[ newIndex ],
 				diff: nodeDiff,
-				move: move
+				move
 			} );
 		}
 	} );
@@ -1509,9 +1509,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 				}
 				const diffAnnotationElement = {
 					type: 'textStyle/diff',
-					attributes: {
-						action: action
-					}
+					attributes: { action }
 				};
 				if ( changes.length ) {
 					const item = this.getChangeDescriptionItem( changes );

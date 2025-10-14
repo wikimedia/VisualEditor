@@ -629,9 +629,9 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 	padding.right += 5;
 
 	ve.scrollIntoView( clientRect, ve.extendObject( {
-		animate: animate,
+		animate,
 		scrollContainer: this.$scrollContainer[ 0 ],
-		padding: padding
+		padding
 	}, scrollConfig ) ).then( () => {
 		if ( isNative ) {
 			// TODO: This event has only even been emitted for native selection
@@ -903,10 +903,10 @@ ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, lab
 	const progressBarDeferred = ve.createDeferred();
 
 	this.progresses.push( {
-		label: label,
+		label,
 		cancellable: !nonCancellable,
-		progressCompletePromise: progressCompletePromise,
-		progressBarDeferred: progressBarDeferred
+		progressCompletePromise,
+		progressBarDeferred
 	} );
 
 	this.showProgressDebounced();
@@ -917,7 +917,7 @@ ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, lab
 ve.ui.Surface.prototype.showProgress = function () {
 	const progresses = this.progresses;
 
-	this.dialogs.openWindow( 'progress', { progresses: progresses, $returnFocusTo: null } );
+	this.dialogs.openWindow( 'progress', { progresses, $returnFocusTo: null } );
 	this.progresses = [];
 };
 

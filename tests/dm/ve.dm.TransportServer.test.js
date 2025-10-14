@@ -15,7 +15,7 @@ QUnit.test( 'Create', ( assert ) => {
 		context: null,
 		ensureLoaded: Promise.resolve.bind( Promise ),
 		authenticate: function ( docName, authorId, token ) {
-			const context = { docName: docName, authorId: authorId, token: token };
+			const context = { docName, authorId, token };
 			log.push( [ 'authenticate', ve.copy( context ) ] );
 			return context;
 		},

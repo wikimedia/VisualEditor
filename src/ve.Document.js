@@ -139,7 +139,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			node: doc,
 			range: new ve.Range( start, end ),
 			index: 0,
-			nodeRange: nodeRange,
+			nodeRange,
 			nodeOuterRange: nodeRange
 		} ];
 	}
@@ -227,7 +227,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			) {
 				// Descend into node
 				currentFrame = {
-					node: node,
+					node,
 					index: 0,
 					startOffset: left
 				};
@@ -241,7 +241,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			} else if ( !endInside ) {
 				// All of node is covered
 				retval.push( {
-					node: node,
+					node,
 					// No 'range' because the entire node is covered
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
@@ -255,7 +255,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			} else {
 				// Part of node is covered
 				return [ {
-					node: node,
+					node,
 					range: new ve.Range( start, end ),
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
@@ -271,7 +271,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 				( mode !== 'branches' || node.canHaveChildrenNotContent() ) ) {
 				// Descend into node
 				currentFrame = {
-					node: node,
+					node,
 					index: 0,
 					startOffset: left
 				};
@@ -284,7 +284,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			} else {
 				// node is a leaf node and the range is entirely inside it
 				retval = [ {
-					node: node,
+					node,
 					range: new ve.Range( start, end ),
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
@@ -308,7 +308,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 				// node is a branch node and the start is inside it
 				// Descend into it
 				currentFrame = {
-					node: node,
+					node,
 					index: 0,
 					startOffset: left
 				};
@@ -322,7 +322,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 				// node is a leaf node and the start is inside it
 				// Add to retval and keep going
 				retval.push( {
-					node: node,
+					node,
 					range: new ve.Range( start, right ),
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
@@ -345,7 +345,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			) {
 				// Descend into node
 				currentFrame = {
-					node: node,
+					node,
 					index: 0,
 					startOffset: left
 				};
@@ -358,7 +358,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			} else {
 				// All of node is covered
 				retval.push( {
-					node: node,
+					node,
 					// No 'range' because the entire node is covered
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
@@ -379,7 +379,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 				// node is a branch node and the end is inside it
 				// Descend into it
 				currentFrame = {
-					node: node,
+					node,
 					index: 0,
 					startOffset: left
 				};
@@ -393,7 +393,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 				// node is a leaf node and the end is inside it
 				// Add to retval and return
 				retval.push( {
-					node: node,
+					node,
 					range: new ve.Range( left, end ),
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
@@ -416,7 +416,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			) {
 				// Descend into node
 				currentFrame = {
-					node: node,
+					node,
 					index: 0,
 					startOffset: left
 				};
@@ -429,7 +429,7 @@ ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
 			} else {
 				// All of node is covered
 				retval.push( {
-					node: node,
+					node,
 					// No 'range' because the entire node is covered
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
