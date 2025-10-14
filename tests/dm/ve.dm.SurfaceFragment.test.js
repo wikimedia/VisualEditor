@@ -23,6 +23,8 @@ QUnit.test( 'constructor', ( assert ) => {
 	// AutoSelect
 	fragment = new ve.dm.SurfaceFragment( surface, null, 'truthy' );
 	assert.false( fragment.willAutoSelect(), 'noAutoSelect values are boolean' );
+	fragment.setAutoSelect( true );
+	assert.true( fragment.willAutoSelect(), 'setAutoSelect changes willAutoSelect' );
 } );
 
 QUnit.test( 'update', ( assert ) => {
@@ -135,7 +137,11 @@ QUnit.test( 'adjustLinearSelection', ( assert ) => {
 	assert.equalRange( adjustedFragment.getSelection().getRange(), new ve.Range( 1, 56 ), 'new range is used' );
 
 	adjustedFragment = fragment.adjustLinearSelection();
-	assert.deepEqual( adjustedFragment, fragment, 'fragment is clone if no parameters supplied' );
+	assert.deepEqual( adjustedFragment, fragment, 'fragment is cloned if no parameters supplied' );
+
+	const tableFragment = surface.getFragment( new ve.dm.TableSelection( new ve.Range( 0, 52 ), 0, 0, 1, 0 ) );
+	adjustedFragment = tableFragment.adjustLinearSelection( 1, 5 );
+	assert.deepEqual( adjustedFragment, tableFragment, 'fragment is cloned if selection is non-linear' );
 } );
 
 QUnit.test( 'truncateLinearSelection', ( assert ) => {
@@ -148,6 +154,10 @@ QUnit.test( 'truncateLinearSelection', ( assert ) => {
 	assert.equalRange( fragment.truncateLinearSelection( 150 ).getSelection().getRange(), range, 'truncate 150 does nothing' );
 	assert.equalRange( fragment.truncateLinearSelection( -50 ).getSelection().getRange(), new ve.Range( 150, 200 ), 'truncate -50' );
 	assert.equalRange( fragment.truncateLinearSelection( -150 ).getSelection().getRange(), range, 'truncate -150 does nothing' );
+
+	const tableFragment = surface.getFragment( new ve.dm.TableSelection( new ve.Range( 0, 52 ), 0, 0, 1, 0 ) );
+	const adjustedFragment = tableFragment.truncateLinearSelection( 50 );
+	assert.deepEqual( adjustedFragment, tableFragment, 'fragment is cloned if selection is non-linear' );
 } );
 
 QUnit.test( 'collapseToStart/End', ( assert ) => {
@@ -224,6 +234,10 @@ QUnit.test( 'expandLinearSelection (annotation)', ( assert ) => {
 		);
 		assert.equalHash( fragment.getSelection().getRange(), caseItem.expected, caseItem.msg );
 	} );
+
+	const tableFragment = surface.getFragment( new ve.dm.TableSelection( new ve.Range( 0, 52 ), 0, 0, 1, 0 ) );
+	const adjustedFragment = tableFragment.expandLinearSelection( 'annotation' );
+	assert.deepEqual( adjustedFragment, tableFragment, 'fragment is cloned if selection is non-linear' );
 } );
 
 QUnit.test( 'expandLinearSelection (closest)', ( assert ) => {
@@ -535,6 +549,15 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 		doc.getData( new ve.Range( 3, 4 ) ),
 		[ [ 'a', [ ve.dm.example.italicHash ] ] ],
 		'inserting content (annotate=true) replaces selection with new annotated content'
+	);
+
+	const originalData = doc.getData();
+	fragment = surface.getFragment( new ve.dm.NullSelection() );
+	fragment.insertContent( [ ...'foo' ] );
+	assert.deepEqual(
+		doc.getData(),
+		originalData,
+		'inserting content with a null fragment is a no-op'
 	);
 
 	fragment = surface.getLinearFragment( new ve.Range( 3, 4 ) );
@@ -869,6 +892,23 @@ QUnit.test( 'wrapNodes/unwrapNodes', ( assert ) => {
 	fragment.unwrapNodes( 3, 1 );
 	assert.deepEqual( fragment.getData(), doc.getData( new ve.Range( 5, 29 ) ), 'unwrapping multiple outer nodes and an inner node' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 5, 29 ), 'new range contains inner elements' );
+
+	const originalData = doc.getData();
+	fragment = surface.getFragment( new ve.dm.NullSelection() );
+	fragment.wrapNodes(
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
+	);
+	assert.deepEqual(
+		doc.getData(),
+		originalData,
+		'wrapNodes with a null fragment is a no-op'
+	);
+	fragment.unwrapNodes( 0, 2 );
+	assert.deepEqual(
+		doc.getData(),
+		originalData,
+		'unwrapNodes with a null fragment is a no-op'
+	);
 } );
 
 QUnit.test( 'rewrapNodes', ( assert ) => {
@@ -921,6 +961,15 @@ QUnit.test( 'rewrapNodes', ( assert ) => {
 
 	assert.deepEqual( doc.getData(), expectedData, 'rewrapping paragraphs as headings' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 59, 65 ), 'new range contains rewrapping elements' );
+
+	const originalData = doc.getData();
+	fragment = surface.getFragment( new ve.dm.NullSelection() );
+	fragment.rewrapNodes( 1, [ { type: 'heading', attributes: { level: 1 } } ] );
+	assert.deepEqual(
+		doc.getData(),
+		originalData,
+		'rewrapNodes with a null fragment is a no-op'
+	);
 } );
 
 QUnit.test( 'wrapAllNodes', ( assert ) => {
@@ -999,6 +1048,17 @@ QUnit.test( 'wrapAllNodes', ( assert ) => {
 		doc.getData(),
 		expectedData,
 		'unwrapping 4 levels (table, tableSection, tableRow and tableCell)'
+	);
+
+	const originalData = doc.getData();
+	fragment = surface.getFragment( new ve.dm.NullSelection() );
+	fragment.wrapAllNodes(
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
+	);
+	assert.deepEqual(
+		doc.getData(),
+		originalData,
+		'wrapAllNodes with a null fragment is a no-op'
 	);
 } );
 
