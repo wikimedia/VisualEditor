@@ -1,5 +1,7 @@
 'use strict';
 
+const fg = require( 'fast-glob' );
+
 /**
  * Build an object of required coverage percentages
  *
@@ -33,12 +35,16 @@ module.exports = function ( config ) {
 					branches: 20,
 					statements: 20,
 					lines: 20,
-					excludes: [
+					excludes: fg.globSync( [
 						'rebaser/src/dm/ve.dm.ProtocolServer.js',
 						'rebaser/src/dm/ve.dm.RebaseDocState.js',
 						'src/ve.track.js',
 						'src/init/**/*.js',
 						// DM
+						'!src/init/ve.init.ConflictableStorage.js',
+						'!src/init/ve.init.SupportCheck.js',
+						'!src/init/ve.init.js',
+						'!src/init/sa/ve.init.sa.js',
 						'src/dm/ve.dm.Converter.js',
 						'src/dm/ve.dm.InternalListNodeGroup.js',
 						'src/dm/ve.dm.SourceSurfaceFragment.js',
@@ -61,11 +67,30 @@ module.exports = function ( config ) {
 						'src/ce/keydownhandlers/ve.ce.TableDeleteKeyDownHandler.js',
 						// UI
 						'src/ui/*.js',
+						'!src/ui/ve.ui.Action.js',
+						'!src/ui/ve.ui.DataTransferHandlerFactory.js',
+						'!src/ui/ve.ui.DataTransferItem.js',
+						'!src/ui/ve.ui.FragmentWindow.js',
+						'!src/ui/ve.ui.Overlay.js',
+						'!src/ui/ve.ui.SequenceRegistry.js',
+						'!src/ui/ve.ui.ToolFactory.js',
+						'!src/ui/ve.ui.Trigger.js',
+						'!src/ui/ve.ui.TriggerRegistry.js',
+						'!src/ui/ve.ui.js',
 						'src/ui/actions/*.js',
+						'!src/ui/actions/ve.ui.AnnotationAction.js',
+						'!src/ui/actions/ve.ui.FormatAction.js',
+						'!src/ui/actions/ve.ui.IndentationAction.js',
+						'!src/ui/actions/ve.ui.LinkAction.js',
+						'!src/ui/actions/ve.ui.TableAction.js',
 						'src/ui/commands/*.js',
 						'src/ui/contextitems/*.js',
+						'!src/ui/contextitems/ve.ui.CommentContextItem.js',
+						'!src/ui/contextitems/ve.ui.LanguageContextItem.js',
 						'src/ui/contexts/*.js',
 						'src/ui/datatransferhandlers/*.js',
+						'!src/ui/datatransferhandlers/ve.ui.DSVFileTransferHandler.js',
+						'!src/ui/datatransferhandlers/ve.ui.UrlStringTransferHandler.js',
 						'src/ui/dialogs/*.js',
 						'src/ui/inspectors/ve.ui.CommentAnnotationInspector.js',
 						'src/ui/inspectors/ve.ui.FragmentInspector.js',
@@ -73,8 +98,9 @@ module.exports = function ( config ) {
 						'src/ui/pages/*.js',
 						'src/ui/tools/*.js',
 						'src/ui/widgets/*.js',
+						'!src/ui/widgets/ve.ui.NoFocusButtonWidget.js',
 						'src/ui/windowmanagers/*.js'
-					],
+					] ),
 					overrides: {
 						// Core
 						// TODO: Fix a few cases for 80% coverage
