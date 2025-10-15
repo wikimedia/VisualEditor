@@ -120,8 +120,7 @@ module.exports = function ( config ) {
 						'src/ce/annotations/*.js': coverAll( 50 ),
 						'src/ce/keydownhandlers/*.js': coverAll( 80 ),
 						'src/ce/nodes/*.js': coverAll( 50 ),
-						// TODO: Fix a few cases for 80% coverage
-						'src/ce/selections/*.js': coverAll( 50 ),
+						'src/ce/selections/*.js': coverAll( 80 ),
 						// UI
 						'src/ui/elements/*.js': coverAll( 50 ),
 						'src/ui/inspectors/*.js': coverAll( 50 )

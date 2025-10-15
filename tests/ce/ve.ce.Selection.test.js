@@ -59,6 +59,12 @@ QUnit.test( 'Rects', ( assert ) => {
 				msg: 'Cursor offset in an empty paragraph'
 			},
 			{
+				rangeOrSelection: new ve.Range( 5 ),
+				surfaceDetached: true,
+				expectedRects: null,
+				msg: 'Cursor offset in an empty paragraph (surface detached)'
+			},
+			{
 				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 6, 20 ),
@@ -68,6 +74,18 @@ QUnit.test( 'Rects', ( assert ) => {
 				expectedRects: [ { width: 100, height: 50 } ],
 				expectedTableBoundingRect: { width: 200, height: 50 },
 				msg: 'Table selection'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 6, 20 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				surfaceDetached: true,
+				expectedRects: [],
+				expectedTableBoundingRect: null,
+				msg: 'Table selection (surface detached)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 20, 22 ),
@@ -88,52 +106,65 @@ QUnit.test( 'Rects', ( assert ) => {
 			}
 		];
 
-	function filterProps( val ) {
+	const filterRects = ( vals ) => ve.copy( vals, null, ( val ) => {
 		if ( val && val.width !== undefined ) {
 			return {
 				width: val.width,
 				height: val.height
 			};
 		}
-	}
+	} );
 
 	cases.forEach( ( caseItem ) => {
 		model.setSelection(
 			ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.rangeOrSelection )
 		);
 
+		let $surfaceParent;
+		if ( caseItem.surfaceDetached ) {
+			// detach the view
+			$surfaceParent = view.getSurface().$element.parent();
+			view.getSurface().$element.detach();
+		}
+
 		assert.deepEqual(
-			ve.copy( view.getSelection().getSelectionRects(), null, filterProps ),
+			filterRects( view.getSelection().getSelectionRects() ),
 			caseItem.expectedRects,
 			caseItem.msg + ': rects'
 		);
 		assert.deepEqual(
-			ve.copy( view.getSelection().getSelectionBoundingRect(), null, filterProps ),
+			filterRects( view.getSelection().getSelectionBoundingRect() ),
 			caseItem.expectedBoundingRect !== undefined ?
 				caseItem.expectedBoundingRect :
-				caseItem.expectedRects[ 0 ],
+				( caseItem.expectedRects && caseItem.expectedRects[ 0 ] ) || null,
 			caseItem.msg + ': bounding rect'
 		);
 		assert.deepEqual(
-			ve.copy( view.getSelection().getSelectionFocusRect(), null, filterProps ),
+			filterRects( view.getSelection().getSelectionFocusRect() ),
 			caseItem.expectedFocusRect !== undefined ?
 				caseItem.expectedFocusRect :
-				caseItem.expectedBoundingRect || caseItem.expectedRects[ 0 ],
+				caseItem.expectedBoundingRect || ( caseItem.expectedRects && caseItem.expectedRects[ 0 ] ) || null,
 			caseItem.msg + ': focus rect'
 		);
 		assert.deepEqual(
-			ve.copy( view.getSelection().getSelectionStartAndEndRects(), null, filterProps ),
+			filterRects( view.getSelection().getSelectionStartAndEndRects() ),
 			caseItem.expectedStartAndEndRects !== undefined ?
 				caseItem.expectedStartAndEndRects :
-				{ start: caseItem.expectedRects[ 0 ], end: caseItem.expectedRects[ 0 ] },
+				( caseItem.expectedRects && caseItem.expectedRects[ 0 ] ) ?
+					{ start: caseItem.expectedRects[ 0 ], end: caseItem.expectedRects[ 0 ] } :
+					null,
 			caseItem.msg + ': start and end rects'
 		);
-		if ( caseItem.expectedTableBoundingRect ) {
+		if ( caseItem.expectedTableBoundingRect !== undefined ) {
 			assert.deepEqual(
-				ve.copy( view.getSelection().getTableBoundingRect(), null, filterProps ),
+				filterRects( view.getSelection().getTableBoundingRect() ),
 				caseItem.expectedTableBoundingRect,
 				caseItem.msg + ': table bounding rect'
 			);
+		}
+
+		if ( caseItem.surfaceDetached ) {
+			$surfaceParent.append( view.getSurface().$element );
 		}
 	} );
 
