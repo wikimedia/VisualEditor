@@ -395,6 +395,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		this.findText.setLabel(
 			this.invalidRegex ? ve.msg( 'visualeditor-find-and-replace-invalid-regex' ) : ''
 		);
+		surfaceView.getSelectionManager().drawSelections( 'findResultFocused', [] );
 		return;
 	}
 
