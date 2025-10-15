@@ -40,7 +40,6 @@ module.exports = function ( config ) {
 						'src/init/**/*.js',
 						// DM
 						'src/dm/ve.dm.Converter.js',
-						'src/dm/ve.dm.InternalList.js',
 						'src/dm/ve.dm.InternalListNodeGroup.js',
 						'src/dm/ve.dm.SourceSurfaceFragment.js',
 						'src/dm/ve.dm.SurfaceSynchronizer.js',
@@ -51,7 +50,6 @@ module.exports = function ( config ) {
 						'src/dm/nodes/ve.dm.DocumentNode.js',
 						'src/dm/nodes/ve.dm.GeneratedContentNode.js',
 						'src/dm/nodes/ve.dm.ImageNode.js',
-						'src/dm/nodes/ve.dm.InternalItemNode.js',
 						'src/dm/nodes/ve.dm.SectionNode.js',
 						// CE
 						'src/ce/ve.ce.DragDropHandler.js',
