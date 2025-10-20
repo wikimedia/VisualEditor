@@ -36,6 +36,7 @@
 		"grunt-css-url-embed": "1.11.1",
 		"grunt-cssjanus": "1.0.0",
 		"grunt-eslint": "24.3.0",
+		"grunt-jsonlint": "^3.0.0",
 		"grunt-karma": "4.0.2",
 		"grunt-stylelint": "0.20.1",
 		"grunt-tyops": "0.1.1",

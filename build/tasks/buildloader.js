@@ -84,9 +84,11 @@ module.exports = function ( grunt ) {
 		 * @return {boolean} Whether to include the file
 		 */
 		function filter( type, src ) {
+			// Debug files are only included in debug builds
 			if ( src.debug && !env.debug ) {
 				return false;
 			}
+			// All styles are excluded from test builds unless marked as test styles
 			if ( type === 'styles' && env.test && !src.test ) {
 				return false;
 			}

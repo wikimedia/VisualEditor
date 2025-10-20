@@ -1,0 +1,85 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"description": "Schema for VE modules definition",
+	"type": "object",
+	"patternProperties": {
+		"^.+$": {
+			"type": "object",
+			"description": "Module definition",
+			"properties": {
+				"scripts": {
+					"type": "array",
+					"description": "List of scripts for this module",
+					"items": {
+						"oneOf": [
+							{
+								"type": "string",
+								"description": "Path to the script"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"description": "Path to the script"
+									},
+									"debug": {
+										"type": "boolean",
+										"description": "Only include this script in debug builds"
+									}
+								},
+								"required": [ "file" ],
+								"additionalProperties": false
+							}
+						]
+					}
+				},
+				"styles": {
+					"type": "array",
+					"description": "List of stylesheets for this module",
+					"items": {
+						"oneOf": [
+							{
+								"type": "string",
+								"description": "Path to the stylesheet"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"description": "Path to the stylesheet"
+									},
+									"debug": {
+										"type": "boolean",
+										"description": "Only include this stylesheet in debug builds"
+									},
+									"test": {
+										"type": "boolean",
+										"description": "Include this stylesheet even in test builds"
+									}
+								},
+								"required": [ "file" ],
+								"additionalProperties": false
+							}
+						]
+					}
+				},
+				"dependencies": {
+					"type": "array",
+					"description": "List of module dependencies",
+					"items": {
+						"type": "string",
+						"description": "Module name"
+					}
+				},
+				"styleGroup": {
+					"type": "string",
+					"description": "Name of the group the module's styles belong to, added as a CSS class to the <style> tag."
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}

@@ -42,6 +42,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-css-url-embed' );
 	grunt.loadNpmTasks( 'grunt-cssjanus' );
 	grunt.loadNpmTasks( 'grunt-eslint' );
+	grunt.loadNpmTasks( 'grunt-jsonlint' );
 	grunt.loadNpmTasks( 'grunt-karma' );
 	grunt.loadNpmTasks( 'grunt-stylelint' );
 	grunt.loadNpmTasks( 'grunt-tyops' );
@@ -372,6 +373,16 @@ module.exports = function ( grunt ) {
 				'!lib/**',
 				'!**/{coverage,dist,docs,node_modules}/**'
 			] )
+		},
+		jsonlint: {
+			modules: {
+				src: [ 'build/modules.json' ],
+				options: {
+					schema: {
+						src: 'build/modules.schema.json'
+					}
+				}
+			}
 		},
 		banana: {
 			all: 'i18n/'
