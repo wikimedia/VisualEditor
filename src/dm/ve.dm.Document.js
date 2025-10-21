@@ -1703,7 +1703,7 @@ ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 		}
 
 		if ( !options.caseSensitiveString ) {
-			query = new Set( Array.from( query ).map( ( s ) => s.toLowerCase() ) );
+			query = new Set( Array.from( query ).map( ( s ) => s.toLocaleLowerCase( this.lang ) ) );
 		}
 
 		let minLen = Infinity,
@@ -1715,7 +1715,7 @@ ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 
 		data.forEachRunOfContent( searchRange, ( off, line ) => {
 			if ( !options.caseSensitiveString ) {
-				line = line.toLowerCase();
+				line = line.toLocaleLowerCase( this.lang );
 			}
 
 			// For each possible length, do a sliding window search on the normalized line
