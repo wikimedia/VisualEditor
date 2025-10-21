@@ -12,9 +12,6 @@
  */
 ve.dm.LinearSelection = function VeDmLinearSelection( range ) {
 	// Parent constructor
-	if ( ve.dm.Document && arguments[ 0 ] instanceof ve.dm.Document ) {
-		throw new Error( 'Got obsolete ve.dm.Document argument' );
-	}
 	ve.dm.LinearSelection.super.call( this );
 
 	this.range = range;
