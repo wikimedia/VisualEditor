@@ -1166,6 +1166,15 @@ QUnit.test( 'findText (plain text)', ( assert ) => {
 				]
 			},
 			{
+				msg: 'Character which changes length after toLowerCase (İ) doesn\'t break later offsets (Set query)',
+				query: new Set( [ 'land' ] ),
+				options: {},
+				ranges: [
+					new ve.Range( 78, 82 )
+				],
+				expectFail: true
+			},
+			{
 				msg: 'Diacritic insensitive & case sensitive match',
 				query: 'Egalite',
 				options: {
@@ -1285,7 +1294,13 @@ QUnit.test( 'findText (plain text)', ( assert ) => {
 	cases.forEach( ( caseItem ) => {
 		doc.lang = caseItem.lang || 'en';
 		const ranges = doc.findText( caseItem.query, caseItem.options );
-		assert.deepEqual( ranges.map( ( r ) => r.toJSON() ), caseItem.ranges.map( ( r ) => r.toJSON() ), caseItem.msg );
+		const actualRanges = ranges.map( ( r ) => r.toJSON() );
+		const expectedRanges = caseItem.ranges.map( ( r ) => r.toJSON() );
+		if ( caseItem.expectFail ) {
+			assert.notDeepEqual( actualRanges, expectedRanges, caseItem.msg );
+		} else {
+			assert.deepEqual( actualRanges, expectedRanges, caseItem.msg );
+		}
 	} );
 } );
 
