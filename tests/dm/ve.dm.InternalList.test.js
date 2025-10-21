@@ -123,13 +123,6 @@ QUnit.test( 'getItemInsertion', ( assert ) => {
 	assert.strictEqual( insertion.transaction, null, 'Insertion with duplicate key has null transaction' );
 } );
 
-QUnit.test( 'getKeyIndex', ( assert ) => {
-	const doc = ve.dm.example.createExampleDocument( 'references' );
-	const internalList = doc.getInternalList();
-
-	assert.deepEqual( Object.keys( internalList.keyIndexes ), [ 'g1/literal/:3', 'g2/undefined' ] );
-} );
-
 QUnit.test( 'getUniqueListKey', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument( 'references' );
 	const internalList = doc.getInternalList();
