@@ -1566,6 +1566,89 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 				msg: 'Paste paragraphs and a table into table cell'
 			},
 			{
+				documentHtml: '<table><tbody><tr><th>H1</th><th>H2</th></tr><tr><td>C1</td><td>C2</td></tr></tbody></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 32 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				internalSourceRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 32 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 1
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 32 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 1
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 24 },
+						{
+							insert: [],
+							remove: [
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								...'C2',
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 6 }
+					],
+					[
+						{ type: 'retain', length: 24 },
+						{
+							insert: [
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								...'C1',
+								{ type: '/paragraph' }
+							],
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 6 }
+
+					],
+					[
+						{ type: 'retain', length: 10 },
+						{
+							insert: [],
+							remove: [
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								...'H2',
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 20 }
+					],
+					[
+						{ type: 'retain', length: 10 },
+						{
+							insert: [
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								...'H1',
+								{ type: '/paragraph' }
+							],
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 20 }
+					]
+				],
+				msg: 'Internal table copy'
+			},
+			{
 				rangeOrSelection: new ve.Range( 2 ),
 				documentHtml: '<p>A</p><ul><li>B</li><li>C</li></ul>',
 				internalSourceRangeOrSelection: new ve.Range( 6, 12 ),
