@@ -232,14 +232,14 @@ QUnit.test( 'onCopy', ( assert ) => {
 		}
 	];
 
-	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
+	cases.forEach( ( caseItem ) => {
 		const clipboardData = new ve.test.utils.MockDataTransfer(),
 			testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } ),
-			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
+			view = ve.test.utils.createSurfaceViewFromDocument( caseItem.doc || ve.dm.example.createExampleDocument() ),
 			model = view.getModel();
 
 		let isClipboardDataFormatsSupported;
-		if ( noClipboardData ) {
+		if ( caseItem.noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
 			ve.isClipboardDataFormatsSupported = function () {
 				return false;
@@ -247,50 +247,45 @@ QUnit.test( 'onCopy', ( assert ) => {
 		}
 
 		// Paste sequence
-		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection ) );
+		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.rangeOrSelection ) );
 		view.clipboardHandler.onCopy( testEvent );
 
-		if ( noClipboardData ) {
+		if ( caseItem.noClipboardData ) {
 			ve.isClipboardDataFormatsSupported = isClipboardDataFormatsSupported;
 		}
 
 		const slice = view.clipboardHandler.clipboard.slice;
 		const clipboardKey = view.clipboardHandler.clipboardId + '-' + view.clipboardHandler.clipboardIndex;
 
-		assert.equalRange( slice.originalRange, expectedOriginalRange || rangeOrSelection, msg + ': originalRange' );
-		assert.equalRange( slice.balancedRange, expectedBalancedRange || rangeOrSelection, msg + ': balancedRange' );
-		if ( expectedData ) {
-			assert.equalLinearData( slice.data.data, expectedData, msg + ': data' );
+		assert.equalRange( slice.originalRange, caseItem.expectedOriginalRange || caseItem.rangeOrSelection, caseItem.msg + ': originalRange' );
+		assert.equalRange( slice.balancedRange, caseItem.expectedBalancedRange || caseItem.rangeOrSelection, caseItem.msg + ': balancedRange' );
+		if ( caseItem.expectedData ) {
+			assert.equalLinearData( slice.data.data, caseItem.expectedData, caseItem.msg + ': data' );
 		}
-		if ( expectedHtml ) {
-			const $expected = $( '<div>' ).html( expectedHtml );
+		if ( caseItem.expectedHtml ) {
+			const $expected = $( '<div>' ).html( caseItem.expectedHtml );
 			// Clipboard key is random, so update it
 			$expected.find( '[data-ve-clipboard-key]' ).attr( 'data-ve-clipboard-key', clipboardKey );
 			assert.equalDomElement(
 				$( '<div>' ).html( clipboardData.getData( 'text/html' ) )[ 0 ],
 				$expected[ 0 ],
-				msg + ': html'
+				caseItem.msg + ': html'
 			);
 		}
-		if ( expectedText ) {
+		if ( caseItem.expectedText ) {
 			// Different browsers and browser versions will produce different trailing whitespace, so just trim.
-			assert.strictEqual( clipboardData.getData( 'text/plain' ).trim(), expectedText, msg + ': text' );
+			assert.strictEqual( clipboardData.getData( 'text/plain' ).trim(), caseItem.expectedText, caseItem.msg + ': text' );
 		}
-		if ( !noClipboardData ) {
-			assert.strictEqual( clipboardData.getData( view.clipboardHandler.constructor.static.clipboardKeyMimeType ), clipboardKey, msg + ': clipboardId set' );
+		if ( !caseItem.noClipboardData ) {
+			assert.strictEqual(
+				clipboardData.getData( view.clipboardHandler.constructor.static.clipboardKeyMimeType ),
+				clipboardKey,
+				caseItem.msg + ': clipboardId set'
+			);
 		}
 
 		view.destroy();
-	}
-
-	cases.forEach( ( caseItem ) => {
-		testRunner(
-			caseItem.doc, caseItem.rangeOrSelection, caseItem.expectedData,
-			caseItem.expectedOriginalRange, caseItem.expectedBalancedRange,
-			caseItem.expectedHtml, caseItem.expectedText, caseItem.noClipboardData, caseItem.msg
-		);
 	} );
-
 } );
 
 QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
