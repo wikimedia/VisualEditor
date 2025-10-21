@@ -218,6 +218,8 @@ ve.dm.TableSelection.prototype.getCoveringRange = function () {
 /**
  * Get all the ranges required to build a table slice from the selection
  *
+ * Used when copying table selections.
+ *
  * In addition to the outer ranges of the cells, this also includes the start and
  * end tags of table rows, sections and the table itself.
  *

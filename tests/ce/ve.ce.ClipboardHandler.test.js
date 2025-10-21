@@ -229,6 +229,21 @@ QUnit.test( 'onCopy', ( assert ) => {
 			rangeOrSelection: new ve.Range( 0, 61 ),
 			expectedText: 'abc\n\nd\n\ne\n\nf\n\ng\n\nhi\n\nj\n\nk\n\nl\n\nm',
 			msg: 'Plain text of entire document'
+		},
+		{
+			doc: ve.dm.converter.getModelFromDom( ve.test.utils.createDocumentFromHtml( '<table><tbody><tr><th>H1</th><th>H2</th></tr><tr><td>C1</td><td>C2</td></tr></tbody></table>' ) ),
+			rangeOrSelection: {
+				type: 'table',
+				tableRange: new ve.Range( 0, 32 ),
+				fromCol: 0,
+				fromRow: 0,
+				toCol: 0,
+				toRow: 1
+			},
+			expectedOriginalRange: new ve.Range( 0, 20 ),
+			expectedBalancedRange: new ve.Range( 0, 20 ),
+			expectedHtml: '<table><tbody><tr><th>H1</th></tr><tr><td>C1</td></tr></tbody></table>',
+			msg: 'Partial table selection'
 		}
 	];
 
