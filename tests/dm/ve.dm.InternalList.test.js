@@ -145,3 +145,50 @@ QUnit.test( 'getUniqueListKey', ( assert ) => {
 	generatedName = internalList.getUniqueListKey( 'g2', 'auto/4', 'literal/:' );
 	assert.strictEqual( generatedName, 'literal/:0', 'Different groups are treated separately' );
 } );
+
+QUnit.test( 'merge (no common element)', ( assert ) => {
+	// Note: The internalLists in the example documents are not popuplated completely
+	// so `keyIndexes` is empty in both cases
+	const doc = ve.dm.example.createExampleDocument( 'references' );
+	const otherDoc = ve.dm.example.createExampleDocument( 'references' );
+	const internalList = doc.getInternalList();
+	const otherInternalList = otherDoc.getInternalList();
+
+	const merge = internalList.merge( otherInternalList, 0 );
+	assert.deepEqual(
+		merge.mapping,
+		{ 0: 2, 1: 3 },
+		'All nodes will be mapped to new indexes'
+	);
+	assert.deepEqual(
+		merge.newItemRanges,
+		[
+			new ve.Range( 7, 14 ),
+			new ve.Range( 14, 21 )
+		],
+		'All internal items will be merged into the list'
+	);
+} );
+
+QUnit.test( 'merge (one common element)', ( assert ) => {
+	// Note: The internalLists in the example documents are not popuplated completely
+	// so `keyIndexes` is empty in both cases
+	const doc = ve.dm.example.createExampleDocument( 'references' );
+	const otherDoc = ve.dm.example.createExampleDocument( 'references' );
+	const internalList = doc.getInternalList();
+	const otherInternalList = otherDoc.getInternalList();
+
+	const merge = internalList.merge( otherInternalList, 1 );
+	assert.deepEqual(
+		merge.mapping,
+		{ 0: 0, 1: 2 },
+		'One node will be mapped to an exisitng internal item'
+	);
+	assert.deepEqual(
+		merge.newItemRanges,
+		[
+			new ve.Range( 14, 21 )
+		],
+		'Only one internal item will be merged into the list'
+	);
+} );
