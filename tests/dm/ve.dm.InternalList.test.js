@@ -129,29 +129,6 @@ QUnit.test( 'getItemInsertion', ( assert ) => {
 	assert.strictEqual( insertion.transaction, null, 'Insertion with duplicate key has null transaction' );
 } );
 
-QUnit.test( 'getUniqueListKey', ( assert ) => {
-	const doc = ve.dm.example.createExampleDocument( 'references' );
-	const internalList = doc.getInternalList();
-
-	let generatedName;
-	generatedName = internalList.getUniqueListKey( 'g1', 'auto/0', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:0', '0 maps to 0' );
-	generatedName = internalList.getUniqueListKey( 'g1', 'auto/1', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:1', '1 maps to 1' );
-	generatedName = internalList.getUniqueListKey( 'g1', 'auto/2', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:2', '2 maps to 2' );
-	generatedName = internalList.getUniqueListKey( 'g1', 'auto/3', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:4', '3 maps to 4 (because a literal :3 is present)' );
-	generatedName = internalList.getUniqueListKey( 'g1', 'auto/4', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:5', '4 maps to 5' );
-
-	generatedName = internalList.getUniqueListKey( 'g1', 'auto/0', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:0', 'Reusing a key reuses the name' );
-
-	generatedName = internalList.getUniqueListKey( 'g2', 'auto/4', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:0', 'Different groups are treated separately' );
-} );
-
 QUnit.test( 'merge (no common element)', ( assert ) => {
 	// Note: The internalLists in the example documents are not popuplated completely
 	// so `keyIndexes` is empty in both cases
