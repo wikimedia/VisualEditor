@@ -1702,28 +1702,73 @@ ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 			return [];
 		}
 
+		let normalizedQuery = query;
 		if ( !options.caseSensitiveString ) {
-			query = new Set( Array.from( query ).map( ( s ) => s.toLocaleLowerCase( this.lang ) ) );
+			normalizedQuery = new Set( Array.from( query ).map( ( s ) => s.toLocaleLowerCase( this.lang ) ) );
 		}
 
 		let minLen = Infinity,
 			maxLen = 0;
-		query.forEach( ( s ) => {
+		normalizedQuery.forEach( ( s ) => {
 			minLen = Math.min( minLen, s.length );
 			maxLen = Math.max( maxLen, s.length );
 		} );
 
+		/**
+		 * Map from offset in case-folded string to offset in original string
+		 * In some cases, case-folding can change string length
+		 * For example, if s = '\u0130', then s.length === 1 but s.toLocaleLowerCase( 'en' ).length === 2
+		 *
+		 * @param {string} s
+		 * @param {number} offsetLower in lowercased string
+		 * @return {number} corresponding offset in original string
+		 */
+		const fixOffset = function ( s, offsetLower ) {
+			// Start by guessing that lowercasing didn't change the offset,
+			// except when the offset is out of bounds in the original string
+			let guess = Math.min( offsetLower, s.length );
+
+			let diff = s.slice( 0, guess ).toLocaleLowerCase( this.lang ).length - offsetLower;
+			if ( diff === 0 ) {
+				// Optimization note: this will almost always be true
+				// Only rare characters change length of substr when case folding
+				return guess;
+			}
+
+			while ( diff > 0 ) {
+				// The lowercase substr is longer than original
+				guess--;
+				diff = s.slice( 0, guess ).toLocaleLowerCase( this.lang ).length - offsetLower;
+			}
+
+			while ( diff < 0 ) {
+				// The lowercase substr is shorter than original
+				guess++;
+				diff = s.slice( 0, guess ).toLocaleLowerCase( this.lang ).length - offsetLower;
+			}
+			// In some rare situations the diff might be positive now
+			// (which would correspond to no offset in the original string mapping to the desired offset)
+			return guess;
+		};
+
 		data.forEachRunOfContent( searchRange, ( off, line ) => {
+			let normalizedLine = line;
 			if ( !options.caseSensitiveString ) {
-				line = line.toLocaleLowerCase( this.lang );
+				normalizedLine = line.toLocaleLowerCase( this.lang );
 			}
 
 			// For each possible length, do a sliding window search on the normalized line
 			for ( let len = minLen; len <= maxLen; len++ ) {
-				for ( let i = 0; i <= line.length - len; i++ ) {
-					const substr = line.slice( i, i + len );
-					if ( query.has( substr ) ) {
-						ranges.push( new ve.Range( off + i, off + i + len ) );
+				for ( let i = 0; i <= normalizedLine.length - len; i++ ) {
+					const substr = normalizedLine.slice( i, i + len );
+					if ( normalizedQuery.has( substr ) ) {
+						let start = i;
+						let end = i + len;
+						if ( !options.caseSensitiveString ) {
+							start = fixOffset( line, start );
+							end = fixOffset( line, end );
+						}
+						ranges.push( new ve.Range( off + start, off + end ) );
 						if ( options.noOverlaps ) {
 							i += len - 1;
 						}

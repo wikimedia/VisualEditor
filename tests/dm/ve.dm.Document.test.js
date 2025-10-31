@@ -1171,8 +1171,7 @@ QUnit.test( 'findText (plain text)', ( assert ) => {
 				options: {},
 				ranges: [
 					new ve.Range( 78, 82 )
-				],
-				expectFail: true
+				]
 			},
 			{
 				msg: 'Diacritic insensitive & case sensitive match',
