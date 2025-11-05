@@ -689,9 +689,9 @@ ve.dm.example.internalData = [
 ve.dm.example.references = [
 	// 0
 	{ type: 'paragraph' },
-	{ type: 'stubReference', attributes: { listKey: 'literal/:3', listGroup: 'g1' } },
+	{ type: 'stubReference', attributes: { listIndex: 0, listKey: 'literal/:3', listGroup: 'g1' } },
 	{ type: '/stubReference' },
-	{ type: 'stubReference', attributes: { listGroup: 'g2' } },
+	{ type: 'stubReference', attributes: { listIndex: 1, listKey: 'auto/0', listGroup: 'g2' } },
 	{ type: '/stubReference' },
 	{ type: '/paragraph' },
 	// 6

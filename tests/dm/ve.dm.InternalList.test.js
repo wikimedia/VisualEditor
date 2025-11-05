@@ -154,6 +154,10 @@ QUnit.test( 'merge (no common element)', ( assert ) => {
 	const internalList = doc.getInternalList();
 	const otherInternalList = otherDoc.getInternalList();
 
+	// Validate the test setup, see comment at the top
+	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` is empty' );
+	assert.deepEqual( otherInternalList.keyIndexes, {}, '`keyIndexes` is empty' );
+
 	const merge = internalList.merge( otherInternalList, 0 );
 	assert.deepEqual(
 		merge.mapping,
@@ -177,6 +181,10 @@ QUnit.test( 'merge (one common element)', ( assert ) => {
 	const otherDoc = ve.dm.example.createExampleDocument( 'references' );
 	const internalList = doc.getInternalList();
 	const otherInternalList = otherDoc.getInternalList();
+
+	// Validate the test setup, see comment at the top
+	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` is empty' );
+	assert.deepEqual( otherInternalList.keyIndexes, {}, '`keyIndexes` is empty' );
 
 	const merge = internalList.merge( otherInternalList, 1 );
 	assert.deepEqual(
