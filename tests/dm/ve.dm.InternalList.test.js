@@ -77,15 +77,21 @@ QUnit.test( 'convertToData', ( assert ) => {
 } );
 
 QUnit.test( 'clone', ( assert ) => {
-	const doc = ve.dm.example.createExampleDocument(),
-		doc2 = ve.dm.example.createExampleDocument(),
-		internalList = doc.getInternalList();
+	const doc = ve.dm.example.createExampleDocument( 'references' );
+	const doc2 = ve.dm.example.createExampleDocument( 'references' );
+	const internalList = doc.getInternalList();
+
+	// Validate the test setup
+	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` of original internalList is empty' );
 
 	internalList.getNextUniqueNumber(); // =0
 	const internalListClone = internalList.clone();
 	internalList.getNextUniqueNumber(); // =1
 	const internalListClone2 = internalList.clone( doc2 );
 	internalList.getNextUniqueNumber(); // =2
+
+	assert.deepEqual( internalListClone.keyIndexes, {}, '`keyIndexes` of first clone is empty' );
+	assert.deepEqual( internalListClone2.keyIndexes, {}, '`keyIndexes` of second clone is empty' );
 
 	assert.strictEqual( internalListClone.getDocument(), internalList.getDocument(), 'Documents match' );
 	assert.strictEqual( internalListClone2.getDocument(), doc2, 'Cloning with document parameter' );
