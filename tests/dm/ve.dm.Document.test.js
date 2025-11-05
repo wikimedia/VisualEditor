@@ -168,7 +168,14 @@ QUnit.test( 'cloneFromRange and rebuildTree (InternalList)', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument( 'references' );
 
 	// Validate the test setup
-	assert.deepEqual( doc.getInternalList().keyIndexes, {}, '`keyIndexes` of original InternalList is empty' );
+	assert.deepEqual(
+		doc.getInternalList().keyIndexes,
+		{
+			'g1/literal/:3': 0,
+			'g2/auto/0': 1
+		},
+		'`keyIndexes` of original InternalList is setup correctly'
+	);
 
 	const docClone = doc.cloneFromRange();
 
@@ -176,7 +183,14 @@ QUnit.test( 'cloneFromRange and rebuildTree (InternalList)', ( assert ) => {
 
 	docClone.rebuildTree();
 
-	assert.deepEqual( docClone.getInternalList().keyIndexes, {}, '`keyIndexes` is empty after rebuilding the tree' );
+	assert.deepEqual(
+		docClone.getInternalList().keyIndexes,
+		{
+			'g1/literal/:3': 0,
+			'g2/auto/0': 1
+		},
+		'`keyIndexes` of clone repopulated correctly after rebuilding the tree'
+	);
 } );
 
 QUnit.test( 'getRelativeOffset', ( assert ) => {

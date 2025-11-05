@@ -82,7 +82,14 @@ QUnit.test( 'clone', ( assert ) => {
 	const internalList = doc.getInternalList();
 
 	// Validate the test setup
-	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` of original internalList is empty' );
+	assert.deepEqual(
+		internalList.keyIndexes,
+		{
+			'g1/literal/:3': 0,
+			'g2/auto/0': 1
+		},
+		'`keyIndexes` of original InternalList is setup correctly'
+	);
 
 	internalList.getNextUniqueNumber(); // =0
 	const internalListClone = internalList.clone();
@@ -130,56 +137,75 @@ QUnit.test( 'getItemInsertion', ( assert ) => {
 } );
 
 QUnit.test( 'merge (no common element)', ( assert ) => {
-	// Note: The internalLists in the example documents are not popuplated completely
-	// so `keyIndexes` is empty in both cases
 	const doc = ve.dm.example.createExampleDocument( 'references' );
 	const otherDoc = ve.dm.example.createExampleDocument( 'references' );
 	const internalList = doc.getInternalList();
 	const otherInternalList = otherDoc.getInternalList();
 
-	// Validate the test setup, see comment at the top
-	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` is empty' );
-	assert.deepEqual( otherInternalList.keyIndexes, {}, '`keyIndexes` is empty' );
+	// Validate the test setup
+	assert.deepEqual(
+		internalList.keyIndexes,
+		{
+			'g1/literal/:3': 0,
+			'g2/auto/0': 1
+		},
+		'`keyIndexes` is setup correctly'
+	);
+	assert.deepEqual(
+		otherInternalList.keyIndexes,
+		{
+			'g1/literal/:3': 0,
+			'g2/auto/0': 1
+		},
+		'`keyIndexes` is setup correctly'
+	);
 
 	const merge = internalList.merge( otherInternalList, 0 );
 	assert.deepEqual(
 		merge.mapping,
-		{ 0: 2, 1: 3 },
-		'All nodes will be mapped to new indexes'
+		{ 0: 0, 1: 1 },
+		'New nodes will be mapped to existing indexes due to conflicts'
 	);
 	assert.deepEqual(
 		merge.newItemRanges,
-		[
-			new ve.Range( 7, 14 ),
-			new ve.Range( 14, 21 )
-		],
-		'All internal items will be merged into the list'
+		[],
+		'Internal items with conflicting content will be left out'
 	);
 } );
 
-QUnit.test( 'merge (one common element)', ( assert ) => {
-	// Note: The internalLists in the example documents are not popuplated completely
-	// so `keyIndexes` is empty in both cases
+QUnit.test( 'merge with conflicting listKeys (one common element)', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument( 'references' );
 	const otherDoc = ve.dm.example.createExampleDocument( 'references' );
 	const internalList = doc.getInternalList();
 	const otherInternalList = otherDoc.getInternalList();
 
-	// Validate the test setup, see comment at the top
-	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` is empty' );
-	assert.deepEqual( otherInternalList.keyIndexes, {}, '`keyIndexes` is empty' );
+	// Validate the test setup
+	assert.deepEqual(
+		internalList.keyIndexes,
+		{
+			'g1/literal/:3': 0,
+			'g2/auto/0': 1
+		},
+		'`keyIndexes` is setup correctly'
+	);
+	assert.deepEqual(
+		otherInternalList.keyIndexes,
+		{
+			'g1/literal/:3': 0,
+			'g2/auto/0': 1
+		},
+		'`keyIndexes` is setup correctly'
+	);
 
 	const merge = internalList.merge( otherInternalList, 1 );
 	assert.deepEqual(
 		merge.mapping,
-		{ 0: 0, 1: 2 },
-		'One node will be mapped to an exisitng internal item'
+		{ 0: 0, 1: 1 },
+		'New nodes will be mapped to existing indexes due to conflicts'
 	);
 	assert.deepEqual(
 		merge.newItemRanges,
-		[
-			new ve.Range( 14, 21 )
-		],
-		'Only one internal item will be merged into the list'
+		[],
+		'Internal items with conflicting content will be left out'
 	);
 } );
