@@ -164,6 +164,21 @@ QUnit.test( 'cloneFromRange', ( assert ) => {
 	} );
 } );
 
+QUnit.test( 'cloneFromRange and rebuildTree (InternalList)', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument( 'references' );
+
+	// Validate the test setup
+	assert.deepEqual( doc.getInternalList().keyIndexes, {}, '`keyIndexes` of original InternalList is empty' );
+
+	const docClone = doc.cloneFromRange();
+
+	assert.deepEqual( docClone.getInternalList().keyIndexes, {}, '`keyIndexes` of clone is empty' );
+
+	docClone.rebuildTree();
+
+	assert.deepEqual( docClone.getInternalList().keyIndexes, {}, '`keyIndexes` is empty after rebuilding the tree' );
+} );
+
 QUnit.test( 'getRelativeOffset', ( assert ) => {
 	const documentModel = ve.dm.example.createExampleDocument( 'alienData' ),
 		tests = [
