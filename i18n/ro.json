@@ -10,6 +10,7 @@
 			"Minisarm",
 			"NGC 54",
 			"Paloi Sciurala",
+			"SZ475",
 			"Stelistcristi",
 			"Strainu"
 		]
@@ -149,7 +150,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Implicită",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Scară",
 	"visualeditor-pagemenu-tooltip": "Opțiunile paginii",
-	"visualeditor-rebase-client-author-name": "Nume",
+	"visualeditor-rebase-client-author-name": "Numele tău",
 	"visualeditor-rebase-client-connecting": "Se conectează...",
 	"visualeditor-rebase-client-document-create-edit": "Crează/modifică",
 	"visualeditor-rebase-client-document-name": "Numele documentului (opțional)",
