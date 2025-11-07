@@ -16,6 +16,7 @@ QUnit.module( 've.ce.LinearArrowKeyDownHandler', {
 QUnit.test( 'special key down: linear arrow keys', ( assert ) => {
 	const done = assert.async(),
 		supportsSelectionExtend = ve.supportsSelectionExtend,
+		// Docs can be reused because they are never modified
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		slugDoc = ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'alienBlock' }, { type: '/alienBlock' },

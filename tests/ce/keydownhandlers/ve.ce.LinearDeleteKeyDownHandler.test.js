@@ -35,6 +35,15 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				msg: 'Character deleted by backspace'
 			},
 			{
+				rangeOrSelection: new ve.Range( 4 ),
+				keys: [ 'BACKSPACE' ],
+				readOnly: true,
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				expectedDefaultPrevented: [ true ],
+				msg: 'No change when surface is read-only'
+			},
+			{
 				rangeOrSelection: new ve.Range( 3 ),
 				keys: [ 'DELETE' ],
 				expectedData: ( data ) => {

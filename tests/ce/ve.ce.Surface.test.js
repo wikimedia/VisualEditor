@@ -58,6 +58,8 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 			'SHIFT+ENTER': 'insertParagraph'
 		};
 
+	view.isReadOnly = () => !!caseItem.readOnly;
+
 	// Platform-variant
 	execCommands[ ( ve.getSystemPlatform() === 'mac' ? 'CMD' : 'CTRL' ) + '+ENTER' ] = 'insertParagraph';
 

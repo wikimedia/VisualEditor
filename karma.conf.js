@@ -64,7 +64,6 @@ module.exports = function ( config ) {
 						'src/ce/nodes/ve.ce.CheckListItemNode.js',
 						'src/ce/nodes/ve.ce.GeneratedContentNode.js',
 						'src/ce/nodes/ve.ce.InternalItemNode.js',
-						'src/ce/keydownhandlers/ve.ce.TableDeleteKeyDownHandler.js',
 						// UI
 						'src/ui/*.js',
 						'!src/ui/ve.ui.Action.js',

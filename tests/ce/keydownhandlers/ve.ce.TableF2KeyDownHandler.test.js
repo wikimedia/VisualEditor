@@ -17,6 +17,7 @@ QUnit.module( 've.ce.TableF2KeyDownHandler', {
 
 QUnit.test( 'special key down: table f2', ( assert ) => {
 	const done = assert.async(),
+		// Doc can be reused because it is never modified
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		cases = [
 			{

@@ -15,10 +15,10 @@ QUnit.module( 've.ce.TableDeleteKeyDownHandler', {
 
 QUnit.test( 'special key down: table backspace/delete', ( assert ) => {
 	const done = assert.async(),
-		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
+		noChange = () => {},
 		cases = [
 			{
-				htmlOrDoc: mergedCellsDoc,
+				htmlOrDoc: ve.dm.example.createExampleDocument( 'mergedCells' ),
 				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
@@ -59,6 +59,52 @@ QUnit.test( 'special key down: table backspace/delete', ( assert ) => {
 					toRow: 1
 				},
 				msg: 'Table cells emptied by backspace'
+			},
+			{
+				htmlOrDoc: ve.dm.example.createExampleDocument( 'mergedCells' ),
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 2,
+					toRow: 1
+				},
+				keys: [ 'BACKSPACE' ],
+				readOnly: true,
+				expectedData: noChange,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 2,
+					toRow: 1
+				},
+				msg: 'No change when surface is read-only'
+			},
+			{
+				htmlOrDoc: '<table><tbody><tr><td>Foo</td><td rel="ve:Alien">Alien</td></tr></tbody></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 15 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				keys: [ 'BACKSPACE' ],
+				expectedData: ( data ) => {
+					data.splice( 5, 3 );
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 12 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				}
 			}
 		];
 

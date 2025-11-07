@@ -17,6 +17,7 @@ QUnit.test( 'special key down: linear enter', ( assert ) => {
 	const done = assert.async(),
 		noChange = () => {},
 		emptyList = '<ul><li><p></p></li></ul>',
+		// Doc can be reused because it is never modified
 		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
 		cases = [
 			{
@@ -31,6 +32,14 @@ QUnit.test( 'special key down: linear enter', ( assert ) => {
 				},
 				expectedRangeOrSelection: new ve.Range( 59 ),
 				msg: 'End of paragraph split by enter'
+			},
+			{
+				rangeOrSelection: new ve.Range( 57 ),
+				keys: [ 'ENTER' ],
+				readOnly: true,
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 57 ),
+				msg: 'No change when surface is read-only'
 			},
 			{
 				rangeOrSelection: new ve.Range( 57 ),

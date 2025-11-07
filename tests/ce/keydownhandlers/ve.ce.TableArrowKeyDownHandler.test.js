@@ -15,6 +15,7 @@ QUnit.module( 've.ce.TableArrowKeyDownHandler', {
 
 QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert ) => {
 	const done = assert.async(),
+		// Docs can be reused because they are never modified
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		cases = [
