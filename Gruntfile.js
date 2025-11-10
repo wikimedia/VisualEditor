@@ -465,11 +465,20 @@ module.exports = function ( grunt ) {
 		} );
 	} );
 
+	// Run check-excludes as a Grunt task
+	grunt.registerTask( 'check-excludes', 'Fail if any excluded files meet coverage thresholds', function () {
+		const done = this.async();
+		const { spawn } = require( 'child_process' );
+		const proc = spawn( 'node', [ 'build/check-excludes.js' ], { stdio: 'inherit' } );
+		proc.on( 'close', ( code ) => done( code === 0 ) );
+	} );
+
 	grunt.registerTask( 'build', [ 'clean:dist', 'concat', 'less', 'clean:less', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'lint', [ 'tyops', 'eslint', 'stylelint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:chrome', 'karma:firefox' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );
-	grunt.registerTask( 'ci', [ '_test', 'git-status' ] );
+	grunt.registerTask( 'ci', [ '_test', 'git-status', 'check-excludes' ] );
+
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 
 	if ( process.env.JENKINS_HOME ) {

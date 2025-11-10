@@ -50,6 +50,7 @@ excludes.forEach( ( file ) => {
 if ( !meetsThresholds.length ) {
 	console.log( 'No excluded files meet their thresholds.' );
 } else {
-	console.log( 'Excluded files which meet their thresholds:' );
+	console.log( 'The following files excluded in karma.conf.js now meet their coverage thresholds and can be removed from there:' );
 	meetsThresholds.forEach( ( f ) => console.log( `- ${ f }` ) );
+	process.exitCode = 1;
 }
