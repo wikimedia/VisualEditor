@@ -9,6 +9,9 @@ QUnit.module( 've.ui.Sequence' );
 /* Tests */
 
 QUnit.test( 'findAndExecuteSequences', ( assert ) => {
+	ve.ui.sequenceRegistry.register( new ve.ui.Sequence( 'TEST-codeBacktick', 'code', /`[^`]+`$/, 1, { startStrip: 1, delayed: false, setSelection: true } ) );
+	ve.ui.sequenceRegistry.register( new ve.ui.Sequence( 'TEST-missingCommand', 'MISSING-COMMAND', [ 'a', 'b', 'c' ], 3 ) );
+
 	const emptyDocData = [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ],
 		cases = [
 			{
@@ -47,6 +50,26 @@ QUnit.test( 'findAndExecuteSequences', ( assert ) => {
 				],
 				expectedRangeOrSelection: new ve.Range( 3 ),
 				msg: 'Horizontal rule'
+			},
+			{
+				content: '`code`',
+				expectedData: [
+					{ type: 'paragraph' },
+					...ve.dm.example.annotateText( 'code', { type: 'textStyle/code' } ),
+					{ type: '/paragraph' }
+				],
+				expectedRangeOrSelection: new ve.Range( 1, 5 ),
+				msg: 'Horizontal rule'
+			},
+			{
+				content: 'abc',
+				expectedData: [
+					{ type: 'paragraph' },
+					...'abc',
+					{ type: '/paragraph' }
+				],
+				expectedRangeOrSelection: new ve.Range( 1, 4 ),
+				msg: 'Missing command'
 			}
 		];
 
@@ -57,7 +80,7 @@ QUnit.test( 'findAndExecuteSequences', ( assert ) => {
 		view.findAndExecuteSequences();
 		assert.deepEqual(
 			model.getDocument().getData( model.getDocument().getDocumentRange() ),
-			caseItem.expectedData,
+			ve.dm.example.preprocessAnnotations( caseItem.expectedData, model.getDocument().getStore() ).data,
 			caseItem.msg + ': data'
 		);
 		const expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.expectedRangeOrSelection );
@@ -67,4 +90,14 @@ QUnit.test( 'findAndExecuteSequences', ( assert ) => {
 			caseItem.msg + ': selection'
 		);
 	} );
+} );
+
+QUnit.test( 'getMessage', ( assert ) => {
+	let seq = new ve.ui.Sequence( 'bulletStar', 'bulletWrapOnce', [ { type: 'paragraph' }, '*', ' ' ], 2 );
+	assert.strictEqual( seq.getMessage(), '* ', 'bulletStar: getMessage returns joined string for array data' );
+	assert.deepEqual( seq.getMessage( true ), [ '*', ' ' ], 'bulletStar: getMessage(true) returns array for array data' );
+
+	seq = new ve.ui.Sequence( 'autocompleteEmojiCommands', 'openEmojiCompletions', /(^| ):$/, 0 );
+	// RegExp data (synthetic, as real-world example)
+	assert.strictEqual( seq.getMessage(), '/(^| ):$/', 'RegExp: getMessage returns regexp string for RegExp data' );
 } );
