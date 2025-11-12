@@ -1189,6 +1189,13 @@ QUnit.test( 'findText (plain text)', ( assert ) => {
 				]
 			},
 			{
+				msg: 'Match that works case insensitively but not case sensitively (Set query)',
+				query: new Set( [ '\u0307zlanda' ] ),
+				ranges: [],
+				// This spuriously matches, because findText's lowercasing converts 'İzlanda' to 'i\u0307zlanda'
+				expectFail: true
+			},
+			{
 				msg: 'Diacritic insensitive & case sensitive match',
 				query: 'Egalite',
 				options: {
