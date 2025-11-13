@@ -9,6 +9,7 @@ QUnit.module( 've.ui.TableAction' );
 /* Tests */
 
 QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelative', ( assert ) => {
+	const noChange = () => {};
 	const tableCellTail = [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{ type: '/paragraph' },
@@ -109,7 +110,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 					toRow: 0
 				},
 				method: 'create',
-				expectedData: () => {},
+				expectedData: noChange,
+				expectedReturn: false,
 				expectedRangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 5, 37 ),
@@ -124,7 +126,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				rangeOrSelection: new ve.Range( 1 ),
 				method: 'insert',
 				args: [ 'col', 'after' ],
-				expectedData: () => {},
+				expectedData: noChange,
+				expectedReturn: false,
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'insert with linear selection is no-op'
 			},
@@ -132,7 +135,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				rangeOrSelection: new ve.Range( 1 ),
 				method: 'moveRelative',
 				args: [ 'col', 'after' ],
-				expectedData: () => {},
+				expectedData: noChange,
+				expectedReturn: false,
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'moveRelative with linear selection is no-op'
 			},
@@ -140,7 +144,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				rangeOrSelection: new ve.Range( 1 ),
 				method: 'move',
 				args: [ 'col', 0 ],
-				expectedData: () => {},
+				expectedData: noChange,
+				expectedReturn: false,
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'move with linear selection is no-op'
 			},
@@ -148,7 +153,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				rangeOrSelection: new ve.Range( 1 ),
 				method: 'delete',
 				args: [ 'table' ],
-				expectedData: () => {},
+				expectedData: noChange,
+				expectedReturn: false,
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'delete with linear selection is no-op'
 			},
@@ -156,14 +162,16 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				rangeOrSelection: new ve.Range( 1 ),
 				method: 'delete',
 				args: [ 'header' ],
-				expectedData: () => {},
+				expectedData: noChange,
+				expectedReturn: false,
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'changeCellStyle with linear selection is no-op'
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
 				method: 'mergeCells',
-				expectedData: () => {},
+				expectedData: noChange,
+				expectedReturn: false,
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'mergeCells with linear selection is no-op'
 			},

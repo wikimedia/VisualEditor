@@ -371,6 +371,7 @@
 	 * @param {boolean} [caseItem.undo] Test that the action undoes cleanly
 	 * @param {Function} [caseItem.expectedData] Function to mutate linear data into expected data
 	 * @param {Function} [caseItem.expectedOriginalData] Function to mutate linear data into expected data after undo
+	 * @param {Function} [caseItem.expectedReturn=true] Expected return value from action method
 	 */
 	ve.test.utils.runActionTest = function ( assert, caseItem ) {
 		if ( arguments.length > 2 ) {
@@ -418,7 +419,13 @@
 			} );
 		}
 
-		action[ caseItem.method ]( ...( caseItem.args || [] ) );
+		const executed = action[ caseItem.method ]( ...( caseItem.args || [] ) );
+
+		assert.strictEqual(
+			executed,
+			caseItem.expectedReturn !== undefined ? caseItem.expectedReturn : true,
+			caseItem.msg + ': action return value'
+		);
 
 		const afterApply = () => {
 			const actualData = getSerializableData( surface.getModel().getDocument() );

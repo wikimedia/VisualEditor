@@ -9,6 +9,7 @@ QUnit.module( 've.ui.IndentationAction' );
 /* Tests */
 
 QUnit.test( 'increase/decrease', ( assert ) => {
+	const noChange = () => {};
 	const cases = [
 		{
 			rangeOrSelection: new ve.Range( 13, 14 ),
@@ -115,7 +116,8 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 				toCol: 0,
 				toRow: 0
 			},
-			expectedData: () => {},
+			expectedData: noChange,
+			expectedReturn: false,
 			msg: 'no-op on a table selection'
 		}
 	];

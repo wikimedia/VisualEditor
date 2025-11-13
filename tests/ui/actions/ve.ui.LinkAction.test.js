@@ -9,6 +9,7 @@ QUnit.module( 've.ui.LinkAction' );
 /* Tests */
 
 QUnit.test( 'autolink', ( assert ) => {
+	const noChange = () => {};
 	const cases = [
 		{
 			html: '<p>http://example.com xyz</p>',
@@ -90,9 +91,8 @@ QUnit.test( 'autolink', ( assert ) => {
 			rangeOrSelection: new ve.Range( 1, 19 ),
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 1, 19 ),
-			expectedData: () => {
-				// No change, no link
-			},
+			expectedData: noChange,
+			expectedReturn: false,
 			msg: 'Don\'t link if followed by word characters'
 		},
 		{
@@ -100,9 +100,8 @@ QUnit.test( 'autolink', ( assert ) => {
 			rangeOrSelection: new ve.Range( 1, 10 ),
 			method: 'autolinkUrl',
 			expectedRangeOrSelection: new ve.Range( 1, 10 ),
-			expectedData: () => {
-				// No change, no link
-			},
+			expectedData: noChange,
+			expectedReturn: false,
 			msg: 'Don\'t link if stripping leaves bare protocol'
 		}
 	];
