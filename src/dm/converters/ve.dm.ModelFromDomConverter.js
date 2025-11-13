@@ -167,15 +167,6 @@ ve.dm.ModelFromDomConverter.prototype.getStore = function () {
 };
 
 /**
- * Check whether this converter instance is currently inside a getModelFromDom() conversion.
- *
- * @return {boolean} Whether we're converting
- */
-ve.dm.ModelFromDomConverter.prototype.isConverting = function () {
-	return this.contextStack !== null;
-};
-
-/**
  * Get the HTML document currently being converted
  *
  * @return {HTMLDocument|null} HTML document being converted, or null if not converting
