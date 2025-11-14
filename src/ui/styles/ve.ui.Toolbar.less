@@ -129,9 +129,11 @@
 	}
 }
 
-/* Hide keyboard shortcut hints on mobile. Screen space is limited, and it's unlikely that the user
-   has a keyboard with modifier keys. */
-.ve-ui-targetToolbar-mobile .oo-ui-popupToolGroup-tools .oo-ui-tool-link .oo-ui-tool-accel,
-.ve-ui-overlay-global-mobile .oo-ui-popupToolGroup-tools .oo-ui-tool-link .oo-ui-tool-accel {
-	display: none;
+.ve-ui-targetToolbar-mobile,
+.ve-ui-overlay-global-mobile .oo-ui-toolbar-popups {
+	/* Hide keyboard shortcut hints on mobile. Screen space is limited, and it's unlikely that the user
+	   has a keyboard with modifier keys. */
+	.oo-ui-tool-link .oo-ui-tool-accel {
+		display: none;
+	}
 }
