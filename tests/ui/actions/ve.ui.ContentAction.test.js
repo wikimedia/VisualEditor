@@ -164,7 +164,7 @@ QUnit.test( 'focusContext', ( assert ) => {
 	const surface = ve.test.utils.createSurfaceFromHtml( '<p>Foo</p>' );
 
 	const context = surface.getContext();
-	context.isVisible = () => true;
+	context.toggle( true );
 
 	const $focusable = $( '<button>' ).text( 'Focusable' );
 	context.popup.$element.append( $focusable );
