@@ -89,7 +89,9 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data = {} ) {
 					const cancelButton = new OO.ui.ButtonWidget( {
 						framed: false,
 						icon: 'cancel',
-						title: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' )
+						title: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
+						label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
+						invisibleLabel: true
 					} ).on( 'click', cancelDeferred.reject.bind( cancelDeferred ) );
 					$row.append( cancelButton.$element );
 					cancellable = true;

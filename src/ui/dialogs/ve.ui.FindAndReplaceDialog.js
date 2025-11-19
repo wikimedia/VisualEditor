@@ -65,12 +65,16 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		icon: 'previous',
 		title: ve.msg( 'visualeditor-find-and-replace-previous-button' ) + ' ' +
 			ve.ui.triggerRegistry.getMessages( 'findPrevious' ).join( ', ' ),
+		label: ve.msg( 'visualeditor-find-and-replace-previous-button' ),
+		invisibleLabel: true,
 		tabIndex: 2
 	} );
 	this.nextButton = new OO.ui.ButtonWidget( {
 		icon: 'next',
 		title: ve.msg( 'visualeditor-find-and-replace-next-button' ) + ' ' +
 			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' ),
+		label: ve.msg( 'visualeditor-find-and-replace-next-button' ),
+		invisibleLabel: true,
 		tabIndex: 2
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {

@@ -35,6 +35,8 @@ ve.ui.AnnotationContextItem = function VeUiAnnotationContextItem( context, model
 	} else {
 		this.clearButton = new OO.ui.ButtonWidget( {
 			title: this.constructor.static.clearMsg,
+			label: this.constructor.static.clearMsg,
+			invisibleLabel: true,
 			icon: this.constructor.static.clearIcon,
 			flags: [ 'destructive' ]
 		} );
