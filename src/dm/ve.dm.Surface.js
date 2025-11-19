@@ -1363,7 +1363,7 @@ ve.dm.Surface.prototype.setStorage = function ( storage, storageExpiry ) {
 	let isLocalStorage = false;
 	try {
 		// Accessing window.localStorage can throw an exception when it is disabled
-		// eslint-disable-next-line no-undef
+		// eslint-disable-next-line mediawiki/no-storage, no-undef
 		isLocalStorage = this.storage.store === window.localStorage;
 	} catch ( e ) {}
 

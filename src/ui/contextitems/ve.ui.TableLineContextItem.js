@@ -20,6 +20,8 @@ ve.ui.TableLineContextItem = function VeUiTableLineContextItem() {
 	// Parent constructor
 	ve.ui.TableLineContextItem.super.apply( this, arguments );
 
+	// Label is set in setup
+	// eslint-disable-next-line mediawiki/no-unlabeled-buttonwidget
 	this.actionButton = new OO.ui.ButtonWidget( {
 		framed: false,
 		classes: [ 've-ui-tableLineContextItem-actionButton' ]

@@ -4,6 +4,8 @@
  * @copyright See AUTHORS.txt
  */
 
+/* eslint-disable mediawiki/no-storage */
+
 QUnit.module( 've.init.sa.Platform', {
 	beforeEach: function () {
 		// Ensure that ve.init.platform is not permanently overwritten

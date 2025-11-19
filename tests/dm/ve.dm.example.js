@@ -203,6 +203,9 @@ ve.dm.example.textStyleClasses = 've-ce-annotation ve-ce-textStyleAnnotation';
 
 ve.dm.example.commentNodePreview = function ( text ) {
 	return '<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode ve-ce-focusableNode-invisible ve-ce-surface-interface" contenteditable="false" title="' + text + '">' +
+		// We call setLabel after the constructor to match the CSS class
+		// order we get from a real focusable node.
+		// eslint-disable-next-line mediawiki/no-unlabeled-buttonwidget
 		( new OO.ui.ButtonWidget( {
 			// Copied from ve.ce.FocusableNode#createInvisibleIcon
 			classes: [ 've-ce-focusableNode-invisibleIcon' ],

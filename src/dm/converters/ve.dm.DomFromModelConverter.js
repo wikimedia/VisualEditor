@@ -357,7 +357,7 @@ ve.dm.DomFromModelConverter.prototype.getDomSubtreeFromModel = function ( model,
  * @param {ve.dm.LinearData.Item[]} data Linear model data
  * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
  * @param {Array.<string|undefined>} [innerWhitespace] Inner whitespace if the container is the body
- * @throws Unbalanced data: looking for closing /type
+ * @throws {Error} Unbalanced data
  */
 ve.dm.DomFromModelConverter.prototype.getDomSubtreeFromData = function ( data, container, innerWhitespace ) {
 	const whitespaceHtmlChars = ve.visibleWhitespaceCharacters,

@@ -261,6 +261,7 @@ ve.dm.HashValueStore.prototype.merge = function ( other ) {
  * @param {ve.dm.HashValueStore|Object} omit Store of values to omit, or object whose keys are hashes to emit
  * @return {ve.dm.HashValueStore} All values in this that do not appear in other
  */
+// eslint-disable-next-line es-x/no-set-prototype-difference
 ve.dm.HashValueStore.prototype.difference = function ( omit ) {
 	const store = new this.constructor();
 

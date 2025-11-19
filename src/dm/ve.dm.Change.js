@@ -415,8 +415,10 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 				break bLoop;
 			}
 			rebasedTransactionsA[ j ] = rebases[ 0 ];
+			// eslint-disable-next-line es-x/no-set-prototype-difference
 			rebasedStoresA[ j ] = storeA.difference( storeB );
 			b = rebases[ 1 ];
+			// eslint-disable-next-line es-x/no-set-prototype-difference
 			storeB = storeB.difference( storeA );
 		}
 		transactionsA = rebasedTransactionsA;

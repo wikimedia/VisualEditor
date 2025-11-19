@@ -4,8 +4,6 @@
  * @copyright See AUTHORS.txt
  */
 
-/* global treeDiffer */
-
 /**
  * VisualDiff
  *

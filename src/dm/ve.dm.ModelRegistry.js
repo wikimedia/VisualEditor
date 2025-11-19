@@ -98,9 +98,9 @@
 	 * Register a model type.
 	 *
 	 * @param {ve.dm.Model} constructor Subclass of ve.dm.Model
-	 * @throws Model names must be strings and must not be empty
-	 * @throws Models must be subclasses of ve.dm.Model
-	 * @throws No factory associated with this ve.dm.Model subclass
+	 * @throws {Error} Model names must be strings and must not be empty
+	 * @throws {Error} Models must be subclasses of ve.dm.Model
+	 * @throws {Error} No factory associated with this ve.dm.Model subclass
 	 */
 	ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 		const name = constructor.static && constructor.static.name;

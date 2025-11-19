@@ -11,8 +11,9 @@
 	},
 	"rules": {
 		"max-len": "off",
-		"no-jquery/no-done-fail": "off",
-		"object-shorthand": [ "error", "properties" ]
+		"object-shorthand": [ "error", "properties" ],
+		"mediawiki/no-storage": "off",
+		"no-jquery/no-done-fail": "off"
 	},
 	"plugins": [ "html" ],
 	"settings": {

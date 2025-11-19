@@ -5,8 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* global treeDiffer */
-
 /**
  * Tree node for conducting a tree diff.
  *

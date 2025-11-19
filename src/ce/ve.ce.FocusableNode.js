@@ -340,6 +340,8 @@ ve.ce.FocusableNode.prototype.createInvisibleIcon = function () {
 	if ( this.icon ) {
 		return;
 	}
+	// Label is set in updateInvisibleIconLabel
+	// eslint-disable-next-line mediawiki/no-unlabeled-buttonwidget
 	this.icon = new OO.ui.ButtonWidget( {
 		classes: [ 've-ce-focusableNode-invisibleIcon' ],
 		framed: false,

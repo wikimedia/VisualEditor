@@ -73,6 +73,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config = {} ) {
 
 	// Initialization
 	const dirItems = [
+		// TODO: Add LTR/RTL invisible labels for accessibility
 		new OO.ui.ButtonOptionWidget( {
 			data: 'rtl',
 			icon: 'textDirRTL'
