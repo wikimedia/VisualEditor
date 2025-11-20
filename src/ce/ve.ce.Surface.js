@@ -3015,7 +3015,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 };
 
 /**
- * Place the selection at the next content offset which is selectable.
+ * Get the next content offset which is selectable.
  *
  * For the purposes of this method, offsets within ve.ce.ActiveNode's
  * are not considered selectable when they are not active.
