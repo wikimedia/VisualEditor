@@ -229,17 +229,12 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 		} else {
 			// End current chunk, if any.
 			if ( $chunk ) {
-				if ( $annotations ) {
-					$chunk.append( $annotations );
-				}
-				$ol.append( $chunk );
-				$chunk = null;
+				$ol.append( $chunk.append( $annotations ) );
 				$annotations = null;
 			}
 
 			// Begin a new chunk
-			$chunk = $( '<li>' ).attr( 'value', i );
-			$chunk.append( $label );
+			$chunk = $( '<li>' ).attr( 'value', i ).append( $label );
 			if ( annotations || attributes ) {
 				$annotations = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' ).text(
 					( annotations ?
@@ -247,8 +242,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 							this.getSurface().getModel().getDocument().getStore().values( annotations )
 								.map( ( ann ) => ann.getComparableObject() )
 						) : '' ) +
-					( attributes ?
-						JSON.stringify( attributes ) : '' )
+					( attributes ? JSON.stringify( attributes ) : '' )
 				);
 			}
 		}
@@ -259,10 +253,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 
 	// End current chunk, if any.
 	if ( $chunk ) {
-		if ( $annotations ) {
-			$chunk.append( $annotations );
-		}
-		$ol.append( $chunk );
+		$ol.append( $chunk.append( $annotations ) );
 	}
 
 	return $ol;
@@ -278,21 +269,17 @@ ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
 	const $ol = $( '<ol>' ).attr( 'start', '0' );
 
 	node.children.forEach( ( child ) => {
-		const $li = $( '<li>' );
-		const $label = $( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
-		const $note = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' );
+		const $li = $( '<li>' ).append( $( '<span>' ).addClass( 've-ui-debugBar-dump-element' )
+			.text( child.type ) );
+
 		if ( child.length !== undefined ) {
-			$li.append(
-				$label.text( child.type ),
-				$note.text( '(' + child.length + ')' )
-			);
-		} else {
-			$li.append( $label.text( child.type ) );
+			$li.append( $( '<span>' ).addClass( 've-ui-debugBar-dump-note' )
+				.text( '(' + child.length + ')' ) );
 		}
 
 		if ( child.children ) {
-			const $sublist = this.generateListFromNode( child );
-			$li.append( $sublist );
+			// eslint-disable-next-line no-jquery/no-append-html
+			$li.append( this.generateListFromNode( child ) );
 		}
 
 		$ol.append( $li );
@@ -367,9 +354,7 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 				$li.toggleClass( 've-filibuster-frame-expanded' );
 			} else if ( $li.children( 'ul' ).length ) {
 				// eslint-disable-next-line no-jquery/no-class-state
-				$li.toggleClass( 've-filibuster-frame-collapsed' );
-				// eslint-disable-next-line no-jquery/no-class-state
-				$li.toggleClass( 've-filibuster-frame-expanded' );
+				$li.toggleClass( 've-filibuster-frame-collapsed ve-filibuster-frame-expanded' );
 			}
 		} );
 		this.filibusterToggle.setLabel( ve.msg( 'visualeditor-debugbar-startfilibuster' ) );
