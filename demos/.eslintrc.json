@@ -11,7 +11,8 @@
 	},
 	"rules": {
 		"max-len": "off",
-		"no-jquery/no-done-fail": "off"
+		"no-jquery/no-done-fail": "off",
+		"object-shorthand": [ "error", "properties" ]
 	},
 	"plugins": [ "html" ],
 	"settings": {

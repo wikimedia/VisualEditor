@@ -10,6 +10,7 @@
 	},
 	"rules": {
 		"max-len": "off",
-		"es-x/no-hashbang": "off"
+		"es-x/no-hashbang": "off",
+		"object-shorthand": [ "error", "properties" ]
 	}
 }

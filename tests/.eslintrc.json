@@ -18,6 +18,7 @@
 		"es-x/no-promise-prototype-finally": "off",
 		"no-jquery/no-class-state": "off",
 		"no-jquery/no-done-fail": "off",
-		"no-jquery/no-parse-html-literal": "off"
+		"no-jquery/no-parse-html-literal": "off",
+		"object-shorthand": [ "error", "properties" ]
 	}
 }

@@ -9,6 +9,7 @@
 		"OO": "readonly"
 	},
 	"rules": {
-		"no-jquery/no-done-fail": "off"
+		"no-jquery/no-done-fail": "off",
+		"object-shorthand": [ "error", "properties" ]
 	}
 }

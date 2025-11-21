@@ -182,7 +182,7 @@ ve.dm.example.annHash = function ( tagName ) {
 ve.dm.example.getImportedAnnotation = ( source = null ) => ( {
 	type: 'meta/importedData',
 	attributes: {
-		source: source,
+		source,
 		eventId: ve.init.platform.generateUniqueId()
 	}
 } );

@@ -183,7 +183,7 @@ module.exports = function ( grunt ) {
 			desktopDemoApex: {
 				targetFile: 'demos/ve/desktop-apex.html',
 				template: 'demos/ve/demo.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.desktop.standalone.apex',
 					'visualEditor.standalone.read'
@@ -195,12 +195,12 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				demoPages: demoPages
+				demoPages
 			},
 			desktopDemoApexDist: {
 				targetFile: 'demos/ve/desktop-apex-dist.html',
 				template: 'demos/ve/demo.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.desktop.standalone.apex.dist',
 					'visualEditor.standalone.read'
@@ -209,12 +209,12 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				demoPages: demoPages
+				demoPages
 			},
 			desktopDemoWikimediaUI: {
 				targetFile: 'demos/ve/desktop.html',
 				template: 'demos/ve/demo.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.desktop.standalone.wikimediaui',
 					'visualEditor.standalone.read'
@@ -226,12 +226,12 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				demoPages: demoPages
+				demoPages
 			},
 			desktopDemoWikimediaUIDist: {
 				targetFile: 'demos/ve/desktop-dist.html',
 				template: 'demos/ve/demo.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.desktop.standalone.wikimediaui.dist',
 					'visualEditor.standalone.read'
@@ -240,12 +240,12 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				demoPages: demoPages
+				demoPages
 			},
 			mobileDemo: {
 				targetFile: 'demos/ve/mobile.html',
 				template: 'demos/ve/demo.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.mobile.standalone',
 					'visualEditor.standalone.read'
@@ -257,12 +257,12 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				demoPages: demoPages
+				demoPages
 			},
 			mobileDemoDist: {
 				targetFile: 'demos/ve/mobile-dist.html',
 				template: 'demos/ve/demo.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.mobile.standalone.dist',
 					'visualEditor.standalone.read'
@@ -271,12 +271,12 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				demoPages: demoPages
+				demoPages
 			},
 			minimalDemo: {
 				targetFile: 'demos/ve/minimal.html',
 				template: 'demos/ve/minimal.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.standalone.wikimediaui.dist',
 					'visualEditor.standalone.read'
@@ -291,7 +291,7 @@ module.exports = function ( grunt ) {
 			minimalDemoRtl: {
 				targetFile: 'demos/ve/minimal-rtl.html',
 				template: 'demos/ve/minimal.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.standalone.wikimediaui.dist',
 					'visualEditor.standalone.read'
@@ -306,7 +306,7 @@ module.exports = function ( grunt ) {
 			performanceTest: {
 				targetFile: 'demos/ve/performance.html',
 				template: 'demos/ve/performance.html.template',
-				modules: modules,
+				modules,
 				load: [
 					'visualEditor.standalone.wikimediaui.dist',
 					'visualEditor.standalone.read'
@@ -321,7 +321,7 @@ module.exports = function ( grunt ) {
 			test: {
 				targetFile: 'tests/index.html',
 				template: 'tests/index.html.template',
-				modules: modules,
+				modules,
 				env: {
 					test: true
 				},
