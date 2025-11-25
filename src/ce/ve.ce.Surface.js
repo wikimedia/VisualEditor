@@ -1823,9 +1823,14 @@ ve.ce.Surface.prototype.selectAll = function () {
 		}
 		this.noScrollSelecting = true;
 		this.getModel().setLinearSelection( range );
+		// Wait a bit before clearing as there are two paths that could
+		// trigger a scroll:
+		// * The selection change (always happens)
+		// * A debounced context resize event (happens when a context
+		//   was visible before selectAll, and then hidden)
 		setTimeout( () => {
 			this.noScrollSelecting = false;
-		} );
+		}, 500 );
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		const matrix = selection.getTableNode( dmDoc ).getMatrix();
 		this.getModel().setSelection(

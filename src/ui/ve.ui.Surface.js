@@ -575,6 +575,11 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 		selectionView = view.getSelection( selectionModel ),
 		isNative = selectionView.isNativeCursor();
 
+	// Scroll is suppressed, e.g. by selectAll
+	if ( view.noScrollSelecting ) {
+		return;
+	}
+
 	// We only care about the focus end of the selection, the anchor never
 	// moves and should be allowed off screen.
 	let clientRect = selectionView.getSelectionFocusRect();
