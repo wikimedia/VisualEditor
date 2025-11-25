@@ -132,7 +132,8 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 	for ( const groupName in internalListGroups ) {
 		const group = internalListGroups[ groupName ];
 		group.getKeysInIndexOrder().forEach( ( key, i ) => {
-			group.getAllReuses( key ).forEach( ( node ) => {
+			const reuses = group.getAllReuses( key ) || [];
+			reuses.forEach( ( node ) => {
 				doc.data.modifyData( node.getOffset(), ( item ) => {
 					ve.setProp( item, 'internal', 'overrideIndex', i + 1 );
 				} );
