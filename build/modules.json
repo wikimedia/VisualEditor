@@ -1052,6 +1052,7 @@
 			"src/ui/windowmanagers/ve.ui.MobileWindowManager.js"
 		],
 		"styles": [
+			"src/init/styles/ve.init.Target-mobile.less",
 			"src/ui/styles/ve.ui.MobileContext.less"
 		],
 		"dependencies": [
