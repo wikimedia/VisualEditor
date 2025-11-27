@@ -127,6 +127,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 					links = [ { href: parsed.url, title: parsed.title } ];
 				}
 			} catch ( err ) {
+				links = [];
 			}
 			break;
 		}

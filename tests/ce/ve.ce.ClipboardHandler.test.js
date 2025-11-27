@@ -29,14 +29,20 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		target = view.getSurface().getTarget(),
 		doc = model.getDocument();
 
-	const pasteData = {};
+	const pasteData = ve.copy( item.pasteData ) || {};
 	if ( item.pasteHtml ) {
+		if ( pasteData[ 'text/html' ] ) {
+			throw new Error( 'Only one of `pasteHtml` and `pasteData[ \'text/html\' ]` must be defined' );
+		}
 		pasteData[ 'text/html' ] = item.pasteHtml;
 	}
 	if ( item.pasteText ) {
+		if ( pasteData[ 'text/plain' ] ) {
+			throw new Error( 'Only one of `pasteText` and `pasteData[ \'text/plain\' ]` must be defined' );
+		}
 		pasteData[ 'text/plain' ] = item.pasteText;
 	}
-	const clipboardData = new ve.test.utils.MockDataTransfer( ve.copy( pasteData ) );
+	const clipboardData = new ve.test.utils.MockDataTransfer( pasteData );
 
 	let afterPastePromise = ve.createDeferred().resolve().promise();
 	let testEvent;
