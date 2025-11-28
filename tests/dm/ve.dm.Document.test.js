@@ -1505,3 +1505,13 @@ QUnit.test( 'read-only and offset caching', ( assert ) => {
 	doc.setReadOnly( true );
 	assert.strictEqual( doc.getDocumentNode().children[ 1 ].getOffset(), 13, 'Second child node offset has been translated again, not cached from before' );
 } );
+
+QUnit.test( 'MemoizedTextFinder', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument();
+	const setTextFinder = new ve.dm.SetTextFinder( new Set( 'abcdefghijklmnopqrstuvwxyz' ) );
+	const expected = doc.findText( setTextFinder );
+	const memoizedTextFinder = new ve.dm.MemoizedTextFinder( setTextFinder );
+	assert.deepEqual( doc.findText( memoizedTextFinder ), expected, 'Memoized TextFinder gives the same result' );
+	setTextFinder.findRanges = null;
+	assert.deepEqual( doc.findText( memoizedTextFinder ), expected, 'Second call to memoized TextFinder doesn’t recheck anything' );
+} );

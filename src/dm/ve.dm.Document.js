@@ -1623,10 +1623,10 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 /**
  * Find a text string within the document
  *
- * @param {string|Set<string>|RegExp} query Text to find. Either a string, set of strings, or a RegExp with the /g flag
+ * @param {string|Set<string>|RegExp|ve.dm.TextFinder} query Text to find. Either a string, set of strings, RegExp with the /g flag, or ve.dm.TextFinder instance
  * @param {Object} [options] Search options
  * @param {boolean} [options.searchRange] Range to search. Defaults to the attached root.
- * @param {boolean} [options.caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
+ * @param {boolean} [options.caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag)
  * @param {boolean} [options.diacriticInsensitiveString] Diacritic insensitive search for a string query. Ignored by regexes and sets of strings.
  *  Only works in browsers which support the Internationalization API
  * @param {boolean} [options.noOverlaps] Avoid overlapping matches
@@ -1638,174 +1638,31 @@ ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 		searchRange = options.searchRange || this.getAttachedRootRange();
 	let ranges = [];
 
-	if ( query instanceof RegExp ) {
-		if ( !query.global ) {
-			throw new Error( 'The /g flag must be set on the query RegExp' );
-		}
-		// Avoid multi-line matching by only matching within content (text or content elements)
-		data.forEachRunOfContent( searchRange, ( off, line ) => {
-			query.lastIndex = 0;
-			let match;
-			while ( ( match = query.exec( line ) ) !== null ) {
-				let matchText = match[ 0 ];
-
-				// Skip empty string matches (e.g. with .*)
-				if ( matchText.length === 0 ) {
-					// Set lastIndex to the next character to avoid an infinite
-					// loop. Browsers differ in whether they do this for you
-					// for empty matches; see
-					// http://blog.stevenlevithan.com/archives/exec-bugs
-					query.lastIndex = match.index + 1;
-					continue;
-				}
-
-				// Content elements' open/close data is replaced by the replacement character U+FFFC.
-				// Ensure that matches of U+FFFC contain the entire element (opening and closing data).
-				// The U+FFFC placeholder is only used for elements which "are content" (.static.isContent
-				// is true), and such elements are guaranteed to not contain content, so this is safe.
-				// Note, however, that this character is allowed to appear in normal text (eww),
-				// so we consult the actual document data to make sure we actually matched an element.
-
-				// 1/2: If we matched opening U+FFFC at the end, extend the match forwards by 1.
-				if (
-					matchText[ matchText.length - 1 ] === '\uFFFC' &&
-					data.isOpenElementData( off + match.index + matchText.length - 1 ) &&
-					data.isCloseElementData( off + match.index + matchText.length )
-				) {
-					matchText += '\uFFFC';
-					query.lastIndex += 1;
-				}
-
-				// 2/2: If we matched closing U+FFFC at the beginning, skip the match.
-				// (We do not extend the match backwards to avoid overlapping matches.)
-				if (
-					matchText[ 0 ] === '\uFFFC' &&
-					data.isOpenElementData( off + match.index - 1 ) &&
-					data.isCloseElementData( off + match.index )
-				) {
-					// Continue matching at the next character, rather than the end of this match.
-					query.lastIndex = match.index + 1;
-					continue;
-				}
-
-				ranges.push( new ve.Range(
-					off + match.index,
-					off + match.index + matchText.length
-				) );
-				if ( !options.noOverlaps ) {
-					query.lastIndex = match.index + 1;
-				}
-			}
-		} );
-	} else if ( query instanceof Set ) {
-		if ( query.size === 0 ) {
-			return [];
-		}
-
-		let normalizedQuery = query;
-		if ( !options.caseSensitiveString ) {
-			normalizedQuery = new Set( Array.from( query ).map( ( s ) => s.toLocaleLowerCase( this.lang ) ) );
-		}
-
-		let minLen = Infinity,
-			maxLen = 0;
-		normalizedQuery.forEach( ( s ) => {
-			minLen = Math.min( minLen, s.length );
-			maxLen = Math.max( maxLen, s.length );
-		} );
-
-		/**
-		 * Map from offset in case-folded string to offset in original string
-		 * In some cases, case-folding can change string length
-		 * For example, if s = '\u0130', then s.length === 1 but s.toLocaleLowerCase( 'en' ).length === 2
-		 *
-		 * @param {string} s
-		 * @param {number} offsetLower in lowercased string
-		 * @return {number} corresponding offset in original string
-		 */
-		const fixOffset = function ( s, offsetLower ) {
-			// Start by guessing that lowercasing didn't change the offset,
-			// except when the offset is out of bounds in the original string
-			let guess = Math.min( offsetLower, s.length );
-
-			let diff = s.slice( 0, guess ).toLocaleLowerCase( this.lang ).length - offsetLower;
-			if ( diff === 0 ) {
-				// Optimization note: this will almost always be true
-				// Only rare characters change length of substr when case folding
-				return guess;
-			}
-
-			while ( diff > 0 ) {
-				// The lowercase substr is longer than original
-				guess--;
-				diff = s.slice( 0, guess ).toLocaleLowerCase( this.lang ).length - offsetLower;
-			}
-
-			while ( diff < 0 ) {
-				// The lowercase substr is shorter than original
-				guess++;
-				diff = s.slice( 0, guess ).toLocaleLowerCase( this.lang ).length - offsetLower;
-			}
-			// In some rare situations the diff might be positive now
-			// (which would correspond to no offset in the original string mapping to the desired offset)
-			return guess;
-		};
-
-		data.forEachRunOfContent( searchRange, ( off, line ) => {
-			let normalizedLine = line;
-			if ( !options.caseSensitiveString ) {
-				normalizedLine = line.toLocaleLowerCase( this.lang );
-			}
-
-			// For each possible length, do a sliding window search on the normalized line
-			for ( let len = minLen; len <= maxLen; len++ ) {
-				for ( let i = 0; i <= normalizedLine.length - len; i++ ) {
-					const substr = normalizedLine.slice( i, i + len );
-					if ( normalizedQuery.has( substr ) ) {
-						let start = i;
-						let end = i + len;
-						if ( !options.caseSensitiveString ) {
-							start = fixOffset( line, start );
-							end = fixOffset( line, end );
-						}
-						ranges.push( new ve.Range( off + start, off + end ) );
-						if ( options.noOverlaps ) {
-							i += len - 1;
-						}
-					}
-				}
-			}
-		} );
-	} else {
-		const qLen = query.length;
-		let sensitivity;
-		if ( options.diacriticInsensitiveString ) {
-			sensitivity = options.caseSensitiveString ? 'case' : 'base';
-		} else {
-			sensitivity = options.caseSensitiveString ? 'variant' : 'accent';
-		}
-		// Intl is only used browser clients
-		const compare = new Intl.Collator( this.lang, { sensitivity } ).compare;
-		// Iterate up to (and including) offset textLength - queryLength. Beyond that point
-		// there is not enough room for the query to exist
-		for ( let offset = searchRange.start, l = searchRange.end - qLen; offset <= l; offset++ ) {
-			let j = 0;
-			while ( compare( data.getCharacterData( offset + j ), query[ j ] ) === 0 ) {
-				j++;
-				if ( j === qLen ) {
-					ranges.push( new ve.Range( offset, offset + qLen ) );
-					offset += options.noOverlaps ? qLen - 1 : 0;
-					break;
-				}
-			}
-		}
+	if ( query instanceof Set ) {
+		query = new ve.dm.SetTextFinder( query, ve.extendObject( { lang: this.lang }, options ) );
+	} else if ( query instanceof RegExp ) {
+		query = new ve.dm.RegExpTextFinder( query, options );
+	} else if ( typeof query === 'string' ) {
+		query = new ve.dm.StringTextFinder( query, ve.extendObject( { lang: this.lang }, options ) );
 	}
+	// Else query is already a ve.dm.TextFinder
 
-	if ( options.wholeWord ) {
-		const dataString = new ve.dm.DataString( this.getData() );
-		ranges = ranges.filter( ( range ) => unicodeJS.wordbreak.isBreak( dataString, range.start ) &&
-				unicodeJS.wordbreak.isBreak( dataString, range.end ) );
-	}
+	data.forEachRunOfContent( searchRange, ( off, line ) => {
+		ranges.push( ...query.find( line ).map(
+			( [ start, end ] ) => new ve.Range( off + start, off + end )
+		) );
+	} );
+
+	ranges = ranges.filter(
+		// Remove matches that start on a close tag
+		( range ) => !data.isCloseElementData( range.start )
+	).map( ( range ) => {
+		// Extend matches that end on an open tag, if a close tag follows immediately
+		if ( data.isOpenElementData( range.end - 1 ) && data.isCloseElementData( range.end ) ) {
+			return new ve.Range( range.start, range.end + 1 );
+		}
+		return range;
+	} );
 
 	return ranges;
 };
