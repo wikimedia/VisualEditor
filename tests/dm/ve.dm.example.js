@@ -194,7 +194,7 @@ ve.dm.example.underlineHash = 'hf214c680fbc361da';
 ve.dm.example.strongHash = 'ha5aaf526d1c3af54';
 
 ve.dm.example.inlineSlug = '<span class="ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug"></span>';
-ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>';
+ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug ve-ce-surface-interface"></div>';
 
 ve.dm.example.ceParagraph = '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">';
 ve.dm.example.ceWrapperParagraph = '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">';
@@ -202,7 +202,7 @@ ve.dm.example.ceWrapperParagraph = '<p class="ve-ce-branchNode ve-ce-contentBran
 ve.dm.example.textStyleClasses = 've-ce-annotation ve-ce-textStyleAnnotation';
 
 ve.dm.example.commentNodePreview = function ( text ) {
-	return '<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode ve-ce-focusableNode-invisible" contenteditable="false" title="' + text + '">' +
+	return '<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode ve-ce-focusableNode-invisible ve-ce-surface-interface" contenteditable="false" title="' + text + '">' +
 		( new OO.ui.ButtonWidget( {
 			// Copied from ve.ce.FocusableNode#createInvisibleIcon
 			classes: [ 've-ce-focusableNode-invisibleIcon' ],

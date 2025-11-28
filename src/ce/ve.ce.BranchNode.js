@@ -105,7 +105,7 @@ ve.ce.BranchNode.inputDebugInlineSlugTemplate = $( '<span>' )
  * @property {HTMLElement}
  */
 ve.ce.BranchNode.blockSlugTemplate = $( '<div>' )
-	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
+	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug ve-ce-surface-interface' )
 	.get( 0 );
 
 /* Methods */

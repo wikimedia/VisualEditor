@@ -325,10 +325,10 @@ ve.ce.FocusableNode.prototype.updateInvisibleIconSync = function ( showIcon ) {
 			$firstElement.empty().css( 'display', 'inline-block' );
 		}
 		$firstElement
-			.addClass( 've-ce-focusableNode-invisible' )
+			.addClass( 've-ce-focusableNode-invisible ve-ce-surface-interface' )
 			.prepend( this.icon.$element );
 	} else if ( this.icon ) {
-		this.$element.removeClass( 've-ce-focusableNode-invisible' );
+		this.$element.removeClass( 've-ce-focusableNode-invisible ve-ce-surface-interface' );
 		this.icon.$element.detach();
 	}
 };

@@ -46,6 +46,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 	// characters on a modified HTML representation in which text nodes are wrapped in
 	// <#text>…</#text> tags (and most attributes are omitted)
 	// dies (optional): a list of DM offsets where getNodeAndOffset is expected to die
+	const blockSlugInlineQuotes = ve.dm.example.blockSlug.replace( /"/g, "'" );
 	const cases = [
 		{
 			title: 'Simple para',
@@ -63,7 +64,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 			title: 'Nested block nodes',
 			html: '<div><p>x</p></div>',
 			data: [ '<div>', '<paragraph>', 'x', '</paragraph>', '</div>' ],
-			positions: docNodeStart + "<div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<div class='ve-ce-branchNode'>|" + pNodeStart + "<#text>|x|</#text></p>|</div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div></div>"
+			positions: docNodeStart + blockSlugInlineQuotes + "|<div class='ve-ce-branchNode'>|" + pNodeStart + "<#text>|x|</#text></p>|</div>" + blockSlugInlineQuotes + "</div>"
 		},
 		{
 			title: 'Empty document',
@@ -121,7 +122,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 			title: 'Meta does not cause double block slug',
 			html: "<p rel='ve:Alien'>X</p><!---->",
 			data: [ '<alienBlock>', '</alienBlock>', '<commentMeta>', '</commentMeta>' ],
-			positions: docNodeStart + "<div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<p class='ve-ce-focusableNode ve-ce-leafNode'>|<#text>X</#text></p><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>||</div>"
+			positions: docNodeStart + blockSlugInlineQuotes + "|<p class='ve-ce-focusableNode ve-ce-leafNode'>|<#text>X</#text></p>" + blockSlugInlineQuotes + "||</div>"
 		}
 	];
 	/* eslint-enable quotes */

@@ -81,7 +81,7 @@ ve.ce.TableRowNode.prototype.setupMissingCell = function () {
 		if ( !this.$missingCell ) {
 			this.$missingCell = $( '<td>' )
 				.prop( 'contentEditable', 'false' )
-				.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug ve-ce-tableNode-missingCell' );
+				.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug ve-ce-tableNode-missingCell ve-ce-surface-interface' );
 			const slugButton = new ve.ui.NoFocusButtonWidget( {
 				icon: 'add',
 				framed: false

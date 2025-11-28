@@ -24,6 +24,16 @@
 	 */
 	min-width: 0;
 
+	// Generic class for interface components embedded in the surface, e.g.
+	//  - .ve-ce-branchNode-blockSlug
+	//  - .ve-ce-focusableNode-invisibleIcon
+	// Used to reset styles that might otherwise be inherited
+	&-interface {
+		font-weight: normal;
+		font-style: normal;
+		// Downstream users should set reset font-size and family.
+	}
+
 	&-dropMarker {
 		height: 1px;
 		background: #72777d;
