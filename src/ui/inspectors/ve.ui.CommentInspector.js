@@ -122,7 +122,7 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data = {} ) {
 			const surfaceModel = this.getFragment().getSurface();
 
 			// data.action can be 'done', 'remove' or undefined (cancel)
-			if ( data.action === 'done' && this.textWidget.getValue() !== '' ) {
+			if ( data.action === 'done' && this.textWidget.getValue().trim() !== '' ) {
 				// Edit comment node
 				this.getFragment().changeAttributes( { text: this.textWidget.getValueAndWhitespace() } );
 				surfaceModel.applyStaging();
