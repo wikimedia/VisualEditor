@@ -26,6 +26,8 @@ ve.dm.BranchNode = function VeDmBranchNode( element, children ) {
 
 	// Properties
 	this.slugPositions = {};
+	// Annotation ranges cache
+	this.annotationRanges = null;
 
 	// TODO: children is only ever used in tests
 	if ( Array.isArray( children ) && children.length ) {
@@ -204,16 +206,24 @@ ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
 /**
  * Get all annotations and the ranges they cover
  *
+ * Result is cached until the next document transaction.
+ *
  * @return {ve.dm.LinearData.AnnotationRange[]} Contiguous annotation ranges, ordered by start then end
  */
 ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
-	const annotationRanges = [];
-	this.traverse( ( node ) => {
-		if ( node.canContainContent() ) {
-			annotationRanges.push(
-				...this.getDocument().data.getAnnotationRanges( node.getRange() )
-			);
-		}
-	} );
-	return annotationRanges;
+	if ( this.annotationRanges === null ) {
+		this.annotationRanges = [];
+		this.traverse( ( node ) => {
+			if ( node.canContainContent() ) {
+				this.annotationRanges.push(
+					...this.getDocument().data.getAnnotationRanges( node.getRange() )
+				);
+			}
+		} );
+		this.getDocument().once( 'transact', () => {
+			this.annotationRanges = null;
+		} );
+	}
+
+	return this.annotationRanges;
 };
