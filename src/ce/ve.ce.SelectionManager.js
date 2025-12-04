@@ -50,10 +50,11 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 
 	// Events
 	// Debounce to prevent trying to draw every cursor position in history.
-	this.onSurfacePositionDebounced = ve.debounce( this.onSurfacePosition.bind( this ) );
+	const teardownCheck = () => !!this.surface;
+	this.onSurfacePositionDebounced = ve.debounceWithTest( teardownCheck, this.onSurfacePosition.bind( this ) );
 	this.getSurface().connect( this, { position: this.onSurfacePositionDebounced } );
 
-	this.onWindowScrollDebounced = ve.debounce( this.onWindowScroll.bind( this ), 250 );
+	this.onWindowScrollDebounced = ve.debounceWithTest( teardownCheck, this.onWindowScroll.bind( this ), 250 );
 	this.getSurface().getSurface().$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollDebounced, { passive: true } );
 
 	this.$element.addClass( 've-ce-selectionManager' );
@@ -86,12 +87,16 @@ ve.ce.SelectionManager.prototype.destroy = function () {
 	this.$element.remove();
 	this.$overlay.remove();
 	this.getSurface().getSurface().$scrollListener[ 0 ].removeEventListener( 'scroll', this.onWindowScrollDebounced );
+
+	this.surface = null;
 };
 
 /**
  * Get the surface
  *
- * @return {ve.ce.Surface}
+ * Will return null after the selectionmanager has been destroyed
+ *
+ * @return {ve.ce.Surface|null}
  */
 ve.ce.SelectionManager.prototype.getSurface = function () {
 	return this.surface;
