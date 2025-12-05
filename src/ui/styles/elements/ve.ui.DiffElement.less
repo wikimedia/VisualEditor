@@ -5,10 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* stylelint-disable-next-line selector-class-pattern */
-.solidToOpacity( @property, @color, @opacity, @before: '', @after: '' ) {
-	@{property}: ~'@{before}' fade( ( ( @color - ( 1 - @opacity ) * ( #fff ) ) / @opacity ), @opacity * 100 ) ~'@{after}';
-}
+@import '../../../styles/ve.mixins.less';
 
 .ve-ui-diffElement {
 	position: relative;
@@ -167,8 +164,8 @@ del[ data-diff-action='remove' ] {
 	/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
 	& > caption,
 	& > figcaption {
-		.solidToOpacity( background, #eaecf0, 0.5 );
-		.solidToOpacity( outline, #eaecf0, 0.5, '5px solid' );
+		.solidToMinimumOpacity( background, #eaecf0 );
+		.solidToMinimumOpacity( outline, #eaecf0, '5px solid' );
 	}
 }
 
