@@ -408,9 +408,17 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 			)
 		);
 	} else {
-		this.findText.setLabel(
-			this.invalidRegex ? ve.msg( 'visualeditor-find-and-replace-invalid-regex' ) : ''
-		);
+		let label = '';
+		if ( this.invalidRegex ) {
+			label = ve.msg( 'visualeditor-find-and-replace-invalid-regex' );
+		} else if ( this.query !== '' ) {
+			// Explicitly indicate that the match failed, T411956
+			label = ve.msg( 'visualeditor-find-and-replace-results',
+				ve.init.platform.formatNumber( 0 ),
+				ve.init.platform.formatNumber( 0 )
+			);
+		}
+		this.findText.setLabel( label );
 		surfaceView.getSelectionManager().drawSelections( 'findResultFocused', [] );
 		return;
 	}
