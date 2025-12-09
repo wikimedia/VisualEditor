@@ -150,7 +150,7 @@ ve.dm.InternalList.prototype.getItemNodeCount = function () {
 /**
  * Get the item node from a specific index.
  *
- * @param {number} index Item index, use {@link getKeyIndex} to map group and key to an index
+ * @param {number} index Item index, use {@link #getKeyIndex} to map group and key to an index
  * @return {ve.dm.InternalItemNode|undefined}
  */
 ve.dm.InternalList.prototype.getItemNode = function ( index ) {
