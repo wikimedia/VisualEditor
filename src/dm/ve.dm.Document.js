@@ -60,9 +60,6 @@ ve.dm.Document = function VeDmDocument(
 	this.readOnly = false;
 	this.attachedRoot = this.documentNode;
 
-	// Sparse array
-	this.branchNodeFromOffsetCache = [];
-
 	if ( data instanceof ve.dm.LinearData ) {
 		this.data = data;
 	} else {
@@ -85,6 +82,8 @@ ve.dm.Document = function VeDmDocument(
 	}
 	this.htmlDocument = htmlDocument;
 	this.persistentStorage = persistentStorage;
+	this.cachedDataValue = Symbol( 'value' );
+	this.cachedData = new Map();
 };
 
 /* Inheritance */
@@ -412,9 +411,10 @@ ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
 		throw new Error( 'Cannot commit a transaction that has already been committed' );
 	}
 	this.emit( 'precommit', transaction );
-	this.branchNodeFromOffsetCache = [];
+	this.cachedData = null;
 	new ve.dm.TransactionProcessor( this, transaction, isStaging ).process();
 	this.completeHistory.pushTransaction( transaction, this.store.getLength() );
+	this.cachedData = new Map();
 	this.emit( 'transact', transaction );
 };
 
@@ -1100,10 +1100,10 @@ ve.dm.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
 	if ( offset < 0 || offset > this.data.getLength() ) {
 		throw new Error( 've.dm.Document.getBranchNodeFromOffset(): offset ' + offset + ' is out of bounds' );
 	}
-	if ( !this.branchNodeFromOffsetCache[ offset ] ) {
-		this.branchNodeFromOffsetCache[ offset ] = ve.Document.prototype.getBranchNodeFromOffset.call( this, offset );
-	}
-	return this.branchNodeFromOffsetCache[ offset ];
+	return this.getOrInsertCachedData(
+		() => ve.Document.prototype.getBranchNodeFromOffset.call( this, offset ),
+		'branchNodeFromOffset', offset
+	);
 };
 
 /**
@@ -1174,9 +1174,6 @@ ve.dm.Document.prototype.rebuildTreeNode = function ( rootNode ) {
 	const removedNodes = ve.batchSplice( rootNode, 0, rootNode.getChildren().length, addedNodes );
 
 	this.updateNodesByType( addedNodes, removedNodes );
-
-	// Clear branch node cache
-	this.branchNodeFromOffsetCache = [];
 };
 
 /**
@@ -1753,4 +1750,34 @@ ve.dm.Document.prototype.getStorage = function ( key ) {
 	} else {
 		return this.persistentStorage;
 	}
+};
+
+/**
+ * Fetch or generate data that'll be stored until the next transaction invalidates it
+ *
+ * @param {Function} callback Called to generate the cached value if not already present, passed the document model
+ * @param {...any} keys Valid keys for a Map
+ * @return {any}
+ */
+ve.dm.Document.prototype.getOrInsertCachedData = function ( callback, ...keys ) {
+	// This is named similarly to the Map.getOrInsertComputed function, but
+	// note that the arguments are reversed and extended to support easily
+	// using more complex keys.
+	if ( !this.cachedData ) {
+		// The cache is disabled, most likely because we're in the middle of
+		// applying a transaction
+		ve.log( 'VisualEditor: attempted to cache data while cache disabled', ...keys );
+		return callback( this );
+	}
+	let data = this.cachedData;
+	for ( const key of keys ) {
+		if ( !data.has( key ) ) {
+			data.set( key, new Map() );
+		}
+		data = data.get( key );
+	}
+	if ( !data.has( this.cachedDataValue ) ) {
+		data.set( this.cachedDataValue, callback( this ) );
+	}
+	return data.get( this.cachedDataValue );
 };
