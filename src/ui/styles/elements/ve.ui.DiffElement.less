@@ -138,8 +138,8 @@ del[ data-diff-action='remove' ] {
 	/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
 	& > caption,
 	& > figcaption {
-		.solidToOpacity( background-color, #7fd7c4, 0.5, '', '!important' );
-		.solidToOpacity( box-shadow, #7fd7c4, 0.5, '0 0 0 1px' );
+		background-color: .solid-to-opacity( #7fd7c4, 0.5 ) [ @result ] !important; /* stylelint-disable-line declaration-no-important */
+		box-shadow: 0 0 0 1px .solid-to-opacity( #7fd7c4, 0.5 ) [ @result ];
 	}
 }
 
@@ -148,15 +148,15 @@ del[ data-diff-action='remove' ] {
 	/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
 	& > caption,
 	& > figcaption {
-		.solidToOpacity( background-color, #e88e89, 0.5, '', '!important' );
-		.solidToOpacity( box-shadow, #e88e89, 0.5, '0 0 0 1px' );
+		background-color: .solid-to-opacity( #e88e89, 0.5 ) [ @result ] !important; /* stylelint-disable-line declaration-no-important */
+		box-shadow: 0 0 0 1px .solid-to-opacity( #e88e89, 0.5 ) [ @result ];
 	}
 }
 
 [ data-diff-action='change' ],
 [ data-diff-action='change-insert' ] {
-	.solidToOpacity( background-color, #b6d4fb, 0.5, '', '!important' );
-	.solidToOpacity( box-shadow, #b6d4fb, 0.5, '0 0 0 1px' );
+	background-color: .solid-to-opacity( #b6d4fb, 0.5 ) [ @result ] !important; /* stylelint-disable-line declaration-no-important */
+	box-shadow: 0 0 0 1px .solid-to-opacity( #b6d4fb, 0.5 ) [ @result ];
 }
 
 [ data-diff-move ] {
@@ -164,8 +164,8 @@ del[ data-diff-action='remove' ] {
 	/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
 	& > caption,
 	& > figcaption {
-		.solidToMinimumOpacity( background, #eaecf0 );
-		.solidToMinimumOpacity( outline, #eaecf0, '5px solid' );
+		background-color: .solid-to-minimum-opacity( #eaecf0 ) [ @result ];
+		outline: 5px solid .solid-to-minimum-opacity( #eaecf0 ) [ @result ];
 	}
 }
 
