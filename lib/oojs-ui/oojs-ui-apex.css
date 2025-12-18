@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.53.0
+ * OOUI v0.53.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-09-03T22:03:24Z
+ * Date: 2025-12-18T21:09:04Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -1425,9 +1425,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   user-select: none;
   box-sizing: border-box;
 }
-.oo-ui-dropdownWidget-handle .oo-ui-labelElement-label {
-  display: inline-block;
-}
 .oo-ui-dropdownWidget.oo-ui-widget-enabled .oo-ui-dropdownWidget-handle {
   cursor: pointer;
 }
@@ -1922,14 +1919,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.0
+ * OOUI v0.53.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-09-03T22:03:24Z
+ * Date: 2025-12-18T21:09:04Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -2621,14 +2618,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.0
+ * OOUI v0.53.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-09-03T22:03:24Z
+ * Date: 2025-12-18T21:09:04Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3202,14 +3199,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.0
+ * OOUI v0.53.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-09-03T22:03:24Z
+ * Date: 2025-12-18T21:09:04Z
  */
 
 .oo-ui-window {
@@ -3617,14 +3614,14 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 /*!
- * OOUI v0.53.0
+ * OOUI v0.53.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-09-03T22:03:24Z
+ * Date: 2025-12-18T21:09:04Z
  */
 .oo-ui-icon-arrowDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
@@ -3742,6 +3739,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-infoFilled:lang(ar) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulb.svg);
 }
+.oo-ui-icon-merge {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/merge-ltr.svg);
+}
 .oo-ui-icon-qrCode {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/qrCode.svg);
 }
@@ -3756,6 +3756,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-icon-tag {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/tag-ltr.svg);
+}
+.oo-ui-icon-update {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/update-ltr.svg);
 }
 .oo-ui-icon-upload {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/upload.svg);

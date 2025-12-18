@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.53.0
+ * OOUI v0.53.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2025 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-09-03T22:03:24Z
+ * Date: 2025-12-18T21:09:04Z
  */
 .oo-ui-icon-article {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/article-rtl.svg);
@@ -200,6 +200,15 @@
 .oo-ui-image-progressive.oo-ui-icon-infoFilled:lang(ar) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulb-progressive.svg);
 }
+.oo-ui-icon-merge {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/merge-rtl.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-merge {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/merge-rtl-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-merge {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/merge-rtl-progressive.svg);
+}
 .oo-ui-icon-qrCode {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/qrCode.svg);
 }
@@ -253,6 +262,15 @@
 }
 .oo-ui-image-progressive.oo-ui-icon-tag {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/tag-rtl-progressive.svg);
+}
+.oo-ui-icon-update {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/update-rtl.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-update {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/update-rtl-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-update {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/update-rtl-progressive.svg);
 }
 .oo-ui-icon-upload {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/upload.svg);
