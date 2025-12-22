@@ -119,6 +119,10 @@ ve.ce.SelectionManager.prototype.getSurface = function () {
  */
 ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, options ) {
 	options = options || {};
+	const surface = this.getSurface();
+	if ( !surface ) {
+		return;
+	}
 	if ( !this.selectionGroups.has( name ) ) {
 		this.selectionGroups.set( name, new ve.ce.SelectionManager.SelectionGroup( name, this ) );
 	}
@@ -133,7 +137,7 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 	selectionGroup.cancelIdleCallbacks();
 
 	if ( selections.length > this.viewportClippingLimit ) {
-		const viewportRange = this.getSurface().getViewportRange( true, this.viewportClippingPadding );
+		const viewportRange = surface.getViewportRange( true, this.viewportClippingPadding );
 		if ( viewportRange ) {
 			selections = selections.filter( ( selection ) => viewportRange.containsRange( selection.getModel().getCoveringRange() ) );
 			selectionGroup.setVisibleSelections( selections );
@@ -423,6 +427,9 @@ ve.ce.SelectionManager.prototype.updateDeactivatedSelection = function () {
 		return;
 	}
 	const surface = this.getSurface();
+	if ( !surface ) {
+		return;
+	}
 	const selection = surface.getSelection();
 
 	// Check we have a deactivated surface and a native selection
@@ -521,13 +528,17 @@ ve.ce.SelectionManager.SelectionGroup.prototype.empty = function () {
  * @param {ve.ce.Selection[]} selections
  */
 ve.ce.SelectionManager.SelectionGroup.prototype.setSelections = function ( selections ) {
+	const surface = this.selectionManager.getSurface();
+	if ( !surface ) {
+		return;
+	}
 	// Store selections so we can selectively remove anything that hasn't been
 	// redrawn at the exact same selection (oldSelections)
 	this.selections = selections;
 	// Assume all selections will be visible, unless clipped later
 	this.visibleSelections = selections;
 
-	const surfacemodel = this.selectionManager.getSurface().getModel();
+	const surfacemodel = surface.getModel();
 	// Store fragments so we can automatically update selections even after
 	// the document has been modified (which eventually fires a position event)
 	this.fragments = selections.map( ( selection ) => surfacemodel.getFragment( selection.getModel(), true, true ) );
