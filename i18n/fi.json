@@ -130,7 +130,7 @@
 	"visualeditor-diff-moved-down": "Siirretty alas",
 	"visualeditor-diff-moved-up": "Siirretty ylös",
 	"visualeditor-diff-no-changes": "Ei muutoksia",
-	"visualeditor-diff-timed-out": "Muutostesi laskeminen kesti liian kauan, joten allaoleva kuvaus ei ehkä ole aivan optimaalinen.",
+	"visualeditor-diff-timed-out": "Muutosten laskeminen kesti liian kauan, joten allaoleva kuvaus ei ehkä ole aivan optimaalinen.",
 	"visualeditor-dimensionswidget-height": "korkeus",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-width": "leveys",

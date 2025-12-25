@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bennylin",
 			"Gleki",
 			"Jadinegara",
 			"Meursault2004",
@@ -49,7 +50,7 @@
 	"visualeditor-clipboard-paste": "Tèmplèk",
 	"visualeditor-clipboard-paste-special": "Tèmplèkaké dadi tulisan barès",
 	"visualeditor-command-dialog-cancel": "Tutup / wurungaké owahan",
-	"visualeditor-command-dialog-confirm": "Iyai owahan",
+	"visualeditor-command-dialog-confirm": "Konfirmasi owahan",
 	"visualeditor-commentannotationcontextitem-comment": "Tanggepi",
 	"visualeditor-commentinspector-title": "Tanggepan",
 	"visualeditor-commentinspector-tooltip": "Tanggepan",
