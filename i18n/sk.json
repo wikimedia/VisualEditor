@@ -10,7 +10,8 @@
 			"Patrik L.",
 			"Robert Važan",
 			"Teslaton",
-			"TomášPolonec"
+			"TomášPolonec",
+			"Username1233219128"
 		]
 	},
 	"visualeditor": "Vizuálny editor",
@@ -141,7 +142,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Štandardná",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Zväčšenie",
 	"visualeditor-pagemenu-tooltip": "Možnosti stránky",
-	"visualeditor-rebase-client-author-name": "Meno",
+	"visualeditor-rebase-client-author-name": "Vaše meno",
 	"visualeditor-rebase-client-connecting": "Pripája sa...",
 	"visualeditor-rebase-client-document-create-edit": "Vytvoriť/upraviť",
 	"visualeditor-rebase-client-document-name": "Názov dokumentu (fakultatívny)",
