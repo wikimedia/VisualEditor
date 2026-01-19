@@ -4,9 +4,39 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 body,
 .ve-ce-surface-interface {
 	font: normal 0.875rem/1.5 sans-serif;
+}
+
+a {
+	color: @color-link;
+
+	:hover {
+		color: @color-link--hover;
+	}
+
+	:active {
+		color: @color-link--active;
+	}
+
+	:focus {
+		color: @color-link--focus;
+	}
+
+	:visited {
+		color: @color-link--visited;
+
+		:hover {
+			color: @color-link--visited--hover;
+		}
+
+		:active {
+			color: @color-link--visited--active;
+		}
+	}
 }
 
 .ve-init-sa-target-toolbar > .oo-ui-toolbar-bar {

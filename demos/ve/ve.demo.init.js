@@ -35,7 +35,14 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 		themeSelect = new OO.ui.ButtonSelectWidget().addItems( [
 			new OO.ui.ButtonOptionWidget( { data: 'wikimediaui', label: 'WikimediaUI' } ),
 			new OO.ui.ButtonOptionWidget( { data: 'apex', label: 'Apex' } )
-		] ).toggle( !OO.ui.isMobile() ); // Only one theme on mobile ATM
+		] ).toggle( !OO.ui.isMobile() ), // Only one theme on mobile ATM
+		darkModeSelect = new OO.ui.ButtonSelectWidget( {
+			items: [
+				new OO.ui.ButtonOptionWidget( { data: 'light', icon: 'bright', label: 'Light mode', invisibleLabel: true } ),
+				new OO.ui.ButtonOptionWidget( { data: 'dark', icon: 'moon', label: 'Dark mode', invisibleLabel: true } )
+			]
+		} ).setDisabled( theme === 'apex' ); // Dark mode only for WikimediaUI theme
+
 	let hashChanging = false,
 		currentLang = ve.init.platform.getUserLanguages()[ 0 ],
 		currentDir = target.$element.css( 'direction' ) || 'ltr';
@@ -91,6 +98,14 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 		}
 	} );
 
+	darkModeSelect.on( 'select', ( item ) => {
+		const isDark = item.getData() === 'dark';
+		// eslint-disable-next-line no-jquery/no-global-selector
+		$( '.stylesheet-dark' ).prop( 'disabled', !isDark );
+		$( document.documentElement ).toggleClass( 've-darkmode', isDark );
+	} );
+	darkModeSelect.selectItemByData( 'light' );
+
 	languageInput.setLangAndDir( currentLang, currentDir );
 	// Dir doesn't change on init but styles need to be set
 	updateStylesFromDir();
@@ -131,7 +146,8 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 			languageInput.$element,
 			$divider.clone(),
 			deviceSelect.$element,
-			themeSelect.$element
+			themeSelect.$element,
+			darkModeSelect.$element
 		)
 	);
 

@@ -1,0 +1,14 @@
+/*!
+ * VisualEditor standalone demo dark mode styles
+ *
+ * @copyright See AUTHORS.txt
+ */
+.ve-darkmode {
+	.skin-invert-image img, /* stylelint-disable-line selector-class-pattern */
+	.skin-invert, /* stylelint-disable-line selector-class-pattern */
+	.oo-ui-iconElement-icon:not( .oo-ui-image-progressive ):not( .oo-ui-image-destructive ):not( .oo-ui-checkboxInputWidget-checkIcon ):not( .oo-ui-image-invert ),
+	.oo-ui-indicatorElement-indicator {
+		color-scheme: light;
+		filter: invert( 1 ) hue-rotate( 180deg );
+	}
+}

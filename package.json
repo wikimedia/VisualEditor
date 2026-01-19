@@ -23,6 +23,7 @@
 		}
 	],
 	"devDependencies": {
+		"@wikimedia/codex-design-tokens": "2.3.3",
 		"eslint-config-wikimedia": "0.32.3",
 		"eslint-plugin-html": "8.1.1",
 		"eslint-plugin-local": "^4.2.2",
@@ -52,7 +53,6 @@
 		"qunit": "2.24.1",
 		"stringify-object": "3.3.0",
 		"stylelint-config-wikimedia": "0.18.0",
-		"svgo": "3.2.0",
-		"@wikimedia/codex-design-tokens": "2.3.3"
+		"svgo": "3.2.0"
 	}
 }

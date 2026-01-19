@@ -181,7 +181,8 @@ module.exports = function ( grunt ) {
 			codex: {
 				cwd: 'node_modules/@wikimedia/codex-design-tokens/dist/',
 				src: [
-					'theme-wikimedia-ui.less'
+					'theme-wikimedia-ui.less',
+					'theme-wikimedia-ui-mode-dark.css'
 				],
 				dest: 'lib/codex-design-tokens/',
 				expand: true

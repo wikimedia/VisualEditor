@@ -1210,8 +1210,16 @@
 			"demos/ve/demo.wikimediaui.less"
 		],
 		"dependencies": [
-			"visualEditor.desktop.standalone.demo"
+			"visualEditor.desktop.standalone.demo",
+			"visualEditor.standalone.wikimediaui.demo.dark"
 		]
+	},
+	"visualEditor.standalone.wikimediaui.demo.dark": {
+		"styles": [
+			"lib/codex-design-tokens/theme-wikimedia-ui-mode-dark.css",
+			"demos/ve/demo.wikimediaui.dark.less"
+		],
+		"styleGroup": "dark"
 	},
 	"visualEditor.mobile.standalone.demo": {
 		"scripts": [
@@ -1224,7 +1232,8 @@
 		],
 		"styleGroup": "read",
 		"dependencies": [
-			"visualEditor.standalone.demo"
+			"visualEditor.standalone.demo",
+			"visualEditor.standalone.wikimediaui.demo.dark"
 		]
 	},
 	"visualEditor.minimal.standalone.demo": {
