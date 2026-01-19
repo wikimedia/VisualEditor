@@ -1099,17 +1099,16 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, new
 				// processed)
 				const siblingNodes = highestRemovedAncestor.parent.children;
 				let newPreviousNodeIndex;
-				siblingNodes.every( ( siblingNode ) => {
+				for ( const siblingNode of siblingNodes ) {
 					if ( siblingNode.index === highestRemovedAncestor.index ) {
-						return false;
+						break;
 					} else {
 						const oldPreviousNodeIndex = siblingNode.index;
 						if ( correspondingNodes.oldToNew[ oldPreviousNodeIndex ] !== undefined ) {
 							newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ];
 						}
 					}
-					return true;
-				} );
+				}
 
 				// If previous node was found among siblings, insert the removed subtree just
 				// after its corresponding node in the new document. Otherwise insert the
