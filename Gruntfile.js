@@ -177,6 +177,14 @@ module.exports = function ( grunt ) {
 				src: [ 'lib/**', '!lib/jquery.i18n/**', '!lib/jquery.uls/**' ],
 				dest: 'dist/',
 				expand: true
+			},
+			codex: {
+				cwd: 'node_modules/@wikimedia/codex-design-tokens/dist/',
+				src: [
+					'theme-wikimedia-ui.less'
+				],
+				dest: 'lib/codex-design-tokens/',
+				expand: true
 			}
 		},
 		buildloader: {
