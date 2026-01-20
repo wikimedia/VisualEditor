@@ -4,6 +4,8 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 .ve-ui-commandHelpDialog {
 	&-container {
 		-moz-columns: 3 19.5em;
@@ -72,16 +74,16 @@
 		font-style: normal;
 
 		> kbd { /* stylelint-disable-line no-descending-specificity */
-			background-color: #f8f9fa;
-			color: #222;
-			border: 1px solid #c8ccd1;
+			background-color: @background-color-neutral-subtle;
+			color: @color-base;
+			border: 1px solid @border-color-subtle;
 			border-radius: 2px;
-			box-shadow: 0 1px 0 rgba( 0, 0, 0, 0.2 ), 0 0 0 2px #fff inset;
+			box-shadow: 0 1px 0 rgba( 0, 0, 0, 0.2 ), 0 0 0 2px @background-color-base inset;
 			display: inline-block;
 			line-height: 1.4;
 			padding: 0.1em 0.4em;
 			margin: -0.1em 0.3em 0;
-			text-shadow: 0 1px 0 #fff;
+			text-shadow: 0 1px 0 @background-color-base;
 			text-transform: uppercase;
 			text-align: center;
 		}
