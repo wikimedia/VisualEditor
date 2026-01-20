@@ -1,0 +1,27 @@
+@import '../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
+.ve-ui-collabProcessDialog {
+	&-initButton {
+		display: block;
+
+		> .oo-ui-buttonElement-button {
+			min-width: 100%;
+		}
+	}
+
+	&-image {
+		box-shadow: @box-shadow-medium;
+		display: table;
+		margin: 2em auto;
+
+		> img {
+			display: block;
+			width: 250px;
+			height: 150px;
+		}
+	}
+
+	&-summary {
+		font-weight: bold;
+	}
+}

@@ -5,6 +5,8 @@
  */
 ve.ui.CollabProcessDialog = function VeUiCollabProcessDialog( config = {} ) {
 	ve.ui.CollabProcessDialog.super.call( this, config );
+
+	this.$element.addClass( 've-ui-collabProcessDialog' );
 };
 
 OO.inheritClass( ve.ui.CollabProcessDialog, OO.ui.ProcessDialog );
@@ -42,19 +44,19 @@ ve.ui.CollabProcessDialog.prototype.initialize = function () {
 	} );
 
 	this.initButton = new OO.ui.ButtonWidget( {
+		classes: [ 've-ui-collabProcessDialog-initButton' ],
 		flags: [ 'primary', 'progressive' ]
 	} );
-	this.initButton.$element[ 0 ].style.display = 'block';
-	this.initButton.$element[ 0 ].firstElementChild.style.minWidth = '100%';
+
 	const initButtonField = new OO.ui.FieldLayout( this.initButton );
 
 	this.$summary = $( '<p>' );
 
 	this.initPanel.$element.append(
-		$( '<img>' ).prop( 'src', ve.ui.CollabProcessDialog.static.imageUri )
-			.attr( { width: 250, height: 150 } )
-			.css( { display: 'block', margin: '2em auto' } ),
-		this.$summary.css( { 'font-weight': 'bold' } ),
+		$( '<div>' ).addClass( 've-ui-collabProcessDialog-image' ).append(
+			$( '<img>' ).prop( 'src', ve.ui.CollabProcessDialog.static.imageUri ).addClass( 'skin-invert' )
+		),
+		this.$summary.addClass( 've-ui-collabProcessDialog-summary' ),
 		$( '<p>' ).text( ve.msg( 'visualeditor-collab-dialog-sharing' ) ),
 		$( '<p>' ).text( ve.msg( 'visualeditor-collab-dialog-sessionend' ) ),
 		$( '<p>' ).text( ve.msg( 'visualeditor-collab-dialog-privacy' ) ),

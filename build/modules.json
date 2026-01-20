@@ -1163,7 +1163,8 @@
 		],
 		"styles": [
 			"src/ce/styles/ve.ce.SurfaceSynchronizer.less",
-			"src/ui/styles/widgets/ve.ui.AuthorItemWidget.less"
+			"src/ui/styles/widgets/ve.ui.AuthorItemWidget.less",
+			"collab/styles/ve.ui.CollabProcessDialog.less"
 		],
 		"styleGroup": "read",
 		"dependencies": [
