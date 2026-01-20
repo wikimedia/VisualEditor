@@ -1,4 +1,4 @@
-@copyright 2011-2023 VisualEditor Team and others; see http://ve.mit-license.org
+@copyright 2011-2026 VisualEditor Team and others; see http://ve.mit-license.org
 
 Principal Authors (major contributors, alphabetically)
 
@@ -21,20 +21,26 @@ Volker E <volker.e@wikimedia.org>
 Patch Contributors (minor contributors, alphabetically)
 
 A. Amritesh <amriteshanand19@gmail.com>
+Aarohi Sharma <aarohisharma5005@gmail.com>
 Aaron Schulz <aschulz@wikimedia.org>
+Adam Wight <adam.wight@wikimedia.de>
 Adam Wight <spam@ludd.net>
 Akinwale Alagbe <akalagbe@microsoft.com>
 Alex Monk <krenair@gmail.com>
 Alexander Emsenhuber <ialex.wiki@gmail.com>
 Amir E. Aharoni <amir.aharoni@mail.huji.ac.il>
+Ammarpad <ammarpad@yahoo.com>
 Anna Youngyeun <anna.youngyeun@gmail.com>
+Anne Tomasevich <atomasevich@wikimedia.org>
 Antoine Musso <hashar@free.fr>
 Arlo Breault <abreault@wikimedia.org>
 Audrey Tang <audreyt@audreyt.org>
+Bartosz Dziewoński <dziewonski@fastmail.fm>
 Bjornskjald <github@bjorn.ml>
 Brad Jorsch <bjorsch@wikimedia.org>
 Brion Vibber <brion@wikimedia.org>
 Carl Fürstenberg <azatoth@gmail.com>
+Caro Medelius <cmedelius@wikimedia.org>
 Chad Horohoe <chadh@wikimedia.org>
 Chlod Alejandro <chlod@chlod.net>
 Chris McMahon <cmcmahon@wikimedia.org>
@@ -42,15 +48,20 @@ Chunliang Lyu <hi@chunlianglyu.com>
 DannyS712 <dannys712.wiki@gmail.com>
 Derk-Jan Hartman <hartman.wiki@gmail.com>
 Deskana <dgarry@wikimedia.org>
+Ebrahim Byagowi <ebrahim@gnu.org>
+Eric Gardner <gardner.ec@gmail.com>
 Erick Guan <fantasticfears@gmail.com>
 Erik Bernhardson <ebernhardson@wikimedia.org>
 Erik Moeller <erik@wikimedia.org>
 Florian <florian.schmidt.stargatewissen@gmail.com>
 Fomafix <fomafix@googlemail.com>
 Frédéric Bolduc <bolducfrederic@gmail.com>
+Gabriel Wicke <gwicke@wikimedia.org>
 Gergő Tisza <tgr.huwiki@gmail.com>
 Helder <he7d3r@gmail.com>
 Isabelle Hurbain-Palatin <ihurbainpalatin@wikimedia.org>
+Jan Drewniak <jan.drewniak@gmail.com>
+Jdrewniak <jdrewniak@wikimedia.org>
 Jeff Hall <jeffreyehall@gmail.com>
 Jiabao <jiabao.foss@gmail.com>
 John Du Hart <johnduhart@users.mediawiki.org>
@@ -69,6 +80,7 @@ Moriel Schottlender <mschottlender@wikimedia.org>
 Máté Szabó <mszabo@fandom.com>
 Neil Kandalgaonkar <neilk@users.mediawiki.org>
 Niklas Laxström <niklas.laxstrom@gmail.com>
+Novem Linguae <novemlinguae@gmail.com>
 Oliver Buchtala <oliver.buchtala@gmail.com>
 Ori Livneh <ori@wikimedia.org>
 Paladox <thomasmulhall410@yahoo.com>
@@ -81,26 +93,32 @@ Raimond Spekking <raimond.spekking@gmail.com>
 Ryan Kaldari <rkaldari@wikimedia.org>
 Sam Reed <reedy@wikimedia.org>
 Siebrand Mazeland <s.mazeland@xs4all.nl>
+Simon Legner <Simon.Legner@gmail.com>
 Steven Zhang <cro0016@gmail.com>
 Subramanya Sastry <ssastry@wikimedia.org>
 Sucheta Ghoshal <sghoshal@wikimedia.org>
 Svantje Lilienthal <svantje.lilienthal@wikimedia.de>
+Taavi Väänänen <hi@taavi.wtf>
 Thiemo Kreuz <thiemo.kreuz@wikimedia.de>
 Tongbo Sui <beanixster@gmail.com>
 Umherirrender <umherirrender_de.wp@web.de>
+Volker E. <volker.e@wikimedia.org>
 WMDE-Fisch <christoph.jauera@wikimedia.de>
 Yuki Shira <shirayuking@gmail.com>
 Zoranzoki21 <zorandori4444@gmail.com>
+Zoë <zoe@wikimedia.org>
+aude <aude.wiki@gmail.com>
 bkudiess-msft <bakudies@microsoft.com>
+lwatson <lwatson@wikimedia.org>
 mayankmadan <maddiemadan@gmail.com>
 mewoph <mophaswongse@wikimedia.org>
 petarpetkovic <ppetkovic@wikimedia.org>
 pradhuman1 <pradhumansinghbaid@gmail.com>
 rachel99 <rachelqa99@gmail.com>
+sbassett <sbassett@wikimedia.org>
 shirayuki <shirayuking@gmail.com>
 takidelfin <takidelfin@gmail.com>
 Željko Filipin <zeljko.filipin@gmail.com>
-
 
 Libraries used (alphabetically)
 
