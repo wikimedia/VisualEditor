@@ -4,6 +4,8 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 .ve-ui-debugBar {
 	clear: both;
 	width: 100%;
@@ -12,7 +14,7 @@
 		margin-bottom: -0.5em;
 
 		.ve-ui-debugBar-commands-divider {
-			border-right: 1px solid #c8ccd1;
+			border-right: 1px solid @border-color-subtle;
 			width: 0;
 		}
 
@@ -40,10 +42,10 @@
 		margin-top: 2em;
 
 		> table {
-			background-color: #f8f9fa;
+			background-color: @background-color-neutral-subtle;
 			font-size: 0.85em;
 			width: 100%;
-			border: 1px solid #c8ccd1;
+			border: 1px solid @border-color-subtle;
 			border-radius: 0;
 			border-top-right-radius: 0.25em;
 			border-top-left-radius: 0.25em;
@@ -54,7 +56,7 @@
 		}
 
 		td {
-			background-color: #fff;
+			background-color: @background-color-base;
 			padding: 0.25em 1em;
 			vertical-align: top;
 		}
@@ -64,13 +66,12 @@
 		}
 
 		th {
-			color: #54595d;
+			color: @color-base;
 			padding: 0.5em 1em;
-			text-shadow: 0 1px 1px #fff;
 		}
 
 		ol {
-			color: #72777d;
+			color: @color-subtle;
 			padding-left: 1.5em;
 		}
 
@@ -78,47 +79,48 @@
 			.ve-ui-debugBar-dump-element,
 			.ve-ui-debugBar-dump-char,
 			.ve-ui-debugBar-dump-achar {
-				color: #000;
+				color: @color-base;
 				display: inline-block;
 				border-radius: 2px;
 				margin: 0.25em 0.25em 0.25em 0;
 				padding: 0.125em 0.5em;
-				text-shadow: 0 1px 1px #fff;
 			}
 
 			.ve-ui-debugBar-dump-element {
-				background-color: #def;
+				background-color: @background-color-progressive-subtle;
 			}
 
 			.ve-ui-debugBar-dump-char {
-				background-color: #dfe;
+				background-color: @background-color-success-subtle;
 			}
 
 			.ve-ui-debugBar-dump-achar {
-				background-color: #fed;
+				background-color: @background-color-warning-subtle;
 			}
 
 			.ve-ui-debugBar-dump-note {
-				color: #a2a9b1;
+				color: @color-placeholder;
 				word-break: break-word;
 			}
 		}
 	}
 
 	&-filibuster {
-		background-color: #f8f9fa;
+		background-color: @background-color-neutral-subtle;
 		font-size: 0.875rem;
 		margin-top: 2em;
 		width: 100%;
-		border: 1px solid #c8ccd1;
+		box-sizing: border-box;
+		border: 1px solid @border-color-subtle;
 		border-radius: 0;
 		border-top-right-radius: 0.25em;
 		border-top-left-radius: 0.25em;
+		padding: 1.5em;
 	}
 
 	&-transactions {
 		> ol > li {
-			border-left: 2em solid #f8f9fa;
+			border-left: 2em solid @background-color-neutral-subtle;
 		}
 
 		ol ol {
@@ -128,6 +130,29 @@
 			li {
 				padding-left: 1ex;
 			}
+		}
+	}
+}
+
+.ve-filibuster {
+	&-changes {
+		border: 1px solid @border-color-error;
+	}
+
+	&-frame {
+		list-style: none;
+
+		&-expandable::before,
+		&-collapsed::before {
+			content: '+';
+		}
+
+		&-expanded::before {
+			content: '-';
+		}
+
+		&-collapsed ul {
+			display: none;
 		}
 	}
 }
