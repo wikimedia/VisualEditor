@@ -388,3 +388,24 @@ ve.safeDecodeEntities = function ( html ) {
 	textarea.innerHTML = html;
 	return textarea.textContent;
 };
+
+/**
+ * Make all links within a DOM element open in a new window
+ *
+ * @param {HTMLElement} containerOrLink DOM element to search for links, or link itself
+ */
+ve.targetLinksToNewWindow = function ( containerOrLink ) {
+	function targetLinkToNewWindow( link ) {
+		ve.appendToRel( link, 'noopener' );
+		link.setAttribute( 'target', '_blank' );
+	}
+
+	const links = containerOrLink.querySelectorAll( 'a[href]' );
+	for ( const link of links ) {
+		targetLinkToNewWindow( link );
+	}
+
+	if ( containerOrLink.matches( 'a[href]' ) ) {
+		targetLinkToNewWindow( containerOrLink );
+	}
+};

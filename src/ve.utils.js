@@ -837,19 +837,6 @@ ve.resolveAttributes = function ( elementsOrJQuery, doc, attrs ) {
 };
 
 /**
- * Make all links within a DOM element open in a new window
- *
- * @param {HTMLElement} container DOM element to search for links
- */
-ve.targetLinksToNewWindow = function ( container ) {
-	// Make all links open in a new window
-	for ( const el of container.querySelectorAll( 'a[href]' ) ) {
-		ve.appendToRel( el, 'noopener' );
-		el.setAttribute( 'target', '_blank' );
-	}
-};
-
-/**
  * Add a value to an element's rel attribute if it's not already present
  *
  * Rel is like class: it's actually a set, represented as a string. We don't
