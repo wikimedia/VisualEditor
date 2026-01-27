@@ -722,7 +722,7 @@ ve.getDomElementSummary = function ( element, includeHtml, getAttributeSummary )
 				// The about attribute is non-deterministic as we generate a new random
 				// one whenever a node is cloned (see ve.dm.Node.static.cloneElement).
 				// Exclude it from node comparisons.
-				return;
+				continue;
 			}
 			const value = attr.value;
 			summary.attributes[ name ] = getAttributeSummary ? getAttributeSummary( name, value ) : value;
