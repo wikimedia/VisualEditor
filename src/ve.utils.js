@@ -750,7 +750,7 @@ ve.getDomElementSummary = function ( element, includeHtml, getAttributeSummary )
 	// Summarize children
 	if ( element.childNodes ) {
 		for ( const child of element.childNodes ) {
-			summary.children.push( ve.getDomElementSummary( child, includeHtml ) );
+			summary.children.push( ve.getDomElementSummary( child, includeHtml, getAttributeSummary ) );
 		}
 	}
 	return summary;
