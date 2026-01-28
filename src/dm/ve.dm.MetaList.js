@@ -19,7 +19,10 @@ ve.dm.MetaList = function VeDmMetaList( doc ) {
 
 	this.doc = doc;
 
-	// Sorted array of attached ve.dm.MetaItem nodes in document order
+	/**
+	 * Sorted array of attached ve.dm.MetaItem nodes in document order
+	 * @property {ve.dm.MetaItem[]} items
+	 */
 	this.items = [];
 
 	// The meta list is constructed before the model tree is built, so

@@ -710,7 +710,7 @@ ve.ui.DiffElement.prototype.getChangedDocListData = function ( newDoclistNode, d
 /**
  * Iterate over a diff object and run more meaningful callbacks
  *
- * @param {Object|Array} diff Diff object, or array (InternalListDiff)
+ * @param {ve.dm.VisualDiff.ListDiff|Array} diff Diff object, or array (InternalListDiff)
  * @param {Object} callbacks Callbacks
  * @param {Function} callbacks.insert Node inserted, arguments:
  *  {ve.dm.Node} newNode

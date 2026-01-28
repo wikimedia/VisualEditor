@@ -181,10 +181,11 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
  * @typedef {Object} ve.dm.VisualDiff.ListDiff
  * @property {ve.dm.Node[]} oldNodes
  * @property {ve.dm.Node[]} newNodes
- * @property {Object} oldToNew
- * @property {Object} newToOld
+ * @property {Object.<number,number|Object>} oldToNew
+ * @property {Object.<number,number|Object>} newToOld
  * @property {number[]} remove
  * @property {number[]} insert
+ * @property {Array.<number|string>} moves
  */
 
 /**
@@ -195,16 +196,19 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
  * @return {ve.dm.VisualDiff.ListDiff} Object containing diff information
  */
 ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
-	const oldNodesToDiff = [],
-		newNodesToDiff = [],
-		diff = {
-			oldNodes,
-			newNodes,
-			oldToNew: {},
-			newToOld: {},
-			remove: [],
-			insert: []
-		};
+	/** @type {number[]} */
+	const oldNodesToDiff = [];
+	/** @type {number[]} */
+	const newNodesToDiff = [];
+	/** @type {ve.dm.VisualDiff.ListDiff} */
+	const diff = {
+		oldNodes,
+		newNodes,
+		oldToNew: {},
+		newToOld: {},
+		remove: [],
+		insert: []
+	};
 
 	// STEP 1: Find identical nodes
 
@@ -385,7 +389,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
  * @param {number[]} newIndices Indices of the new nodes
  * @param {ve.dm.Node[]} oldNodes Nodes from the old document
  * @param {ve.dm.Node[]} newNodes Nodes from the new document
- * @param {Object} diff Object that will contain information about the diff
+ * @param {ve.dm.VisualDiff.ListDiff} diff Object that will contain information about the diff
  */
 ve.dm.VisualDiff.prototype.findModifiedNodes = function ( oldIndices, newIndices, oldNodes, newNodes, diff ) {
 	const ilen = oldIndices.length,
@@ -437,7 +441,7 @@ ve.dm.VisualDiff.prototype.findModifiedNodes = function ( oldIndices, newIndices
  *
  * @param {ve.dm.Node} oldNode Node from the old document
  * @param {ve.dm.Node} newNode Node from the new document
- * @param {boolean} [noTreeDiff] Don't perform a tree diff of the nodes (used internally to avoid recursion)
+ * @param {boolean} [noTreeDiff=false] Don't perform a tree diff of the nodes (used internally to avoid recursion)
  * @return {ve.dm.VisualDiff.LeafDiff|ve.dm.VisualDiff.ListDiff|ve.dm.VisualDiff.DocDiff|ve.dm.VisualDiff.TreeDiff|boolean} The diff, or false if the nodes are too different
  */
 ve.dm.VisualDiff.prototype.diffNodes = function ( oldNode, newNode, noTreeDiff ) {
@@ -874,34 +878,36 @@ ve.dm.VisualDiff.prototype.underDiffThreshold = function ( changeRecord ) {
 };
 
 /**
- * @typedef {Object} ve.dm.VisualDiff.MetaListDiff
- * @property {Object.<string,ve.dm.VisualDiff.ListDiff>} groups List diffs, indexed by group
- */
-
-/**
  * Calculate a meta list diff
  *
  * @param {ve.dm.MetaList} oldMetaList
  * @param {ve.dm.MetaList} newMetaList
- * @return {ve.dm.VisualDiff.MetaListDiff}
+ * @return {Object.<string,ve.dm.VisualDiff.ListDiff>}
  */
 ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList ) {
+	/** @type {Object.<string,ve.dm.MetaItem[]>} */
 	const oldItemsByGroup = {};
 	oldMetaList.items.forEach( ( metaItem ) => {
 		const group = metaItem.getGroup();
 		oldItemsByGroup[ group ] = oldItemsByGroup[ group ] || [];
 		oldItemsByGroup[ group ].push( metaItem );
 	} );
+
+	/** @type {Object.<string,ve.dm.MetaItem[]>} */
 	const newItemsByGroup = {};
 	newMetaList.items.forEach( ( metaItem ) => {
 		const group = metaItem.getGroup();
 		newItemsByGroup[ group ] = newItemsByGroup[ group ] || [];
 		newItemsByGroup[ group ].push( metaItem );
 	} );
+
+	/** @type {string[]} */
 	const groups = OO.simpleArrayUnion(
 		Object.keys( oldItemsByGroup ),
 		Object.keys( newItemsByGroup )
 	);
+
+	/** @type {Object.<string,ve.dm.VisualDiff.ListDiff>} */
 	const groupDiffs = {};
 	groups.forEach( ( group ) => {
 		groupDiffs[ group ] = this.diffList(
@@ -933,9 +939,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 	const oldDocNodeGroups = oldInternalList.getNodeGroups(),
 		newDocNodeGroups = newInternalList.getNodeGroups(),
 		oldDocInternalListNode = oldInternalList.getListNode(),
-		newDocInternalListNode = newInternalList.getListNode(),
-		groups = [],
-		groupDiffs = {};
+		newDocInternalListNode = newInternalList.getListNode();
 
 	/**
 	 * @param {number[]} indexOrder Possibly a sparse array
@@ -963,6 +967,8 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 
 	// Find all groups common to old and new docs
 	// Also find inserted groups
+	/** @type {Array.<{group: string, action: string}>} */
+	const groups = [];
 	for ( const group in newDocNodeGroups ) {
 		groups.push( {
 			group,
@@ -981,6 +987,8 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 	}
 
 	// Diff the internal list items for each group
+	/** @type {Object.<string,ve.dm.VisualDiff.ListDiff>} */
+	const groupDiffs = {};
 	groups.forEach( ( group ) => {
 		let diff = null;
 		switch ( group.action ) {
@@ -1045,14 +1053,14 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 /**
  * Check if a list diff object has any changes
  *
- * @param {Object} diff Diff object
+ * @param {ve.dm.VisualDiff.ListDiff} diff Diff object
  * @param {boolean} [isInternalListDiff=false] Is an internal list diff
  * @return {boolean} The diff object has changes
  */
 ve.dm.VisualDiff.prototype.hasChanges = function ( diff, isInternalListDiff ) {
 	/**
 	 * @param {Object} diffObject
-	 * @return {boolean}
+	 * @return {boolean} False if there are only numbers in the object, true otherwise
 	 */
 	function containsDiff( diffObject ) {
 		return !Object.values( diffObject ).every( ( v ) => typeof v === 'number' );
