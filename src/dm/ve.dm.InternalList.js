@@ -292,7 +292,6 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 		group = this.nodes[ groupName ] = new ve.dm.InternalListNodeGroup();
 	}
 
-	this.keyIndexes[ groupName + '/' + key ] = index;
 	this.keys[ index ] = key;
 	if ( node.getDocument().buildingNodeTree ) {
 		// If the document is building the original node tree
