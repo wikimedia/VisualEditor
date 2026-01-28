@@ -254,8 +254,7 @@ ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
 };
 
 /**
- * @typedef {Object} WindowType
- * @memberof ve.ui.WindowAction
+ * @typedef {Object} ve.ui.WindowAction.WindowType
  * @property {string|null} name Window name ('inspector', 'toolbar', 'sidebar', dialog' or null)
  * @property {string} [position] Window position (for toolbar dialogs)
  */

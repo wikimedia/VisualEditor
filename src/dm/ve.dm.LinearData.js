@@ -28,8 +28,7 @@ ve.dm.FlatLinearData = ve.dm.LinearData;
 ve.dm.ElementLinearData = ve.dm.LinearData;
 
 /**
- * @typedef {Object} Element
- * @memberof ve.dm.LinearData
+ * @typedef {Object} ve.dm.LinearData.Element
  * @property {string} type The type of the element
  * @property {Object} [attributes] Optional additional attributes specific to the element type
  * @property {string} [originalDomElementsHash] Hash of the original DOM elements found by the converter
@@ -38,16 +37,14 @@ ve.dm.ElementLinearData = ve.dm.LinearData;
 
 /* eslint-disable jsdoc/valid-types */
 /**
- * @typedef {Array} AnnotatedCharacter
- * @memberof ve.dm.LinearData
+ * @typedef {Array} ve.dm.LinearData.AnnotatedCharacter
  * @property {string} 0 Character data
  * @property {string[]} 1 Annotation hashses
  */
 /* eslint-enable jsdoc/valid-types */
 
 /**
- * @typedef {ve.dm.LinearData.Element|string|ve.dm.LinearData.AnnotatedCharacter} Item
- * @memberof ve.dm.LinearData
+ * @typedef {ve.dm.LinearData.Element|string|ve.dm.LinearData.AnnotatedCharacter} ve.dm.LinearData.Item
  * A single item in the linear model data array, which can be:
  * - An element object
  * - A single character string
@@ -767,8 +764,7 @@ ve.dm.LinearData.prototype.getAnnotationHashesFromOffset = function ( offset, ig
 };
 
 /**
- * @typedef {Object} AnnotationRange
- * @memberof ve.dm.LinearData
+ * @typedef {Object} ve.dm.LinearData.AnnotationRange
  * @property {ve.dm.Annotation} annotation
  * @property {ve.dm.Range} range
  */

@@ -550,8 +550,7 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options = {} ) {
 };
 
 /**
- * @typedef {Object} RangeAndLengthDiff
- * @memberof ve.dm.Transaction
+ * @typedef {Object} ve.dm.Transaction.RangeAndLengthDiff
  * @property {number} [start] Start offset of the active range
  * @property {number} [end] End offset of the active range
  * @property {number} [startOpIndex] Start operation index of the active range

@@ -114,8 +114,7 @@ ve.ce.getDomHash = function ( element ) {
 };
 
 /**
- * @typedef {Object} NodeAndOffset
- * @memberof ve.ce
+ * @typedef {Object} ve.ce.NodeAndOffset
  * @return {Node} node
  * @return {number} offset
  */

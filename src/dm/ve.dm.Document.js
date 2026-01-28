@@ -1282,8 +1282,7 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
 };
 
 /**
- * @typedef FixedInsertion
- * @memberof ve.dm.Document
+ * @typedef ve.dm.Document.FixedInsertion
  * @property {ve.dm.LinearData.Item[]} data Possibly modified copy of `data`
  * @property {number} offset Possibly modified offset
  * @property {number} remove Number of elements to remove after the modified `offset`

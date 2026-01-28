@@ -839,8 +839,7 @@ ve.ui.Surface.prototype.executeCommand = function ( commandName ) {
 };
 
 /**
- * @typedef {Object} Padding
- * @memberof ve.ui.Surface
+ * @typedef {Object} ve.ui.Surface.Padding
  * @property {number} [top] Top padding
  * @property {number} [right] Right padding
  * @property {number} [bottom] Bottom padding

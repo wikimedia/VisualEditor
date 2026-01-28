@@ -130,8 +130,7 @@ ve.dm.TreeCursor.prototype.checkLinearOffset = function () {
 };
 
 /**
- * @typedef {Object} Step
- * @memberof ve.dm.TreeCursor
+ * @typedef {Object} ve.dm.TreeCursor.Step
  * @property {string} type open|close|cross|crosstext
  * @property {number} length Linear length of the step (integer >= 1)
  * @property {number[]} path Offset path from the root to the node containing the stepped item

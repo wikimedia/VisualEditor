@@ -32,8 +32,7 @@ OO.initClass( ve.dm.RebaseDocState );
 /* Static Methods */
 
 /**
- * @typedef {Object} AuthorData
- * @memberof ve.dm.RebaseDocState
+ * @typedef {Object} ve.dm.RebaseDocState.AuthorData
  * @property {string} name
  * @property {string} color
  * @property {number} rejections Number of unacknowledged rejections

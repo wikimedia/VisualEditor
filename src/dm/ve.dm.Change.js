@@ -288,8 +288,7 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
 };
 
 /**
- * @typedef {Object} RebasedChange
- * @memberof ve.dm.Change
+ * @typedef {Object} ve.dm.Change.RebasedChange
  * @property {ve.dm.Change} rebased Rebase onto history of uncommitted (or an initial segment of it)
  * @property {ve.dm.Change} transposedHistory Rebase of history onto initial segment of uncommitted
  * @property {ve.dm.Change|null} rejected Unrebasable final segment of uncommitted
@@ -457,16 +456,14 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 };
 
 /**
- * @typedef UniformTextInfo
- * @memberof ve.dm.Change
+ * @typedef ve.dm.Change.UniformTextInfo
  * @property {string} text The code units, in a single string
  * @property {string} annotations Annotation hashes for all text
  * @property {string} annotationString Comma-separated annotation hashes
  */
 
 /**
- * @typedef TransactionInfo
- * @memberof ve.dm.Change
+ * @typedef ve.dm.Change.TransactionInfo
  * @property {number} start The start offset of the replacement
  * @property {number} end The end offset of the replacement (after replacement)
  * @property {number} docLength The total length of the document (after replacement)

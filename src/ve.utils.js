@@ -1081,8 +1081,7 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
 };
 
 /**
- * @typedef {Object} DomPosition
- * @memberof ve
+ * @typedef {Object} ve.DomPosition
  * @property {Node|null} node The node, or null if we stepped past the root node
  * @property {number|null} offset The offset, or null if we stepped past the root node
  * @property {ve.PositionStep[]} steps Steps taken
@@ -1254,8 +1253,7 @@ ve.rejectsCursor = function ( node ) {
 };
 
 /**
- * @typedef {Object} ChangeOffsets
- * @memberof ve
+ * @typedef {Object} ve.ChangeOffsets
  * @return {number} start Offset from start of first changed element
  * @return {number} end Offset from end of last changed element (nonoverlapping with start)
  */

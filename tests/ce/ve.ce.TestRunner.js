@@ -29,8 +29,7 @@ ve.ce.TestOffset = function VeCeTestOffset( direction, offset ) {
 };
 
 /**
- * @typedef {Object} OffsetInfo
- * @memberof ve.ce.TestOffset
+ * @typedef {Object} ve.ce.TestOffset.OffsetInfo
  * @property {number} [consumed] The number of code units consumed (if n out of range)
  * @property {Node} [node] The node containing the offset (if n in range)
  * @property {number} [offset] The offset in code units / child elements (if n in range)

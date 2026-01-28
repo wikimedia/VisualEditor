@@ -270,8 +270,7 @@ ve.dm.Surface.prototype.resetHistoryTrackingInterval = function () {
 };
 
 /**
- * @typedef {Object} UndoStackItem
- * @memberof ve.dm.Surface
+ * @typedef {Object} ve.dm.Surface.UndoStackItem
  * @property {number} start
  * @property {ve.dm.Transaction[]} transactions
  * @property {ve.dm.Selection} selection
@@ -301,8 +300,7 @@ ve.dm.Surface.prototype.isStaging = function () {
 };
 
 /**
- * @typedef {Object} StagingState
- * @memberof ve.dm.Surface
+ * @typedef {Object} ve.dm.Surface.StagingState
  * @property {ve.dm.Transaction[]} transactions Staging transactions
  * @property {ve.dm.Selection} selectionBefore Selection before transactions were applied
  * @property {boolean} allowUndo Allow undo while staging

@@ -141,8 +141,7 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 };
 
 /**
- * @typedef {ve.dm.VisualDiff.ListDiff} DocDiff
- * @memberof ve.dm.VisualDiff
+ * @typedef {ve.dm.VisualDiff.ListDiff} ve.dm.VisualDiff.DocDiff
  * @property {ve.dm.Node} oldRoot
  * @property {ve.dm.Node} newRoot
  * @property {ve.dm.VisualDiff.AttributeDiff} attributeChange
@@ -183,8 +182,7 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
 };
 
 /**
- * @typedef {Object} ListDiff
- * @memberof ve.dm.VisualDiff
+ * @typedef {Object} ve.dm.VisualDiff.ListDiff
  * @property {ve.dm.Node[]} oldNodes
  * @property {ve.dm.Node[]} newNodes
  * @property {Object} oldToNew
@@ -468,8 +466,7 @@ ve.dm.VisualDiff.prototype.diffNodes = function ( oldNode, newNode, noTreeDiff )
 };
 
 /**
- * @typedef {Object} LeafDiff
- * @memberof ve.dm.VisualDiff
+ * @typedef {Object} ve.dm.VisualDiff.LeafDiff
  * @property {ve.dm.VisualDiff.AttributeDiff|boolean} attributeChange
  * @property {Array|boolean} linearDiff
  */
@@ -673,8 +670,7 @@ ve.dm.VisualDiff.prototype.alignTrees = function ( oldTree, newTree ) {
 };
 
 /**
- * @typedef {Object} TreeDiff
- * @memberof ve.dm.VisualDiff
+ * @typedef {Object} ve.dm.VisualDiff.TreeDiff
  * @property {ve.DiffTreeNode[]} oldTreeOrderedNodes - Nodes of the old tree, deepest first then in document order
  * @property {ve.DiffTreeNode[]} newTreeOrderedNodes - Nodes of the new tree, deepest first then in document order
  * @property {Array[]} treeDiff - Node correspondences as indexes in *TreeOrderedNodes
@@ -782,8 +778,7 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 };
 
 /**
- * @typedef {Object} AttributeDiff
- * @memberof ve.dm.VisualDiff
+ * @typedef {Object} ve.dm.VisualDiff.AttributeDiff
  * @property {Object} oldAttributes
  * @property {Object} newAttributes
  */
@@ -883,8 +878,7 @@ ve.dm.VisualDiff.prototype.underDiffThreshold = function ( changeRecord ) {
 };
 
 /**
- * @typedef {Object} MetaListDiff
- * @memberof ve.dm.VisualDiff
+ * @typedef {Object} ve.dm.VisualDiff.MetaListDiff
  * @property {Object.<string,ve.dm.VisualDiff.ListDiff>} groups List diffs, indexed by group
  */
 
@@ -923,8 +917,7 @@ ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList
 };
 
 /**
- * @typedef {Object} InternalListDiff
- * @memberof ve.dm.VisualDiff
+ * @typedef {Object} ve.dm.VisualDiff.InternalListDiff
  * @property {Object.<string,ve.dm.VisualDiff.ListDiff>} groups List diffs, indexed by group
  * @property {ve.dm.InternalListNode} oldDocInternalListNode
  * @property {ve.dm.InternalListNode} newDocInternalListNode

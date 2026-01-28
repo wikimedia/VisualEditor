@@ -197,16 +197,14 @@ ve.ce.ContentBranchNode.prototype.setupInlineSlugs = function () {
 };
 
 /**
- * @typedef {Object} UnicornInfo
- * @memberof ve.ce.ContentBranchNode
+ * @typedef {Object} ve.ce.ContentBranchNode.UnicornInfo
  * @property {boolean} hasCursor
  * @property {ve.dm.AnnotationSet|null} annotations
  * @property {HTMLElement[]|null} unicorns
  */
 
 /**
- * @typedef {HTMLElement} HTMLElementWithUnicorn
- * @memberof ve.ce.ContentBranchNode
+ * @typedef {HTMLElement} ve.ce.ContentBranchNode.HTMLElementWithUnicorn
  * @property {ve.ce.ContentBranchNode.UnicornInfo} unicornInfo Unicorn information
  */
 

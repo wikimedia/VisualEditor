@@ -536,8 +536,7 @@ ve.ce.ClipboardHandler.prototype.afterPaste = function () {
 };
 
 /**
- * @typedef {Object} ClipboardData
- * @memberof ve.ce
+ * @typedef {Object} ve.ce.ClipboardData
  * @property {string|undefined} clipboardKey Clipboard key, if present
  * @property {jQuery|undefined} $clipboardHtml Clipboard html, if used to extract the clipboard key
  * @property {ve.dm.DocumentSlice|undefined} slice Relevant slice of this document, if the key points to it
