@@ -245,6 +245,31 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 					( attributes ? JSON.stringify( attributes ) : '' )
 				);
 			}
+
+			if ( element.type === 'internalList' ) {
+				const internalList = this.getSurface().getModel().getDocument().internalList;
+
+				$chunk.append(
+					$( '<span>' ).addClass( 've-ui-debugBar-dump-note' ).text(
+						' keys: ' + JSON.stringify( internalList.keys ) +
+					' keyIndexes: ' + JSON.stringify( internalList.keyIndexes )
+					)
+				);
+			}
+
+			if ( element.type === 'internalItem' ) {
+				const index = this.getSurface()
+					.getModel()
+					.getDocument()
+					.internalList
+					.listNode
+					.children
+					.findIndex( ( node ) => node.element === element );
+
+				$chunk.append(
+					$( '<span>' ).addClass( 've-ui-debugBar-dump-note' ).text( ' index: ' + index + ' ' )
+				);
+			}
 		}
 
 		prevType = element.type;
