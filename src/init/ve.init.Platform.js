@@ -189,6 +189,7 @@ ve.init.Platform.prototype.createLocalStorage = function () {
 	let localStorage;
 
 	try {
+		// eslint-disable-next-line mediawiki/no-storage
 		localStorage = window.localStorage;
 	} catch ( e ) {}
 
@@ -199,6 +200,7 @@ ve.init.Platform.prototype.createSessionStorage = function () {
 	let sessionStorage;
 
 	try {
+		// eslint-disable-next-line mediawiki/no-storage
 		sessionStorage = window.sessionStorage;
 	} catch ( e ) {}
 

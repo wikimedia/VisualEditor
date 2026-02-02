@@ -21,10 +21,10 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 
 	/**
 	 * @private please do not use directly
-	 * @property {Array.<ve.dm.Node|undefined>} firstNodes When {@link keyedNodes} contains more
+	 * @property {Array.<ve.dm.Node|undefined>} firstNodes When {@link #keyedNodes} contains more
 	 * than one node per listKey then firstNodes can be used to identify the node that appears first
 	 * in the document. If there is only one node it's just that node. Array keys correspond to the
-	 * values in the {@link indexOrder} array. Order is meaningless but dictated by indexOrder
+	 * values in the {@link #indexOrder} array. Order is meaningless but dictated by indexOrder
 	 * instead.
 	 *
 	 * Practically, this is the first occurence of a reused reference (with the same group and name)
@@ -32,14 +32,14 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	 * in which references are rendered in their reference list.
 	 *
 	 * Note this is possibly a sparse array with elements missing in case initialization happened
-	 * out of order. Skip these and use {@link indexOrder} as your primary source of truth.
+	 * out of order. Skip these and use {@link #indexOrder} as your primary source of truth.
 	 */
 	this.firstNodes = [];
 
 	/**
 	 * @private please do not use directly
 	 * @property {number[]} indexOrder Sorted to reflect the order of first appearance in the
-	 * document. Values are indexes for the {@link firstNodes} array.
+	 * document. Values are indexes for the {@link #firstNodes} array.
 	 *
 	 * Practically, this usually starts as a simple [ 0, 1, 2, … ] array but changes when references
 	 * are added, reused, moved, and removed.
@@ -246,7 +246,7 @@ ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( key, node ) {
  * @param {string} oldListKey Current list key (typically something like "auto/0") to associate the
  *  generated list key with
  * @param {string} prefix Prefix for the generated key. Must match the prefix used in
- *  {@link keyedNodes} (typically "literal/") for the duplicate detection to work.
+ *  {@link #keyedNodes} (typically "literal/") for the duplicate detection to work.
  * @return {string} Generated unique list key, or existing unique key associated with oldListKey
  */
 ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, prefix ) {

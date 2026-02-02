@@ -186,6 +186,7 @@ ve.init.sa.Platform.prototype.getUserConfig = function ( keys ) {
 		return values;
 	} else {
 		try {
+			// eslint-disable-next-line mediawiki/no-storage
 			return JSON.parse( localStorage.getItem( 've-' + keys ) );
 		} catch ( e ) {
 			return null;
@@ -209,6 +210,7 @@ ve.init.sa.Platform.prototype.setUserConfig = function ( keyOrValueMap, value ) 
 		}
 	} else {
 		try {
+			// eslint-disable-next-line mediawiki/no-storage
 			localStorage.setItem( 've-' + keyOrValueMap, JSON.stringify( value ) );
 		} catch ( e ) {
 			return false;

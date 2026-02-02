@@ -178,6 +178,8 @@
 	"visualeditor-languageinspector-title": "Language",
 	"visualeditor-languageinspector-widget-changelang": "Find language",
 	"visualeditor-languageinspector-widget-label-direction": "Direction",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Left-to-right",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Right-to-left",
 	"visualeditor-languageinspector-widget-label-langcode": "Language code",
 	"visualeditor-languageinspector-widget-label-language": "Language",
 	"visualeditor-linkcontext-label-change": "Change text",

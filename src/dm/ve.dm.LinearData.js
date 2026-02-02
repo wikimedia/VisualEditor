@@ -36,12 +36,14 @@ ve.dm.ElementLinearData = ve.dm.LinearData;
  * @property {Object} [internal] Internal attributes used by the converter
  */
 
+/* eslint-disable jsdoc/valid-types */
 /**
  * @typedef {Array} AnnotatedCharacter
  * @memberof ve.dm.LinearData
  * @property {string} 0 Character data
  * @property {string[]} 1 Annotation hashses
  */
+/* eslint-enable jsdoc/valid-types */
 
 /**
  * @typedef {ve.dm.LinearData.Element|string|ve.dm.LinearData.AnnotatedCharacter} Item

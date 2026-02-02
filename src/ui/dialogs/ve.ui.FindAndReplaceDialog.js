@@ -81,24 +81,32 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		icon: 'searchCaseSensitive',
 		title: ve.msg( 'visualeditor-find-and-replace-match-case' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-matchCase' ),
+		label: ve.msg( 'visualeditor-find-and-replace-match-case' ),
+		invisibleLabel: true,
 		tabIndex: 2
 	} );
 	this.regexToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchRegularExpression',
 		title: ve.msg( 'visualeditor-find-and-replace-regular-expression' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-regex' ),
+		label: ve.msg( 'visualeditor-find-and-replace-regular-expression' ),
+		invisibleLabel: true,
 		tabIndex: 2
 	} );
 	this.wordToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'quotes',
 		title: ve.msg( 'visualeditor-find-and-replace-word' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-word' ),
+		label: ve.msg( 'visualeditor-find-and-replace-word' ),
+		invisibleLabel: true,
 		tabIndex: 2
 	} );
 	this.diacriticToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchDiacritics',
 		title: ve.msg( 'visualeditor-find-and-replace-diacritic' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-diacritic' ),
+		label: ve.msg( 'visualeditor-find-and-replace-diacritic' ),
+		invisibleLabel: true,
 		tabIndex: 2
 	} );
 

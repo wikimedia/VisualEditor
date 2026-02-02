@@ -541,7 +541,6 @@ ve.htmlMsg = function ( key, ...params ) {
  * @return {Function} Function that returns the resolved message when executed
  */
 ve.deferHtmlMsg = function () {
-	// eslint-disable-next-line mediawiki/msg-doc
 	return () => ve.htmlMsg( ...arguments );
 };
 
@@ -549,13 +548,12 @@ ve.deferHtmlMsg = function () {
  * Package a message and arguments for deferred resolution.
  *
  * Identical to ve.deferHtmlMsg, but for jQuery-wrapped messages.
-*
+ *
  * @param {string} key Message key
  * @param {...any} [params] Message parameters
  * @return {Function} Function that returns the resolved message when executed
  */
 ve.deferJQueryMsg = function () {
-	// eslint-disable-next-line mediawiki/msg-doc
 	return () => $( ve.htmlMsg( ...arguments ) );
 };
 

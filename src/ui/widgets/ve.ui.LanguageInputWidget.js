@@ -76,11 +76,15 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config = {} ) {
 		// TODO: Add LTR/RTL invisible labels for accessibility
 		new OO.ui.ButtonOptionWidget( {
 			data: 'rtl',
-			icon: 'textDirRTL'
+			icon: 'textDirRTL',
+			label: ve.msg( 'visualeditor-languageinspector-widget-label-direction-rtl' ),
+			invisibleLabel: true
 		} ),
 		new OO.ui.ButtonOptionWidget( {
 			data: 'ltr',
-			icon: 'textDirLTR'
+			icon: 'textDirLTR',
+			label: ve.msg( 'visualeditor-languageinspector-widget-label-direction-ltr' ),
+			invisibleLabel: true
 		} )
 	];
 	const dirInput = ( config.dirInput === undefined ) ? 'auto' : config.dirInput;
