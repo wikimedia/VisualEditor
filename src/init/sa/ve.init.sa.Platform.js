@@ -185,12 +185,7 @@ ve.init.sa.Platform.prototype.getUserConfig = function ( keys ) {
 		} );
 		return values;
 	} else {
-		try {
-			// eslint-disable-next-line mediawiki/no-storage
-			return JSON.parse( localStorage.getItem( 've-' + keys ) );
-		} catch ( e ) {
-			return null;
-		}
+		return this.localStorage.getObject( 've-' + keys );
 	}
 };
 
@@ -209,18 +204,21 @@ ve.init.sa.Platform.prototype.setUserConfig = function ( keyOrValueMap, value ) 
 			}
 		}
 	} else {
-		try {
-			// eslint-disable-next-line mediawiki/no-storage
-			localStorage.setItem( 've-' + keyOrValueMap, JSON.stringify( value ) );
-		} catch ( e ) {
-			return false;
-		}
+		return this.localStorage.setObject( 've-' + keyOrValueMap, value );
 	}
 	return true;
 };
 
 ve.init.sa.Platform.prototype.createSafeStorage = function ( storage ) {
 	return new ve.init.sa.SafeStorage( storage );
+};
+
+ve.init.Platform.prototype.createLocalStorage = function () {
+	return this.createConflictableStorage( this.createSafeStorage( window.localStorage ) );
+};
+
+ve.init.Platform.prototype.createSessionStorage = function () {
+	return this.createConflictableStorage( this.createSafeStorage( window.sessionStorage ) );
 };
 
 /**

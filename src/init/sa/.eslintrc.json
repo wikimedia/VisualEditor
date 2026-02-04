@@ -1,0 +1,5 @@
+{
+	"rules": {
+		"mediawiki/no-storage": "off"
+	}
+}
