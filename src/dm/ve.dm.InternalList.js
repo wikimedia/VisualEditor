@@ -57,12 +57,6 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	 */
 	this.keyIndexes = {};
 
-	/**
-	 * @property {string[]} keys Array index is meaningful and identical to the numbers in the
-	 * `firstNodes` and `indexOrder` properties of {@link #nodes} elements.
-	 */
-	this.keys = [];
-
 	// Event handlers
 	doc.connect( this, { transact: 'onTransact' } );
 };
@@ -292,7 +286,6 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 		group = this.nodes[ groupName ] = new ve.dm.InternalListNodeGroup();
 	}
 
-	this.keys[ index ] = key;
 	if ( node.getDocument().buildingNodeTree ) {
 		// If the document is building the original node tree
 		// then every item is being added in order, so we don't

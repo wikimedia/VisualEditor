@@ -251,8 +251,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 
 				$chunk.append(
 					$( '<span>' ).addClass( 've-ui-debugBar-dump-note' ).text(
-						' keys: ' + JSON.stringify( internalList.keys ) +
-					' keyIndexes: ' + JSON.stringify( internalList.keyIndexes )
+						' keyIndexes: ' + JSON.stringify( internalList.keyIndexes )
 					)
 				);
 			}
