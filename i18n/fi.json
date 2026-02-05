@@ -179,6 +179,8 @@
 	"visualeditor-languageinspector-title": "Kieli",
 	"visualeditor-languageinspector-widget-changelang": "Etsi kieli",
 	"visualeditor-languageinspector-widget-label-direction": "Suunta",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Vasemmalta oikealle",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Oikealta vasemmalle",
 	"visualeditor-languageinspector-widget-label-langcode": "Kielikoodi",
 	"visualeditor-languageinspector-widget-label-language": "Kieli",
 	"visualeditor-linkcontext-label-change": "Muuta tekstiä",

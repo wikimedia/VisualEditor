@@ -164,6 +164,8 @@
 	"visualeditor-languageinspector-title": "Lingua",
 	"visualeditor-languageinspector-widget-changelang": "Atopar a lingua",
 	"visualeditor-languageinspector-widget-label-direction": "Dirección",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "De esquerda a dereita",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "De dereita a esquerda",
 	"visualeditor-languageinspector-widget-label-langcode": "Código de lingua",
 	"visualeditor-languageinspector-widget-label-language": "Lingua",
 	"visualeditor-linkcontext-label-change": "Cambiar o texto",

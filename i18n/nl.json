@@ -183,6 +183,8 @@
 	"visualeditor-languageinspector-title": "Taal",
 	"visualeditor-languageinspector-widget-changelang": "Taal zoeken",
 	"visualeditor-languageinspector-widget-label-direction": "Richting",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Links-naar-rechts",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Rechts-naar-links",
 	"visualeditor-languageinspector-widget-label-langcode": "Taalcode",
 	"visualeditor-languageinspector-widget-label-language": "Taal",
 	"visualeditor-linkcontext-label-change": "Tekst wijzigen",

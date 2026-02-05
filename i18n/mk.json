@@ -155,6 +155,8 @@
 	"visualeditor-languageinspector-title": "Јазик",
 	"visualeditor-languageinspector-widget-changelang": "Најди јазик",
 	"visualeditor-languageinspector-widget-label-direction": "Насока",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Од лево кон десно",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Од десно кон лево",
 	"visualeditor-languageinspector-widget-label-langcode": "Јазичен код",
 	"visualeditor-languageinspector-widget-label-language": "Јазик",
 	"visualeditor-linkcontext-label-change": "Смени текст",
