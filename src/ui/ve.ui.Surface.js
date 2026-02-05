@@ -892,7 +892,6 @@ ve.ui.Surface.prototype.adjustVisiblePadding = function () {
 			bottom = this.getPadding().bottom;
 		}
 		this.getView().$attachedRootNode.css( 'padding-bottom', bottom );
-		this.scrollSelectionIntoView();
 	}
 };
 
