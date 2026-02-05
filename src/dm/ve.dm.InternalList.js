@@ -373,6 +373,11 @@ ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
 		mapping = {};
 	let nextIndex = this.getItemNodeCount();
 
+	if ( list.keyIndexes && list.keyIndexes.length ) {
+		// Looking for potentinally dead code here T416558
+		OO.ui.warnDeprecation( 'T416558 ve.dm.InternalList.merge() list.keyIndexes not empty' );
+	}
+
 	for ( let i = 0; i < commonLength; i++ ) {
 		mapping[ i ] = i;
 	}
