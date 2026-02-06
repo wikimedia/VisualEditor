@@ -179,7 +179,7 @@ ve.ui.MobileContext.prototype.isInspectable = function () {
 	// Parent method
 	return ve.ui.MobileContext.super.prototype.isInspectable.call( this ) &&
 		// Suppress context when virtual keyboard is visible
-		!this.surface.getView().hasNativeCursorSelection();
+		!this.surface.isVirtualKeyboardOpen();
 };
 
 /**
