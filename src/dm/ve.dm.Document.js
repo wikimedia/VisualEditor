@@ -981,13 +981,18 @@ ve.dm.Document.prototype.getRelativeRange = function ( range, direction, unit, e
 /**
  * Get the nearest node matching a test.
  *
- * @param {Function} test Function to test whether a node matches, called with the nodeType
+ * @param {Function|string} testOrNodeType Function to test whether a node matches, called with the nodeType,
+ *  or exact nodeType to match.
  * @param {number} offset Offset to start looking at
  * @param {number} direction Direction to look in, +1 or -1
  * @param {number} limit Stop looking after reaching certain offset
  * @return {ve.dm.Node|null} Nearest matching node, or null if not found
  */
-ve.dm.Document.prototype.getNearestNodeMatching = function ( test, offset, direction, limit ) {
+ve.dm.Document.prototype.getNearestNodeMatching = function ( testOrNodeType, offset, direction, limit ) {
+	const test = typeof testOrNodeType === 'function' ?
+		testOrNodeType :
+		( nodeType ) => nodeType === testOrNodeType;
+
 	// It is never an offset of the node, but just an offset for which getNodeFromOffset should
 	// return that node. Usually it would be node offset + 1 or offset of node closing tag.
 	let coveredOffset;
