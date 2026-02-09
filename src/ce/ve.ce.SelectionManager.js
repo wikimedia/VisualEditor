@@ -328,7 +328,7 @@ ve.ce.SelectionManager.prototype.getSelectionElementsCacheKey = function ( name,
  * @param {string} name Name of selection group
  * @param {ve.dm.Selection} selectionModel Selection model
  * @param {Object} [options] Selection options
- * @return {ve.ce.SelectionElements|null} Selection elements containing $selection and $overlay, null if not found
+ * @return {ve.ce.SelectionManager.SelectionElements|null} Selection elements containing $selection and $overlay, null if not found
  */
 ve.ce.SelectionManager.prototype.getCachedSelectionElements = function ( name, selectionModel, options ) {
 	const cacheKey = this.getSelectionElementsCacheKey( name, selectionModel, options );
@@ -338,7 +338,7 @@ ve.ce.SelectionManager.prototype.getCachedSelectionElements = function ( name, s
 /**
  * Store an recently drawn selection in the cache
  *
- * @param {ve.ce.SelectionElements} selectionElements Selection elements containing $selection and $overlay
+ * @param {ve.ce.SelectionManager.SelectionElements} selectionElements Selection elements containing $selection and $overlay
  * @param {string} name Name of selection group
  * @param {ve.dm.Selection} selectionModel Selection model
  * @param {Object} [options] Selection options
