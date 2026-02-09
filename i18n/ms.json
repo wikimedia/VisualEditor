@@ -156,6 +156,8 @@
 	"visualeditor-languageinspector-title": "Bahasa",
 	"visualeditor-languageinspector-widget-changelang": "Cari bahasa",
 	"visualeditor-languageinspector-widget-label-direction": "Arah",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Kiri-ke-kanan",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Kanan-ke-kiri",
 	"visualeditor-languageinspector-widget-label-langcode": "Kod bahasa",
 	"visualeditor-languageinspector-widget-label-language": "Bahasa",
 	"visualeditor-linkcontext-label-change": "Ubah teks",

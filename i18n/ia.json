@@ -157,6 +157,8 @@
 	"visualeditor-languageinspector-title": "Lingua",
 	"visualeditor-languageinspector-widget-changelang": "Cercar lingua",
 	"visualeditor-languageinspector-widget-label-direction": "Director",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "De sinistra a dextra",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "De dextra a sinistra",
 	"visualeditor-languageinspector-widget-label-langcode": "Codice de lingua",
 	"visualeditor-languageinspector-widget-label-language": "Lingua",
 	"visualeditor-linkcontext-label-change": "Alterar texto",

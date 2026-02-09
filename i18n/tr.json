@@ -182,6 +182,8 @@
 	"visualeditor-languageinspector-title": "Dil",
 	"visualeditor-languageinspector-widget-changelang": "Dil bul",
 	"visualeditor-languageinspector-widget-label-direction": "Yön",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Soldan sağa",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Sağdan sola",
 	"visualeditor-languageinspector-widget-label-langcode": "Dil kodu",
 	"visualeditor-languageinspector-widget-label-language": "Dil",
 	"visualeditor-linkcontext-label-change": "Metni değiştir",

@@ -166,6 +166,8 @@
 	"visualeditor-languageinspector-title": "שפה",
 	"visualeditor-languageinspector-widget-changelang": "מציאת שפה",
 	"visualeditor-languageinspector-widget-label-direction": "כיוון",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "משמאל לימין",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "מימין לשמאל",
 	"visualeditor-languageinspector-widget-label-langcode": "קוד שפה",
 	"visualeditor-languageinspector-widget-label-language": "שפה",
 	"visualeditor-linkcontext-label-change": "שינוי הטקסט",
