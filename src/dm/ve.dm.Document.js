@@ -82,8 +82,15 @@ ve.dm.Document = function VeDmDocument(
 	}
 	this.htmlDocument = htmlDocument;
 	this.persistentStorage = persistentStorage;
-	this.cachedDataValue = Symbol( 'value' );
+
+	// A separate store of cached data for any ve.dm.Node in the tree (not arranged by
+	// document tree hierarchy: stored directly here with the node as a key). During
+	// transaction processing, as each node is modified, its store is deleted if present,
+	// with this rule applying recursively to ancestors.
 	this.cachedData = new Map();
+
+	// Set to true during transaction processing: the cache is not read or grown
+	this.bypassCachedData = false;
 };
 
 /* Inheritance */
@@ -111,6 +118,13 @@ OO.inheritClass( ve.dm.Document, ve.Document );
  *
  * @event ve.dm.Document#storage
  */
+
+/* Static properties */
+
+/**
+ * @property {symbol} Terminal key in the #cachedData key tree
+ */
+ve.dm.Document.static.CACHED_DATA_VALUE = Symbol( 'CACHED_DATA_VALUE' );
 
 /* Static methods */
 
@@ -411,10 +425,19 @@ ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
 		throw new Error( 'Cannot commit a transaction that has already been committed' );
 	}
 	this.emit( 'precommit', transaction );
-	this.cachedData = null;
-	new ve.dm.TransactionProcessor( this, transaction, isStaging ).process();
+
+	// Invalidate whole-document cached data immediately
+	this.cachedData.delete( this.documentNode );
+
+	// Don't use cached data during transaction processing (but do invalidate items as appropriate)
+	this.bypassCachedData = true;
+
+	try {
+		new ve.dm.TransactionProcessor( this, transaction, isStaging ).process();
+	} finally {
+		this.bypassCachedData = false;
+	}
 	this.completeHistory.pushTransaction( transaction, this.store.getLength() );
-	this.cachedData = new Map();
 	this.emit( 'transact', transaction );
 };
 
@@ -1106,8 +1129,10 @@ ve.dm.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
 		throw new Error( 've.dm.Document.getBranchNodeFromOffset(): offset ' + offset + ' is out of bounds' );
 	}
 	return this.getOrInsertCachedData(
+		this.documentNode,
 		() => ve.Document.prototype.getBranchNodeFromOffset.call( this, offset ),
-		'branchNodeFromOffset', offset
+		'branchNodeFromOffset',
+		offset
 	);
 };
 
@@ -1758,31 +1783,65 @@ ve.dm.Document.prototype.getStorage = function ( key ) {
 };
 
 /**
- * Fetch or generate data that'll be stored until the next transaction invalidates it
+ * Clear the cached data stored for a given node and all its ancestors.
  *
- * @param {Function} callback Called to generate the cached value if not already present, passed the document model
- * @param {...any} keys Valid keys for a Map
+ * To be called while processing transactions, on each modified node, as the modification happens.
+ *
+ * @param {ve.dm.Node} node The relevant node
+ */
+ve.dm.Document.prototype.clearCachedData = function ( node ) {
+	// Ascend the DM node tree, deleting cached data at each level
+	while ( node ) {
+		this.cachedData.delete( node );
+		node = node.parent;
+	}
+};
+
+/**
+ * Fetch or generate data, to store against a particular branch node until that node changes
+ *
+ * When a branch node changes, the data stored against it will be deleted
+ *
+ * @param {ve.dm.BranchNode} [node=this.documentNode] The relevant branch node (on whose contents the value depends)
+ * @param {Function} callback Called to generate the cached value if not already present; passed the document model
+ * @param {...any} keys A hierarchical chain of valid keys for a Map, implying a tree structure in the node's store
  * @return {any}
  */
-ve.dm.Document.prototype.getOrInsertCachedData = function ( callback, ...keys ) {
-	// This is named similarly to the Map.getOrInsertComputed function, but
-	// note that the arguments are reversed and extended to support easily
-	// using more complex keys.
-	if ( !this.cachedData ) {
+ve.dm.Document.prototype.getOrInsertCachedData = function ( node, callback, ...keys ) {
+	// Support omitting the node argument
+	if ( typeof node === 'function' ) {
+		keys.unshift( callback );
+		callback = node;
+		node = this.documentNode;
+	}
+
+	if ( this.bypassCachedData ) {
 		// The cache is disabled, most likely because we're in the middle of
 		// applying a transaction
 		ve.log( 'VisualEditor: attempted to cache data while cache disabled', ...keys );
 		return callback( this );
 	}
-	let data = this.cachedData;
+
+	if ( !this.cachedData.has( node ) ) {
+		this.cachedData.set( node, new Map() );
+	}
+	let data = this.cachedData.get( node );
+
+	// Within the values stored for this node, descend the key tree according to `keys`,
+	// adding new nodes if required
 	for ( const key of keys ) {
 		if ( !data.has( key ) ) {
 			data.set( key, new Map() );
 		}
 		data = data.get( key );
 	}
-	if ( !data.has( this.cachedDataValue ) ) {
-		data.set( this.cachedDataValue, callback( this ) );
+
+	const CACHED_DATA_VALUE = ve.dm.Document.static.CACHED_DATA_VALUE;
+
+	if ( !data.has( CACHED_DATA_VALUE ) ) {
+		// Cache miss, so fill the cache
+		const value = callback( this );
+		data.set( CACHED_DATA_VALUE, value );
 	}
-	return data.get( this.cachedDataValue );
+	return data.get( CACHED_DATA_VALUE );
 };

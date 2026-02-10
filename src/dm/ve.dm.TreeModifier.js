@@ -325,14 +325,17 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	// are emitted.
 	switch ( treeOp.type ) {
 		case 'removeNode': {
+			document.clearCachedData( a.node );
 			// The node should have no contents, so its outer length should be 2
 			const data = spliceLinear( a.linearOffset, 2 );
 			this.checkEqualData( data, [ treeOp.element, { type: '/' + treeOp.element.type } ] );
-			splice( a.node, a.offset, 1 );
+			const [ nodeRemoved ] = splice( a.node, a.offset, 1 );
+			document.clearCachedData( nodeRemoved );
 			healTextNodes( a.node, a.offset );
 			break;
 		}
 		case 'insertNode': {
+			document.clearCachedData( a.node );
 			spliceLinear( a.linearOffset, 0, [ treeOp.element, { type: '/' + treeOp.element.type } ] );
 			const nodeToInsert = ve.dm.nodeFactory.createFromElement( treeOp.element );
 			if ( nodeToInsert instanceof ve.dm.BranchNode ) {
@@ -342,16 +345,20 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			break;
 		}
 		case 'moveNode': {
+			document.clearCachedData( f.node );
+			document.clearCachedData( t.node );
 			const data = spliceLinear( f.linearOffset, f.node.children[ f.offset ].getOuterLength() );
 			// No need to use local splice function as we know the node is going
 			// to be re-inserted immediately.
 			const movedNode = f.node.splice( f.offset, 1 )[ 0 ];
+			// No need to call document.clearCachedData( movedNode ), as its contents are unchanged :)
 			const adjustment = t.linearOffset > f.linearOffset ? data.length : 0;
 			spliceLinear( t.linearOffset - adjustment, 0, data );
 			t.node.splice( t.offset, 0, movedNode );
 			break;
 		}
 		case 'removeText': {
+			document.clearCachedData( a.node );
 			const data = spliceLinear( a.linearOffset, treeOp.data.length );
 			this.checkEqualData( data, treeOp.data );
 			a.node.adjustLength( -treeOp.data.length );
@@ -359,11 +366,14 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			break;
 		}
 		case 'insertText': {
+			document.clearCachedData( a.node );
 			spliceLinear( a.linearOffset, 0, treeOp.data );
 			a.node.adjustLength( treeOp.data.length );
 			break;
 		}
 		case 'moveText': {
+			document.clearCachedData( f.node );
+			document.clearCachedData( t.node );
 			const data = spliceLinear( f.linearOffset, treeOp.length );
 			f.node.adjustLength( -treeOp.length );
 			healTextNodes( f.node.parent, f.node.parent.children.indexOf( f.node ) );

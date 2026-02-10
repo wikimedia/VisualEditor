@@ -1501,3 +1501,70 @@ QUnit.test( 'MemoizedTextFinder', ( assert ) => {
 	setTextFinder.findRanges = null;
 	assert.deepEqual( doc.findText( memoizedTextFinder ), expected, 'Second call to memoized TextFinder doesn’t recheck anything' );
 } );
+
+QUnit.test( 'getOrInsertCachedData', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument();
+	const surface = new ve.dm.Surface( doc );
+
+	function calculateLengths( nodes ) {
+		let callCount = 0;
+		function getLength( node ) {
+			callCount++;
+			return node.getLength();
+		}
+		nodes.forEach( ( node ) => doc.getOrInsertCachedData( node, getLength, 'len' ) );
+		return callCount;
+	}
+
+	// Check the length of each ContentBranchNode (filling the cache)
+	let nodes = doc.getNodesByType( ve.dm.ContentBranchNode, true );
+	let callCount = calculateLengths( nodes );
+	assert.strictEqual( callCount, nodes.length, 'First run is entirely cache misses' );
+
+	// Recheck the lengths (entirely using the cache)
+	callCount = calculateLengths( nodes );
+	assert.strictEqual( callCount, 0, 'No paragraph modifications, no cache misses' );
+
+	// Modify the first ContentBranchNode (invalidating its cached length)
+	const firstNode = nodes[ 0 ];
+	const tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, firstNode.getOffset() + 1, [ ...'foo' ] );
+	surface.change( tx );
+	callCount = calculateLengths( nodes );
+	assert.strictEqual( callCount, 1, 'One paragraph modification, one cache invalidation' );
+
+	// Undo the modification (again invalidating the node's cached length)
+	surface.breakpoint();
+	surface.undo();
+	callCount = calculateLengths( nodes );
+	assert.strictEqual( callCount, 1, 'Paragraph modification undone, one cache invalidation' );
+
+	// Insert a table containing a single paragraph, after the node (not affecting existing ContentBranchNodes)
+	const tableTx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, firstNode.getOuterRange().end, [
+		{ type: 'table' },
+		{ type: 'tableSection', attributes: { style: 'body' } },
+		{ type: 'tableRow' },
+		{ type: 'tableCell', attributes: { style: 'data' } },
+		{ type: 'paragraph' },
+		...'foo',
+		{ type: '/paragraph' },
+		{ type: '/tableCell' },
+		{ type: '/tableRow' },
+		{ type: '/tableSection' },
+		{ type: '/table' }
+	] );
+	surface.change( tableTx );
+	callCount = calculateLengths( nodes );
+	assert.strictEqual( callCount, 0, 'Table inserted, no cache invalidation' );
+	nodes = doc.getNodesByType( ve.dm.ContentBranchNode, true );
+	callCount = calculateLengths( nodes );
+	assert.strictEqual( callCount, 1, 'Table inserted, one new ContentBranchNode' );
+
+	// Wrap the entire document in a div (not affecting existing ContentBranchNodes)
+	const wrapTx = ve.dm.TransactionBuilder.static.newFromWrap( doc, doc.getDocumentRange(), [], [ { type: 'div' } ], [], [] );
+	surface.change( wrapTx );
+	callCount = calculateLengths( nodes );
+	assert.strictEqual( callCount, 0, 'Document wrapped in div, no cache invalidation' );
+	nodes = doc.getNodesByType( ve.dm.ContentBranchNode, true );
+	callCount = calculateLengths( nodes );
+	assert.strictEqual( callCount, 0, 'Document wrapped in div, no new ContentBranchNodes' );
+} );

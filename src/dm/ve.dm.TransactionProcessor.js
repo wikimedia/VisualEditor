@@ -305,6 +305,7 @@ ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, valu
 	} );
 
 	const node = this.document.getDocumentNode().getNodeFromOffset( offset + 1 );
+	this.document.clearCachedData( node );
 	// Update node element pointer
 	node.element = data.getData( offset );
 
