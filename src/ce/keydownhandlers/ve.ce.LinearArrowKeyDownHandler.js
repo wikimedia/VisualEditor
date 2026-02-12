@@ -101,6 +101,16 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 		return true;
 	}
 
+	// Empty paragraphs have inline slugs which cause the cursor to get
+	// stuck, so move off them immediately (T162916)
+	if ( range.isCollapsed() && !isBlockMove ) {
+		const node = surface.getDocument().getBranchNodeFromOffset( range.from );
+		if ( node.canContainContent() && node.getModel().length === 0 ) {
+			handleMove( node );
+			return true;
+		}
+	}
+
 	if ( surface.focusedNode ) {
 		const direction = getDirection( surface.focusedNode );
 

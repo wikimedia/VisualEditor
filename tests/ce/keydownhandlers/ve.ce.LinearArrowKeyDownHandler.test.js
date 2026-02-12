@@ -32,6 +32,12 @@ QUnit.test( 'special key down: linear arrow keys', ( assert ) => {
 			{ type: 'paragraph' }, ...'Bar', { type: '/paragraph' },
 			{ type: 'internalList' }, { type: '/internalList' }
 		] ),
+		emptyParagraphsDoc = ve.dm.example.createExampleDocumentFromData( [
+			{ type: 'paragraph' }, { type: '/paragraph' },
+			{ type: 'paragraph' }, { type: '/paragraph' },
+			{ type: 'paragraph' }, { type: '/paragraph' },
+			{ type: 'internalList' }, { type: '/internalList' }
+		] ),
 		cases = [
 			// Within normal text. NOTE: these tests manually force the cursor to
 			// move, because we rely on native browser actions for that.
@@ -409,6 +415,22 @@ QUnit.test( 'special key down: linear arrow keys', ( assert ) => {
 				expectedRangeOrSelection: new ve.Range( 7, 4 ),
 				expectedDefaultPrevented: [ false ],
 				msg: 'Shift+left off an inline focusable (backwards selection)'
+			},
+			{
+				htmlOrDoc: emptyParagraphsDoc,
+				rangeOrSelection: new ve.Range( 1 ),
+				keys: [ 'RIGHT', 'RIGHT' ],
+				expectedRangeOrSelection: new ve.Range( 5 ),
+				expectedDefaultPrevented: [ true, true ],
+				msg: 'Cursoring right through empty paragraphs'
+			},
+			{
+				htmlOrDoc: emptyParagraphsDoc,
+				rangeOrSelection: new ve.Range( 5 ),
+				keys: [ 'LEFT', 'LEFT' ],
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				expectedDefaultPrevented: [ true, true ],
+				msg: 'Cursoring left through empty paragraphs'
 			}
 		];
 
