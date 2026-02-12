@@ -18,9 +18,9 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @param {ve.dm.Document} [config.doc] Initial document model
- * @param {Object} [config.modes] Available editing modes.
- * @param {Object} [config.defaultMode] Default mode for new surfaces.
- * @param {Object} [config.toolbarGroups] Target's toolbar groups config.
+ * @param {string[]} [config.modes] Available editing modes.
+ * @param {string} [config.defaultMode] Default mode for new surfaces.
+ * @param {Object[]} [config.toolbarGroups] Target's toolbar groups config.
  * @param {string[]|null} [config.includeCommands] List of commands to include, null for all registered commands
  * @param {string[]} [config.excludeCommands] List of commands to exclude
  * @param {Object} [config.importRules] Import rules

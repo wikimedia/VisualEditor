@@ -15,7 +15,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @param {Object} [config.toolbarConfig={}] Configuration options for the toolbar
- * @param {Object} [config.toolbarGroups] Toolbar groups, defaults to this.constructor.static.toolbarGroups
+ * @param {Object[]} [config.toolbarGroups] Toolbar groups, defaults to this.constructor.static.toolbarGroups
  * @param {string[]} [config.modes] Available editing modes. Defaults to static.modes
  * @param {string} [config.defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
  * @param {boolean} [config.register=true] Register the target at ve.init.target
@@ -33,27 +33,72 @@ ve.init.Target = function VeInitTarget( config = {} ) {
 	}
 
 	// Properties
+	/**
+	 * @property {ve.ui.Surface[]} surfaces
+	 */
 	this.surfaces = [];
+
+	/**
+	 * @property {ve.ui.Surface|null} surface
+	 */
 	this.surface = null;
+
+	/**
+	 * @property {ve.ui.TargetToolbar|null} toolbar
+	 */
 	this.toolbar = null;
+
+	/**
+	 * @property {Object} toolbarConfig
+	 */
 	this.toolbarConfig = config.toolbarConfig || {};
+
+	/**
+	 * @property {Object[]} toolbarGroups
+	 */
 	this.toolbarGroups = config.toolbarGroups || this.constructor.static.toolbarGroups;
+
+	/**
+	 * @property {jQuery} $scrollContainer
+	 */
 	this.$scrollContainer = this.getScrollContainer();
+
+	/**
+	 * @property {jQuery} $scrollListener
+	 */
 	this.$scrollListener = this.$scrollContainer.is( 'html, body' ) ?
 		$( OO.ui.Element.static.getWindow( this.$scrollContainer[ 0 ] ) ) :
 		this.$scrollContainer;
 
+	/**
+	 * @property {number} toolbarScrollOffset
+	 */
 	this.toolbarScrollOffset = 0;
+
+	/**
+	 * @property {number} activeToolbars
+	 */
 	this.activeToolbars = 0;
+
+	/**
+	 * @property {boolean|null} wasSurfaceActive
+	 */
 	this.wasSurfaceActive = null;
+
+	/**
+	 * @property {jQuery.Promise|null} teardownPromise
+	 */
 	this.teardownPromise = null;
 
+	/**
+	 * @property {string[]} modes
+	 */
 	this.modes = config.modes || this.constructor.static.modes;
-	this.setDefaultMode( config.defaultMode );
-
-	this.setupTriggerListeners();
 
 	// Initialization
+	this.setDefaultMode( config.defaultMode );
+	this.setupTriggerListeners();
+
 	this.$element.addClass( 've-init-target' );
 
 	if ( ve.init.platform.constructor.static.isIos() ) {
