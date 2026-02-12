@@ -6,6 +6,7 @@
 			"Kareyac",
 			"Red Winged Duck",
 			"Renessaince",
+			"Ucukor",
 			"Wizardist",
 			"Чаховіч Уладзіслаў"
 		]
@@ -179,8 +180,8 @@
 	"visualeditor-table-insert-row-after": "Уставіць ніжэй",
 	"visualeditor-table-insert-row-before": "Уставіць вышэй",
 	"visualeditor-table-insert-table": "Табліца",
-	"visualeditor-table-merge-cells": "Аб’яднаць ячэйкі",
-	"visualeditor-table-merge-cells-merge": "Аб’яднаць",
+	"visualeditor-table-merge-cells": "Зьяднаць ячэйкі",
+	"visualeditor-table-merge-cells-merge": "Зьяднаць",
 	"visualeditor-table-merge-cells-unmerge": "Разьяднаць",
 	"visualeditor-table-move-col-after": "Перасунуць управа",
 	"visualeditor-table-move-col-before": "Перасунуць улева",

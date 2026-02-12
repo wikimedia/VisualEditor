@@ -24,7 +24,7 @@
 			"संजीव कुमार"
 		]
 	},
-	"visualeditor": "यथादृश्य संपादिका",
+	"visualeditor": "यथादृश्य सम्पादिका",
 	"visualeditor-aliennode-tooltip": "क्षमा करें, इस भाग को अभी सिर्फ स्रोत सम्पादन में सम्पादित किया जा सकता है।",
 	"visualeditor-align-desc-center": "मध्य",
 	"visualeditor-align-desc-default": "डिफ़ॉल्ट",
@@ -192,7 +192,7 @@
 	"visualeditor-linkcontext-remove": "कड़ी हटाएँ",
 	"visualeditor-linkinspector-title": "कड़ी",
 	"visualeditor-linkinspector-title-add": "कड़ी जोड़ें",
-	"visualeditor-linkinspector-title-edit": "कड़ी को संपादित करें",
+	"visualeditor-linkinspector-title-edit": "कड़ी सम्पादित करें",
 	"visualeditor-listbutton-bullet-tooltip": "बिंदु सूची",
 	"visualeditor-listbutton-check-tooltip": "चेक सूची",
 	"visualeditor-listbutton-number-tooltip": "संख्यात्मक सूची",
