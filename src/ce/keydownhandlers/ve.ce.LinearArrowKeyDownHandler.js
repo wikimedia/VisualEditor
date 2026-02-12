@@ -61,42 +61,48 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 		);
 	}
 
-	let direction, directionality;
-	if ( surface.focusedBlockSlug ) {
-		// Block level selection, so directionality is just css directionality
+	/**
+	 * Determine the direction to move based on the key pressed and text directionality.
+	 *
+	 * @param {ve.ce.Node|HTMLElement} nodeForDirection
+	 * @return {number} -1 for backwards, 1 for forwards
+	 */
+	function getDirection( nodeForDirection ) {
 		if ( isBlockMove ) {
-			direction = keyBlockDirection;
-		} else {
-			directionality = $( surface.focusedBlockSlug ).css( 'direction' );
-			// eslint-disable-next-line no-bitwise
-			if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
-				// Left arrow in ltr, or right arrow in rtl
-				direction = -1;
-			} else {
-				// Left arrow in rtl, or right arrow in ltr
-				direction = 1;
-			}
+			return keyBlockDirection;
 		}
+		let directionality;
+		if ( nodeForDirection === surface.focusedNode ) {
+			directionality = surface.getFocusedNodeDirectionality();
+		} else if ( nodeForDirection instanceof ve.ce.Node ) {
+			directionality = $( nodeForDirection.$element[ 0 ] ).css( 'direction' );
+		} else {
+			directionality = $( nodeForDirection ).css( 'direction' );
+		}
+		// Left arrow in ltr, or right arrow in rtl
+		// eslint-disable-next-line no-bitwise
+		if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
+			return -1;
+		}
+		// Left arrow in rtl, or right arrow in ltr
+		return 1;
+	}
+
+	function handleMove( nodeForDirection ) {
+		const direction = getDirection( nodeForDirection );
+		// Block level selection, so directionality is just css directionality
 		range = moveOffFocusableNode( range, direction );
 		surface.model.setLinearSelection( range );
 		e.preventDefault();
+	}
+
+	if ( surface.focusedBlockSlug ) {
+		handleMove( surface.focusedBlockSlug );
 		return true;
 	}
 
 	if ( surface.focusedNode ) {
-		if ( isBlockMove ) {
-			direction = keyBlockDirection;
-		} else {
-			directionality = surface.getFocusedNodeDirectionality();
-			// eslint-disable-next-line no-bitwise
-			if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
-				// Left arrow in ltr, or right arrow in rtl
-				direction = -1;
-			} else {
-				// Left arrow in rtl, or right arrow in ltr
-				direction = 1;
-			}
-		}
+		const direction = getDirection( surface.focusedNode );
 
 		if ( e.shiftKey ) {
 			// There is no DOM range to expand (because the selection is faked), so
