@@ -114,6 +114,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 		bottom: 0,
 		left: 0
 	};
+	this.scrollPaddingSuppressed = false;
 	// Intiailised on first use
 	this.toolbarDialogs = {};
 
@@ -230,6 +231,9 @@ ve.ui.Surface.prototype.destroy = function () {
 	// Remove DOM elements
 	this.$element.remove();
 	this.globalOverlay.$element.remove();
+
+	// Restore scroll padding
+	$( document.documentElement ).css( 'scroll-padding', '' );
 
 	// Let others know we have been destroyed
 	this.emit( 'destroy' );
@@ -744,6 +748,10 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
  * @param {boolean} [passive=false]
  */
 ve.ui.Surface.prototype.onViewPosition = function ( passive ) {
+	// This is often called by a debounced listener, so check the surface hasn't been destroyed
+	if ( !this.$element[ 0 ].parentNode ) {
+		return;
+	}
 	this.recalculatePadding(
 		// Don't scroll to this user's cursor if event is marked as passive
 		!passive
@@ -917,19 +925,44 @@ ve.ui.Surface.prototype.onViewActivation = function () {
  * to be scrolled to.
  */
 ve.ui.Surface.prototype.adjustVisiblePadding = function () {
+	const padding = this.getPadding();
 	if ( OO.ui.isMobile() && !this.inTargetWidget ) {
 		let bottom;
 		if ( ve.init.platform.constructor.static.isIos() && this.isVirtualKeyboardOpen() ) {
 			// iOS needs a whole extra page of padding when the virtual keyboard is shown.
 			// Note: we keep this padding when surface is deactivated-but-shown-as-activated
 			// so that the view doesn't shift when e.g. opening a toolbar toolgroup popup.
-			bottom = $( window ).height() - this.getPadding().top;
+			bottom = $( window ).height() - padding.top;
 		} else {
 			// otherwise just add padding to account for the context
-			bottom = this.getPadding().bottom;
+			bottom = padding.bottom;
 		}
 		this.getView().$attachedRootNode.css( 'padding-bottom', bottom );
 	}
+
+	if ( this.scrollPaddingSuppressed ) {
+		$( document.documentElement ).css( 'scroll-padding', '0' );
+	} else {
+		$( document.documentElement ).css( {
+			'scroll-padding-top': padding.top + 'px',
+			'scroll-padding-right': padding.right + 'px',
+			'scroll-padding-bottom': padding.bottom + 'px',
+			'scroll-padding-left': padding.left + 'px'
+		} );
+	}
+};
+
+/**
+ * Suppress or unsuppress scroll padding adjustments.
+ *
+ * This is set by the sticky toolbar when it is focussed to prevent
+ * a bug in Chromium browsers (https://issues.chromium.org/issues/40749247)
+ *
+ * @param {boolean} scrollPaddingSuppressed
+ */
+ve.ui.Surface.prototype.suppressScrollPadding = function ( scrollPaddingSuppressed ) {
+	this.scrollPaddingSuppressed = scrollPaddingSuppressed;
+	this.adjustVisiblePadding();
 };
 
 /**

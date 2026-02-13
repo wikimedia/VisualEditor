@@ -34,6 +34,9 @@ ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, co
 	this.elementOffset = null;
 	this.onWindowScrollThrottled = ve.throttle( this.onWindowScroll.bind( this ), 250 );
 
+	// Events
+	this.$element.on( 'focusin focusout', ve.debounce( this.onFocusChange.bind( this ) ) );
+
 	// Initialization
 	this.$element.addClass( 've-ui-positionedTargetToolbar' );
 	if ( this.floatable ) {
@@ -46,6 +49,19 @@ ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, co
 OO.inheritClass( ve.ui.PositionedTargetToolbar, ve.ui.TargetToolbar );
 
 /* Methods */
+
+/**
+ * Handle focus change events on the toolbar.
+ *
+ * @param {jQuery.Event} event Focus change event
+ */
+ve.ui.PositionedTargetToolbar.prototype.onFocusChange = function () {
+	if ( this.getSurface() ) {
+		this.getSurface().suppressScrollPadding(
+			this.$element[ 0 ].contains( document.activeElement )
+		);
+	}
+};
 
 /**
  * @inheritdoc
