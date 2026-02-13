@@ -442,9 +442,9 @@ QUnit.test( 'checkEqualData', ( assert ) => {
 					attrs: {},
 					body: { id: 'mw-reference-text-cite_note-1' }
 				},
-				listIndex: 0,
 				listGroup: 'mwReference/',
 				listKey: 'auto/0',
+				listIndex: 0,
 				refGroup: '',
 				contentsUsed: true,
 				refListItemId: 'mw-reference-text-cite_note-1'
