@@ -819,20 +819,17 @@ ve.dm.VisualDiff.prototype.diffAttributes = function ( oldNode, newNode, diffTyp
  * @return {Array|boolean} The linear diff, or false if timed out
  */
 ve.dm.VisualDiff.prototype.diffContent = function ( oldNode, newNode ) {
-	let linearDiff;
-
-	if ( Date.now() < this.endTime ) {
-		linearDiff = this.linearDiffer.getCleanDiff(
-			this.constructor.static.getDataFromNode( oldNode, true ),
-			this.constructor.static.getDataFromNode( newNode, true ),
-			{ keepOldText: false }
-		);
-		this.timedOut = !!linearDiff.timedOut;
-	} else {
+	if ( Date.now() >= this.endTime ) {
 		this.timedOut = true;
 		return false;
 	}
 
+	const linearDiff = this.linearDiffer.getCleanDiff(
+		this.constructor.static.getDataFromNode( oldNode, true ),
+		this.constructor.static.getDataFromNode( newNode, true ),
+		{ keepOldText: false }
+	);
+	this.timedOut = !!linearDiff.timedOut;
 	return linearDiff;
 };
 
@@ -1069,12 +1066,7 @@ ve.dm.VisualDiff.prototype.hasChanges = function ( diff, isInternalListDiff ) {
 	 * @return {boolean}
 	 */
 	function containsDiff( diffObject ) {
-		for ( const n in diffObject ) {
-			if ( typeof diffObject[ n ] !== 'number' ) {
-				return true;
-			}
-		}
-		return false;
+		return !Object.values( diffObject ).every( ( v ) => typeof v === 'number' );
 	}
 
 	// Do not match within-document lists that have no corresponding list items

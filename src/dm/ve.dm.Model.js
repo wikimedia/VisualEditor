@@ -420,7 +420,7 @@ ve.dm.Model.prototype.getType = function () {
  * @return {any} Value of attribute, or undefined if no such attribute exists
  */
 ve.dm.Model.prototype.getAttribute = function ( key ) {
-	return this.element && this.element.attributes ? this.element.attributes[ key ] : undefined;
+	return this.element.attributes ? this.element.attributes[ key ] : undefined;
 };
 
 /**
@@ -432,17 +432,18 @@ ve.dm.Model.prototype.getAttribute = function ( key ) {
  * @return {Object} Attributes
  */
 ve.dm.Model.prototype.getAttributes = function ( prefix ) {
-	const attributes = this.element && this.element.attributes ? this.element.attributes : {};
-	if ( prefix ) {
-		const filtered = {};
-		for ( const key in attributes ) {
-			if ( key.startsWith( prefix ) ) {
-				filtered[ key.slice( prefix.length ) ] = attributes[ key ];
-			}
-		}
-		return filtered;
+	const attributes = this.element.attributes || {};
+	if ( !prefix ) {
+		return Object.assign( {}, attributes );
 	}
-	return ve.extendObject( {}, attributes );
+
+	const filtered = {};
+	for ( const key in attributes ) {
+		if ( key.startsWith( prefix ) ) {
+			filtered[ key.slice( prefix.length ) ] = attributes[ key ];
+		}
+	}
+	return filtered;
 };
 
 /**
@@ -451,7 +452,7 @@ ve.dm.Model.prototype.getAttributes = function ( prefix ) {
  * @return {string|undefined} Store hash of DOM elements this model was converted from
  */
 ve.dm.Model.prototype.getOriginalDomElementsHash = function () {
-	return this.element ? this.element.originalDomElementsHash : undefined;
+	return this.element.originalDomElementsHash;
 };
 
 /**

@@ -15,7 +15,7 @@
  * @constructor
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.Node = function VeDmNode( element ) {
+ve.dm.Node = function VeDmNode() {
 	// Parent constructor
 	ve.dm.Node.super.apply( this, arguments );
 
@@ -26,7 +26,6 @@ ve.dm.Node = function VeDmNode( element ) {
 	// Properties
 	this.length = 0;
 	this.offset = null;
-	this.element = element;
 };
 
 /**

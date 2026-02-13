@@ -1100,13 +1100,12 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, new
 				const siblingNodes = highestRemovedAncestor.parent.children;
 				let newPreviousNodeIndex;
 				for ( const siblingNode of siblingNodes ) {
-					if ( siblingNode.index === highestRemovedAncestor.index ) {
+					const oldPreviousNodeIndex = siblingNode.index;
+					if ( oldPreviousNodeIndex === highestRemovedAncestor.index ) {
 						break;
-					} else {
-						const oldPreviousNodeIndex = siblingNode.index;
-						if ( correspondingNodes.oldToNew[ oldPreviousNodeIndex ] !== undefined ) {
-							newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ];
-						}
+					}
+					if ( oldPreviousNodeIndex in correspondingNodes.oldToNew ) {
+						newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ];
 					}
 				}
 
