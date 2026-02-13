@@ -7,8 +7,7 @@
 /* eslint-disable no-console */
 
 /**
- * @property {boolean} debug
- * @memberof ve
+ * @property {boolean} ve.debug
  */
 ve.debug = true;
 

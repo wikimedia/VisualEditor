@@ -11,8 +11,7 @@
 	 * specific DOM features we use, and SVG support for the user interface. As we
 	 * use this to check for feature compatibility this file must be ES3-parsable.
 	 *
-	 * @method VisualEditorSupportCheck
-	 * @memberof ve
+	 * @method
 	 * @return {boolean} True if the environment should support VisualEditor.
 	 */
 	window.VisualEditorSupportCheck = function () {
