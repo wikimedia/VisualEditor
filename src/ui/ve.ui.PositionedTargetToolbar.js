@@ -104,6 +104,8 @@ ve.ui.PositionedTargetToolbar.prototype.onWindowResize = function () {
 	// Update offsets after resize (see #float)
 	this.calculateOffset();
 	this.onViewportResize();
+	// Re-calculate height as toolbar might start wrapping at different widths
+	this.calculateHeight();
 };
 
 /**
@@ -140,10 +142,9 @@ ve.ui.PositionedTargetToolbar.prototype.getElementOffset = function () {
  */
 ve.ui.PositionedTargetToolbar.prototype.float = function () {
 	if ( !this.floating ) {
-		this.height = this.$bar[ 0 ].offsetHeight;
 		this.$element.addClass( 've-ui-toolbar-floating' );
 		this.floating = true;
-		this.emit( 'resize' );
+		this.calculateHeight();
 		this.onViewportResize();
 	}
 };
@@ -153,11 +154,23 @@ ve.ui.PositionedTargetToolbar.prototype.float = function () {
  */
 ve.ui.PositionedTargetToolbar.prototype.unfloat = function () {
 	if ( this.floating ) {
-		this.height = 0;
 		this.$element.removeClass( 've-ui-toolbar-floating' );
 		this.floating = false;
-		this.emit( 'resize' );
+		this.calculateHeight();
 		this.onViewportResize();
+	}
+};
+
+/**
+ * Calculate the height of the toolbar and emit a resize event if it has changed.
+ *
+ * @fires ve.ui.Toolbar#resize
+ */
+ve.ui.PositionedTargetToolbar.prototype.calculateHeight = function () {
+	const oldHeight = this.height;
+	this.height = this.floating ? this.$bar[ 0 ].offsetHeight : 0;
+	if ( this.height !== oldHeight ) {
+		this.emit( 'resize' );
 	}
 };
 
@@ -232,11 +245,7 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 		}
 		// Wait for window transition
 		setTimeout( () => {
-			if ( this.floating ) {
-				// Re-calculate height
-				this.unfloat();
-				this.float();
-			}
+			this.calculateHeight();
 		}, transitionDuration );
 	} );
 };
