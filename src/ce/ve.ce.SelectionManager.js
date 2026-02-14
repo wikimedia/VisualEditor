@@ -43,6 +43,7 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	this.viewportClippingPadding = 50;
 	// Maximum selections in a group to render (after viewport clipping)
 	this.maxRenderedSelections = 50;
+	this.supportsCustomHighlights = !!( window.CSS && window.CSS.highlights );
 
 	// Deactivated selection
 	this.deactivatedSelectionVisible = true;
@@ -84,6 +85,11 @@ ve.ce.SelectionManager.prototype.destroy = function () {
 	if ( synchronizer ) {
 		synchronizer.disconnect( this );
 	}
+	if ( this.supportsCustomHighlights ) {
+		for ( const name of this.selectionGroups.keys() ) {
+			CSS.highlights.delete( 'visualeditor-' + name );
+		}
+	}
 	this.$element.remove();
 	this.$overlay.remove();
 	this.getSurface().getSurface().$scrollListener.off( 'scroll', this.onWindowScrollDebounced );
@@ -103,6 +109,17 @@ ve.ce.SelectionManager.prototype.getSurface = function () {
 };
 
 /**
+ * Emit an 'update' event reflecting whether any group currently has non-collapsed selections.
+ *
+ * @private
+ * @fires ve.ce.SelectionManager#update
+ */
+ve.ce.SelectionManager.prototype.emitUpdate = function () {
+	const hasSelections = Array.from( this.selectionGroups.values() ).some( ( group ) => group.hasSelections() );
+	this.emit( 'update', hasSelections );
+};
+
+/**
  * Draw selections.
  *
  * @param {string} name Unique name for the selection being drawn
@@ -114,6 +131,8 @@ ve.ce.SelectionManager.prototype.getSurface = function () {
  * @param {boolean} [options.showBounding=false] Show a bounding rectangle around the selection
  * @param {boolean} [options.showCursor=false] Show a separate rectangle at the cursor ('to' position in a non-collapsed selection)
  * @param {boolean} [options.showGutter=false] Show a vertical gutter bar matching the bounding rect
+ * @param {boolean} [options.showCustomHighlight=false] Apply a custom highlight that can be styled through the ::highlight( visualeditor-`name` ) pseudo-element
+ * @param {Map} [options.customHighlightRanges] Pre-resolved native Ranges keyed by selection for `showCustomHighlight`, replacing #getNativeRange (per-selection fallback). Also skips viewport clipping (selections assumed viewport-bounded).
  * @param {boolean} [options.overlay=false] Render all of the selection above the text
  * @param {string} [options.label] Label shown above each selection
  */
@@ -132,11 +151,11 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 			cleared.$selections.remove();
 			cleared.$overlays.remove();
 			this.selectionGroups.delete( name );
+			if ( this.supportsCustomHighlights ) {
+				CSS.highlights.delete( 'visualeditor-' + name );
+			}
 		}
-		this.emit(
-			'update',
-			Array.from( this.selectionGroups.values() ).some( ( group ) => group.hasSelections() )
-		);
+		this.emitUpdate();
 		return;
 	}
 
@@ -153,7 +172,16 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 
 	selectionGroup.cancelIdleCallbacks();
 
-	if ( selections.length > this.viewportClippingLimit ) {
+	// A custom-highlight-only group needs no per-selection DOM elements (rects, cursor, label,
+	// etc.), so skip the element pipeline below — it's the dominant cost and renders nothing here.
+	const renderElements = options.showRects !== false || options.showBounding ||
+		options.showCursor || options.showGutter || !!options.label;
+
+	// Clipping bounds rendered elements to the viewport, but needs a (expensive) getViewportRange
+	// per group. When adding a custom highlight from caller-supplied ranges it can be skipped.
+	const skipClipping = !renderElements && !!options.customHighlightRanges;
+
+	if ( !skipClipping && selections.length > this.viewportClippingLimit ) {
 		const viewportRange = surface.getViewportRange( true, this.viewportClippingPadding );
 		if ( viewportRange ) {
 			selections = selections.filter( ( selection ) => viewportRange.containsRange( selection.getModel().getCoveringRange() ) );
@@ -268,39 +296,67 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 		} );
 	};
 
-	if ( selections.length > this.maxRenderedSelections ) {
-		const renderBatch = ( start ) => {
-			if ( start < selections.length ) {
-				selectionGroup.addIdleCallback( () => {
-					renderSelections( selections.slice( start, start + this.maxRenderedSelections ) );
-					renderBatch( start + this.maxRenderedSelections );
-				} );
-			}
-		};
-		renderBatch( 0 );
-	} else {
-		renderSelections( selections );
+	if ( renderElements ) {
+		if ( selections.length > this.maxRenderedSelections ) {
+			const renderBatch = ( start ) => {
+				if ( start < selections.length ) {
+					selectionGroup.addIdleCallback( () => {
+						renderSelections( selections.slice( start, start + this.maxRenderedSelections ) );
+						renderBatch( start + this.maxRenderedSelections );
+					} );
+				}
+			};
+			renderBatch( 0 );
+		} else {
+			renderSelections( selections );
+		}
+	} else if ( selectionGroup.$selections[ 0 ].firstChild || selectionGroup.$overlays[ 0 ].firstChild ) {
+		// Drop elements left by a previous rect-rendering draw; the firstChild guard keeps the
+		// common never-rendered case free.
+		selectionGroup.$selections.empty();
+		selectionGroup.$overlays.empty();
 	}
 
-	const selectionsToShow = new Set();
-	selections.forEach( ( selection ) => {
-		const cacheKey = this.getSelectionElementsCacheKey( name, selection.getModel(), options );
-		selectionsToShow.add( cacheKey );
-	} );
-
-	// Remove any selections that are no longer visible
-	oldVisibleSelections.forEach( ( oldSelection ) => {
-		const cacheKey = this.getSelectionElementsCacheKey( name, oldSelection.getModel(), oldOptions );
-		if ( !selectionsToShow.has( cacheKey ) ) {
-			const selectionElements = this.getCachedSelectionElements( name, oldSelection.getModel(), oldOptions );
-			if ( selectionElements ) {
-				selectionElements.detach();
+	if ( this.supportsCustomHighlights && options.showCustomHighlight ) {
+		// eslint-disable-next-line no-undef
+		const highlight = new Highlight();
+		// Use a caller's pre-resolved range for a selection if given to avoid the expensive getNativeRange
+		const customRanges = options.customHighlightRanges;
+		selections.forEach( ( selection ) => {
+			if ( !( selection instanceof ve.ce.LinearSelection ) ) {
+				return;
 			}
+			const range = ( customRanges && customRanges.get( selection ) ) ||
+				surface.getNativeRange( selection.getModel().getRange() );
+			highlight.add( range );
+		} );
+		if ( highlight.size ) {
+			CSS.highlights.set( 'visualeditor-' + name, highlight );
+		} else {
+			CSS.highlights.delete( 'visualeditor-' + name );
 		}
-	} );
+	}
 
-	const hasSelections = Array.from( this.selectionGroups.values() ).some( ( group ) => group.hasSelections() );
-	this.emit( 'update', hasSelections );
+	if ( renderElements ) {
+		const selectionsToShow = new Set();
+		selections.forEach( ( selection ) => {
+			const cacheKey = this.getSelectionElementsCacheKey( name, selection.getModel(), options );
+			selectionsToShow.add( cacheKey );
+		} );
+
+		// Remove any selections that are no longer visible
+		oldVisibleSelections.forEach( ( oldSelection ) => {
+			const cacheKey = this.getSelectionElementsCacheKey( name, oldSelection.getModel(), oldOptions );
+			if ( !selectionsToShow.has( cacheKey ) ) {
+				const selectionElements = this.getCachedSelectionElements( name, oldSelection.getModel(), oldOptions );
+				if ( selectionElements ) {
+					selectionElements.detach();
+				}
+			}
+		} );
+	}
+
+	this.emitUpdate();
 };
 
 /**
