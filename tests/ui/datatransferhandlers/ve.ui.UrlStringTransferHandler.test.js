@@ -31,7 +31,7 @@ ve.test.utils.runUrlStringHandlerTest = function ( assert, caseItem ) {
 	}
 	const done = assert.async(),
 		item = ve.ui.DataTransferItem.static.newFromString( caseItem.pasteString, caseItem.pasteType, caseItem.pasteHtml ),
-		doc = ve.dm.example.createExampleDocument( undefined, undefined, caseItem.base ),
+		doc = ve.dm.example.createExampleDocumentFromData( [], undefined, caseItem.base ),
 		mockSurface = {
 			getModel: () => ( {
 				getDocument: () => doc
