@@ -10,6 +10,7 @@
 			"No Sleep till Krupki",
 			"Plaga med",
 			"Tīgelika",
+			"Ucukor",
 			"ZlyiLev",
 			"Чаховіч Уладзіслаў"
 		]
@@ -87,7 +88,7 @@
 	"visualeditor-debugbar-testsquasher": "Праверыць ушчыльняльнік",
 	"visualeditor-debugbar-updatemodel": "Абнаўляць па зменах",
 	"visualeditor-dialog-action-apply": "Захаваць змены",
-	"visualeditor-dialog-action-cancel": "Адмена",
+	"visualeditor-dialog-action-cancel": "Скасаваць",
 	"visualeditor-dialog-action-done": "Гатова",
 	"visualeditor-dialog-action-goback": "Вярнуцца",
 	"visualeditor-dialog-action-insert": "Уставіць",

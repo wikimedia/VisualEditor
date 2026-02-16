@@ -153,6 +153,8 @@
 	"visualeditor-languageinspector-title": "Мотт",
 	"visualeditor-languageinspector-widget-changelang": "Мотт лаха",
 	"visualeditor-languageinspector-widget-label-direction": "ДӀехьажор",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Аьрру агӀорара аьтту агӀор",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Аьтту агӀорара аьрру агӀор",
 	"visualeditor-languageinspector-widget-label-langcode": "Меттан код",
 	"visualeditor-languageinspector-widget-label-language": "Мотт",
 	"visualeditor-linkcontext-label-change": "Хийца текст",

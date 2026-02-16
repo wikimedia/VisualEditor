@@ -103,6 +103,8 @@
 	"visualeditor-languageinspector-title": "زبان",
 	"visualeditor-languageinspector-widget-changelang": "زبان ڳولو",
 	"visualeditor-languageinspector-widget-label-direction": "سمت",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "کھٻے توں سڄے",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "سڄے توں کھٻے",
 	"visualeditor-languageinspector-widget-label-langcode": "زبان دا کوڈ",
 	"visualeditor-languageinspector-widget-label-language": "زبان",
 	"visualeditor-linkcontext-label-label": "ٹیکسٹ",

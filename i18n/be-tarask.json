@@ -157,7 +157,7 @@
 	"visualeditor-rebase-corrupted-document-error": "Дакумэнт пашкоджаны: $1",
 	"visualeditor-rebase-corrupted-document-title": "Пашкоджаны дакумэнт",
 	"visualeditor-rebase-missing-document-error": "Дакумэнт адсутнічае на сэрвэры. Каб не згубіць зьвесткі, скапіюйце і ўстаўце зьмест.",
-	"visualeditor-rebase-missing-document-title": "Дакумэнт адсутнічае",
+	"visualeditor-rebase-missing-document-title": "Бракуе дакумэнту",
 	"visualeditor-shortcuts-clipboard": "Буфэр абмену",
 	"visualeditor-shortcuts-dialog": "Элемэнты кіраваньня акном",
 	"visualeditor-shortcuts-formatting": "Фарматаваньне абзацу",

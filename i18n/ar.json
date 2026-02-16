@@ -183,6 +183,8 @@
 	"visualeditor-languageinspector-title": "اللغة",
 	"visualeditor-languageinspector-widget-changelang": "ابحث عن لغة",
 	"visualeditor-languageinspector-widget-label-direction": "الاتجاه",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "من اليسار إلى اليمين",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "من اليمين إلى اليسار",
 	"visualeditor-languageinspector-widget-label-langcode": "رمز اللغة",
 	"visualeditor-languageinspector-widget-label-language": "اللغة",
 	"visualeditor-linkcontext-label-change": "تغيير النص",
