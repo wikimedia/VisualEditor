@@ -29,6 +29,17 @@ ve.ce.UnrenderedNode = function VeCeUnrenderedNode() {
 
 OO.inheritClass( ve.ce.UnrenderedNode, ve.ce.LeafNode );
 
+/* Methods */
+
+/**
+ * @inheritdoc
+ * @localdoc While the model node may be focusable in general,
+ *  unrendered nodes are not focusable.
+ */
+ve.ce.UnrenderedNode.prototype.isFocusable = function () {
+	return false;
+};
+
 /* Static Properties */
 
 ve.ce.UnrenderedNode.static.name = 'unrendered';
