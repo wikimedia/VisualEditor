@@ -4,6 +4,8 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 .ve-ui-overlay {
 	font-family: sans-serif;
 	position: absolute;
@@ -35,7 +37,7 @@
 	}
 
 	&-local-selections-hasSelections {
-		mix-blend-mode: multiply;
+		mix-blend-mode: @mix-blend-mode-blend;
 		// Support: Safari
 		// Safari doesn't blend this overlay with the text unless GPU rendering is forced.
 		transform: translateZ( 0 );
