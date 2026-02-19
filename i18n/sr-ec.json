@@ -161,6 +161,8 @@
 	"visualeditor-languageinspector-title": "Језик",
 	"visualeditor-languageinspector-widget-changelang": "Пронађи језик",
 	"visualeditor-languageinspector-widget-label-direction": "Смер",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "С’ лева на десно",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "С’ десна на лево",
 	"visualeditor-languageinspector-widget-label-langcode": "Језички код",
 	"visualeditor-languageinspector-widget-label-language": "Језик",
 	"visualeditor-linkcontext-label-change": "Промени текст",
