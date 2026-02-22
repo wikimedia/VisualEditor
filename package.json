@@ -23,7 +23,7 @@
 		}
 	],
 	"devDependencies": {
-		"@wikimedia/codex-design-tokens": "2.3.3",
+		"@wikimedia/codex-design-tokens": "2.3.4",
 		"eslint-config-wikimedia": "0.32.3",
 		"eslint-plugin-html": "8.1.1",
 		"eslint-plugin-local": "^4.2.2",
@@ -43,7 +43,7 @@
 		"grunt-stylelint": "0.20.1",
 		"grunt-tyops": "0.1.1",
 		"jsdoc": "4.0.5",
-		"jsdoc-wmf-theme": "1.1.0",
+		"jsdoc-wmf-theme": "1.2.0",
 		"karma": "6.4.2",
 		"karma-chrome-launcher": "3.2.0",
 		"karma-coverage": "2.2.0",
