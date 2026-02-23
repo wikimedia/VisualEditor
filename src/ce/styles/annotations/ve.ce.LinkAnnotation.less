@@ -8,15 +8,13 @@
 
 .ve-ce-linkAnnotation {
 	&.ve-ce-annotation-active {
-		box-shadow: 0 0 0 1px @border-color-subtle;
 		border-radius: 2px;
-		padding: 2px;
-		margin: -2px;
+		box-shadow: 0 0 0 2px @background-color-progressive-subtle, 0 0 0 3px @border-color-subtle;
 		background-color: @background-color-progressive-subtle;
 
 		.ve-init-mobileTarget .ve-ce-surface:not( .ve-ce-surface-deactivated ) & {
-			box-shadow: 0 0 0 1px @border-color-progressive--focus;
-			background-color: transparent;
+			box-shadow: 0 0 0 2px @background-color-base, 0 0 0 3px @border-color-progressive--focus;
+			background-color: @background-color-base;
 		}
 	}
 }
