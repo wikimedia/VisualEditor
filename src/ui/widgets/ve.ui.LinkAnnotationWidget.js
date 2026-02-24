@@ -124,13 +124,14 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 		this.getTextInputWidget().setDir( isExt ? 'ltr' : 'rtl' );
 	}
 
-	this.getTextInputWidget().getValidity()
-		.done( () => {
+	this.getTextInputWidget().getValidity().then(
+		() => {
 			this.setAnnotation( this.constructor.static.getAnnotationFromText( value ), true );
-		} )
-		.fail( () => {
+		},
+		() => {
 			this.setAnnotation( null, true );
-		} );
+		}
+	);
 };
 
 /**

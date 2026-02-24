@@ -60,11 +60,19 @@ ve.test.utils.runFragmentInspectorTestsByPlatform = function ( assert, cases, is
 			surfaceModel.setLinearSelection( caseItem.range );
 			const setupData = ve.extendObject( { surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
 			return inspector.setup( setupData ).then( () => inspector.ready( setupData ).then( () => {
+				const deferred = ve.createDeferred();
 				if ( caseItem.input ) {
-					caseItem.input.call( inspector );
+					// Some fragment inspectors (e.g. link) need to wait for some async validation before
+					// critical values are updated (e.g. LinkAnnotationWidget.annotation). Give the input
+					// function a done callback to signal when it's safe to proceed with teardown and assertions.
+					const done = () => deferred.resolve();
+					caseItem.input.call( inspector, done );
+				} else {
+					deferred.resolve();
 				}
+
 				// TODO: Skips ActionProcess
-				return inspector.teardown( caseItem.actionData || { action: 'done' } ).then( () => {
+				return deferred.promise().then( () => inspector.teardown( caseItem.actionData || { action: 'done' } ).then( () => {
 					assert.equalRange( surfaceModel.getSelection().getRange(), caseItem.expectedRange, caseItem.msg + ': range' );
 					if ( caseItem.expectedData ) {
 						caseItem.expectedData( linearData );
@@ -86,7 +94,7 @@ ve.test.utils.runFragmentInspectorTestsByPlatform = function ( assert, cases, is
 					}
 					// Insertion annotations are not cleared by undo
 					surfaceModel.setInsertionAnnotations( null );
-				} );
+				} ) );
 			} ) );
 		} );
 	} );
@@ -98,7 +106,7 @@ ve.test.utils.runFragmentInspectorTestsByPlatform = function ( assert, cases, is
 };
 
 QUnit.test( 'Different selections and inputs', ( assert ) => {
-	const done = assert.async(),
+	const testsDone = assert.async(),
 		fooHash = 'hd5a13e54366d44db',
 		barHash = 'h071cb84c069d07a4',
 		quuxHash = 'hb085ebec56a162a4',
@@ -179,7 +187,8 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				msg: 'Link insertion',
 				name: 'link',
 				range: new ve.Range( 13 ),
-				input: function () {
+				input: function ( done ) {
+					this.annotationInput.once( 'change', done );
 					this.annotationInput.getTextInputWidget().setValue( 'quux' );
 				},
 				expectedRange: new ve.Range( 17 ),
@@ -201,7 +210,8 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				msg: 'Link target modified',
 				name: 'link',
 				range: new ve.Range( 5, 8 ),
-				input: function () {
+				input: function ( done ) {
+					this.annotationInput.once( 'change', done );
 					this.annotationInput.getTextInputWidget().setValue( 'quux' );
 				},
 				expectedRange: new ve.Range( 5, 8 ),
@@ -216,7 +226,8 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				msg: 'Link target removed (clear input)',
 				name: 'link',
 				range: new ve.Range( 5, 8 ),
-				input: function () {
+				input: function ( done ) {
+					this.annotationInput.once( 'change', done );
 					this.annotationInput.getTextInputWidget().setValue( '' );
 				},
 				expectedRange: new ve.Range( 5, 8 ),
@@ -231,7 +242,8 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				msg: 'Link target removed input then cancel is still a no-op',
 				name: 'link',
 				range: new ve.Range( 5, 8 ),
-				input: function () {
+				input: function ( done ) {
+					this.annotationInput.once( 'change', done );
 					this.annotationInput.getTextInputWidget().setValue( '' );
 				},
 				expectedRange: new ve.Range( 5, 8 ),
@@ -243,8 +255,9 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				name: 'link',
 				range: new ve.Range( 5, 8 ),
 				isMobile: true,
-				input: function () {
+				input: function ( done ) {
 					this.labelInput.setValue( 'bat' );
+					done();
 				},
 				expectedRange: new ve.Range( 5, 8 ),
 				expectedData: function ( data ) {
@@ -259,8 +272,9 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				name: 'link',
 				range: new ve.Range( 5, 8 ),
 				isMobile: true,
-				input: function () {
+				input: function ( done ) {
 					this.labelInput.setValue( 'bat' );
+					this.annotationInput.once( 'change', done );
 					this.annotationInput.getTextInputWidget().setValue( 'quux' );
 				},
 				expectedRange: new ve.Range( 5, 8 ),
@@ -276,8 +290,9 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				name: 'link',
 				range: new ve.Range( 34 ),
 				isMobile: true,
-				input: function () {
+				input: function ( done ) {
 					this.labelInput.setValue( '' );
+					done();
 				},
 				expectedRange: new ve.Range( 31, 34 ),
 				expectedData: function ( data ) {
@@ -291,8 +306,9 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				msg: 'Comment change',
 				name: 'comment',
 				range: new ve.Range( 17, 19 ),
-				input: function () {
+				input: function ( done ) {
 					this.textWidget.setValue( 'new' );
+					done();
 				},
 				expectedRange: new ve.Range( 17, 19 ),
 				expectedData: ( data ) => {
@@ -310,8 +326,9 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				msg: 'Comment cancel',
 				name: 'comment',
 				range: new ve.Range( 17, 19 ),
-				input: function () {
+				input: function ( done ) {
 					this.textWidget.setValue( 'new' );
+					done();
 				},
 				actionData: {},
 				expectedRange: new ve.Range( 17, 19 ),
@@ -321,8 +338,9 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 				msg: 'Comment clear (empty input)',
 				name: 'comment',
 				range: new ve.Range( 17, 19 ),
-				input: function () {
+				input: function ( done ) {
 					this.textWidget.setValue( '' );
+					done();
 				},
 				expectedRange: new ve.Range( 17 ),
 				expectedData: ( data ) => {
@@ -361,5 +379,5 @@ QUnit.test( 'Different selections and inputs', ( assert ) => {
 			}
 		];
 
-	ve.test.utils.runFragmentInspectorTests( assert, cases ).finally( () => done() );
+	ve.test.utils.runFragmentInspectorTests( assert, cases ).finally( () => testsDone() );
 } );
