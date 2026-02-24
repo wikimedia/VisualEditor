@@ -140,9 +140,14 @@ QUnit.test( 'getAnnotationRanges', ( assert ) => {
 		const doc = ve.dm.converter.getModelFromDom(
 			ve.createDocumentFromHtml( domToDataCase.body || domToDataCase.fromDataBody )
 		);
-		const annotationRanges = doc.getDocumentNode().getAnnotationRanges().map( ( { annotation, range } ) => {
+		const annotationRanges = doc.getDocumentNode().getAnnotationRanges().map( ( { node, annotation, relativeRange, range } ) => {
 			const el = annotation.getClonedElement();
 			delete el.originalDomElementsHash;
+			assert.deepEqual(
+				range,
+				relativeRange.translate( node.getOffset() ),
+				'"range" accessor gives absolute range'
+			);
 			return [ range.start, range.end, el ];
 		} );
 		if ( domToDataCase.annotationRangesTestFail ) {
@@ -151,4 +156,43 @@ QUnit.test( 'getAnnotationRanges', ( assert ) => {
 			assert.deepEqual( annotationRanges, domToDataCase.annotationRanges, name );
 		}
 	}
+} );
+
+QUnit.test( 'getAnnotationRanges cache', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument();
+
+	const contentBranchNodes = [];
+	doc.documentNode.traverse( ( node ) => node.canContainContent() && contentBranchNodes.push( node ) );
+
+	// Wrap ve.dm.LinearData#getAnnotationRanges in a call counting wrapper
+	let callCount = 0;
+	const f = doc.data.getAnnotationRanges;
+	doc.data.getAnnotationRanges = function () {
+		callCount++;
+		return f.apply( this, arguments );
+	};
+	doc.documentNode.getAnnotationRanges();
+	assert.strictEqual(
+		callCount,
+		contentBranchNodes.length,
+		'First call, ve.dm.LinearData#getAnnotationRanges called once for each ContentBranchNode'
+	);
+
+	callCount = 0;
+	doc.documentNode.getAnnotationRanges();
+	assert.strictEqual(
+		callCount,
+		0,
+		'Second call, ve.dm.LinearData#getAnnotationRanges not called at all'
+	);
+	const tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 51, ...'foo' );
+	doc.commit( tx );
+
+	callCount = 0;
+	doc.documentNode.getAnnotationRanges();
+	assert.strictEqual(
+		callCount,
+		1,
+		'Third call, ve.dm.LinearData#getAnnotationRanges called once'
+	);
 } );

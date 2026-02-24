@@ -211,15 +211,13 @@ ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
  * @return {ve.dm.LinearData.AnnotationRange[]} Contiguous annotation ranges, ordered by start then end
  */
 ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
-	return this.getDocument().getOrInsertCachedData( () => {
-		const annotationRanges = [];
-		this.traverse( ( node ) => {
-			if ( node.canContainContent() ) {
-				annotationRanges.push(
-					...this.getDocument().data.getAnnotationRanges( node.getRange() )
-				);
-			}
-		} );
-		return annotationRanges;
-	}, this, 'annotationRanges' );
+	return this.getDocument().getOrInsertCachedData(
+		this,
+		() => [].concat( ...this.children.filter(
+			( child ) => child.hasChildren()
+		).map(
+			( child ) => child.getAnnotationRanges()
+		) ),
+		'getAnnotationRanges'
+	);
 };
