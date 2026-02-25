@@ -12,14 +12,7 @@
  * @return {boolean} Object inherits from one or more of the classes
  */
 ve.isInstanceOfAny = function ( subject, classes ) {
-	let i = classes.length;
-
-	while ( classes[ --i ] ) {
-		if ( subject instanceof classes[ i ] ) {
-			return true;
-		}
-	}
-	return false;
+	return subject && classes.some( ( c ) => subject instanceof c );
 };
 
 /**
