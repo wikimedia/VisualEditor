@@ -969,6 +969,7 @@
 			"tests/ui/datatransferhandlers/ve.ui.UrlStringTransferHandler.test.js",
 			"tests/ui/dialogs/ve.ui.FindAndReplaceDialog.test.js",
 			"tests/ui/dialogs/ve.ui.TableDialog.test.js",
+			"tests/ui/dialogs/ve.ui.CommandHelpDialog.test.js",
 			"tests/ui/inspectors/ve.ui.FragmentInspector.test.js",
 			"tests/ce/ve.ce.TestRunner.js",
 			"tests/ce/ve.ce.imetests.test.js",
