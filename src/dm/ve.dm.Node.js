@@ -407,6 +407,24 @@ ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated, r
  */
 ve.dm.Node.static.resetAttributesForClone = function () {};
 
+/**
+ * Get the text content of the node for a given data element.
+ *
+ * Used by ve.dm.LinearData#getText (except in maintainIndices mode) when the user
+ * wants a plain text representation of the document data.
+ *
+ * The default implementation returns an empty string, but node classes can override this to
+ * return a string based on the data element, e.g. to return the character represented by an
+ * MWEntityNode.
+ *
+ * @static
+ * @param {Object} element Node data element
+ * @return {string} Text content of the node
+ */
+ve.dm.Node.static.getText = function () {
+	return '';
+};
+
 /* Methods */
 
 /**
@@ -809,6 +827,15 @@ ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 		n2 = n2.getParent();
 	}
 	return true;
+};
+
+/**
+ * @see #static-getText
+ *
+ * @return {string} Text content of the node
+ */
+ve.dm.Node.prototype.getText = function () {
+	return this.constructor.static.getText( this.element );
 };
 
 /**

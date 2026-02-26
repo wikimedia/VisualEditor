@@ -935,15 +935,51 @@ QUnit.test( 'isPlainText', ( assert ) => {
 } );
 
 QUnit.test( 'getText', ( assert ) => {
-	const doc = ve.dm.example.createExampleDocument();
+	const exampleData = ve.dm.example.createExampleDocument().data;
 
-	assert.strictEqual( doc.data.getText( false, new ve.Range( 2, 11 ) ), 'bcd' );
-	assert.strictEqual( doc.data.getText( true, new ve.Range( 2, 11 ) ), 'bc      d'.replace( / /g, '\n' ) );
-	assert.strictEqual( doc.data.getText( false ), 'abcdefghijklm' );
+	assert.strictEqual( exampleData.getText( false, new ve.Range( 2, 11 ) ), 'bcd' );
+	assert.strictEqual( exampleData.getText( true, new ve.Range( 2, 11 ) ), 'bc      d'.replace( / /g, '\n' ) );
+	assert.strictEqual( exampleData.getText( false ), 'abcdefghijklm' );
 	assert.strictEqual(
-		doc.data.getText( true ),
+		exampleData.getText( true ),
 		' abc      d    e    f        g        h  i    j    k    l  m   '.replace( / /g, '\n' )
 	);
+
+	const DummyEntityNode = function () {
+		// Parent constructor
+		DummyEntityNode.super.apply( this, arguments );
+	};
+	OO.inheritClass( DummyEntityNode, ve.dm.Node );
+	DummyEntityNode.static.name = 'dummyEntity';
+	DummyEntityNode.static.isContent = true;
+	DummyEntityNode.static.getText = function ( element ) {
+		return element.attributes.character;
+	};
+	ve.dm.modelRegistry.register( DummyEntityNode );
+
+	const dataWithEntity = new ve.dm.LinearData(
+		new ve.dm.HashValueStore(),
+		[
+			{ type: 'paragraph' },
+			...'foo',
+			{ type: 'dummyEntity', attributes: { character: '\u00a0' } },
+			{ type: '/dummyEntity' },
+			...'bar',
+			{ type: '/paragraph' }
+		]
+	);
+	assert.strictEqual(
+		dataWithEntity.getText( false, new ve.Range( 1, 9 ) ),
+		'foo\u00a0bar',
+		'Text from entity nodes is included'
+	);
+	assert.strictEqual(
+		dataWithEntity.getText( true, new ve.Range( 1, 9 ) ),
+		'foo\n\nbar',
+		'Text from entity nodes is not included in maintainIndices mode'
+	);
+
+	ve.dm.modelRegistry.unregister( DummyEntityNode );
 } );
 
 QUnit.test( 'getSourceText', ( assert ) => {

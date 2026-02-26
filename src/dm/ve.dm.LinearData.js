@@ -1135,6 +1135,11 @@ ve.dm.LinearData.prototype.getText = function ( maintainIndices, range ) {
 			text += this.getCharacterData( i );
 		} else if ( maintainIndices ) {
 			text += '\n';
+		} else if ( this.isOpenElementData( i ) ) {
+			const nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
+			if ( nodeClass ) {
+				text += nodeClass.static.getText( this.getData( i ) );
+			}
 		}
 	} );
 	return text;
