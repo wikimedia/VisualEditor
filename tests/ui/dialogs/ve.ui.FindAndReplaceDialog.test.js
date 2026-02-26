@@ -78,7 +78,7 @@ QUnit.test( 'find fragments', ( assert ) => {
 		dialog.open( {
 			surface,
 			fragment: surface.getModel().getFragment()
-		} ).opening.then( () => {
+		} ).opened.then( () => {
 			cases.forEach( ( caseItem ) => {
 				dialog.matchCaseToggle.setValue( !!caseItem.matchCase );
 				dialog.regexToggle.setValue( !!caseItem.regex );
@@ -87,7 +87,10 @@ QUnit.test( 'find fragments', ( assert ) => {
 				assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
 				dialog.findText.setValue( '' );
 			} );
-			done();
+			dialog.close().closed.then( () => {
+				surface.destroy();
+				done();
+			} );
 		} );
 	} );
 
@@ -104,25 +107,30 @@ QUnit.test( 'replace all', ( assert ) => {
 				expected: 'baz bar bazq.baz bazb'
 			},
 			{
-				msg: 'Recursive',
-				find: 'baz',
+				msg: 'Avoids recursion',
+				find: 'foo',
 				replace: 'foofoo',
-				expected: 'foofoo bar foofooq.foofoo foofoob'
+				expected: 'foofoo bar foofooq.baz foofoob'
 			},
 			{
 				msg: 'Regex',
 				find: '(foo)+',
 				replace: 'X',
 				regex: true,
-				expected: 'X bar Xq.X Xb'
+				expected: 'X bar Xq.baz Xb'
 			}
 		];
 
-	surface.getToolbarDialogs( 'above' ).getWindow( 'findAndReplace' ).done( ( dialog ) => {
+	const err = ( ex ) => {
+		assert.true( false, 'Error thrown: ' + ex.stack );
+		done();
+	};
+
+	surface.getToolbarDialogs( 'above' ).getWindow( 'findAndReplace' ).then( ( dialog ) => {
 		dialog.open( {
 			surface,
 			fragment: surface.getModel().getFragment()
-		} ).opening.then( () => {
+		} ).opened.then( () => {
 			cases.forEach( ( caseItem ) => {
 				dialog.matchCaseToggle.setValue( !!caseItem.matchCase );
 				dialog.regexToggle.setValue( !!caseItem.regex );
@@ -132,12 +140,15 @@ QUnit.test( 'replace all', ( assert ) => {
 				assert.strictEqual( surface.getModel().getDocument().data.getText(), caseItem.expected, caseItem.msg );
 				dialog.findText.setValue( '' );
 				dialog.replaceText.setValue( '' );
+				while ( surface.getModel().canUndo() ) {
+					surface.getModel().undo();
+				}
 			} );
-			done();
-		} ).fail( ( ex ) => {
-			assert.true( false, 'Error thrown: ' + ex.stack );
-			done();
-		} );
-	} );
+			dialog.close().closed.then( () => {
+				surface.destroy();
+				done();
+			} );
+		}, err );
+	}, err );
 
 } );

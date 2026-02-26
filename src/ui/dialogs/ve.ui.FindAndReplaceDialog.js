@@ -211,6 +211,8 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data = {} ) {
 		.first( () => {
 			this.surface = data.surface;
 
+			this.initialFragment = this.surface.getModel().getFragment( null, true );
+
 			// Events
 			this.surface.getView().connect( this, { position: 'onSurfaceModelDocumentUpdate' } );
 
@@ -240,6 +242,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			// Events
 			surfaceView.disconnect( this );
 
+			// Restore selection
 			let selection;
 			if ( this.fragments.length ) {
 				// Either the active search result…
@@ -257,6 +260,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			this.fragments = [];
 			this.surface = null;
 			this.focusedIndex = 0;
+			this.initialFragment = null;
 		} );
 };
 
@@ -432,14 +436,14 @@ ve.ui.FindAndReplaceDialog.prototype.focus = function () {
  * Find the selected text on opening
  */
 ve.ui.FindAndReplaceDialog.prototype.findSelected = function () {
-	const fragment = this.surface.getModel().getFragment( null, true );
+	// findSelected might be called after the dialog has loaded, in which case update initialFragment
+	this.initialFragment = this.surface.getModel().getFragment( null, true );
 
-	this.initialFragment = fragment;
 	this.startOffset = ve.getProp( this.initialFragment.getSelection().getRanges(
 		this.initialFragment.getDocument()
 	), 0, 'start' ) || 0;
 
-	const text = fragment.getText();
+	const text = this.initialFragment.getText();
 	if ( text && text !== this.findText.getValue() ) {
 		this.findText.setValue( text );
 	}
