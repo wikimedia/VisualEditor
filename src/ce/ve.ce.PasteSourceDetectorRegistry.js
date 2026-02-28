@@ -86,7 +86,7 @@ OO.initClass( ve.ce.PasteSourceDetector );
  * `name` is the symbolic name of the detector.
  *
  * `categories` are an array of strings describing the type
- * of source, for example 'wordProcessor', 'plain', 'internal'.
+ * of source, for example 'wordProcessor', 'ai', 'plain', 'internal'.
  *
  * @return {Object} Detector data
  */
@@ -122,6 +122,37 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 			( html.match( /data-contrast=["']/i ) && html.includes( 'TextRun' ) );
 	},
 	[ 'wordProcessor' ]
+) );
+
+ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
+	'chatGPT',
+	( clipboardData ) => {
+		const html = clipboardData.getData( 'text/html' );
+		// Generic HTML attributes
+		return ( html.match( /data-start=["']/i ) && html.match( /data-end=["']/i ) ) ||
+			// Query string added to links
+			html.match( /utm_source=chatgpt\.com/i );
+	},
+	[ 'ai' ]
+) );
+
+ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
+	'gemini',
+	( clipboardData ) => {
+		const html = clipboardData.getData( 'text/html' );
+		// Generic HTML attributes
+		return html.match( /data-path-to-node=["']/i ) ||
+			html.match( /<response-element/i ) ||
+			// Attribute value added to links
+			html.match( /BardVeMetadataKey/i );
+	},
+	[ 'ai' ]
+) );
+
+ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
+	'claude',
+	( clipboardData ) => clipboardData.getData( 'text/html' ).match( /font-claude-/i ),
+	[ 'ai' ]
 ) );
 
 ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(

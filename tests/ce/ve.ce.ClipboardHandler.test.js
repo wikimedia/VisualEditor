@@ -2185,6 +2185,132 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<a href="//example.org?utm_source=chatgpt.com">Foo</a>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', [
+									ve.dm.example.getImportedAnnotation( { name: 'chatGPT', categories: [ 'ai' ] } ),
+									ve.dm.example.link( '//example.org?utm_source=chatgpt.com' )
+								] )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from ChatGPT (link with utm_source)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<p data-start="123" data-end="456">Foo</p>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'chatGPT', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from ChatGPT (data-start/data-end)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<p data-path-to-node="0">Foo</p>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'gemini', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Gemini (data-path-to-node)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<response-element>Foo</response-element>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'gemini', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Gemini (response-element)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<a _ngcontent-ng-c156078443="" target="_blank" rel="noopener" externallink="" _nghost-ng-c2846509428="" jslog="197247;track:generic_click,impression,attention;BardVeMetadataKey:[[&quot;r_dc8fa7bddfb6f620&quot;,&quot;c_234b1406a1993f3c&quot;,null,&quot;rc_24f6b5e950152c91&quot;,null,null,&quot;en&quot;,null,1,null,null,1,0]]" href="//example.org" class="ng-star-inserted" data-hveid="0" decode-data-ved="1" data-ved="0CAAQ_4QMahcKEwjYgonW56aTAxUAAAAAHQAAAAAQcg" style="color: rgb(11, 87, 208);">Foo</a>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', [
+									ve.dm.example.getImportedAnnotation( { name: 'gemini', categories: [ 'ai' ] } ),
+									ve.dm.example.link( '//example.org' )
+								] )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Gemini (link with BardVeMetadataKey)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<p class="font-claude-response-body break-words whitespace-normal leading-[1.7]">Foo</span></span>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'claude', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Claude'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
 				pasteText: 'Foo',
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				annotateImportedData: true,
