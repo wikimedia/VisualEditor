@@ -83,27 +83,6 @@ ve.ce.ClipboardHandler.static.unsafeAttributes = [
  */
 ve.ce.ClipboardHandler.static.clipboardKeyMimeType = 'application/x-vnd.wikimedia.visualeditor.clipboardkey';
 
-/**
- * Paste source detectors examine a clipboardData DataTransfer object
- * and identify the source of the copied data.
- *
- * @type {Object}
- */
-ve.ce.ClipboardHandler.static.pasteSourceDetectors = {
-	googleDocs: ( clipboardData ) => clipboardData.types.some( ( type ) => type.startsWith( 'application/x-vnd.google-docs' ) ) ||
-		clipboardData.getData( 'text/html' ).match( /id=['"]?docs-internal-guid/i ),
-	libreOffice: ( clipboardData ) => clipboardData.getData( 'text/html' ).match( /content=['"]?LibreOffice/i ),
-	microsoftOffice: ( clipboardData ) => {
-		const html = clipboardData.getData( 'text/html' );
-		// Word365 (Desktop)
-		return html.match( /content=Word.Document/i ) ||
-		// Word365 (web)
-
-			( html.match( /data-contrast=["']/i ) && html.includes( 'TextRun' ) );
-	},
-	plainText: ( clipboardData ) => clipboardData.types.length === 1 && clipboardData.types[ 0 ] === 'text/plain'
-};
-
 /* Static methods */
 
 /**
@@ -375,16 +354,19 @@ ve.ce.ClipboardHandler.prototype.beforePaste = function ( e ) {
 	}
 
 	let source = null;
-	if ( !this.beforePasteData.clipboardKey ) {
-		const pasteSourceDetectors = this.constructor.static.pasteSourceDetectors;
-		for ( const s in pasteSourceDetectors ) {
-			if ( pasteSourceDetectors[ s ]( clipboardData ) ) {
-				source = s;
-				break;
-			}
+	if ( this.beforePasteData.clipboardKey ) {
+		source = {
+			name: 'visualEditor',
+			categories: [ 'internal' ]
+		};
+	} else if ( clipboardData ) {
+		const detector = ve.ce.pasteSourceDetectors.match( clipboardData );
+		if ( detector ) {
+			source = {
+				name: detector.name,
+				categories: detector.categories
+			};
 		}
-	} else {
-		source = 'visualEditor';
 	}
 	this.beforePasteData.source = source;
 

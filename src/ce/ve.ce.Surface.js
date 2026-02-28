@@ -238,8 +238,8 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  *
  * @event ve.ce.Surface#paste
  * @param {Object} details
- * @param {string|null} details.source Paste source if known, per
- *  ve.ce.ClipboardHandler.static.pasteSourceDetectors
+ * @param {Object|null} details.source Paste source data if known, per
+ *  ve.ce.PasteSourceDetector#getData
  * @param {ve.dm.SurfaceFragment} details.fragment Fragment covering the
  *  pasted content
  */

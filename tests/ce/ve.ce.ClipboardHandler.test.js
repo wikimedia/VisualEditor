@@ -2113,7 +2113,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'googleDocs' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'googleDocs', categories: [ 'wordProcessor' ] } ) )
 							],
 							remove: []
 						},
@@ -2134,7 +2134,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'visualEditor' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'visualEditor', categories: [ 'internal' ] } ) )
 							],
 							remove: []
 						},
@@ -2154,7 +2154,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'libreOffice' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'libreOffice', categories: [ 'wordProcessor' ] } ) )
 							],
 							remove: []
 						},
@@ -2174,7 +2174,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'microsoftOffice' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'microsoftOffice', categories: [ 'wordProcessor' ] } ) )
 							],
 							remove: []
 						},
@@ -2194,7 +2194,7 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 						{
 							type: 'replace',
 							insert: [
-								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( 'plainText' ) )
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'plainText', categories: [ 'plain' ] } ) )
 							],
 							remove: []
 						},

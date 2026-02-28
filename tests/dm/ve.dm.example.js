@@ -176,7 +176,7 @@ ve.dm.example.annHash = function ( tagName ) {
  *
  * Tests using this should mock ve.init.platform.generateUniqueId to return a stable value.
  *
- * @param {string|null} [source=null]
+ * @param {Object|null} [source=null]
  * @return {Object}
  */
 ve.dm.example.getImportedAnnotation = ( source = null ) => ( {

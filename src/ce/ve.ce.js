@@ -11,6 +11,7 @@
  */
 ve.ce = {
 	// nodeFactory: Initialized in ve.ce.NodeFactory.js
+	// pasteSourceDetectors: Initialized in ve.ce.PasteSourceDetectorRegistry.js
 };
 
 /* Static Properties */
