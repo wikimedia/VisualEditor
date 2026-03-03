@@ -203,6 +203,12 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
  * @param {boolean} readOnly The surface is read-only
  */
 
+/**
+ * The surface padding has changed
+ *
+ * @event ve.ui.Surface#padding
+ */
+
 /* Methods */
 
 /**
@@ -882,8 +888,11 @@ ve.ui.Surface.prototype.recalculatePadding = function ( scrollSelection ) {
 		ve.extendObject( this.padding, this.toolbarDialogs[ side ].getSurfacePadding() );
 	}
 	// Scroll selection into view if padding changed
-	if ( scrollSelection && !OO.compare( oldPadding, this.padding ) ) {
-		this.scrollSelectionIntoView();
+	if ( !OO.compare( oldPadding, this.padding ) ) {
+		if ( scrollSelection ) {
+			this.scrollSelectionIntoView();
+		}
+		this.emit( 'padding' );
 	}
 	this.adjustVisiblePadding();
 };
