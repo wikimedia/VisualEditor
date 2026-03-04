@@ -952,7 +952,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete = -1 ) 
 	let endNode;
 	if (
 		!rangeAfterRemove.isCollapsed() &&
-		( endNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.end, false ) ) &&
+		( endNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.end ) ) &&
 		// If endNode is within our rangeAfterRemove, then we shouldn't delete it
 		endNode.getRange().start >= rangeAfterRemove.end
 	) {
@@ -960,7 +960,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete = -1 ) 
 		// not everything got merged nicely, so we process further to deal with
 		// remaining content.
 
-		let startNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.start, false );
+		let startNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.start );
 		if ( startNode.getRange().isCollapsed() ) {
 			// If startNode has no content then just delete that node instead of
 			// moving content from endNode to startNode. This prevents content being
