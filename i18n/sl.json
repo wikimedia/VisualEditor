@@ -171,6 +171,8 @@
 	"visualeditor-languageinspector-title": "Jezik",
 	"visualeditor-languageinspector-widget-changelang": "Najdi jezik",
 	"visualeditor-languageinspector-widget-label-direction": "Smer",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Od leve proti desni",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Od desne proti levi",
 	"visualeditor-languageinspector-widget-label-langcode": "Oznaka jezika",
 	"visualeditor-languageinspector-widget-label-language": "Jezik",
 	"visualeditor-linkcontext-label-change": "Spremeni besedilo",

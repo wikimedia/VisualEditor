@@ -3,7 +3,8 @@
 		"authors": [
 			"Chinneeb",
 			"Munkhzaya.E",
-			"Wisdom"
+			"Wisdom",
+			"Zorigt"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -13,7 +14,7 @@
 	"visualeditor-align-widget-right": "Баруун",
 	"visualeditor-alignablecontextitem-title": "Чиглэл",
 	"visualeditor-annotationbutton-bold-tooltip": "Тод",
-	"visualeditor-annotationbutton-code-tooltip": "Компьютерийн код",
+	"visualeditor-annotationbutton-code-tooltip": "Компьютерын код",
 	"visualeditor-annotationbutton-italic-tooltip": "Налуу",
 	"visualeditor-annotationbutton-language-tooltip": "Хэл",
 	"visualeditor-annotationbutton-link-tooltip": "Холбоос",
@@ -23,7 +24,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Доогуураа зураастай",
 	"visualeditor-clearbutton-tooltip": "Дизайныг зайлуулаx",
 	"visualeditor-clipboard-copy": "Хуулах",
-	"visualeditor-clipboard-cut": "Зүсч авах",
+	"visualeditor-clipboard-cut": "Зүсэж авах",
 	"visualeditor-clipboard-paste": "Оруулах",
 	"visualeditor-clipboard-paste-special": "Цэгцтэй текстээр оруулаx",
 	"visualeditor-commentinspector-title": "Сэтгэгдэл",
@@ -45,7 +46,7 @@
 	"visualeditor-formatdropdown-format-heading4": "Гарчиг 4",
 	"visualeditor-formatdropdown-format-heading5": "Гарчиг 5",
 	"visualeditor-formatdropdown-format-heading6": "Гарчиг 6",
-	"visualeditor-formatdropdown-format-paragraph": "Цогцолбор",
+	"visualeditor-formatdropdown-format-paragraph": "Догол мөр",
 	"visualeditor-table-move-col-after": "Дараа нь оруулах",
 	"visualeditor-table-move-col-before": "Өмнө нь оруулах",
 	"visualeditor-table-move-row-after": "Доор нь оруулах",
