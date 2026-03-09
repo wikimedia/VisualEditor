@@ -165,19 +165,6 @@ ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
 };
 
 /**
- * @deprecated please use `.getNodeGroup( … ).getUniqueListKey( … )` instead
- * @param {string} groupName Name of the group
- * @param {string} oldListKey Current list key (typically something like "auto/0") to associate the
- *  generated list key with
- * @param {string} prefix Prefix for the generated key. Must match the prefix used in
- *  {@link ve.dm.InternalList.nodes} (typically "literal/") for the duplicate detection to work.
- * @return {string} Generated unique list key, or existing unique key associated with oldListKey
- */
-ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName, oldListKey, prefix ) {
-	return this.getNodeGroup( groupName ).getUniqueListKey( oldListKey, prefix );
-};
-
-/**
  * Get the next number in a monotonically increasing series.
  *
  * @return {number} One higher than the return value of the previous call, or 0 on the first call
