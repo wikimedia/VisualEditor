@@ -362,7 +362,7 @@ ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
 
 	if ( list.keyIndexes && list.keyIndexes.length ) {
 		// Looking for potentinally dead code here T416558
-		OO.ui.warnDeprecation( 'T416558 ve.dm.InternalList.merge() list.keyIndexes not empty' );
+		ve.error( 'T416558 ve.dm.InternalList.merge() list.keyIndexes not empty' );
 	}
 
 	for ( let i = 0; i < commonLength; i++ ) {
