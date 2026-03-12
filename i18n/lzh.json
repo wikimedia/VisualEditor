@@ -1,10 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
+			"Davidzdh",
 			"Jason924tw"
 		]
 	},
 	"visualeditor-annotationbutton-language-tooltip": "語",
+	"visualeditor-dialog-action-apply": "改",
+	"visualeditor-dialog-action-cancel": "捨",
+	"visualeditor-dialog-action-done": "畢",
+	"visualeditor-dialog-action-goback": "返",
+	"visualeditor-dialog-action-insert": "插",
 	"visualeditor-languageinspector-widget-label-language": "語",
 	"visualeditor-shortcuts-history": "誌",
 	"visualeditor-toolbar-history": "誌"
