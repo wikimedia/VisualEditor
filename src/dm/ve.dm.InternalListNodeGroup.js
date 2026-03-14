@@ -112,19 +112,8 @@ ve.dm.InternalListNodeGroup.prototype.getFirstNodesInIndexOrder = function () {
  */
 ve.dm.InternalListNodeGroup.prototype.getFirstNode = function ( key ) {
 	const nodes = this.getAllReuses( key );
-	if ( !nodes ) {
-		return undefined;
-	}
-	// FIXME: This should be a fast lookup, but we currently don't have a map for that
-	for ( const node in this.firstNodes ) {
-		// TODO: Can we be sure the first node is at position 0? If this is guaranteed we can
-		// replace this search with a single comparison.
-		if ( nodes.includes( node ) ) {
-			return node;
-		}
-	}
-	// Fallback in case there is something wrong
-	return nodes[ 0 ];
+	// Note: This works with the guarantee that the "first node" is actually the first
+	return nodes && nodes[ 0 ];
 };
 
 /**
@@ -156,8 +145,7 @@ ve.dm.InternalListNodeGroup.prototype.getListKeyForListIndex = function ( listIn
 	const firstNode = this.getFirstNodeByListIndex( listIndex );
 	if ( firstNode ) {
 		for ( const key in this.keyedNodes ) {
-			// Note: This works with the guarantee that the "first node" is actually the first
-			if ( this.keyedNodes[ key ][ 0 ] === firstNode ) {
+			if ( this.getFirstNode( key ) === firstNode ) {
 				return key;
 			}
 		}
