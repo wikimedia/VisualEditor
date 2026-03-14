@@ -6,9 +6,14 @@ QUnit.test( 'empty', ( assert ) => {
 	assert.deepEqual( nodeGroup.firstNodes, [] );
 	assert.deepEqual( nodeGroup.indexOrder, [] );
 	assert.strictEqual( nodeGroup.getAllReuses( 'dummy' ), undefined );
+	assert.strictEqual( nodeGroup.getAllReusesByListIndex( 0 ), undefined );
 	assert.strictEqual( nodeGroup.getFirstNode( 'dummy' ), undefined );
+	assert.strictEqual( nodeGroup.getFirstNodeByListIndex( 0 ), undefined );
 	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [] );
 	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [] );
+
+	assert.strictEqual( nodeGroup.getListIndex( 'key' ), undefined );
+	assert.strictEqual( nodeGroup.getListKeyForListIndex( 0 ), undefined );
 } );
 
 QUnit.test( 'appendNode', ( assert ) => {
@@ -19,7 +24,9 @@ QUnit.test( 'appendNode', ( assert ) => {
 	assert.deepEqual( nodeGroup.firstNodes, [ node1 ] );
 	assert.deepEqual( nodeGroup.indexOrder, [ 0 ] );
 	assert.deepEqual( nodeGroup.getAllReuses( 'key' ), [ node1 ] );
+	assert.deepEqual( nodeGroup.getAllReusesByListIndex( 0 ), [ node1 ] );
 	assert.deepEqual( nodeGroup.getFirstNode( 'key' ), node1 );
+	assert.deepEqual( nodeGroup.getFirstNodeByListIndex( 0 ), node1 );
 	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node1 ] );
 	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key' ] );
 
@@ -28,9 +35,14 @@ QUnit.test( 'appendNode', ( assert ) => {
 	assert.deepEqual( nodeGroup.firstNodes, [ node1 ] );
 	assert.deepEqual( nodeGroup.indexOrder, [ 0 ] );
 	assert.deepEqual( nodeGroup.getAllReuses( 'key' ), [ node1, node2 ] );
+	assert.deepEqual( nodeGroup.getAllReusesByListIndex( 0 ), [ node1, node2 ] );
 	assert.deepEqual( nodeGroup.getFirstNode( 'key' ), node1 );
+	assert.deepEqual( nodeGroup.getFirstNodeByListIndex( 0 ), node1 );
 	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node1 ] );
 	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key' ] );
+
+	assert.strictEqual( nodeGroup.getListIndex( 'key' ), 0 );
+	assert.strictEqual( nodeGroup.getListKeyForListIndex( 0 ), 'key' );
 } );
 
 QUnit.test( 'appendNodeWithKnownIndex & unsetNode', ( assert ) => {
@@ -88,12 +100,17 @@ QUnit.test( 'insertNodeInDocumentOrder with known index', ( assert ) => {
 	nodeGroup.insertNodeInDocumentOrder( 'key2', node2, 2 );
 	nodeGroup.insertNodeInDocumentOrder( 'key1', node1, 1 );
 
-	// TODO: Can we hide these private properties? We don't need the "known index" above then!
 	assert.deepEqual( nodeGroup.firstNodes, [ undefined, node1, node2 ] );
 	assert.deepEqual( nodeGroup.indexOrder, [ 2, 1 ] );
 
 	// This will always be the same, no matter what the known indexes above are
 	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key2', 'key1' ] );
+
+	assert.strictEqual( nodeGroup.getListIndex( 'key1' ), 1 );
+	assert.strictEqual( nodeGroup.getListIndex( 'key2' ), 2 );
+	assert.strictEqual( nodeGroup.getListKeyForListIndex( 0 ), undefined );
+	assert.strictEqual( nodeGroup.getListKeyForListIndex( 1 ), 'key1' );
+	assert.strictEqual( nodeGroup.getListKeyForListIndex( 2 ), 'key2' );
 } );
 
 QUnit.test( 'getUniqueListKey', ( assert ) => {
