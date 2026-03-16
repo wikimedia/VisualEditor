@@ -238,8 +238,11 @@ ve.ui.Surface.prototype.destroy = function () {
 	this.$element.remove();
 	this.globalOverlay.$element.remove();
 
-	// Restore scroll padding
+	// Reset scroll-padding
 	$( document.documentElement ).css( 'scroll-padding', '' );
+	// Reset padding to 0 and emit a final padding event
+	this.setPadding( { top: 0, right: 0, bottom: 0, left: 0 } );
+	this.emit( 'padding' );
 
 	// Let others know we have been destroyed
 	this.emit( 'destroy' );
@@ -872,6 +875,13 @@ ve.ui.Surface.prototype.getPadding = function () {
 	return this.padding;
 };
 
+/**
+ * Recalculate the content area padding based on the current state of the surface and visible components.
+ *
+ * This should be called when the surface is resized or when UI components are toggled.
+ *
+ * @param {boolean} [scrollSelection] Scroll selection into view after recalculating padding
+ */
 ve.ui.Surface.prototype.recalculatePadding = function ( scrollSelection ) {
 	const oldPadding = this.padding;
 	this.padding = ve.extendObject(
@@ -934,6 +944,10 @@ ve.ui.Surface.prototype.onViewActivation = function () {
  * to be scrolled to.
  */
 ve.ui.Surface.prototype.adjustVisiblePadding = function () {
+	// Prevent updating after surface has been destroyed
+	if ( !this.$element[ 0 ].parentNode ) {
+		return;
+	}
 	const padding = this.getPadding();
 	if ( OO.ui.isMobile() && !this.inTargetWidget ) {
 		let bottom;
