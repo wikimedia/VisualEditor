@@ -2704,6 +2704,17 @@ ve.dm.example.domToDataCases = {
 		],
 		fromDataBody: '<p><b>xx</b></p>'
 	},
+	'link with unmatched rel': {
+		body: '<a href="http://example.org" rel="noopener">Foo</a>',
+		data: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.link( 'http://example.org' ) ),
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		fromDataBody: '<a href="http://example.org">Foo</a>'
+	},
 	'plain href-less anchors (e.g. on paste) are converted to spans': {
 		body: '<a name="foo">ab</a>',
 		data: [

@@ -29,6 +29,9 @@ ve.dm.LinkAnnotation.static.name = 'link';
 
 ve.dm.LinkAnnotation.static.matchTagNames = [ 'a' ];
 
+// Allow all unknown types for external paste
+ve.dm.LinkAnnotation.static.allowedRdfaTypes = null;
+
 ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {
 	if ( !domElements[ 0 ].hasAttribute( 'href' ) ) {
 		return ve.dm.SpanAnnotation.static.toDataElement.apply( ve.dm.SpanAnnotation.static, arguments );
