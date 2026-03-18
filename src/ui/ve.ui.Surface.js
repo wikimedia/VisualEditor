@@ -391,6 +391,9 @@ ve.ui.Surface.prototype.getBoundingClientRect = function () {
 /**
  * Get measurements of the visible area of the surface viewport
  *
+ * The bounding box returned is relative the viewport, e.g. a top
+ * value of 50 means the top 50px of the surface is outside the viewport.
+ *
  * @return {Object|null} Object with top, bottom, left, right, width and height properties. Null if the surface is not attached.
  */
 ve.ui.Surface.prototype.getViewportDimensions = function () {

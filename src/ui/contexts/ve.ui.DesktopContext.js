@@ -360,7 +360,7 @@ ve.ui.DesktopContext.prototype.setPopupSizeAndPosition = function ( repositionOn
 					} );
 				} else {
 					this.$element.css( {
-						left: this.position.x + viewport.left,
+						left: this.position.x + surface.getBoundingClientRect().left,
 						top: this.surface.getPadding().top + margin,
 						bottom: ''
 					} );
@@ -375,7 +375,7 @@ ve.ui.DesktopContext.prototype.setPopupSizeAndPosition = function ( repositionOn
 					} );
 				} else {
 					this.$element.css( {
-						left: this.position.x + viewport.left,
+						left: this.position.x + surface.getBoundingClientRect().left,
 						top: '',
 						bottom: this.dimensions.height + margin
 					} );
