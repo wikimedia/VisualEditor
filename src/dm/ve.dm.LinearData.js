@@ -882,7 +882,7 @@ ve.dm.LinearData.prototype.setAttributeAtOffset = function ( offset, key, value 
  * Get character data at a specified offset
  *
  * @param {number} offset Offset to get character data from
- * @return {string} Character data
+ * @return {string} Character data, or '' if no character data
  */
 ve.dm.LinearData.prototype.getCharacterData = function ( offset ) {
 	const item = this.getData( offset );
