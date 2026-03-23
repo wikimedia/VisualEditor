@@ -129,6 +129,7 @@
 	"visualeditor-contextitemwidget-label-remove": "Supprimer",
 	"visualeditor-contextitemwidget-label-secondary": "Modifier",
 	"visualeditor-contextitemwidget-label-view": "Voir",
+	"visualeditor-debugbar-buildtest": "Créer un cas de test",
 	"visualeditor-debugbar-close": "Fermer",
 	"visualeditor-debugbar-inputdebug": "Entrer en mode débogage",
 	"visualeditor-debugbar-logrange": "Journaliser la sélection",
