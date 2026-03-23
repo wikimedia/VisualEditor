@@ -36,8 +36,10 @@ ve.collab.serialize = function ( value ) {
 };
 
 ve.collab.newPeer = function () {
+	// To use our toolforge-hosted peerJS instance:
+	return new Peer( undefined, { host: 'visualeditor-peer.toolforge.org', port: 443, path: '/' } );
 	// To use the public PeerJS server:
-	return new Peer();
+	// return new Peer();
 	// To use a local PeerJS server:
 	// return new Peer( undefined, { host: 'localhost', port: 9000, path: '/myapp' } );
 	// To use a ve.FakePeer (for debugging):
@@ -123,22 +125,8 @@ ve.collab.initPeerClient = function ( serverId, isMain, userName ) {
 					$( '.ve-ui-toolbar-saveButton' ).css( 'text-decoration', 'line-through' );
 				}
 			} );
-			ve.collab.connectModelSynchronizer();
 			surface.model.synchronizer.changeAuthor( { name: userName } );
 		} );
-	} );
-};
-
-ve.collab.connectModelSynchronizer = function () {
-	const ceSurface = ve.init.target.surface.view;
-	ceSurface.model.synchronizer.connect( ceSurface, {
-		wrongDoc: 'onSynchronizerWrongDoc',
-		pause: 'onSynchronizerPause'
-	} );
-	ceSurface.model.synchronizer.connect( ceSurface.getSelectionManager(), {
-		authorSelect: 'onSynchronizerAuthorUpdate',
-		authorChange: 'onSynchronizerAuthorUpdate',
-		authorDisconnect: 'onSynchronizerAuthorDisconnect'
 	} );
 };
 
