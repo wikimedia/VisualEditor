@@ -499,14 +499,14 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 	// translation in the dummy context to match the way the test will eventually
 	// be run.
 	const swapDummyPlatform = ( next ) => {
-		const MWDummyPlatform = function MWDummyPlatform() {
-			MWDummyPlatform.super.apply( this, arguments );
+		const DummyPlatform = function DummyPlatform() {
+			DummyPlatform.super.apply( this, arguments );
 		};
-		OO.inheritClass( MWDummyPlatform, ve.init.mw.Platform );
-		MWDummyPlatform.prototype.getMessage = ( ...args ) => args.join( ',' );
+		OO.inheritClass( DummyPlatform, ve.init.platform.constructor );
+		DummyPlatform.prototype.getMessage = ( ...args ) => args.join( ',' );
 
 		const activePlatform = ve.init.platform;
-		ve.init.platform = new MWDummyPlatform();
+		ve.init.platform = new DummyPlatform();
 		try {
 			return next();
 		} finally {
