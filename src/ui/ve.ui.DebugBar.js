@@ -439,7 +439,7 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 		.map( ( item ) => item.transactions )
 		.reduce( ( acc, txs ) => acc.concat( txs ), [] );
 
-	const originalHtml = ve.init.target.originalHtml || '';
+	const originalHtml = currentDocument.htmlDocument.body.innerHTML;
 	// FIXME: This all results in slightly different data than after the
 	// original MW Target load, which may cause transactions to line up
 	// incorrectly.
