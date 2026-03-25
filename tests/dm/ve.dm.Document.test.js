@@ -431,7 +431,7 @@ QUnit.test( 'getRelativeRange', ( assert ) => {
 				),
 				caseItem.expected,
 				'Test document ' + i +
-				', range ' + caseItem.given.toJSON() +
+				', range (' + caseItem.given.from + ', ' + caseItem.given.to + ')' +
 				', direction ' + caseItem.direction
 			);
 		} );
