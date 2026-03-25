@@ -39,10 +39,6 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout 
 	const tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( this.newDoc, 0, this.oldDoc, new ve.Range( 0 ) );
 	this.newDoc.commit( tx );
 
-	// Set to read-only so that node offsets get cached
-	this.oldDoc.setReadOnly( true );
-	this.newDoc.setReadOnly( true );
-
 	this.treeDiffer = treeDiffer;
 	this.linearDiffer = new ve.DiffMatchPatch( this.oldDoc.getStore(), this.newDoc.getStore() );
 

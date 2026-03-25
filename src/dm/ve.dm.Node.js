@@ -25,7 +25,6 @@ ve.dm.Node = function VeDmNode() {
 
 	// Properties
 	this.length = 0;
-	this.offset = null;
 };
 
 /**
@@ -749,33 +748,26 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
  * @see ve.Node
  */
 ve.dm.Node.prototype.getOffset = function () {
-	if ( !this.parent ) {
+	if ( !this.parent || !this.getDocument() ) {
 		return 0;
 	}
 
-	if ( this.doc.isReadOnly() && this.offset !== null ) {
-		return this.offset;
-	}
-
-	// Find our index in the parent and add up lengths while we do so
-	const siblings = this.parent.children;
-	let offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
-	let i, len;
-	for ( i = 0, len = siblings.length; i < len; i++ ) {
-		if ( siblings[ i ] === this ) {
-			break;
+	return this.getDocument().getOrInsertCachedData( () => {
+		// Find our index in the parent and add up lengths while we do so
+		const siblings = this.parent.children;
+		let offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
+		let i, len;
+		for ( i = 0, len = siblings.length; i < len; i++ ) {
+			if ( siblings[ i ] === this ) {
+				break;
+			}
+			offset += siblings[ i ].getOuterLength();
 		}
-		offset += siblings[ i ].getOuterLength();
-	}
-	if ( i === len ) {
-		throw new Error( 'Node not found in parent\'s children array' );
-	}
-	if ( this.doc.isReadOnly() ) {
-		// Cache offset, only used in read-only mode (when the offset can't change)
-		// This cache is additionally cleared when leaving read-only mode in ve.dm.Document#setReadOnly
-		this.offset = offset;
-	}
-	return offset;
+		if ( i === len ) {
+			throw new Error( 'Node not found in parent\'s children array' );
+		}
+		return offset;
+	}, this, 'getOffset' );
 };
 
 /**
