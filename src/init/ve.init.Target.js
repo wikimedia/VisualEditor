@@ -66,6 +66,7 @@ ve.init.Target = function VeInitTarget( config = {} ) {
 	this.onDocumentVisibilityChangeHandler = this.onDocumentVisibilityChange.bind( this );
 	this.onTargetKeyDownHandler = this.onTargetKeyDown.bind( this );
 	this.onContainerScrollHandler = this.onContainerScroll.bind( this );
+	this.onVirtualKeyboardChangeThrottled = OO.ui.throttle( this.onVirtualKeyboardChange.bind( this ), 100 );
 	this.bindHandlers();
 };
 
@@ -81,6 +82,13 @@ OO.mixinClass( ve.init.Target, OO.EventEmitter );
  * Must be fired after the surface is initialized
  *
  * @event ve.init.Target#surfaceReady
+ */
+
+/**
+ * The virtual keyboard has been opened or closed
+ *
+ * @event ve.init.Target#virtualKeyboardChange
+ * @param {boolean} isOpen The virtual keyboard is open
  */
 
 /* Static Properties */
@@ -373,6 +381,14 @@ ve.init.Target.prototype.bindHandlers = function () {
 	} );
 	this.$element.on( 'keydown', this.onTargetKeyDownHandler );
 	this.$scrollListener[ 0 ].addEventListener( 'scroll', this.onContainerScrollHandler, { passive: true } );
+
+	if ( 'virtualKeyboard' in navigator ) {
+		$( navigator.virtualKeyboard ).on( 'geometrychange', this.onVirtualKeyboardChangeThrottled );
+	} else if ( 'visualViewport' in window ) {
+		this.viewportScrollContainer = OO.ui.Element.static.getClosestScrollableContainer( document.body );
+		this.initialClientHeight = this.viewportScrollContainer.clientHeight;
+		$( visualViewport ).on( 'resize', this.onVirtualKeyboardChangeThrottled );
+	}
 };
 
 /**
@@ -386,6 +402,11 @@ ve.init.Target.prototype.unbindHandlers = function () {
 	} );
 	this.$element.off( 'keydown', this.onTargetKeyDownHandler );
 	this.$scrollListener[ 0 ].removeEventListener( 'scroll', this.onContainerScrollHandler );
+	if ( 'virtualKeyboard' in navigator ) {
+		$( navigator.virtualKeyboard ).off( 'geometrychange', this.onVirtualKeyboardChangeThrottled );
+	} else if ( 'visualViewport' in window ) {
+		$( visualViewport ).off( 'resize', this.onVirtualKeyboardChangeThrottled );
+	}
 };
 
 /**
@@ -839,4 +860,54 @@ ve.init.Target.prototype.toggleResizesContent = function ( set ) {
 	}
 
 	$viewportTag.attr( 'content', Object.keys( obj ).map( ( key ) => key + '=' + obj[ key ] ).join( ',' ) );
+};
+
+/**
+ * Handle virtual keyboard geometry change events.
+ *
+ * @fires ve.init.Target#virtualKeyboardChange
+ */
+ve.init.Target.prototype.onVirtualKeyboardChange = function () {
+	const virtualKeyboardOpen = this.isVirtualKeyboardOpen();
+	if ( virtualKeyboardOpen !== this.virtualKeyboardOpen ) {
+		this.virtualKeyboardOpen = virtualKeyboardOpen;
+		this.emit( 'virtualKeyboardChange', virtualKeyboardOpen );
+	}
+};
+
+/**
+ * Check if a virtual keyboard is open
+ *
+ * @return {boolean} Whether a keyboard is open
+ */
+ve.init.Target.prototype.isVirtualKeyboardOpen = function () {
+	if ( 'virtualKeyboard' in navigator ) {
+		// The VirtualKeyboard API is available. It has limited browser
+		// support and is only available on HTTPS, but has exactly the
+		// information we need.
+		return navigator.virtualKeyboard.boundingRect && navigator.virtualKeyboard.boundingRect.height > 0;
+	}
+	if ( !OO.ui.isMobile() ) {
+		// We let VirtualKeyboard go first before abandoning for non-mobile,
+		// because it should hopefully cover desktop cases as well when they
+		// crop up. After this point we have to make mobile-device specific
+		// assumptions.
+		return false;
+	}
+	if ( 'visualViewport' in window ) {
+		// The VisualViewport API is available. This is much more widely
+		// supported, but requires us to start guessing.
+		if ( ve.init.platform.constructor.static.isIos() ) {
+			return visualViewport.height < this.viewportScrollContainer.clientHeight;
+		}
+		// TODO: Support orientation changes?
+		return this.viewportScrollContainer.clientHeight < this.initialClientHeight;
+	} else if ( this.getSurface() ) {
+		// Fallback: assume that if there's a native selection the keyboard must
+		// be open. This isn't necessarily true, but is an okay approximation for
+		// our final fallback check.
+		// TODO: Check if selection is in a form input?
+		return this.getSurface().getView().hasNativeCursorSelection();
+	}
+	return false;
 };

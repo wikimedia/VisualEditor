@@ -103,11 +103,6 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 	this.nullSelectionOnBlur = config.nullSelectionOnBlur !== false;
 	this.completion = new ve.ui.CompletionWidget( this );
 
-	if ( 'visualViewport' in window ) {
-		this.viewportScrollContainer = OO.ui.Element.static.getClosestScrollableContainer( document.body );
-		this.initialClientHeight = this.viewportScrollContainer.clientHeight;
-	}
-
 	this.padding = {
 		top: 0,
 		right: 0,
@@ -419,39 +414,6 @@ ve.ui.Surface.prototype.getViewportDimensions = function () {
 		height: bottom - top,
 		width: right - left
 	};
-};
-
-/**
- * Check if a virtual keyboard is open
- *
- * @return {boolean} Whether a keyboard is open
- */
-ve.ui.Surface.prototype.isVirtualKeyboardOpen = function () {
-	if ( 'virtualKeyboard' in navigator ) {
-		// The VirtualKeyboard API is available. It has limited browser
-		// support and is only available on HTTPS, but has exactly the
-		// information we need.
-		return navigator.virtualKeyboard.boundingRect && navigator.virtualKeyboard.boundingRect.height > 0;
-	}
-	if ( !OO.ui.isMobile() ) {
-		// We let VirtualKeyboard go first before abandoning for non-mobile,
-		// because it should hopefully cover desktop cases as well when they
-		// crop up. After this point we have to make mobile-device specific
-		// assumptions.
-		return false;
-	}
-	if ( 'visualViewport' in window ) {
-		// The VisualViewport API is available. This is much more widely
-		// supported, but requires us to start guessing.
-		if ( ve.init.platform.constructor.static.isIos() ) {
-			return window.visualViewport.height < this.viewportScrollContainer.clientHeight;
-		}
-		return this.viewportScrollContainer.clientHeight < this.initialClientHeight;
-	}
-	// Fallback: assume that if there's a native selection the keyboard must
-	// be open. This isn't necessarily true, but is an okay approximation for
-	// our final fallback check.
-	return this.getView().hasNativeCursorSelection();
 };
 
 /**
@@ -953,7 +915,7 @@ ve.ui.Surface.prototype.adjustVisiblePadding = function () {
 	const padding = this.getPadding();
 	if ( OO.ui.isMobile() && !this.inTargetWidget ) {
 		let bottom;
-		if ( ve.init.platform.constructor.static.isIos() && this.isVirtualKeyboardOpen() ) {
+		if ( ve.init.platform.constructor.static.isIos() && this.getTarget().isVirtualKeyboardOpen() ) {
 			// iOS needs a whole extra page of padding when the virtual keyboard is shown.
 			// Note: we keep this padding when surface is deactivated-but-shown-as-activated
 			// so that the view doesn't shift when e.g. opening a toolbar toolgroup popup.
