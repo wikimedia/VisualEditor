@@ -17,6 +17,14 @@ ve.Node = function VeNode() {
 	this.type = this.constructor.static.name;
 	this.parent = null;
 	this.root = null;
+
+	// This node's ancestor that is a direct child of the root. This is heuristically
+	// important for VisualEditor performance, because huge documents are usually quite
+	// flat, with a huge number of subroots (direct children of the root node), each of
+	// manageable size (for instance a document with hundreds of paragraphs and a few
+	// tables), and transactions usually leave most subroots unchanged.
+	this.subroot = null;
+
 	this.doc = null;
 };
 
@@ -340,7 +348,7 @@ ve.Node.prototype.getRoot = function () {
 };
 
 /**
- * Set the root node.
+ * Set the root node (and the subroot)
  *
  * This method is overridden by nodes with children.
  *
@@ -355,9 +363,17 @@ ve.Node.prototype.setRoot = function ( root ) {
 	}
 	if ( oldRoot ) {
 		this.root = null;
+		this.subroot = null;
 		this.emit( 'unroot', oldRoot );
 	}
 	this.root = root;
+	if ( !this.parent ) {
+		this.subroot = null;
+	} else if ( this.parent === root ) {
+		this.subroot = this;
+	} else {
+		this.subroot = this.parent.subroot;
+	}
 	if ( root ) {
 		this.emit( 'root', root );
 	}

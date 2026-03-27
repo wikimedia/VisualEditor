@@ -1568,3 +1568,29 @@ QUnit.test( 'getOrInsertCachedData', ( assert ) => {
 	callCount = calculateLengths( nodes );
 	assert.strictEqual( callCount, 0, 'Document wrapped in div, no new ContentBranchNodes' );
 } );
+
+QUnit.test( 'subroot', ( assert ) => {
+	function checkSubroots( docNode ) {
+		assert.strictEqual( docNode.subroot, null, 'Document node has null subroot' );
+		docNode.traverse( ( node ) => {
+			const offsetPath = node.getOffsetPath();
+			const expectedSubroot = docNode.children[ offsetPath[ 0 ] ];
+			// Avoid assert.strictEqual, else total failure generates a catastrophic volume of
+			// node dumps and causes the test suite to freeze
+			// eslint-disable-next-line qunit/no-loose-assertions
+			assert.ok( node.subroot === expectedSubroot, 'Correct subroot at ' + offsetPath );
+		} );
+	}
+	const doc = ve.dm.example.createExampleDocument();
+	checkSubroots( doc.documentNode );
+
+	// Move some stuff round
+	const tableRange = doc.documentNode.children[ 1 ].getOuterRange();
+	const tableData = ve.copy( doc.getData( tableRange ) );
+	const tx1 = ve.dm.TransactionBuilder.static.newFromRemoval( doc, tableRange );
+	doc.commit( tx1 );
+	const newOffset = doc.documentNode.children[ 5 ].getOffset();
+	const tx2 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, newOffset, tableData );
+	doc.commit( tx2 );
+	checkSubroots( doc.documentNode );
+} );

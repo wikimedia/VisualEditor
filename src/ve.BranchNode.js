@@ -72,7 +72,7 @@ ve.BranchNode.prototype.indexOf = function ( node ) {
 };
 
 /**
- * Set the root node.
+ * Set the root node (and also the subroot)
  *
  * @see ve.Node#setRoot
  * @param {ve.BranchNode|null} root Node to use as root
@@ -88,10 +88,18 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
 		// That way, at emit time, all this node's ancestors and descendants have
 		// null root.
 		this.root = null;
+		this.subroot = null;
 		this.children.forEach( ( child ) => child.setRoot( null ) );
 		this.emit( 'unroot', oldRoot );
 	}
 	this.root = root;
+	if ( !this.parent ) {
+		this.subroot = null;
+	} else if ( this.parent === root ) {
+		this.subroot = this;
+	} else {
+		this.subroot = this.parent.subroot;
+	}
 	if ( root ) {
 		// We've set the new root, so recurse into children, then emit root.
 		// That way, at emit time, all this node's ancestors and descendants have
