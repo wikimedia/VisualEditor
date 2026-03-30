@@ -293,6 +293,8 @@ ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
 
 /**
  * Handle window scroll events
+ *
+ * Used to ensure a sidebar toolbar dialog will resize to match the viewport height.
  */
 ve.ui.PositionedTargetToolbar.prototype.onWindowScroll = function () {
 	this.onViewportResize();
