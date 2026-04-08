@@ -85,13 +85,13 @@ ve.init.sa.Platform.prototype.notify = function ( message, title ) {
 	}
 	function collapse() {
 		$notificationWrapper.addClass( 've-init-notification-collapse' );
-		$notificationWrapper.one( 'transitionend', remove );
+		ve.waitForTransition( $notificationWrapper, remove );
 	}
 	function close() {
 		clearTimeout( closeId );
 		$notificationWrapper.removeClass( 've-init-notification-open' );
 		$notificationWrapper.css( 'height', $notificationWrapper[ 0 ].clientHeight );
-		$notificationWrapper.one( 'transitionend', collapse );
+		ve.waitForTransition( $notificationWrapper, collapse );
 	}
 	function open() {
 		$notificationWrapper.addClass( 've-init-notification-open' );

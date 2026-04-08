@@ -2467,7 +2467,7 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
 			padding: targetPadding,
 			'min-height': $slug.css( 'line-height' )
 		} );
-		$slug.one( 'transitionend', () => {
+		ve.waitForTransition( $slug, () => {
 			this.emit( 'position' );
 			// Animation finished, cleanup
 			$slug

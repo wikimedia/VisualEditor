@@ -1293,3 +1293,29 @@ ve.countEdgeMatches = function ( before, after, equals ) {
 	}
 	return { start, end };
 };
+
+/**
+ * Wait for a transitionend on an element
+ *
+ * @param {jQuery} $element
+ * @param {function} callback
+ * @param {number} [timeout=500] fallback timer to run the callback regardless
+ */
+ve.waitForTransition = function ( $element, callback, timeout = 500 ) {
+	if ( window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) {
+		// The transition won't happen
+		callback();
+		return;
+	}
+	let fallback;
+	$element.one( 'transitionend.waitForTransition', () => {
+		clearTimeout( fallback );
+		callback();
+	} );
+	if ( timeout ) {
+		fallback = setTimeout( () => {
+			$element.off( 'transitionend.waitForTransition' );
+			callback();
+		}, timeout );
+	}
+};
