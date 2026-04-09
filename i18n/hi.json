@@ -71,7 +71,7 @@
 	"visualeditor-changedir-tool-ltr": "बाएँ-से-दाएँ के तौर पर देखें",
 	"visualeditor-changedir-tool-rtl": "दाएँ-से-बाएँ के तौर पर देखें",
 	"visualeditor-clearbutton-tooltip": "हटाएँ",
-	"visualeditor-clipboard-copy": "प्रतिलिपि बनाएँ",
+	"visualeditor-clipboard-copy": "कॉपी करें",
 	"visualeditor-clipboard-copy-fail": "क्लिपबोर्ड पर इसकी प्रतिलिपि न बनाई जा सकी।",
 	"visualeditor-clipboard-copy-success": "क्लिपबोर्ड पर प्रतिलिपि बनाई गई।",
 	"visualeditor-clipboard-cut": "काटें",
