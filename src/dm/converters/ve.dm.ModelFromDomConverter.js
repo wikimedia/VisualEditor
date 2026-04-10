@@ -167,6 +167,13 @@ ve.dm.ModelFromDomConverter.prototype.getStore = function () {
 };
 
 /**
+ * @return {ve.dm.InternalList|null}
+ */
+ve.dm.ModelFromDomConverter.prototype.getInternalList = function () {
+	return this.internalList;
+};
+
+/**
  * Get the HTML document currently being converted
  *
  * @return {HTMLDocument|null} HTML document being converted, or null if not converting

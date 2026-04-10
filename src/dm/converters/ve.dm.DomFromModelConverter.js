@@ -181,6 +181,13 @@ ve.dm.DomFromModelConverter.prototype.getStore = function () {
 };
 
 /**
+ * @return {ve.dm.InternalList|null}
+ */
+ve.dm.DomFromModelConverter.prototype.getInternalList = function () {
+	return this.internalList;
+};
+
+/**
  * Get the converter mode, one of PARSER_MODE, CLIPBOARD_MODE or PREVIEW_MODE
  *
  * @return {number} Converter mode
