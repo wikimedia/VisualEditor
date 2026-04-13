@@ -123,6 +123,7 @@
 	"visualeditor-contextitemwidget-label-remove": "删除",
 	"visualeditor-contextitemwidget-label-secondary": "编辑",
 	"visualeditor-contextitemwidget-label-view": "查看",
+	"visualeditor-debugbar-buildtest": "构建测试用例",
 	"visualeditor-debugbar-close": "关闭",
 	"visualeditor-debugbar-inputdebug": "输入调试",
 	"visualeditor-debugbar-logrange": "选择的日志",
