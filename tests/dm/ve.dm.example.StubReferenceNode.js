@@ -35,17 +35,6 @@ ve.dm.example.StubReferenceNode.static.name = 'stubReference';
 
 ve.dm.example.StubReferenceNode.static.matchTagNames = [ 'ref' ];
 
-/**
- * Regular expression for parsing the listKey attribute
- *
- * Use [\s\S]* instead of .* to catch esoteric whitespace (T263698)
- *
- * @static
- * @property {RegExp}
- * @inheritable
- */
-ve.dm.example.StubReferenceNode.static.listKeyRegex = /^(auto|literal)\/([\s\S]*)$/;
-
 ve.dm.example.StubReferenceNode.static.toDataElement = function ( domElements, converter ) {
 	const refElement = domElements[ 0 ];
 	const body = refElement.innerHTML;
