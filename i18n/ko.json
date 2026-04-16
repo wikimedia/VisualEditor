@@ -185,6 +185,8 @@
 	"visualeditor-languageinspector-title": "언어",
 	"visualeditor-languageinspector-widget-changelang": "언어 찾기",
 	"visualeditor-languageinspector-widget-label-direction": "서자 방향",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "왼쪽에서 오른쪽으로",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "오른쪽에서 왼쪽으로",
 	"visualeditor-languageinspector-widget-label-langcode": "언어 코드",
 	"visualeditor-languageinspector-widget-label-language": "언어",
 	"visualeditor-linkcontext-label-change": "텍스트 변경",
