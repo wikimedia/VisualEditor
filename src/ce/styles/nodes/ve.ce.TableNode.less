@@ -40,11 +40,11 @@
 			opacity: 0.3;
 		}
 
-		&-notEditable {
+		&-notEditable { /* stylelint-disable-line no-descending-specificity */
 			background-image: repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
 		}
 
-		&-anchor {
+		&-anchor { /* stylelint-disable-line no-descending-specificity */
 			position: absolute;
 			border: solid 1px #6da9f7;
 			box-sizing: border-box;
@@ -54,7 +54,7 @@
 			}
 		}
 
-		.ve-ce-tableNodeOverlay-editing & {
+		.ve-ce-tableNodeOverlay-editing & { /* stylelint-disable-line no-descending-specificity */
 			background: transparent;
 		}
 	}
