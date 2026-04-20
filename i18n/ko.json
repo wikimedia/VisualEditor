@@ -113,6 +113,7 @@
 	"visualeditor-contextitemwidget-label-remove": "삭제",
 	"visualeditor-contextitemwidget-label-secondary": "편집",
 	"visualeditor-contextitemwidget-label-view": "보기",
+	"visualeditor-debugbar-buildtest": "테스트 케이스 제작",
 	"visualeditor-debugbar-close": "닫기",
 	"visualeditor-debugbar-inputdebug": "입력 디버깅",
 	"visualeditor-debugbar-logrange": "로그 선택됨",

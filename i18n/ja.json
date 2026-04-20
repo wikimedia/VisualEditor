@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Ajeje Brazorf",
+			"Cookie4782",
 			"Delim",
 			"Endres",
 			"Fryed-peach",
@@ -107,6 +108,7 @@
 	"visualeditor-contextitemwidget-label-remove": "削除",
 	"visualeditor-contextitemwidget-label-secondary": "編集",
 	"visualeditor-contextitemwidget-label-view": "表示",
+	"visualeditor-debugbar-buildtest": "テストケースを作成",
 	"visualeditor-debugbar-close": "閉じる",
 	"visualeditor-debugbar-inputdebug": "デバッグ入力",
 	"visualeditor-debugbar-logrange": "ログ選択済み",
@@ -175,6 +177,8 @@
 	"visualeditor-languageinspector-title": "言語",
 	"visualeditor-languageinspector-widget-changelang": "言語を探す",
 	"visualeditor-languageinspector-widget-label-direction": "書字方向",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "左から右",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "右から左",
 	"visualeditor-languageinspector-widget-label-langcode": "言語<br />コード",
 	"visualeditor-languageinspector-widget-label-language": "言語",
 	"visualeditor-linkcontext-label-change": "文字列を変更",
