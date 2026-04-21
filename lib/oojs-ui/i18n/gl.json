@@ -20,6 +20,7 @@
 	"ooui-dialog-message-accept": "Aceptar",
 	"ooui-dialog-message-reject": "Cancelar",
 	"ooui-dialog-process-error": "Algo foi mal",
+	"ooui-dialog-process-back": "Volver",
 	"ooui-dialog-process-dismiss": "Agochar",
 	"ooui-dialog-process-retry": "Inténtao de novo",
 	"ooui-dialog-process-continue": "Continuar",

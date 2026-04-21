@@ -1,13 +1,14 @@
 /*!
- * OOUI v0.53.1
+ * OOUI v0.53.2
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2025 OOUI Team and other contributors.
+ * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-12-18T21:09:04Z
+ * Date: 2026-04-21T12:46:11Z
  */
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tool {
   box-sizing: border-box;
 }
@@ -167,14 +168,17 @@
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-popupTool-popup.oo-ui-popupWidget {
   z-index: 4;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toolGroupTool > .oo-ui-toolGroup {
   border-left: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toolGroup {
   display: inline-block;
   vertical-align: middle;
@@ -198,6 +202,7 @@
   opacity: 0.3 !important;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-barToolGroup-tools > .oo-ui-tool {
   display: inline-block;
   position: relative;
@@ -244,6 +249,7 @@
   color: var(--color-disabled, #72777d);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-labelToolGroup {
   position: relative;
   min-width: 3em;
@@ -319,6 +325,7 @@
   opacity: 0.3;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-popupToolGroup {
   position: relative;
   min-width: 3em;
@@ -587,6 +594,7 @@
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-listToolGroup-tools .oo-ui-tool {
   display: block;
   box-sizing: border-box;
@@ -606,6 +614,7 @@
   opacity: 0.3;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-menuToolGroup {
   border-right: 1px solid var(--border-color-subtle, #c8ccd1);
   border-left: 1px solid var(--border-color-subtle, #c8ccd1);
@@ -617,10 +626,17 @@
   border-right: 0;
 }
 .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
-  min-width: 140px;
+  width: 140px;
 }
 .oo-ui-toolbar-narrow .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
-  min-width: 100px;
+  width: 100px;
+}
+.oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .oo-ui-menuToolGroup-tools .oo-ui-tool-link .oo-ui-iconElement-icon {
   right: 0.78571429em;
@@ -633,6 +649,7 @@
   color: var(--color-disabled, #72777d);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toolbar {
   clear: both;
 }

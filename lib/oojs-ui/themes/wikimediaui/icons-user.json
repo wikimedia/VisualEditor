@@ -46,6 +46,9 @@
 		"userAvatarOutline": {
 			"file": "images/icons/userAvatarOutline.svg"
 		},
+		"userBlocked": {
+			"file": "images/icons/userBlocked.svg"
+		},
 		"userContributions": {
 			"file": {
 				"ltr": "images/icons/userContributions-ltr.svg",

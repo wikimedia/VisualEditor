@@ -35,6 +35,7 @@
 	"ooui-dialog-message-accept": "OK",
 	"ooui-dialog-message-reject": "Annuleren",
 	"ooui-dialog-process-error": "Er is iets misgegaan",
+	"ooui-dialog-process-back": "Terug",
 	"ooui-dialog-process-dismiss": "Sluiten",
 	"ooui-dialog-process-retry": "Opnieuw proberen",
 	"ooui-dialog-process-continue": "Doorgaan",

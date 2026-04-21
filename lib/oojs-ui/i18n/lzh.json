@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Davidzdh",
 			"Itsmine",
 			"Joe young yu",
 			"SolidBlock"
@@ -10,5 +11,6 @@
 	"ooui-outline-control-move-up": "遷上",
 	"ooui-outline-control-remove": "去物",
 	"ooui-toolbar-more": "餘",
-	"ooui-dialog-message-accept": "可"
+	"ooui-dialog-message-accept": "可",
+	"ooui-dialog-message-reject": "棄"
 }

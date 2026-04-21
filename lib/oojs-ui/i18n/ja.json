@@ -3,6 +3,7 @@
 		"authors": [
 			"A2y4",
 			"Bonfire12",
+			"Cookie4782",
 			"Fryed-peach",
 			"LaMagiaaa",
 			"Los688",
@@ -29,6 +30,7 @@
 	"ooui-dialog-message-accept": "OK",
 	"ooui-dialog-message-reject": "キャンセル",
 	"ooui-dialog-process-error": "エラーが発生しました…",
+	"ooui-dialog-process-back": "戻る",
 	"ooui-dialog-process-dismiss": "閉じる",
 	"ooui-dialog-process-retry": "もう一度試す",
 	"ooui-dialog-process-continue": "続行",

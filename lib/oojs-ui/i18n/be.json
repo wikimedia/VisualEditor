@@ -7,6 +7,7 @@
 			"Goshaproject",
 			"Mechanizatar",
 			"Plaga med",
+			"Ucukor",
 			"Чаховіч Уладзіслаў"
 		]
 	},
@@ -19,7 +20,7 @@
 	"ooui-toolgroup-collapse": "Меней",
 	"ooui-item-remove": "Выдаліць",
 	"ooui-dialog-message-accept": "ОК",
-	"ooui-dialog-message-reject": "Адмяніць",
+	"ooui-dialog-message-reject": "Скасаваць",
 	"ooui-dialog-process-error": "Штосьці пайшло не так…",
 	"ooui-dialog-process-dismiss": "Закрыць",
 	"ooui-dialog-process-retry": "Паспрабаваць яшчэ раз",

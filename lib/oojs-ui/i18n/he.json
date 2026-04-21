@@ -26,6 +26,7 @@
 	"ooui-dialog-message-accept": "אישור",
 	"ooui-dialog-message-reject": "ביטול",
 	"ooui-dialog-process-error": "משהו השתבש",
+	"ooui-dialog-process-back": "חזרה",
 	"ooui-dialog-process-dismiss": "לוותר",
 	"ooui-dialog-process-retry": "לנסות שוב",
 	"ooui-dialog-process-continue": "המשך",

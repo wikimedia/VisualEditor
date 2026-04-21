@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"26agcp",
 			"Coala23",
 			"Cohuoucan",
 			"DeBolsillo",
@@ -12,8 +13,8 @@
 	"ooui-outline-control-move-down": "Péeksik le ba'alo' tak kaambal",
 	"ooui-outline-control-move-up": "Péeks le ba'al ka'analo'",
 	"ooui-outline-control-remove": "lu'us le ba'alo'",
-	"ooui-toolbar-more": "U la'ak'",
-	"ooui-toolgroup-expand": "U la'ak'",
+	"ooui-toolbar-more": "Uláak'",
+	"ooui-toolgroup-expand": "Uláak'",
 	"ooui-toolgroup-collapse": "p'íit",
 	"ooui-item-remove": "lu'sej",
 	"ooui-dialog-message-accept": "Ma'alob",

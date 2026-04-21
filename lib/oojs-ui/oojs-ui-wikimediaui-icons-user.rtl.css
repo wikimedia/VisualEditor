@@ -1,13 +1,14 @@
 /*!
- * OOUI v0.53.1
+ * OOUI v0.53.2
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2025 OOUI Team and other contributors.
+ * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-12-18T21:09:04Z
+ * Date: 2026-04-21T12:46:11Z
  */
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-bookmarkList {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bookmarkList-rtl.svg);
 }
@@ -52,6 +53,15 @@
 }
 .oo-ui-image-progressive.oo-ui-icon-userAvatarOutline {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userAvatarOutline-progressive.svg);
+}
+.oo-ui-icon-userBlocked {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userBlocked.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-userBlocked {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userBlocked-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-userBlocked {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userBlocked-progressive.svg);
 }
 .oo-ui-icon-userContributions {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userContributions-rtl.svg);

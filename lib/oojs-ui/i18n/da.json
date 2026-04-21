@@ -12,6 +12,7 @@
 			"Peter Alberti",
 			"Saederup92",
 			"Simeondahl",
+			"Steenth",
 			"Tehnix"
 		]
 	},
@@ -26,6 +27,7 @@
 	"ooui-dialog-message-accept": "OK",
 	"ooui-dialog-message-reject": "Afbryd",
 	"ooui-dialog-process-error": "Noget gik galt",
+	"ooui-dialog-process-back": "Tilbage",
 	"ooui-dialog-process-dismiss": "Luk",
 	"ooui-dialog-process-retry": "Prøv igen",
 	"ooui-dialog-process-continue": "Fortsæt",

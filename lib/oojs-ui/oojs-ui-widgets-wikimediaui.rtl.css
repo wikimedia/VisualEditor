@@ -1,13 +1,14 @@
 /*!
- * OOUI v0.53.1
+ * OOUI v0.53.2
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2025 OOUI Team and other contributors.
+ * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-12-18T21:09:04Z
+ * Date: 2026-04-21T12:46:11Z
  */
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -31,8 +32,11 @@
   display: inline-block;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-bookletLayout-stackLayout.oo-ui-stackLayout-continuous > .oo-ui-panelLayout-scrollable {
   overflow: hidden;
 }
@@ -67,6 +71,7 @@
   border-left: 1px solid var(--border-color-subtle, #c8ccd1);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-indexLayout {
   /* Use two classes to ensure increased specificity over menuLayout */
 }
@@ -98,6 +103,7 @@
   top: 2.64285714em;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-copyTextLayout > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field {
   max-width: 50em;
 }
@@ -109,6 +115,7 @@
   float: left;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-menuLayout {
   top: 0;
   right: 0;
@@ -206,13 +213,17 @@
   bottom: 0 !important;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-stackLayout-continuous > .oo-ui-panelLayout {
   display: block;
   position: relative;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-buttonSelectWidget {
   display: inline-block;
   border-radius: 2px;
@@ -260,6 +271,7 @@
   z-index: -1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-buttonOptionWidget {
   display: inline-block;
 }
@@ -267,6 +279,7 @@
   cursor: default;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toggleButtonWidget {
   margin-left: 8px;
 }
@@ -281,6 +294,7 @@
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-outlineSelectWidget {
   height: 100%;
 }
@@ -288,6 +302,7 @@
   box-shadow: inset 0 0 0 2px var(--box-shadow-color-progressive--focus, #36c);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-outlineOptionWidget {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -328,6 +343,7 @@
   right: 4.429em;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-outlineControlsWidget {
   background-color: var(--background-color-base, #fff);
 }
@@ -352,6 +368,7 @@
   margin: 0 !important;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tabSelectWidget {
   text-align: right;
   overflow: auto hidden;
@@ -385,6 +402,7 @@
   outline: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tabOptionWidget {
   display: inline-block;
   box-sizing: border-box;
@@ -467,7 +485,9 @@
   box-shadow: inset 0 0 0 2px var(--color-progressive, #36c);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tagMultiselectWidget {
   display: inline-block;
   position: relative;
@@ -619,7 +639,9 @@
   opacity: 0.51;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tagItemWidget {
   position: relative;
   display: inline-block;
@@ -723,6 +745,7 @@
   display: none;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-searchWidget-query {
   position: absolute;
   top: 0;

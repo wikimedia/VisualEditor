@@ -1,17 +1,19 @@
 /*!
- * OOUI v0.53.1
+ * OOUI v0.53.2
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2025 OOUI Team and other contributors.
+ * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-12-18T21:09:04Z
+ * Date: 2026-04-21T12:46:11Z
  */
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-element-hidden {
   display: none !important;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-buttonElement {
   display: inline-block;
   line-height: normal;
@@ -52,6 +54,14 @@
   font-weight: 700;
   text-decoration: none;
 }
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement > .oo-ui-buttonElement-button {
+  min-height: 24px;
+  padding-top: 1.57142857em;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement > .oo-ui-buttonElement-button {
+  min-height: 44px;
+  padding-top: 3em;
+}
 .oo-ui-buttonElement > input.oo-ui-buttonElement-button {
   -webkit-appearance: none;
 }
@@ -65,6 +75,12 @@
 .oo-ui-buttonElement.oo-ui-labelElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
   padding-right: 2.14285714em;
 }
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement.oo-ui-labelElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
+  padding-right: 1.71428571em;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement.oo-ui-labelElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
+  padding-right: 2.42857143em;
+}
 .oo-ui-buttonElement.oo-ui-iconElement .oo-ui-iconElement-icon,
 .oo-ui-buttonElement.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
   transform: translateZ(0);
@@ -72,6 +88,14 @@
 .oo-ui-buttonElement.oo-ui-indicatorElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
 .oo-ui-buttonElement.oo-ui-indicatorElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
   right: 0.71428571em;
+}
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement.oo-ui-indicatorElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement.oo-ui-indicatorElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
+  right: 0.5em;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement.oo-ui-indicatorElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement.oo-ui-indicatorElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
+  right: 0.85714286em;
 }
 .oo-ui-buttonElement.oo-ui-widget-enabled > .oo-ui-buttonElement-button {
   transition-property: background-color, color, border-color, box-shadow;
@@ -205,6 +229,14 @@
   padding-left: 12px;
   padding-right: 12px;
 }
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement-framed > .oo-ui-buttonElement-button {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement-framed > .oo-ui-buttonElement-button {
+  padding-left: 16px;
+  padding-right: 16px;
+}
 .oo-ui-buttonElement-framed.oo-ui-iconElement > .oo-ui-buttonElement-button {
   padding-top: 2.14285714em;
   padding-bottom: 0;
@@ -214,23 +246,63 @@
   left: 50%;
   margin-left: -0.7142857em;
 }
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement-framed.oo-ui-iconElement > .oo-ui-buttonElement-button {
+  padding-top: 1.57142857em;
+  padding-left: 1.71428571em;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement-framed.oo-ui-iconElement > .oo-ui-buttonElement-button {
+  padding-top: 3em;
+  padding-left: 2.42857143em;
+}
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
   padding-left: 2.71428571em;
+}
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
+  padding-left: 2.28571429em;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
+  padding-left: 3em;
 }
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
   left: 0.78571429em;
   margin-left: 0;
 }
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+  left: 0.57142857em;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+  left: 0.92857143em;
+}
 .oo-ui-buttonElement-framed.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
   padding-top: 2.14285714em;
   padding-right: 1.7142858em;
   padding-bottom: 0;
 }
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement-framed.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
+  padding-top: 1.57142857em;
+  padding-right: 1.28571437em;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement-framed.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
+  padding-top: 3em;
+  padding-right: 2.00000009em;
+}
 .oo-ui-buttonElement-framed.oo-ui-labelElement > .oo-ui-buttonElement-button {
   padding-top: 5px;
   padding-bottom: 5px;
+}
+.oo-ui-buttonElement-size-small.oo-ui-buttonElement-framed.oo-ui-labelElement > .oo-ui-buttonElement-button {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.oo-ui-buttonElement-size-large.oo-ui-buttonElement-framed.oo-ui-labelElement > .oo-ui-buttonElement-button {
+  padding-top: 11px;
+  padding-bottom: 11px;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled > .oo-ui-buttonElement-button {
   background-color: var(--background-color-disabled, #c8ccd1);
@@ -276,9 +348,12 @@
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button {
   color: var(--color-progressive, #36c);
+  background-color: var(--background-color-progressive-subtle, #eaf3ff);
+  border-color: var(--border-color-progressive, #36c);
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:hover {
-  background-color: var(--background-color-base, #fff);
+  color: var(--color-progressive--hover, #4b77d6);
+  background-color: var(--background-color-progressive-subtle--hover, #d9e2ff);
   border-color: var(--border-color-progressive--hover, #4b77d6);
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus {
@@ -290,30 +365,33 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
-  background-color: var(--background-color-progressive-subtle, #eaf3ff);
   color: var(--color-progressive--active, #233566);
-  border-color: var(--color-progressive--active, #233566);
+  background-color: var(--background-color-progressive-subtle--active, #c8d9f1);
+  border-color: var(--border-color-progressive--active, #233566);
   box-shadow: none;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button {
   color: var(--color-destructive, #d73333);
+  background-color: var(--background-color-destructive-subtle, #ffe9e5);
+  border-color: var(--border-color-destructive, #d73333);
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:hover {
-  background-color: var(--background-color-base, #fff);
+  color: var(--color-destructive--hover, #fc493b);
+  background-color: var(--background-color-destructive-subtle--hover, #ffdad3);
   border-color: var(--border-color-destructive--hover, #fc493b);
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:focus {
-  border-color: var(--color-destructive--focus, #36c);
-  box-shadow: inset 0 0 0 1px var(--color-destructive--focus, #36c);
+  border-color: var(--color-progressive--focus, #36c);
+  box-shadow: inset 0 0 0 1px var(--color-progressive--focus, #36c);
   outline: 1px solid transparent;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
-  background-color: var(--background-color-destructive-subtle, #ffe9e5);
   color: var(--color-destructive--active, #9f3526);
-  border-color: var(--color-destructive--active, #9f3526);
+  background-color: var(--background-color-destructive-subtle--active, #ffc8bd);
+  border-color: var(--border-color-destructive--active, #9f3526);
   box-shadow: none;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button {
@@ -367,6 +445,7 @@
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-clippableElement-clippable {
   box-sizing: border-box;
   min-height: 40px;
@@ -374,12 +453,16 @@
   scrollbar-gutter: stable;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-floatableElement {
   position: absolute;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-labelElement .oo-ui-labelElement-label,
 .oo-ui-labelElement.oo-ui-labelElement-label {
   box-sizing: border-box;
@@ -402,6 +485,7 @@
   font-weight: 700;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-iconElement-icon {
   background-size: contain;
   background-position: center center;
@@ -422,6 +506,7 @@
   }
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-indicatorElement-indicator {
   background-size: contain;
   background-position: center center;
@@ -442,6 +527,7 @@
   }
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-pendingElement-pending {
   background-color: var(--background-color-interactive, #eaecf0);
   background-image: linear-gradient(135deg, var(--background-color-base, #fff) 25%, transparent 25%, transparent 50%, var(--background-color-base, #fff) 50%, var(--background-color-base, #fff) 75%, transparent 75%, transparent);
@@ -461,10 +547,15 @@
   }
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-fieldLayout {
   display: block;
   margin-top: 16px;
@@ -591,6 +682,7 @@
   color: var(--color-disabled, #72777d);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-actionFieldLayout-input,
 .oo-ui-actionFieldLayout-button {
   display: table-cell;
@@ -632,6 +724,7 @@
   z-index: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-fieldsetLayout {
   position: relative;
   min-width: 0;
@@ -700,11 +793,13 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: transparent;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-formLayout + .oo-ui-fieldsetLayout,
 .oo-ui-formLayout + .oo-ui-formLayout {
   margin-top: 24px;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-panelLayout {
   position: relative;
 }
@@ -734,6 +829,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin: 12px 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-horizontalLayout {
   display: flex;
   flex-wrap: wrap;
@@ -754,8 +850,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin-top: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-optionWidget {
   position: relative;
   display: block;
@@ -779,6 +878,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   color: var(--color-disabled, #72777d);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-decoratedOptionWidget {
   padding: 6px 12px;
   line-height: 1;
@@ -813,6 +913,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.51;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-radioSelectWidget:focus {
   outline: 0;
 }
@@ -820,6 +921,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-color: var(--background-color-base, #fff);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-radioOptionWidget {
   display: table;
   padding: 4px 0;
@@ -845,6 +947,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin-right: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-labelWidget {
   display: inline-block;
 }
@@ -854,6 +957,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   font-size: 0.92857143em;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-messageWidget {
   position: relative;
   box-sizing: border-box;
@@ -870,6 +974,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-messageWidget.oo-ui-messageWidget-block {
   border: 1px solid;
+  border-radius: 2px;
   padding: 16px 24px;
   font-weight: 400;
 }
@@ -917,6 +1022,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.51;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-iconWidget {
   vertical-align: middle;
   -webkit-touch-callout: none;
@@ -936,6 +1042,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.51;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-indicatorWidget {
   vertical-align: middle;
   -webkit-touch-callout: none;
@@ -955,6 +1062,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.51;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-buttonWidget {
   margin-right: 8px;
 }
@@ -962,6 +1070,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin-right: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-buttonGroupWidget {
   display: inline-block;
   border-radius: 2px;
@@ -1016,6 +1125,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   z-index: 3;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-popupWidget {
   position: absolute;
   z-index: 1;
@@ -1209,6 +1319,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin: 9px 12px;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-popupButtonWidget {
   position: relative;
 }
@@ -1216,6 +1327,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   cursor: auto;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-inputWidget {
   margin-right: 8px;
 }
@@ -1223,6 +1335,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin-right: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-buttonInputWidget > button,
 .oo-ui-buttonInputWidget > input {
   background-color: transparent;
@@ -1231,6 +1344,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-checkboxInputWidget {
   display: inline-block;
   z-index: 0;
@@ -1325,6 +1439,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   box-shadow: inset 0 0 0 1px var(--box-shadow-color-progressive--active, #233566);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-checkboxMultiselectInputWidget .oo-ui-fieldLayout {
   margin-top: 0;
   padding: 4px 0;
@@ -1333,6 +1448,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding-top: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-dropdownInputWidget {
   position: relative;
   vertical-align: middle;
@@ -1421,6 +1537,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-color: var(--border-color-disabled, #c8ccd1);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-radioInputWidget {
   display: inline-block;
   z-index: 0;
@@ -1508,6 +1625,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-color: var(--border-color-input-binary--active, #233566);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-radioSelectInputWidget .oo-ui-fieldLayout {
   margin-top: 0;
   padding: 4px 0;
@@ -1516,6 +1634,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding-top: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-textInputWidget {
   position: relative;
   vertical-align: middle;
@@ -1693,6 +1812,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   text-shadow: 0 1px 1px var(--color-inverted, #fff);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-menuSelectWidget {
   position: absolute;
   z-index: 4;
@@ -1720,6 +1840,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   overflow: hidden;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-menuOptionWidget {
   transition-property: background-color, color;
   transition-duration: 100ms;
@@ -1741,6 +1862,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   color: var(--color-base, #202122);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-menuSectionOptionWidget {
   color: var(--color-base--subtle, #72777d);
   padding: 5px 12px 4px;
@@ -1759,6 +1881,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   left: 1.71428571em;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-dropdownWidget {
   display: inline-block;
   position: relative;
@@ -1859,6 +1982,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.51;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-comboBoxInputWidget {
   display: inline-block;
   position: relative;
@@ -1941,7 +2065,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-multioptionWidget {
   position: relative;
   display: block;
@@ -1962,7 +2088,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   color: var(--color-disabled, #72777d);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-checkboxMultioptionWidget {
   display: table;
   padding: 4px 0;
@@ -1988,6 +2116,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin-right: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-progressBarWidget {
   box-sizing: border-box;
   position: relative;
@@ -2031,6 +2160,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   }
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-numberInputWidget {
   display: inline-block;
   position: relative;
@@ -2074,6 +2204,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-selectFileInputWidget {
   width: 100%;
   max-width: 50em;
@@ -2228,7 +2359,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-color: var(--border-color-disabled, #c8ccd1);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toggleSwitchWidget {
   position: relative;
   display: inline-block;
@@ -2365,6 +2498,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: var(--background-color-base, #fff);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-defaultOverlay {
   position: absolute;
   top: 0;
@@ -2373,15 +2507,16 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.1
+ * OOUI v0.53.2
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2025 OOUI Team and other contributors.
+ * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-12-18T21:09:04Z
+ * Date: 2026-04-21T12:46:11Z
  */
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2405,8 +2540,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   display: inline-block;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-bookletLayout-stackLayout.oo-ui-stackLayout-continuous > .oo-ui-panelLayout-scrollable {
   overflow: hidden;
 }
@@ -2441,6 +2579,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-right: 1px solid var(--border-color-subtle, #c8ccd1);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-indexLayout {
   /* Use two classes to ensure increased specificity over menuLayout */
 }
@@ -2472,6 +2611,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   top: 2.64285714em;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-copyTextLayout > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field {
   max-width: 50em;
 }
@@ -2483,6 +2623,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   float: right;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-menuLayout {
   top: 0;
   left: 0;
@@ -2580,13 +2721,17 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   bottom: 0 !important;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-stackLayout-continuous > .oo-ui-panelLayout {
   display: block;
   position: relative;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-buttonSelectWidget {
   display: inline-block;
   border-radius: 2px;
@@ -2634,6 +2779,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   z-index: -1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-buttonOptionWidget {
   display: inline-block;
 }
@@ -2641,6 +2787,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   cursor: default;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toggleButtonWidget {
   margin-right: 8px;
 }
@@ -2655,6 +2802,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-outlineSelectWidget {
   height: 100%;
 }
@@ -2662,6 +2810,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   box-shadow: inset 0 0 0 2px var(--box-shadow-color-progressive--focus, #36c);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-outlineOptionWidget {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -2702,6 +2851,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   left: 4.429em;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-outlineControlsWidget {
   background-color: var(--background-color-base, #fff);
 }
@@ -2726,6 +2876,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin: 0 !important;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tabSelectWidget {
   text-align: left;
   overflow: auto hidden;
@@ -2759,6 +2910,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   outline: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tabOptionWidget {
   display: inline-block;
   box-sizing: border-box;
@@ -2841,7 +2993,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   box-shadow: inset 0 0 0 2px var(--color-progressive, #36c);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tagMultiselectWidget {
   display: inline-block;
   position: relative;
@@ -2993,7 +3147,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.51;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tagItemWidget {
   position: relative;
   display: inline-block;
@@ -3097,6 +3253,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   display: none;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-searchWidget-query {
   position: absolute;
   top: 0;
@@ -3130,15 +3287,16 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.1
+ * OOUI v0.53.2
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2025 OOUI Team and other contributors.
+ * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-12-18T21:09:04Z
+ * Date: 2026-04-21T12:46:11Z
  */
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tool {
   box-sizing: border-box;
 }
@@ -3298,14 +3456,17 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-popupTool-popup.oo-ui-popupWidget {
   z-index: 4;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toolGroupTool > .oo-ui-toolGroup {
   border-right: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toolGroup {
   display: inline-block;
   vertical-align: middle;
@@ -3329,6 +3490,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.3 !important;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-barToolGroup-tools > .oo-ui-tool {
   display: inline-block;
   position: relative;
@@ -3375,6 +3537,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   color: var(--color-disabled, #72777d);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-labelToolGroup {
   position: relative;
   min-width: 3em;
@@ -3450,6 +3613,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.3;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-popupToolGroup {
   position: relative;
   min-width: 3em;
@@ -3718,6 +3882,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 1;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-listToolGroup-tools .oo-ui-tool {
   display: block;
   box-sizing: border-box;
@@ -3737,6 +3902,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   opacity: 0.3;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-menuToolGroup {
   border-left: 1px solid var(--border-color-subtle, #c8ccd1);
   border-right: 1px solid var(--border-color-subtle, #c8ccd1);
@@ -3748,10 +3914,17 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-left: 0;
 }
 .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
-  min-width: 140px;
+  width: 140px;
 }
 .oo-ui-toolbar-narrow .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
-  min-width: 100px;
+  width: 100px;
+}
+.oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .oo-ui-menuToolGroup-tools .oo-ui-tool-link .oo-ui-iconElement-icon {
   left: 0.78571429em;
@@ -3764,6 +3937,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   color: var(--color-disabled, #72777d);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-toolbar {
   clear: both;
 }
@@ -3853,16 +4027,18 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.1
+ * OOUI v0.53.2
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2025 OOUI Team and other contributors.
+ * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-12-18T21:09:04Z
+ * Date: 2026-04-21T12:46:11Z
  */
+/* stylelint-disable-next-line @stylistic/indentation */
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-window {
   background: transparent;
 }
@@ -3907,6 +4083,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   display: block;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-dialog-content > .oo-ui-window-head,
 .oo-ui-dialog-content > .oo-ui-window-body,
 .oo-ui-dialog-content > .oo-ui-window-foot {
@@ -3932,6 +4109,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   bottom: 0;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-messageDialog-actions .oo-ui-actionWidget {
   position: relative;
   text-align: center;
@@ -4030,6 +4208,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-radius: 0 0 2px 2px;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-processDialog-location {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4209,6 +4388,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding-left: 2.42857143em;
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-windowManager-modal > .oo-ui-dialog {
   position: fixed;
   width: 0;
@@ -4280,15 +4460,16 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 /*!
- * OOUI v0.53.1
+ * OOUI v0.53.2
  * https://www.mediawiki.org/wiki/OOUI
  *
- * Copyright 2011–2025 OOUI Team and other contributors.
+ * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2025-12-18T21:09:04Z
+ * Date: 2026-04-21T12:46:11Z
  */
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-arrowDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
 }
@@ -4443,6 +4624,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/upTriangle-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-article {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/article-ltr.svg);
 }
@@ -4726,6 +4908,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/window-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-alert {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/alert.svg);
 }
@@ -4835,6 +5018,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/tray-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-add {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/add.svg);
 }
@@ -5190,6 +5374,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/subtract-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-bookmarkOutline {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bookmarkOutline.svg);
 }
@@ -5338,6 +5523,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/ongoingConversation-ltr-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-edit {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/edit.svg);
 }
@@ -5423,6 +5609,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/undo-ltr-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-bigger {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bigger.svg);
 }
@@ -6489,6 +6676,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/textStyle-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-function {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/function.svg);
 }
@@ -6526,6 +6714,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/literal-ltr-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-indent {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/indent-ltr.svg);
 }
@@ -6563,6 +6752,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/outdent-ltr-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-alignCenter {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/alignCenter.svg);
 }
@@ -7005,6 +7195,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/wikiText-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-book {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/book-ltr.svg);
 }
@@ -7060,6 +7251,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/references-ltr-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-camera {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/camera.svg);
 }
@@ -7171,6 +7363,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-stop {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/stop.svg);
 }
+.oo-ui-image-destructive.oo-ui-icon-stop {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/stop-destructive.svg);
+}
 .oo-ui-image-invert.oo-ui-icon-stop {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/stop-invert.svg);
 }
@@ -7223,6 +7418,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/zoomOut-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-globe {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/globe.svg);
 }
@@ -7269,6 +7465,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/mapTrail-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-bookmarkList {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/bookmarkList-ltr.svg);
 }
@@ -7313,6 +7510,15 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-image-progressive.oo-ui-icon-userAvatarOutline {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userAvatarOutline-progressive.svg);
+}
+.oo-ui-icon-userBlocked {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userBlocked.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-userBlocked {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userBlocked-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-userBlocked {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userBlocked-progressive.svg);
 }
 .oo-ui-icon-userContributions {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userContributions-ltr.svg);
@@ -7378,6 +7584,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/watchlist-ltr-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-menu {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/menu.svg);
 }
@@ -7433,6 +7640,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/viewDetails-ltr-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-appearance {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/appearance.svg);
 }
@@ -7524,6 +7732,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/visionSimulator-progressive.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-logoCC {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logo-CC.svg);
 }
@@ -7633,6 +7842,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logo-Wiktionary-invert.svg);
 }
 
+/* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-indicator-clear {
   background-image: /* @embed */ url(themes/wikimediaui/images/indicators/clear.svg);
 }

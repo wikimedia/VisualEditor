@@ -68,7 +68,8 @@
 			"file": "images/icons/play.svg"
 		},
 		"stop": {
-			"file": "images/icons/stop.svg"
+			"file": "images/icons/stop.svg",
+			"variants": [ "destructive" ]
 		},
 		"volumeDown": {
 			"file": {

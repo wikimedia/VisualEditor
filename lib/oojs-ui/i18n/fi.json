@@ -16,7 +16,8 @@
 			"Silvonen",
 			"Skalman",
 			"Stryn",
-			"VezonThunder"
+			"VezonThunder",
+			"Wikipeedikko"
 		]
 	},
 	"ooui-copytextlayout-copy": "Kopioi",
@@ -30,6 +31,7 @@
 	"ooui-dialog-message-accept": "OK",
 	"ooui-dialog-message-reject": "Peru",
 	"ooui-dialog-process-error": "Jokin meni pieleen",
+	"ooui-dialog-process-back": "Takaisin",
 	"ooui-dialog-process-dismiss": "Hylkää",
 	"ooui-dialog-process-retry": "Yritä uudelleen",
 	"ooui-dialog-process-continue": "Jatka",

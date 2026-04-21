@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ella Lachow"
+			"Ella Lachow",
+			"Malaalaa"
 		]
 	},
 	"ooui-copytextlayout-copy": "Duuqqa",
@@ -13,7 +14,7 @@
 	"ooui-toolgroup-collapse": "Qiibiyaagaa",
 	"ooui-item-remove": "Xayssa",
 	"ooui-dialog-message-accept": "Likke",
-	"ooui-dialog-message-reject": "Qucca",
+	"ooui-dialog-message-reject": "Agga",
 	"ooui-dialog-process-error": "Aybakko likkenna",
 	"ooui-dialog-process-dismiss": "Laala",
 	"ooui-dialog-process-retry": "Zaara mala",
@@ -25,5 +26,5 @@
 	"ooui-selectfile-dragdrop-placeholder": "Fayiliyaa hagan wotta",
 	"ooui-selectfile-dragdrop-placeholder-multiple": "Fayileta hagan wotta",
 	"ooui-popup-widget-close-button-aria-label": "Gordda",
-	"ooui-field-help": "Maaduwaa"
+	"ooui-field-help": "Maaduwa"
 }
