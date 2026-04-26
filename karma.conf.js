@@ -53,7 +53,6 @@ module.exports = function ( config ) {
 						'src/dm/annotations/ve.dm.CommentAnnotation.js',
 						// TODO: Fix AlienMetaItem for 100% coverage
 						'src/dm/metaitems/ve.dm.AlienMetaItem.js',
-						'src/dm/nodes/ve.dm.DocumentNode.js',
 						'src/dm/nodes/ve.dm.GeneratedContentNode.js',
 						'src/dm/nodes/ve.dm.ImageNode.js',
 						'src/dm/nodes/ve.dm.SectionNode.js',

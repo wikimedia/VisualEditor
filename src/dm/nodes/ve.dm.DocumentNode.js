@@ -46,6 +46,25 @@ ve.dm.DocumentNode.prototype.getHashObject = function () {
 	throw new Error( 'DocumentNodes do not exist in the linear model' );
 };
 
+/**
+ * Calculates and returns the offsets of every subroot
+ *
+ * This is designed to be used with caching. It is much faster to calculate the offset of all
+ * subroots simultaneously than to calculate each individually.
+ *
+ * @see ve.dm.Node#getOffset
+ * @return {Map} Numerical offset for each subroot node
+ */
+ve.dm.DocumentNode.prototype.getSubrootOffsets = function () {
+	let offset = 0;
+	const subrootOffsets = new Map();
+	this.children.forEach( ( child ) => {
+		subrootOffsets.set( child, offset );
+		offset += child.getOuterLength();
+	} );
+	return subrootOffsets;
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.DocumentNode );

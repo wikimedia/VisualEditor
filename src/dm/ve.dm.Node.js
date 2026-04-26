@@ -766,26 +766,77 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
  * @see ve.Node
  */
 ve.dm.Node.prototype.getOffset = function () {
-	if ( !this.parent || !this.getDocument() ) {
+	// This method uses caching, taking advantage of the following formula:
+	//
+	// offset = cached(relative offset inside node.subroot) + cached(node.subroot's offset)
+	//
+	// The relative offset is expensive to calculate but is usually unchanged by transactions
+	// (since most transactions leave most subroots untouched).
+	//
+	// OTOH node.subroot's offset tends to change on transaction, but is cheap to calculate
+	// once per transaction (since there'll be at most a few hundred subroots).
+
+	if ( !this.subroot ) {
+		// Document node, or detached node
 		return 0;
 	}
 
-	return this.getDocument().getOrInsertCachedData( () => {
-		// Find our index in the parent and add up lengths while we do so
-		const siblings = this.parent.children;
-		let offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
-		let i, len;
-		for ( i = 0, len = siblings.length; i < len; i++ ) {
-			if ( siblings[ i ] === this ) {
-				break;
-			}
-			offset += siblings[ i ].getOuterLength();
+	const doc = this.getDocument();
+	if ( doc.bypassCachedData ) {
+		// Since getOffset is used inside transaction processing, we bypass the cache
+		// here to avoid a series of cache misses and log messages
+		return this.getRelativeOffset( this.root );
+	}
+
+	// Get subroot's offset within the doc (recalcs if the doc changed at all)
+	const offset1 = doc.getOrInsertCachedData(
+		() => doc.documentNode.getSubrootOffsets(),
+		'subrootOffsets'
+	).get( this.subroot );
+
+	if ( this.subroot === this ) {
+		return offset1;
+	}
+
+	// Get this node's offset within the subroot (recalcs if there are changes within the subroot)
+	const offset2 = doc.getOrInsertCachedData(
+		this.subroot,
+		() => this.getRelativeOffset( this.subroot ),
+		this,
+		'offsetInSubroot'
+	);
+	return offset1 + offset2;
+};
+
+/**
+ * Get the relative offset of the node within an ancestor
+ *
+ * @param {ve.dm.BranchNode} ancestor The ancestor node (or self)
+ * @return {number} Offset of node relative to the start of the ancestor
+ */
+ve.dm.Node.prototype.getRelativeOffset = function ( ancestor ) {
+	if ( this === ancestor ) {
+		return 0;
+	}
+
+	if ( !this.parent ) {
+		throw new Error( 'Node not found inside ancestor' );
+	}
+
+	// Find our index in the parent and add up lengths while we do so
+	const siblings = this.parent.children;
+	let offset = this.parent.getRelativeOffset( ancestor ) + ( this.parent.isWrapped() ? 1 : 0 );
+	let i, len;
+	for ( i = 0, len = siblings.length; i < len; i++ ) {
+		if ( siblings[ i ] === this ) {
+			break;
 		}
-		if ( i === len ) {
-			throw new Error( 'Node not found in parent\'s children array' );
-		}
-		return offset;
-	}, this, 'getOffset' );
+		offset += siblings[ i ].getOuterLength();
+	}
+	if ( i === len ) {
+		throw new Error( 'Node not found in parent\'s children array' );
+	}
+	return offset;
 };
 
 /**
