@@ -54,8 +54,8 @@ ve.dm.example.StubReferenceNode.static.toDataElement = function ( domElements, c
 	const name = refElement.getAttribute( 'name' );
 	const listKey = name ?
 		'literal/' + name :
-		'auto/' + converter.internalList.getNextUniqueNumber();
-	const queueResult = converter.internalList.queueItemHtml( listGroup, listKey, body );
+		'auto/' + converter.getInternalList().getNextUniqueNumber();
+	const queueResult = converter.getInternalList().queueItemHtml( listGroup, listKey, body );
 	const listIndex = queueResult.index;
 	const contentsUsed = ( body !== '' && queueResult.isNew );
 
