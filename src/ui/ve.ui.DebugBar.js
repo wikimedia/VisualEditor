@@ -434,6 +434,7 @@ ve.ui.DebugBar.prototype.onBuildTestButtonClick = function () {
 ve.ui.DebugBar.prototype.generateTestCase = function () {
 	const surfaceModel = this.getSurface().getModel();
 	const currentDocument = surfaceModel.getDocument();
+
 	const transactions = surfaceModel.getHistory()
 		.map( ( item ) => item.transactions )
 		.reduce( ( acc, txs ) => acc.concat( txs ), [] );
@@ -454,6 +455,8 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 		} );
 	};
 	unwrapSections( originalDocument );
+
+	const removeHashes = ( item ) => ve.deleteProp( item, 'originalDomElementsHash' );
 	const serializeToJson = ( data ) => JSON.stringify( data, null, '\t' );
 	const getBodyContent = ( htmlDocument ) => htmlDocument.body.innerHTML;
 	const wrapHtmlLiteral = ( htmlString ) => JSON.stringify( htmlString );
@@ -495,27 +498,34 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 		}
 	};
 
+	let originalData = ve.dm.converter.getModelFromDom( originalDocument )
+		.getFullData( undefined, 'roundTrip' );
+	originalData = ve.copy( originalData );
+	originalData = ve.copy( originalData, null, removeHashes );
+
+	const strippedData = ve.copy( ve.copy( currentDocument.getData() ), null, removeHashes );
+	const strippedCurrentDocument = new ve.dm.Document( strippedData );
+
 	const testCaseData = {
-		data: repairWhitespaceUndefined( serializeToJson(
-			ve.dm.converter.getModelFromDom( originalDocument ).getFullData( undefined, 'roundTrip' ) ) ),
+		data: repairWhitespaceUndefined( serializeToJson( originalData ) ),
 		modify: serializeTransactionBuilder( transactions ),
 		// Original document as DOM from Parsoid.
 		body: wrapHtmlLiteral( getBodyContent( originalDocument ) ),
 		// Current document rendered to DOM in parser mode.
 		fromDataBody: wrapHtmlLiteral( getBodyContent(
-			ve.dm.converter.getDomFromModel( currentDocument ) ) ),
+			ve.dm.converter.getDomFromModel( strippedCurrentDocument ) ) ),
 		// Current document rendered including stored incoming HTML.
 		normalizedBody: wrapHtmlLiteral( getBodyContent(
 			ve.dm.converter.getDomFromModel( surfaceModel.getDocument() ) ) ),
 		// Current document rendered to DOM in clipboard mode.
 		clipboardBody: wrapHtmlLiteral( getBodyContent(
 			swapDummyPlatform(
-				() => ve.dm.converter.getDomFromModel( currentDocument, ve.dm.Converter.static.CLIPBOARD_MODE )
+				() => ve.dm.converter.getDomFromModel( strippedCurrentDocument, ve.dm.Converter.static.CLIPBOARD_MODE )
 			) ) ),
 		// Current document rendered to DOM in preview mode.
 		previewBody: wrapHtmlLiteral( getBodyContent(
 			swapDummyPlatform(
-				() => ve.dm.converter.getDomFromModel( currentDocument, ve.dm.Converter.static.PREVIEW_MODE )
+				() => ve.dm.converter.getDomFromModel( strippedCurrentDocument, ve.dm.Converter.static.PREVIEW_MODE )
 			) ) ),
 		innerWhitespace: repairAllUndefined( serializeToJson(
 			currentDocument.getInnerWhitespace() ) ),
