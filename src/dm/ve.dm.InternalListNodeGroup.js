@@ -57,12 +57,12 @@ ve.dm.InternalListNodeGroup.prototype.isEmpty = function () {
 };
 
 /**
- * @param {string} key
+ * @param {string} listKey
  * @return {ve.dm.Node[]|undefined} All reference nodes (1 or more, never 0) that (re)use the same
  *  key. Undefined when the key is unknown.
  */
-ve.dm.InternalListNodeGroup.prototype.getAllReuses = function ( key ) {
-	return this.keyedNodes[ key ];
+ve.dm.InternalListNodeGroup.prototype.getAllReuses = function ( listKey ) {
+	return this.keyedNodes[ listKey ];
 };
 
 /**
@@ -81,10 +81,10 @@ ve.dm.InternalListNodeGroup.prototype.getKeysInIndexOrder = function () {
 	const remainingKeys = Object.keys( this.keyedNodes );
 	return this.getFirstNodesInIndexOrder().map(
 		// FIXME: This should be a fast lookup, but we currently don't have a map for that
-		( node ) => remainingKeys.find( ( key, i ) => {
+		( node ) => remainingKeys.find( ( listKey, i ) => {
 			// TODO: Can we be sure the first node via this.firstNodes is always at position 0?
 			// If this is guaranteed we can replace this search with a single comparison.
-			if ( this.keyedNodes[ key ].includes( node ) ) {
+			if ( this.keyedNodes[ listKey ].includes( node ) ) {
 				// Performance optimization: Don't search again for the key we just found
 				remainingKeys.splice( i, 1 );
 				return true;
@@ -107,11 +107,11 @@ ve.dm.InternalListNodeGroup.prototype.getFirstNodesInIndexOrder = function () {
 };
 
 /**
- * @param {string} key
+ * @param {string} listKey
  * @return {ve.dm.Node|undefined} Undefined in case there are no known nodes with this key
  */
-ve.dm.InternalListNodeGroup.prototype.getFirstNode = function ( key ) {
-	const nodes = this.getAllReuses( key );
+ve.dm.InternalListNodeGroup.prototype.getFirstNode = function ( listKey ) {
+	const nodes = this.getAllReuses( listKey );
 	// Note: This works with the guarantee that the "first node" is actually the first
 	return nodes && nodes[ 0 ];
 };
@@ -126,14 +126,14 @@ ve.dm.InternalListNodeGroup.prototype.getFirstNodeByListIndex = function ( listI
 
 /**
  * @private
- * @param {string} key
+ * @param {string} listKey
  * @return {number|undefined} Corresponding listIndex for the given listKey
  */
-ve.dm.InternalListNodeGroup.prototype.getListIndex = function ( key ) {
-	const nodes = this.getAllReuses( key );
+ve.dm.InternalListNodeGroup.prototype.getListIndex = function ( listKey ) {
+	const nodes = this.getAllReuses( listKey );
 	// Note: This works with the guarantee that the "first node" is actually the first
-	const index = nodes && this.firstNodes.indexOf( nodes[ 0 ] );
-	return index === -1 ? undefined : index;
+	const listIndex = nodes && this.firstNodes.indexOf( nodes[ 0 ] );
+	return listIndex === -1 ? undefined : listIndex;
 };
 
 /**
@@ -144,9 +144,9 @@ ve.dm.InternalListNodeGroup.prototype.getListIndex = function ( key ) {
 ve.dm.InternalListNodeGroup.prototype.getListKeyForListIndex = function ( listIndex ) {
 	const firstNode = this.getFirstNodeByListIndex( listIndex );
 	if ( firstNode ) {
-		for ( const key in this.keyedNodes ) {
-			if ( this.getFirstNode( key ) === firstNode ) {
-				return key;
+		for ( const listKey in this.keyedNodes ) {
+			if ( this.getFirstNode( listKey ) === firstNode ) {
+				return listKey;
 			}
 		}
 	}
@@ -180,41 +180,41 @@ ve.dm.InternalListNodeGroup.prototype.sortGroupIndexes = function () {
 };
 
 /**
- * @param {string} key
+ * @param {string} listKey
  * @param {ve.dm.Node} newNode New node to append to the end of the list of nodes with the same key
  */
-ve.dm.InternalListNodeGroup.prototype.appendNode = function ( key, newNode ) {
-	this.appendNodeWithKnownIndex( key, newNode, this.firstNodes.length );
+ve.dm.InternalListNodeGroup.prototype.appendNode = function ( listKey, newNode ) {
+	this.appendNodeWithKnownIndex( listKey, newNode, this.firstNodes.length );
 };
 
 /**
- * @param {string} key
+ * @param {string} listKey
  * @param {ve.dm.Node} newNode Reference node to add
- * @param {number} index Existing listIndex; ignored when this is not the first node for this key
+ * @param {number} listIndex Existing listIndex; ignored when this is not the first node for this key
  */
-ve.dm.InternalListNodeGroup.prototype.appendNodeWithKnownIndex = function ( key, newNode, index ) {
-	if ( !( key in this.keyedNodes ) ) {
-		this.keyedNodes[ key ] = [];
+ve.dm.InternalListNodeGroup.prototype.appendNodeWithKnownIndex = function ( listKey, newNode, listIndex ) {
+	if ( !( listKey in this.keyedNodes ) ) {
+		this.keyedNodes[ listKey ] = [];
 		// This is literally the first node, so record it as such
-		this.firstNodes[ index ] = newNode;
-		this.indexOrder.push( index );
+		this.firstNodes[ listIndex ] = newNode;
+		this.indexOrder.push( listIndex );
 	}
-	this.keyedNodes[ key ].push( newNode );
+	this.keyedNodes[ listKey ].push( newNode );
 };
 
 /**
- * @param {string} key
+ * @param {string} listKey
  * @param {ve.dm.Node} newNode Reference node to insert at document position
- * @param {number} [index] Existing listIndex; ignored when this is not the first node for this key
+ * @param {number} [listIndex] Existing listIndex; ignored when this is not the first node for this key
  */
-ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( key, newNode, index ) {
-	const nodes = this.getAllReuses( key );
+ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( listKey, newNode, listIndex ) {
+	const nodes = this.getAllReuses( listKey );
 	// Fall back to the cheaper method if possible
 	if ( !nodes ) {
-		if ( index === undefined ) {
-			this.appendNode( key, newNode );
+		if ( listIndex === undefined ) {
+			this.appendNode( listKey, newNode );
 		} else {
-			this.appendNodeWithKnownIndex( key, newNode, index );
+			this.appendNodeWithKnownIndex( listKey, newNode, listIndex );
 		}
 		return;
 	}
@@ -237,11 +237,11 @@ ve.dm.InternalListNodeGroup.prototype.insertNodeInDocumentOrder = function ( key
 };
 
 /**
- * @param {string} key
+ * @param {string} listKey
  * @param {ve.dm.Node} node Reference node to remove
  */
-ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( key, node ) {
-	const nodes = this.getAllReuses( key );
+ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( listKey, node ) {
+	const nodes = this.getAllReuses( listKey );
 	if ( !nodes ) {
 		return;
 	}
@@ -250,7 +250,7 @@ ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( key, node ) {
 	if ( i !== -1 ) {
 		nodes.splice( i, 1 );
 		if ( !nodes.length ) {
-			delete this.keyedNodes[ key ];
+			delete this.keyedNodes[ listKey ];
 		}
 	}
 

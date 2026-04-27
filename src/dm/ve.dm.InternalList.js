@@ -53,7 +53,7 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 
 	/**
 	 * @private Please use {@link #getKeyIndex} instead
-	 * @property {Object.<string,number>} keyIndexes Internal item index, keyed by "groupName/key"
+	 * @property {Object.<string,number>} keyIndexes Internal item index, keyed by "listGroup/listKey"
 	 */
 	this.keyIndexes = {};
 
@@ -80,19 +80,19 @@ OO.mixinClass( ve.dm.InternalList, OO.EventEmitter );
  * If an item with the specified group and key already exists it will be ignored, unless
  * the data already stored is an empty string.
  *
- * @param {string} groupName Item group
- * @param {string} key Item key
+ * @param {string} listGroup
+ * @param {string} listKey
  * @param {string} html Item contents
  * @return {{index: number, isNew: boolean}} Object containing index of the item in the index-value store
  * (and also its index in the internal list node), and a flag indicating if it is a new item.
  */
-ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
+ve.dm.InternalList.prototype.queueItemHtml = function ( listGroup, listKey, html ) {
 	let isNew = false,
-		index = this.getKeyIndex( groupName, key );
+		index = this.getKeyIndex( listGroup, listKey );
 
 	if ( index === undefined ) {
 		index = this.itemHtmlQueue.length;
-		this.keyIndexes[ groupName + '/' + key ] = index;
+		this.keyIndexes[ listGroup + '/' + listKey ] = index;
 		this.itemHtmlQueue.push( html );
 		isNew = true;
 	} else if ( this.itemHtmlQueue[ index ] === '' ) {
@@ -164,11 +164,11 @@ ve.dm.InternalList.prototype.getNodeGroups = function () {
 /**
  * Get the node group object for a specified group name.
  *
- * @param {string} groupName Name of the group
+ * @param {string} listGroup Name of the group
  * @return {ve.dm.InternalListNodeGroup|undefined} Node group object, containing nodes and key order array
  */
-ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
-	return this.nodes[ groupName ];
+ve.dm.InternalList.prototype.getNodeGroup = function ( listGroup ) {
+	return this.nodes[ listGroup ];
 };
 
 /**
@@ -226,14 +226,14 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 /**
  * Generate a transaction for inserting a new internal item node
  *
- * @param {string} groupName Item group
- * @param {string} key Item key
+ * @param {string} listGroup
+ * @param {string} listKey
  * @param {ve.dm.LinearData.Item[]} data Linear model data
  * @return {{transaction: ve.dm.Transaction|null, index: number}} Object containing the transaction
  *  (or null if none required) and the new item's index within the list
  */
-ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data ) {
-	let index = this.getKeyIndex( groupName, key );
+ve.dm.InternalList.prototype.getItemInsertion = function ( listGroup, listKey, data ) {
+	let index = this.getKeyIndex( listGroup, listKey );
 	if ( index !== undefined ) {
 		return {
 			transaction: null,
@@ -242,7 +242,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
 	}
 
 	index = this.getItemNodeCount();
-	this.keyIndexes[ groupName + '/' + key ] = index;
+	this.keyIndexes[ listGroup + '/' + listKey ] = index;
 	return {
 		transaction: ve.dm.TransactionBuilder.static.newFromInsertion(
 			this.getDocument(),
@@ -257,49 +257,49 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
  * Get the internal item index of a group key if it already exists
  *
  * @private
- * @param {string} groupName Item group
- * @param {string} key Item name
+ * @param {string} listGroup
+ * @param {string} listKey
  * @return {number|undefined} The index of the group key, or undefined if it doesn't exist yet
  */
-ve.dm.InternalList.prototype.getKeyIndex = function ( groupName, key ) {
-	return this.keyIndexes[ groupName + '/' + key ];
+ve.dm.InternalList.prototype.getKeyIndex = function ( listGroup, listKey ) {
+	return this.keyIndexes[ listGroup + '/' + listKey ];
 };
 
 /**
  * Add a node.
  *
- * @param {string} groupName Item group
- * @param {string} key Item name
- * @param {number} index New item index, or an existing one to replace an item
+ * @param {string} listGroup
+ * @param {string} listKey
+ * @param {number} listIndex New item index, or an existing one to replace an item
  * @param {ve.dm.Node} node Reference node to add
  */
-ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) {
-	let group = this.nodes[ groupName ];
+ve.dm.InternalList.prototype.addNode = function ( listGroup, listKey, listIndex, node ) {
+	let group = this.nodes[ listGroup ];
 	// The group may not exist yet
 	if ( !group ) {
-		group = this.nodes[ groupName ] = new ve.dm.InternalListNodeGroup();
+		group = this.nodes[ listGroup ] = new ve.dm.InternalListNodeGroup();
 	}
 
 	if ( node.getDocument().buildingNodeTree ) {
 		// If the document is building the original node tree
 		// then every item is being added in order, so we don't
 		// need to worry about sorting.
-		group.appendNodeWithKnownIndex( key, node, index );
+		group.appendNodeWithKnownIndex( listKey, node, listIndex );
 	} else {
-		group.insertNodeInDocumentOrder( key, node, index );
+		group.insertNodeInDocumentOrder( listKey, node, listIndex );
 	}
-	this.markGroupAsChanged( groupName );
+	this.markGroupAsChanged( listGroup );
 };
 
 /**
  * Mark a node group as having been changed since the last transaction.
  *
  * @private
- * @param {string} groupName Name of group which has changed
+ * @param {string} listGroup Name of group which has changed
  */
-ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
-	if ( !this.groupsChanged.includes( groupName ) ) {
-		this.groupsChanged.push( groupName );
+ve.dm.InternalList.prototype.markGroupAsChanged = function ( listGroup ) {
+	if ( !this.groupsChanged.includes( listGroup ) ) {
+		this.groupsChanged.push( listGroup );
 	}
 };
 
@@ -324,14 +324,14 @@ ve.dm.InternalList.prototype.onTransact = function () {
 /**
  * Remove a node.
  *
- * @param {string} groupName Item group
- * @param {string} key Item name
- * @param {number} index Item index
+ * @param {string} listGroup
+ * @param {string} listKey
+ * @param {number} listIndex
  * @param {ve.dm.Node} node Reference node to remove
  */
-ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node ) {
-	this.getNodeGroup( groupName ).unsetNode( key, node );
-	this.markGroupAsChanged( groupName );
+ve.dm.InternalList.prototype.removeNode = function ( listGroup, listKey, listIndex, node ) {
+	this.getNodeGroup( listGroup ).unsetNode( listKey, node );
+	this.markGroupAsChanged( listGroup );
 };
 
 /**
