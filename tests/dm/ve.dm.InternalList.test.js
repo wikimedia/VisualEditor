@@ -8,10 +8,13 @@ QUnit.module( 've.dm.InternalList' );
 
 /* Tests */
 
-QUnit.test( 'getDocument', ( assert ) => {
-	const doc = ve.dm.example.createExampleDocument(),
-		internalList = doc.getInternalList();
-	assert.deepEqual( internalList.getDocument(), doc, 'Returns original document' );
+QUnit.test( 'getters', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument( 'references' );
+	const internalList = doc.getInternalList();
+	assert.strictEqual( internalList.getDocument(), doc, 'Returns original document' );
+	assert.strictEqual( internalList.getItemNodeCount(), 2 );
+	assert.deepEqual( internalList.getListGroupNames(), [ 'g1', 'g2' ] );
+	assert.deepEqual( Object.keys( internalList.getNodeGroups() ), [ 'g1', 'g2' ] );
 } );
 
 QUnit.test( 'queueItemHtml', ( assert ) => {

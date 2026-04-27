@@ -146,6 +146,13 @@ ve.dm.InternalList.prototype.getItemNode = function ( index ) {
 };
 
 /**
+ * @return {string[]} List group names with the "mwReference/" prefix
+ */
+ve.dm.InternalList.prototype.getListGroupNames = function () {
+	return Object.keys( this.nodes );
+};
+
+/**
  * Get all node groups.
  *
  * @return {Object.<string,ve.dm.InternalListNodeGroup>} Node groups, keyed by group name
