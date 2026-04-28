@@ -428,7 +428,7 @@ ve.ui.DebugBar.prototype.onBuildTestButtonClick = function () {
 	this.$testCase
 		.empty()
 		.append( $( '<h2>' ).text( 'Test case' ) )
-		.append( $( '<pre>' ).text( this.generateTestCase() ) );
+		.append( $( '<pre>' ).attr( 'contenteditable', 'true' ).text( this.generateTestCase() ) );
 	this.$testCase.removeClass( 'oo-ui-element-hidden' );
 };
 
