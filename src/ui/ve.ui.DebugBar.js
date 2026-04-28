@@ -476,25 +476,6 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 			'\n\t}';
 	};
 
-	const serializeStoreBuilder = ( store ) => {
-		const serializeDomElement = ( el ) => {
-			if ( Array.isArray( el ) ) {
-				const html = el.map( ( n ) => n.outerHTML );
-				return '// eslint-disable-next-line no-jquery/no-parse-html-literal\n' +
-					'$.parseHTML( ' + wrapHtmlLiteral( html ) + ' )';
-			} else if ( typeof el === 'object' ) {
-				return null;
-			}
-		};
-		const storeStatements = store.serialize( serializeDomElement ).hashStore;
-		return '{\n' +
-			indentLines( '\t', Object.entries( storeStatements )
-				.filter( ( [ /* key */, value ] ) => value !== null )
-				.map( ( [ key, value ] ) => `"${ key }":\n${ indentLines( '\t', value ) }` )
-				.join( ',\n' ) ) +
-			'\n}';
-	};
-
 	// Adapted from ve.test.utils: we want to run methods such as i18n message
 	// translation in the dummy context to match the way the test will eventually
 	// be run.
@@ -539,8 +520,7 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 			) ) ),
 		innerWhitespace: repairAllUndefined( serializeToJson(
 			currentDocument.getInnerWhitespace() ) ),
-		preserveAnnotationDomElements: 'true',
-		storeItems: serializeStoreBuilder( currentDocument.getStore() )
+		preserveAnnotationDomElements: 'true'
 	};
 	return '{\n' +
 		indentLines( '\t',
