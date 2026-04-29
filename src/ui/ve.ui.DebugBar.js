@@ -433,7 +433,6 @@ ve.ui.DebugBar.prototype.onBuildTestButtonClick = function () {
 };
 
 ve.ui.DebugBar.prototype.generateTestCase = function () {
-	const tab = '  ';
 	const surfaceModel = this.getSurface().getModel();
 	const currentDocument = surfaceModel.getDocument();
 	const transactions = surfaceModel.getHistory()
@@ -456,7 +455,7 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 		} );
 	};
 	unwrapSections( originalDocument );
-	const serializeToJson = ( data ) => JSON.stringify( data, null, tab );
+	const serializeToJson = ( data ) => JSON.stringify( data, null, '\t' );
 	const getBodyContent = ( htmlDocument ) => htmlDocument.body.innerHTML;
 	const wrapHtmlLiteral = ( htmlString ) => JSON.stringify( htmlString );
 	const indentLines = ( indentation, text ) => text.replace( /^.*$/gm, indentation + '$&' );
@@ -473,8 +472,8 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 			' ) );';
 		const txStatements = txs.map( serializeTransaction );
 		return '( model ) => {\n' +
-			indentLines( tab, txStatements.join( '\n' ) ) +
-			`\n${ tab }}`;
+			indentLines( '\t', txStatements.join( '\n' ) ) +
+			'\n\t}';
 	};
 
 	// Adapted from ve.test.utils: we want to run methods such as i18n message
@@ -524,10 +523,10 @@ ve.ui.DebugBar.prototype.generateTestCase = function () {
 		preserveAnnotationDomElements: 'true'
 	};
 	return '{\n' +
-		indentLines( tab,
+		indentLines( '\t',
 			Object.entries( testCaseData )
 				.filter( ( [ , value ] ) => value )
-				.map( ( [ key, value ] ) => key + ':\n' + indentLines( tab, value ) )
+				.map( ( [ key, value ] ) => key + ':\n' + indentLines( '\t', value ) )
 				.join( ',\n' )
 		) + '\n}';
 };
