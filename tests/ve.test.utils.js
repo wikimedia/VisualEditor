@@ -736,9 +736,23 @@
 			null,
 			config
 		);
+		return ve.test.utils.createModelOnlySurface( model );
+	};
+
+	/**
+	 * Create a model-only UI surface from a real surface model
+	 *
+	 * @param {ve.dm.Surface} model Surface model
+	 * @return {Object} Mock UI surface which only returns a real model
+	 */
+	ve.test.utils.createModelOnlySurface = function ( model ) {
 		return {
 			getModel: () => model,
-			getView: () => ( { focus: () => {} } )
+			getView: () => ( {
+				focus: () => {},
+				activate: () => {},
+				selectAnnotation: () => {}
+			} )
 		};
 	};
 
