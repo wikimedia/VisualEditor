@@ -228,7 +228,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		this.surface.getDialogs(),
 		this.surface.getContext().getInspectors(),
 		...ve.ui.ToolbarDialogWindowManager.static.positions.map(
-			( positon ) => this.surface.getToolbarDialogs( positon )
+			( position ) => this.surface.getToolbarDialogs( position )
 		)
 	].map( ( windowManager ) => {
 		if ( windowManager.getCurrentWindow() ) {

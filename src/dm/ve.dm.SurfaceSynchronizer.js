@@ -473,7 +473,7 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 /**
  * Respond to a newChange event from the server, signalling a newly committed change
  *
- * If the commited change is by another author, then:
+ * If the committed change is by another author, then:
  * - Rebase uncommitted changes over the committed change
  * - If there is a rebase rejection, then apply its inverse to the document
  * - Apply the rebase-transposed committed change to the document

@@ -375,7 +375,7 @@ ve.init.Platform.prototype.getInitializedPromise = function () {
 /**
  * Post-process the symbol list.
  *
- * If a keyed object format is used, it is coverted to an array,
+ * If a keyed object format is used, it is converted to an array,
  * and the label property is set from the key when required.
  *
  * For individual symbols, turns the `source` property into a CSS class.

@@ -65,7 +65,7 @@ ve.ui.HelpCompletionAction.static.defaultLimit = 99;
  * Definitions of the groups that tools can fall into
  *
  * Tools in a group whose name doesn't appear here will be placed
- * in "other" gruop.
+ * in "other" group.
  * The `title` field is used to place a label above the tools
  * in the widget.
  * `mergeWith` references a different group to add these

@@ -208,7 +208,7 @@ ve.dm.DomFromModelConverter.prototype.doesModeNeedRendering = function () {
 /**
  * Is the current conversion for the parser
  *
- * @return {boolean} The conversion is for the paser
+ * @return {boolean} The conversion is for the parser
  */
 ve.dm.DomFromModelConverter.prototype.isForParser = function () {
 	return this.getMode() === this.constructor.static.PARSER_MODE;

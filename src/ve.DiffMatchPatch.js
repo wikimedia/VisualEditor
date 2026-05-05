@@ -198,7 +198,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	 * insert.
 	 *
 	 * Additionally clean up mistakes made by the linear differ, such as removing
-	 * and inserting identical content (insetead of retaining it) and removing,
+	 * and inserting identical content (instead of retaining it) and removing,
 	 * inserting or retaining an empty content array.
 	 *
 	 * @param {Array} diff Linear diff, as arrays of inserted, removed and retained

@@ -75,7 +75,7 @@ ve.ui.CompletionAction.prototype.open = function ( isolateInput ) {
  * @abstract
  * @param {string} input
  * @return {jQuery.Promise} Promise that resolves with list of suggestions.
- *  Suggestions are converted to menu itmes by getMenuItemForSuggestion.
+ *  Suggestions are converted to menu items by getMenuItemForSuggestion.
  */
 ve.ui.CompletionAction.prototype.getSuggestions = null;
 
@@ -107,7 +107,7 @@ ve.ui.CompletionAction.prototype.chooseItem = function ( item, range ) {
 };
 
 /**
- * Perform the insetion for the chosen suggestion
+ * Perform the insertion for the chosen suggestion
  *
  * @param {Object} data Whatever data was attached to the menu option widget
  * @param {ve.Range} range The range the widget is considering
@@ -206,7 +206,7 @@ ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggesti
  * Compare a suggestion to the normalized user input (lower case)
  *
  * @param {any} suggestion Suggestion data, string by default
- * @param {string} normalizedInput Noramlized user input
+ * @param {string} normalizedInput Normalized user input
  * @return {Object} Match object, containing two booleans, `isMatch` and `isExact`
  */
 ve.ui.CompletionAction.prototype.compareSuggestionToInput = function ( suggestion, normalizedInput ) {

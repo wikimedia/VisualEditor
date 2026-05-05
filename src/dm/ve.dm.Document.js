@@ -722,7 +722,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
  * Clone a sub-document from a range in this document. The new document's elements, store and internal list
  * will be clones of the ones in this document.
  *
- * @param {ve.Range} [range] Range of data to clone, clones the whole document if ommitted.
+ * @param {ve.Range} [range] Range of data to clone, clones the whole document if omitted.
  * @param {boolean} [detachedCopy] The copy is not intended to be merged into the original
  * @param {string} [mode] Mode for getting data, see #getFullData
  * @return {ve.dm.Document} New document

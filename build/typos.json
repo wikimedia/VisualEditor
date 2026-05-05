@@ -6,7 +6,7 @@
 		[ "movablilties", "movabilities" ],
 		[ "inpsect(ors?|ion)", "inspect$1" ],
 		[ "\bteh\b", "the" ],
-		[ "intialization", "initialization" ],
+		[ "intial(ization|ly|ized)", "initial$1" ],
 		[ "durring", "during" ],
 		[ "contian", "contain" ],
 		[ "occured", "occurred" ],
@@ -20,6 +20,8 @@
 		[ "sepcific", "specific" ],
 		[ "connet", "connect" ],
 		[ "emtpy", "empty" ],
-		[ "langauge", "language" ]
+		[ "langauge", "language" ],
+		[ "(un)?commited", "$1committed" ],
+		[ "occurence", "occurrence" ]
 	]
 }

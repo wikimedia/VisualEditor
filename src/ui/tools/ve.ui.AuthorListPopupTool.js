@@ -41,7 +41,7 @@ OO.inheritClass( ve.ui.AuthorListPopupTool, OO.ui.PopupTool );
 /* Methods */
 
 /**
- * Handle surfaceChange event fromt the toolbar
+ * Handle surfaceChange event from the toolbar
  *
  * @param {ve.dm.Surface|null} oldSurface Old surface
  * @param {ve.dm.Surface|null} newSurface New surface

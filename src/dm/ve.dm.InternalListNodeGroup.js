@@ -27,7 +27,7 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	 * values in the {@link #indexOrder} array. Order is meaningless but dictated by indexOrder
 	 * instead.
 	 *
-	 * Practically, this is the first occurence of a reused reference (with the same group and name)
+	 * Practically, this is the first occurrence of a reused reference (with the same group and name)
 	 * in a document. That document position dictates the reference's footnote number and the order
 	 * in which references are rendered in their reference list.
 	 *

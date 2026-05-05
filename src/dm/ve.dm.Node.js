@@ -92,7 +92,7 @@ ve.dm.Node.static.ignoreChildren = false;
 
 /**
  * Whether this node can be deleted. If false, ve.dm.Transaction#newFromRemoval will silently
- * ignore any attepts to delete this node.
+ * ignore any attempts to delete this node.
  *
  * @static
  * @property {boolean}
@@ -701,7 +701,7 @@ ve.dm.Node.prototype.matches = function ( type, attributes ) {
  * Check if specific attributes match those in the node
  *
  * @param {Object} attributes Node attributes to match
- * @return {boolean} Attributes sepcified match those in the node
+ * @return {boolean} Attributes specified match those in the node
  */
 ve.dm.Node.prototype.compareAttributes = function ( attributes ) {
 	for ( const key in attributes ) {

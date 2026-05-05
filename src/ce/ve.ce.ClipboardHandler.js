@@ -278,11 +278,11 @@ ve.ce.ClipboardHandler.prototype.onPaste = function ( e ) {
 				this.pasteSpecial = false;
 				this.beforePasteData = null;
 
-				// Restore original clipboard metadata if requred (was overridden by middle-click
+				// Restore original clipboard metadata if required (was overridden by middle-click
 				// paste logic in beforePaste)
-				if ( this.originalClipboardMetdata ) {
-					this.clipboardIndex = this.originalClipboardMetdata.clipboardIndex;
-					this.clipboard = this.originalClipboardMetdata.clipboard;
+				if ( this.originalClipboardMetadata ) {
+					this.clipboardIndex = this.originalClipboardMetadata.clipboardIndex;
+					this.clipboard = this.originalClipboardMetadata.clipboard;
 				}
 
 				ve.track( 'activity.clipboard', { action: 'paste' } );
@@ -318,14 +318,14 @@ ve.ce.ClipboardHandler.prototype.beforePaste = function ( e ) {
 	this.beforePasteData = {
 		isPaste: e.type === 'paste'
 	};
-	this.originalClipboardMetdata = null;
+	this.originalClipboardMetadata = null;
 	if ( this.middleClickPasting && !surface.lastNonCollapsedDocumentSelection.isNull() ) {
 		// Paste was triggered by middle click, and the last non-collapsed document selection was in
 		// this VE surface. Simulate a fake copy to load DM data into the clipboard. If we let the
 		// native middle-click paste happen, it would load CE data into the clipboard.
 		// Store original clipboard metadata so it can be restored after paste,
 		// and we can continue to use internal paste.
-		this.originalClipboardMetdata = {
+		this.originalClipboardMetadata = {
 			clipboardIndex: this.clipboardIndex,
 			clipboard: this.clipboard
 		};
@@ -342,7 +342,7 @@ ve.ce.ClipboardHandler.prototype.beforePaste = function ( e ) {
 			return;
 		}
 		this.beforePasteData.clipboardKey = clipboardData.getData( this.constructor.static.clipboardKeyMimeType ) ||
-			// Backwards compatability with older versions of VE which used text/xcustom
+			// Backwards compatibility with older versions of VE which used text/xcustom
 			clipboardData.getData( 'text/xcustom' );
 		this.beforePasteData.html = clipboardData.getData( 'text/html' );
 		if ( this.beforePasteData.html ) {
@@ -480,7 +480,7 @@ ve.ce.ClipboardHandler.prototype.afterPaste = function () {
 		targetFragment = targetFragment.collapseToEnd();
 	}
 
-	// Immedately remove any <style> tags from the clipboard handler element that might
+	// Immediately remove any <style> tags from the clipboard handler element that might
 	// be changing the rendering of the whole page (T235068)
 	this.$element.find( 'style' ).remove();
 
@@ -748,13 +748,13 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function 
 
 	let htmlDoc;
 	// There are two potential sources of HTML to choose from:
-	// * this.$element where we we let the past happen in a context similar to the surface
+	// * this.$element where we we let the paste happen in a context similar to the surface
 	// * beforePasteData.html which is read from the clipboard API
 	//
 	// If clipboard API data is available, then make sure important elements haven't been dropped.
 	//
 	// The only reason we don't use clipboard API data unconditionally is that for simpler pastes,
-	// the $element method does a good job of merging content, e.g. paragraps into paragraphs.
+	// the $element method does a good job of merging content, e.g. paragraphs into paragraphs.
 	//
 	// If we could do a better job of mimicking how browsers merge content, the clipboard API data
 	// would produce much more consistent results, as the clipboard handler element approach can also re-order
@@ -1167,7 +1167,7 @@ ve.ce.ClipboardHandler.prototype.prepareForCopy = function () {
 };
 
 /**
- * Prepare the clipboard handler to treat the next paste as "speical" (i.e. plain text)
+ * Prepare the clipboard handler to treat the next paste as "special" (i.e. plain text)
  */
 ve.ce.ClipboardHandler.prototype.prepareForPasteSpecial = function () {
 	this.pasteSpecial = true;

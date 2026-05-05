@@ -39,7 +39,7 @@ ve.dm.ElementLinearData = ve.dm.LinearData;
 /**
  * @typedef {Array} ve.dm.LinearData.AnnotatedCharacter
  * @property {string} 0 Character data
- * @property {string[]} 1 Annotation hashses
+ * @property {string[]} 1 Annotation hashes
  */
 /* eslint-enable jsdoc/valid-types */
 

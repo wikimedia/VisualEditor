@@ -287,7 +287,7 @@
 			}
 
 			if ( matchTypes !== null ) {
-				// Don't modify allowedTypes as it is a pointer to the orignal array
+				// Don't modify allowedTypes as it is a pointer to the original array
 				allowedTypes = allowedTypes.concat( matchTypes );
 			}
 

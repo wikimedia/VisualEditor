@@ -120,7 +120,7 @@ ve.ui.DiffElement.prototype.getDiffElementById = function ( elementId ) {
 };
 
 /**
- * Handle description item hightlight events
+ * Handle description item highlight events
  *
  * @param {OO.ui.OptionWidget} item Description item
  */
@@ -241,7 +241,7 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue ) {
 					}
 					addItem( headingContext );
 				} else if ( isHeading( nextItem ) ) {
-					// Skipping the context header becuase the next node is a heading
+					// Skipping the context header because the next node is a heading
 					// so reinstate the spacer.
 					needsSpacer = true;
 				}
@@ -687,7 +687,7 @@ ve.ui.DiffElement.prototype.getChangedDocListData = function ( newDoclistNode, d
 		}
 	}
 
-	// When the doc cotainer has attribute changes, show the whole node.
+	// When the doc container has attribute changes, show the whole node.
 	// Otherwise use processQueue to filter out unchanged context
 	if ( !neverProcess && !hasAttributeChanges ) {
 		diffQueue = this.processQueue( diffQueue );

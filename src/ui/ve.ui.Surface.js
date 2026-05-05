@@ -20,7 +20,7 @@
  * @param {jQuery} [config.$scrollContainer] The scroll container of the surface
  * @param {jQuery} [config.$scrollListener] The scroll listener of the surface
  * @param {jQuery} [config.$overlayContainer] Clipping container for local overlays, defaults to surface view
- * @param {number} [config.overlayPadding] Padding beween local overlays and clipping container
+ * @param {number} [config.overlayPadding] Padding between local overlays and clipping container
  * @param {ve.ui.CommandRegistry} [config.commandRegistry] Command registry to use
  * @param {ve.ui.SequenceRegistry} [config.sequenceRegistry] Sequence registry to use
  * @param {ve.ui.DataTransferHandlerFactory} [config.dataTransferHandlerFactory] Data transfer handler factory to use
@@ -747,7 +747,7 @@ ve.ui.Surface.prototype.getCommands = function () {
 /**
  * Execute an action or command
  *
- * This is a compatability wrapper for executeCommandWithSource.
+ * This is a compatibility wrapper for executeCommandWithSource.
  *
  * @param {ve.ui.Trigger|string} triggerOrAction Trigger or symbolic name of action
  * @param {string} [method] Action method name

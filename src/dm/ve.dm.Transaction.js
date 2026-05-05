@@ -116,7 +116,7 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
 };
 
 /**
- * Simpified comparison of linear data items
+ * Simplified comparison of linear data items
  *
  * Identical to ve.dm.LinearData.static.compareElementsUnannotated, but without
  * the complex comparison of node elements that requires the model registry.

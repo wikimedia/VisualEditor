@@ -861,7 +861,7 @@
 	 *
 	 * Modifies an EventSequencer object in-place to allow setTimeout behaviour to be
 	 * simulated by test code. Replaces `postpone` and `cancelPostponed` with methods that
-	 * queue/unqueue to an array, and adds an `endLoop` method to unqueue and run every
+	 * queue/dequeue to an array, and adds an `endLoop` method to dequeue and run every
 	 * queued call.
 	 *
 	 * @param {ve.EventSequencer} eventSequencer The EventSequencer to hijack

@@ -403,7 +403,7 @@ ve.ce.Surface.prototype.destroy = function () {
 };
 
 /**
- * Get linear model offest from a mouse event
+ * Get linear model offset from a mouse event
  *
  * @param {Event} e
  * @return {number} Linear model offset, or -1 if coordinates are out of bounds
@@ -688,7 +688,7 @@ ve.ce.Surface.prototype.onFocusChange = function () {
 		} else if ( !hasFocus && this.isFocused() ) {
 			this.onDocumentBlur();
 		} else if ( hasFocus && OO.ui.contains( this.$highlights[ 0 ], document.activeElement, true ) ) {
-			// Focus ended up in the higlight, e.g. by click on an already visible highlight.
+			// Focus ended up in the highlight, e.g. by click on an already visible highlight.
 			// Move the cursor back to clipboard handler as we do when focusableNode initially selected.
 			// Without this, arrow key navigation from the focusable node would stop working.
 			this.prepareClipboardHandlerForCopy();
@@ -3177,7 +3177,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding = 0 ) {
 					// Return early, with a range that'll be covering the entire document.
 					return isStart ? start : end;
 				}
-				// Never search outisde the original range
+				// Never search outside the original range
 				mid = Math.max( Math.min( mid, range.end ), range.start );
 			}
 
@@ -3206,7 +3206,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding = 0 ) {
 						data.getRelativeContentOffset( midNodeRange.end, 1 ) :
 						data.getRelativeContentOffset( midNodeRange.start, -1 );
 
-					// Never search outisde the original range
+					// Never search outside the original range
 					mid = Math.max( Math.min( mid, range.end ), range.start );
 
 					// Check we didn't end up inside the invisible node again
@@ -3460,7 +3460,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
  * Also the order of .activeAnnotations may not be well defined.
  *
  * @param {boolean|Node} [fromModelOrNode] If `true`, gather annotations from the model,
- *  instead of the cusor focus point. If a Node is passed, gather annotations from that node.
+ *  instead of the cursor focus point. If a Node is passed, gather annotations from that node.
  * @fires ve.dm.Surface#contextChange
  */
 ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
@@ -3563,7 +3563,7 @@ ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter, offset 
 
 	// TODO: For annotation boundaries we have to search one place left and right
 	// to find the text inside the annotation. This will give too many results for
-	// adjancent annotations, and will fail for one character annotations. (T221967)
+	// adjacent annotations, and will fail for one character annotations. (T221967)
 	let nodeAndOffset;
 	let annotations = [];
 	if ( offset > documentRange.start ) {

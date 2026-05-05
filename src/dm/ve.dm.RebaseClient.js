@@ -138,7 +138,7 @@ ve.dm.RebaseClient.prototype.submitChange = function () {
  * If the committed change is by the local author, then it is already applied to the document
  * and at the correct point in history: just move the commitLength pointer.
  *
- * If the commited change is by a different author, then:
+ * If the committed change is by a different author, then:
  * - Rebase local uncommitted changes over the committed change
  * - If there is a rejected tail, then apply its inverse to the document
  * - Apply the rebase-transposed committed change to the document

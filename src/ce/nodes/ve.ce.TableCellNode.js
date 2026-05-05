@@ -146,7 +146,7 @@ ve.ce.TableCellNode.prototype.onTableCellTeardown = function () {
  * @see ve.ce.ContentEditableNode
  */
 ve.ce.TableCellNode.prototype.setContentEditable = function () {
-	// Overwite any state passed to setContentEditable with this.editing, so that
+	// Overwrite any state passed to setContentEditable with this.editing, so that
 	// setContentEditable doesn't override the editing state.
 	return ve.ce.ContentEditableNode.prototype.setContentEditable.call( this, this.editing );
 };

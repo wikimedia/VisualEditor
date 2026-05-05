@@ -417,7 +417,7 @@ ve.ui.Trigger.prototype.toString = function () {
  *
  * @param {boolean} [explode=false] Whether to return the message split up into some
  *        reasonable sequence of inputs required
- * @return {string[]|string} Seprate key messages, or a joined string
+ * @return {string[]|string} Separate key messages, or a joined string
  */
 ve.ui.Trigger.prototype.getMessage = function ( explode ) {
 	const hasOwn = Object.prototype.hasOwnProperty,

@@ -69,7 +69,7 @@ ve.ui.DataTransferHandlerFactory.prototype.unregister = function ( constructor )
 };
 
 /**
- * Update indexes used for handler loopup
+ * Update indexes used for handler lookup
  *
  * @param {Function} constructor Handler's constructor to insert/remove
  * @param {boolean} insert Insert the handler into the indexes, remove otherwise

@@ -193,7 +193,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 			advanceCursor = false;
 			if ( outerChildrenCount === 1 ) {
 				// The item we're about to remove is the only child
-				// Remove the ouerParent
+				// Remove the outerParent
 				txInsert = ve.dm.TransactionBuilder.static.newFromRemoval(
 					documentModel, outerParent.getOuterRange()
 				);

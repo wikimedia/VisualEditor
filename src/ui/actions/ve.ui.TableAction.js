@@ -961,7 +961,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 				cells: removedCells.map( ( ce ) => {
 					if ( ce && !ce.isPlaceholder() ) {
 						ce.data = documentModel.getData( ce.node.getOuterRange(), true );
-						// When re-insterted the span can not exceed the size of the selection
+						// When re-inserted the span can not exceed the size of the selection
 						if ( ce.data[ 0 ].attributes.rowspan > 1 + maxIndex - minIndex ) {
 							ce.data = null;
 						}
@@ -984,7 +984,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 				cells: matrix.getColumn( col ).map( ( c ) => {
 					if ( c && !c.isPlaceholder() ) {
 						c.data = documentModel.getData( c.node.getOuterRange(), true );
-						// When re-insterted the span can not exceed the size of the selection
+						// When re-inserted the span can not exceed the size of the selection
 						if ( c.data[ 0 ].attributes.colspan > 1 + maxIndex - minIndex ) {
 							c.data = null;
 						}

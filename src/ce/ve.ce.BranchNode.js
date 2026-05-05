@@ -208,7 +208,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index, deleteCount, ...modelNod
 		if (
 			isAllAttached || inAttachedRoot || upstreamOfAttachedRoot.includes( model ) ||
 			// HACK: An internal item node was requested directly, e.g. for preview (T228070)
-			// TODO: Come up with a more explict way to skip the UnrenderedNode optimisation.
+			// TODO: Come up with a more explicit way to skip the UnrenderedNode optimisation.
 			model.findParent( ve.dm.InternalItemNode )
 		) {
 			view = ve.ce.nodeFactory.createFromModel( model );
