@@ -182,7 +182,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		selection instanceof ve.dm.TableSelection &&
 		selection.containsCell( endCell )
 	) {
-		// Right click within the current selection, or any click in deactviated selection:
+		// Right click within the current selection, or any click in deactivated selection:
 		// leave selection as is
 		newSelection = selection;
 		// Make sure there's a startCell

@@ -1179,13 +1179,13 @@ ve.dm.Document.prototype.rebuildTree = function () {
 	// so that we never rebuild above the attachedRoot node as that
 	// would destroy that node, and invalidate all references to it (T293254).
 	// When it is the full document it spans all nodes in the document,
-	// excluding the interna list.
+	// excluding the internal list.
 	const attachedRoot = this.getAttachedRoot();
 	this.rebuildTreeNode( attachedRoot );
 };
 
 /**
- * Rebuild the node tree from linear model data from a specicifc range.
+ * Rebuild the node tree from linear model data from a specific range.
  *
  * @param {ve.dm.BranchNode} rootNode Node to rebuild
  */

@@ -15,7 +15,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges)', ( assert ) => {
 	assert.strictEqual( selection.getName(), 'null', 'getName' );
 } );
 
-QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', ( assert ) => {
+QUnit.test( 'Basic methods (collapse*, isCollapsed, equals, isNull)', ( assert ) => {
 	const selection = new ve.dm.NullSelection();
 
 	assert.deepEqual( selection.collapseToStart(), selection, 'collapseToStart' );

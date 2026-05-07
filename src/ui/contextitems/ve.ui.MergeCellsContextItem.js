@@ -5,7 +5,7 @@
  */
 
 /**
- * Context item for mergeable cels.
+ * Context item for mergeable cells.
  *
  * @class
  * @extends ve.ui.LinearContextItem

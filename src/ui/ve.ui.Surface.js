@@ -110,7 +110,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 		left: 0
 	};
 	this.scrollPaddingSuppressed = false;
-	// Intiailised on first use
+	// Initialised on first use
 	this.toolbarDialogs = {};
 
 	// Events
@@ -467,7 +467,7 @@ ve.ui.Surface.prototype.getToolbarDialogs = function ( position = 'side' ) {
 /**
  * Get sidebar dialogs window set.
  *
- * @return {ve.ui.WindowManager} Sdiebar dialogs window set
+ * @return {ve.ui.WindowManager} Sidebar dialogs window set
  */
 ve.ui.Surface.prototype.getSidebarDialogs = function () {
 	return this.sidebarDialogs;
@@ -826,7 +826,7 @@ ve.ui.Surface.prototype.setPadding = function ( padding ) {
  * Get the current content area padding
  *
  * Padding in this context means areas of the surface which are
- * rendered but are obsured by some other UI element, e.g. a
+ * rendered but are obscured by some other UI element, e.g. a
  * floating toolbar (but not a static toolbar).
  *
  * This can be used when deciding how to position other floating

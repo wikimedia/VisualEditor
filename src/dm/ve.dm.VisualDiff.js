@@ -144,7 +144,7 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
  */
 
 /**
- * Diff two nodes as documents, comaparing their children as lists.
+ * Diff two nodes as documents, comparing their children as lists.
  *
  * @param {ve.dm.Node} oldRoot Old root
  * @param {ve.dm.Node} newRoot New root
@@ -168,7 +168,7 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
 	if (
 		oldRoot && newRoot &&
 		// Actual document nodes don't have attributes as they
-		// don'texist in the linear data
+		// don't exist in the linear data
 		!( oldRoot instanceof ve.dm.DocumentNode )
 	) {
 		diff.attributeChange = this.diffAttributes( oldRoot, newRoot );
@@ -556,7 +556,7 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 
 		if ( listNodeAttributeChange || listItemAttributeChange || depthChange ) {
 			// Some attributes have changed for this item
-			// This item may already have attribute changes (e.g. heading attribute change inlist)
+			// This item may already have attribute changes (e.g. heading attribute change in list)
 			const attributeChange = ( !isNewItemIndex && newItem.diff.attributeChange ) || {};
 			if ( listNodeAttributeChange ) {
 				attributeChange.listNodeAttributeChange = listNodeAttributeChange;

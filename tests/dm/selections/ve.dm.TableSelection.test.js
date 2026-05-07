@@ -105,7 +105,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 
 } );
 
-QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', ( assert ) => {
+QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollapsed, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
 		startSelection = new ve.dm.TableSelection( tableRange, 0, 1 ),

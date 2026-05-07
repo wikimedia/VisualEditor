@@ -328,7 +328,7 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
  * as a whole would not conflict (e.g. if b1 modifies only parts of the document distant from a1
  * and a2).
  *
- * So observe that by transaction commutivity we can rewrite a2' as:
+ * So observe that by transaction commutativity we can rewrite a2' as:
  *
  * a2' := a2|(inv(a1) * a1 * b1|a1)
  *      = a2|(b1|a1)

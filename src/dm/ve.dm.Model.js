@@ -494,7 +494,7 @@ ve.dm.Model.prototype.getHashObject = function () {
  * Check if this element is of the same type as another element for the purposes of diffing.
  *
  * Elements which aren't of the same type will always be shown as removal and an insertion,
- * whereas comarable elements will be shown as an attribute change.
+ * whereas comparable elements will be shown as an attribute change.
  *
  * @param {Object} other Another element
  * @return {boolean} Elements are of a comparable type

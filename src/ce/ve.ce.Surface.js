@@ -708,7 +708,7 @@ ve.ce.Surface.prototype.isDeactivated = function () {
 /**
  * Check if the surface is visibly deactivated.
  *
- * Only true if the surface was decativated by the user
+ * Only true if the surface was deactivated by the user
  * in a way that is expected to change the rendering.
  *
  * @return {boolean} Surface is visibly deactivated
@@ -3504,7 +3504,7 @@ ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
  * Update the selection to contain the contents of a node
  *
  * @param {HTMLElement} node
- * @param {string} [collapse] Collaspse to 'start' or 'end'
+ * @param {string} [collapse] Collapse to 'start' or 'end'
  * @return {boolean} Whether the selection changed
  */
 ve.ce.Surface.prototype.selectNodeContents = function ( node, collapse ) {

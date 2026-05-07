@@ -17,7 +17,7 @@ QUnit.test( 'Construction and getters (getRange(s))', ( assert ) => {
 	assert.strictEqual( selection.getName(), 'linear', 'getName' );
 } );
 
-QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', ( assert ) => {
+QUnit.test( 'Basic methods (collapse*, isCollapsed, equals, isNull)', ( assert ) => {
 	const range = new ve.Range( 200, 100 ),
 		selection = new ve.dm.LinearSelection( range ),
 		startSelection = new ve.dm.LinearSelection( new ve.Range( 100 ) ),

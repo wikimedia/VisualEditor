@@ -255,7 +255,7 @@ ve.init.Target.static.importRules = {
 				nav: true,
 				aside: true,
 				// HTML headings are already bold by default. Some skins may use non-bold
-				// heaidngs, but more likely we will end up with useless bold annotations.
+				// headings, but more likely we will end up with useless bold annotations.
 				'h1 b, h2 b, h3 b, h4 b, h5 b, h6 b': true,
 				'h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong': true
 			}
