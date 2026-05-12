@@ -83,6 +83,9 @@ ve.dm.Model.static.allowedRdfaTypes = [];
  * @static
  * @property {Function}
  * @inheritable
+ * @param {Node} node
+ * @param {Node[]} aboutGroup
+ * @return {boolean}
  */
 ve.dm.Model.static.matchFunction = null;
 

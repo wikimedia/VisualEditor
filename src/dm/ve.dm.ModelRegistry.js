@@ -243,13 +243,17 @@
 	 * The highest-ranking model whose test function does not return false, wins.
 	 *
 	 * @param {Node} node Node to match (usually an HTMLElement but can also be a Comment node)
-	 * @param {boolean} [forceAboutGrouping] If true, only match models with about grouping enabled
+	 * @param {Node[]} [aboutGroup] If present and containing more than just node, only match models with about grouping enabled; will be passed to matchFunction
 	 * @param {string[]} [excludeTypes] Model names to exclude when matching
 	 * @return {string|null} Model type, or null if none found
 	 */
-	ve.dm.ModelRegistry.prototype.matchElement = function ( node, forceAboutGrouping, excludeTypes ) {
+	ve.dm.ModelRegistry.prototype.matchElement = function ( node, aboutGroup, excludeTypes ) {
 		const nodeName = node.nodeName.toLowerCase();
 		const types = [];
+		if ( !aboutGroup ) {
+			aboutGroup = [ node ];
+		}
+		const forceAboutGrouping = aboutGroup.length > 1;
 
 		const byRegistrationOrderDesc = ( a, b ) => this.registrationOrder[ b ] - this.registrationOrder[ a ];
 
@@ -326,7 +330,7 @@
 			queue2.sort( byRegistrationOrderDesc );
 			ve.batchPush( queue, queue2 );
 
-			return queue.find( ( name ) => this.registry[ name ].static.matchFunction( node ) ) || null;
+			return queue.find( ( name ) => this.registry[ name ].static.matchFunction( node, aboutGroup ) ) || null;
 		};
 
 		const matchWithoutFunc = ( tag ) => {
@@ -401,7 +405,7 @@
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// func+tag+type step above, or its type rule doesn't match
-			return model.static.getMatchRdfaTypes() === null && model.static.matchFunction( node ) && allTypesAllowed( model );
+			return model.static.getMatchRdfaTypes() === null && model.static.matchFunction( node, aboutGroup ) && allTypesAllowed( model );
 		} );
 		if ( funcAndTagMatched ) {
 			return funcAndTagMatched;
@@ -416,7 +420,7 @@
 		const typeAndTagMatches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
 		const typeAndTagMatched = typeAndTagMatches.find( ( name ) => {
 			const model = this.registry[ name ];
-			return model.static.matchFunction( node ) && allTypesAllowed( model );
+			return model.static.matchFunction( node, aboutGroup ) && allTypesAllowed( model );
 		} );
 		if ( typeAndTagMatched ) {
 			return typeAndTagMatched;

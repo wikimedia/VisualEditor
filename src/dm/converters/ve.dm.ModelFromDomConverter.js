@@ -540,7 +540,7 @@ ve.dm.ModelFromDomConverter.prototype.getDataFromDomSubtree = function ( domElem
 					continue;
 				}
 				const aboutGroup = getAboutGroup( childNode );
-				const modelName = this.modelRegistry.matchElement( childNode, aboutGroup.length > 1 );
+				const modelName = this.modelRegistry.matchElement( childNode, aboutGroup );
 				let modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
 				let childNodes;
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
