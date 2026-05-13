@@ -586,11 +586,14 @@ ve.ui.Surface.prototype.onModelSelect = function () {
  *
  * @param {ve.dm.Selection} [selectionModel] Optional selection model, defaults to current selection
  * @param {Object} [scrollConfig] Scroll config options, passed to ve.scrollIntoView
+ * @param {Object} [scrollConfig.extraPadding] Extra padding to apply when scrolling into view, added to surface padding.
+ *  Defaults to 5px on each side. Use this instead of scrollConfig.padding to avoid having to calculate the surface padding yourself.
  * @param {boolean} [isAdjustment] (For internal use) Whether this scroll is an adjustment after a previous scroll
  * @fires ve.ui.Surface#scroll
  */
 ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scrollConfig, isAdjustment ) {
 	selectionModel = selectionModel || this.getModel().getSelection();
+	scrollConfig = scrollConfig || {};
 
 	const view = this.getView(),
 		selectionView = view.getSelection( selectionModel ),
@@ -650,10 +653,12 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 	}
 
 	// Add some minimum padding so the selection doesn't touch the edge of the viewport
-	padding.top += 5;
-	padding.bottom += 5;
-	padding.left += 5;
-	padding.right += 5;
+	const extraPadding = ve.extendObject( { top: 5, right: 5, bottom: 5, left: 5 }, scrollConfig.extraPadding );
+
+	padding.top += extraPadding.top;
+	padding.bottom += extraPadding.bottom;
+	padding.left += extraPadding.left;
+	padding.right += extraPadding.right;
 
 	return ve.scrollIntoView( clientRect, ve.extendObject( {
 		animate,
