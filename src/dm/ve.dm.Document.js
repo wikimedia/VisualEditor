@@ -1662,7 +1662,6 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 	const data = this.data,
 		searchRange = options.searchRange || this.getAttachedRootRange();
-	let ranges = [];
 
 	if ( query instanceof Set ) {
 		query = new ve.dm.SetTextFinder( query, ve.extendObject( { lang: this.lang }, options ) );
@@ -1673,24 +1672,79 @@ ve.dm.Document.prototype.findText = function ( query, options = {} ) {
 	}
 	// Else query is already a ve.dm.TextFinder
 
-	data.forEachRunOfContent( searchRange, ( off, line ) => {
-		ranges.push( ...query.find( line ).map(
-			( [ start, end ] ) => new ve.Range( off + start, off + end )
-		) );
+	const nodeRanges = [];
+	this.getContentRuns( searchRange ).forEach( ( run ) => {
+		const node = run.range.node;
+		const offset = run.range.relativeRange.start;
+		const runRanges = query.find( run.text ).map(
+			( [ start, end ] ) => new ve.dm.NodeRange( node, new ve.Range( offset + start, offset + end ) )
+		);
+		ve.batchPush( nodeRanges, runRanges );
 	} );
 
-	ranges = ranges.filter(
+	const ranges = nodeRanges.map( ( relativeRange ) => {
+		const range = relativeRange.getAbsoluteRange();
 		// Remove matches that start on a close tag
-		( range ) => !data.isCloseElementData( range.start )
-	).map( ( range ) => {
+		if ( data.isCloseElementData( range.start ) ) {
+			return null;
+		}
 		// Extend matches that end on an open tag, if a close tag follows immediately
 		if ( data.isOpenElementData( range.end - 1 ) && data.isCloseElementData( range.end ) ) {
 			return new ve.Range( range.start, range.end + 1 );
 		}
 		return range;
-	} );
-
+	} ).filter( Boolean );
 	return ranges;
+};
+
+/**
+ * Get runs of consecutive content data (text or content element).
+ *
+ * @param {ve.Range} range Range in which to search
+ * @return {ve.dm.LinearData.ContentRun[]} Runs of content
+ */
+ve.dm.Document.prototype.getContentRuns = function ( range ) {
+	// Collect contentRuns one subroot at a time (caching per subroot)
+	const root = this.getDocumentNode();
+	const subRootOffsets = root.getSubrootOffsets();
+	const contentRuns = [];
+	subRootOffsets.forEach( ( offset, subRoot ) => {
+		if ( !( subRoot instanceof ve.dm.BranchNode ) ) {
+			return;
+		}
+		const subRootRange = new ve.Range( offset, offset + subRoot.getLength() );
+		if ( !range.overlapsRange( subRootRange ) ) {
+			return;
+		}
+		const interior = range.containsRange( subRootRange );
+		const nodeRuns = this.getOrInsertCachedData(
+			subRoot,
+			() => subRoot.getContentRuns(),
+			'getContentRuns'
+		);
+		if ( interior ) {
+			// All runs lie entirely within the range
+			ve.batchPush( contentRuns, nodeRuns );
+		} else {
+			// Some run may not lie entirely inside the range
+			nodeRuns.forEach( ( run ) => {
+				const runRange = run.range.getAbsoluteRange();
+				const start = Math.max( range.start, runRange.start );
+				const end = Math.min( range.end, runRange.end );
+				if ( end <= start ) {
+					return;
+				}
+				const relativeRange = new ve.Range( start - offset, end - offset );
+				const text = run.text.slice(
+					start - runRange.start,
+					end - runRange.start
+				);
+				const nodeRange = new ve.dm.NodeRange( subRoot, relativeRange );
+				contentRuns.push( { range: nodeRange, text } );
+			} );
+		}
+	} );
+	return contentRuns;
 };
 
 /**

@@ -1594,3 +1594,33 @@ QUnit.test( 'subroot', ( assert ) => {
 	doc.commit( tx2 );
 	checkSubroots( doc.documentNode );
 } );
+
+QUnit.test( 'getContentRuns', ( assert ) => {
+	function serialize( contentRun ) {
+		const range = contentRun.range.getAbsoluteRange();
+		return [ range.start, range.end, contentRun.text ];
+	}
+	const doc = ve.dm.example.createExampleDocument();
+	const fullContentRuns = doc.getContentRuns( doc.getDocumentRange() ).map( serialize );
+	assert.deepEqual( fullContentRuns, [
+		[ 1, 4, 'abc' ],
+		[ 10, 11, 'd' ],
+		[ 15, 16, 'e' ],
+		[ 20, 21, 'f' ],
+		[ 29, 30, 'g' ],
+		[ 38, 42, 'h\uFFFC\uFFFCi' ],
+		[ 46, 47, 'j' ],
+		[ 51, 52, 'k' ],
+		[ 56, 57, 'l' ],
+		[ 59, 60, 'm' ]
+	], 'full document' );
+	const slicedContentRuns = doc.getContentRuns( new ve.Range( 2, 40 ) ).map( serialize );
+	assert.deepEqual( slicedContentRuns, [
+		[ 2, 4, 'bc' ],
+		[ 10, 11, 'd' ],
+		[ 15, 16, 'e' ],
+		[ 20, 21, 'f' ],
+		[ 29, 30, 'g' ],
+		[ 38, 40, 'h\uFFFC' ]
+	], 'sliced document' );
+} );

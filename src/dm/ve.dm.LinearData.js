@@ -1092,31 +1092,44 @@ ve.dm.LinearData.prototype.isPlainText = function ( range, ignoreNonContentNodes
 };
 
 /**
- * Execute a callback function for each group of consecutive content data (text or content element).
+ * @typedef {Object} ve.dm.LinearData.ContentRun
+ * @property {ve.Range} range Range of the run
+ * @property {string} text Text of the run (with content element opening/closing data replaced with U+FFFC)
+ */
+
+/**
+ * Get runs of consecutive content data (text or content element).
  *
  * @param {ve.Range} range Range in which to search
- * @param {Function} callback Function called with the following parameters:
- * @param {number} callback.offset Offset of the first datum of the run.
- * @param {string} callback.text Text of the run (with content element opening/closing data
- *   replaced with U+FFFC).
+ * @return {ve.dm.LinearData.ContentRun[]} Runs of content
  */
-ve.dm.LinearData.prototype.forEachRunOfContent = function ( range, callback ) {
+ve.dm.LinearData.prototype.getContentRuns = function ( range ) {
+	const runs = [];
+
+	// Profiling on entry-level Android, string concatenation beats array-then-join.
 	let text = '';
-	range.forEach( ( i ) => {
+
+	// Profiling on entry-level Android, a for-loop beats range.forEach.
+	const start = range.start;
+	const end = range.end;
+	for ( let i = start; i < end; i++ ) {
 		if ( !this.isElementData( i ) ) {
 			text += this.getCharacterData( i );
 		} else if ( ve.dm.nodeFactory.isNodeContent( this.getType( i ) ) ) {
 			text += '\uFFFC'; // U+FFFC OBJECT REPLACEMENT CHARACTER
 		} else {
 			if ( text ) {
-				callback( i - text.length, text );
+				const runRange = new ve.Range( i - text.length, i );
+				runs.push( { range: runRange, text } );
 			}
 			text = '';
 		}
-	} );
-	if ( text ) {
-		callback( range.end - text.length, text );
 	}
+	if ( text ) {
+		const runRange = new ve.Range( range.end - text.length, range.end );
+		runs.push( { range: runRange, text } );
+	}
+	return runs;
 };
 
 /**

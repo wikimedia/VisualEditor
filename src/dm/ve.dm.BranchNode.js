@@ -221,3 +221,19 @@ ve.dm.BranchNode.prototype.getAnnotationRanges = function () {
 		'getAnnotationRanges'
 	);
 };
+
+/**
+ * Get runs of consecutive content data (text or content element).
+ *
+ * @return {ve.dm.LinearData.ContentRun[]} Runs of content
+ */
+ve.dm.BranchNode.prototype.getContentRuns = function () {
+	const offset = this.getOffset();
+	const absoluteRuns = this.getDocument().data.getContentRuns( this.getRange() );
+	const runs = absoluteRuns.map( ( run ) => {
+		const relativeRange = run.range.translate( -offset );
+		const nodeRange = new ve.dm.NodeRange( this, relativeRange );
+		return { range: nodeRange, text: run.text };
+	} );
+	return runs;
+};

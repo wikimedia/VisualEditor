@@ -5,7 +5,7 @@
  */
 
 /**
- * NodeAnnotationRange - an annotation with a range inside some `ve.dm.ContentBranchNode`
+ * NodeAnnotationRange - a node range with an annotation
  *
  * The range is relative to the node offset. It is not live, i.e. not automatically updated when
  * the document changes (unlike a `ve.dm.SurfaceFragment`), but its validity will be preserved
@@ -19,10 +19,11 @@
  * @param {ve.Range} relativeRange The range, given relative to node.getOffset()
  */
 ve.dm.NodeAnnotationRange = function VeDmNodeAnnotationRange( node, annotation, relativeRange ) {
-	this.node = node;
+	this.nodeRange = new ve.dm.NodeRange( node, relativeRange );
 	this.annotation = annotation;
-	this.relativeRange = relativeRange;
 };
+
+OO.initClass( ve.dm.NodeAnnotationRange );
 
 /* Getters */
 
@@ -30,7 +31,7 @@ ve.dm.NodeAnnotationRange = function VeDmNodeAnnotationRange( node, annotation, 
  * @property {ve.Range} range Absolute range, accessor for backward compatibility
  */
 Object.defineProperty( ve.dm.NodeAnnotationRange.prototype, 'range', { get: function () {
-	return this.getAbsoluteRange();
+	return this.nodeRange.getAbsoluteRange();
 }, enumerable: true, configurable: false } );
 
 /* Methods */
@@ -40,11 +41,4 @@ Object.defineProperty( ve.dm.NodeAnnotationRange.prototype, 'range', { get: func
  */
 ve.dm.NodeAnnotationRange.prototype.getAnnotation = function () {
 	return this.annotation;
-};
-
-/**
- * @return {ve.Range} The absolute range (i.e. the relative to the document node)
- */
-ve.dm.NodeAnnotationRange.prototype.getAbsoluteRange = function () {
-	return this.relativeRange.translate( this.node.getOffset() );
 };

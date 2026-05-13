@@ -140,12 +140,15 @@ QUnit.test( 'getAnnotationRanges', ( assert ) => {
 		const doc = ve.dm.converter.getModelFromDom(
 			ve.createDocumentFromHtml( domToDataCase.body || domToDataCase.fromDataBody )
 		);
-		const annotationRanges = doc.getDocumentNode().getAnnotationRanges().map( ( { node, annotation, relativeRange, range } ) => {
+		const annotationRanges = doc.getDocumentNode().getAnnotationRanges().map( ( nodeAnnotationRange ) => {
+			const annotation = nodeAnnotationRange.getAnnotation();
+			const nodeRange = nodeAnnotationRange.nodeRange;
+			const range = nodeAnnotationRange.range;
 			const el = annotation.getClonedElement();
 			delete el.originalDomElementsHash;
 			assert.deepEqual(
-				range,
-				relativeRange.translate( node.getOffset() ),
+				nodeAnnotationRange.range,
+				nodeRange.relativeRange.translate( nodeRange.node.getOffset() ),
 				'"range" accessor gives absolute range'
 			);
 			return [ range.start, range.end, el ];
