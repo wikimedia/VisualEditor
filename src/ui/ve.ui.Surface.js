@@ -586,9 +586,10 @@ ve.ui.Surface.prototype.onModelSelect = function () {
  *
  * @param {ve.dm.Selection} [selectionModel] Optional selection model, defaults to current selection
  * @param {Object} [scrollConfig] Scroll config options, passed to ve.scrollIntoView
+ * @param {boolean} [isAdjustment] (For internal use) Whether this scroll is an adjustment after a previous scroll
  * @fires ve.ui.Surface#scroll
  */
-ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scrollConfig ) {
+ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scrollConfig, isAdjustment ) {
 	selectionModel = selectionModel || this.getModel().getSelection();
 
 	const view = this.getView(),
@@ -612,6 +613,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 	clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
 
 	const padding = ve.copy( this.getPadding() );
+	const paddingBefore = ve.copy( padding );
 
 	let animate = true;
 	if ( isNative ) {
@@ -653,13 +655,20 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 	padding.left += 5;
 	padding.right += 5;
 
-	ve.scrollIntoView( clientRect, ve.extendObject( {
+	return ve.scrollIntoView( clientRect, ve.extendObject( {
 		animate,
 		scrollContainer: this.$scrollContainer[ 0 ],
 		padding
 	}, scrollConfig ) ).then( () => {
-		if ( isNative ) {
-			// TODO: This event has only even been emitted for native selection
+		if ( !isAdjustment && !OO.compare( this.getPadding(), paddingBefore ) ) {
+			this.scrollSelectionIntoView(
+				selectionModel,
+				// Adjustment scroll should always be fast, as it's probably quite small.
+				ve.extendObject( scrollConfig, { duration: 100 } ),
+				true
+			);
+		} else if ( isNative ) {
+			// TODO: This event has only ever been emitted for native selection
 			// scroll changes. Perhaps rename it.
 			this.emit( 'scroll' );
 		}
