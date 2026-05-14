@@ -95,6 +95,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 	this.progresses = [];
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
 	this.scrollSelectionIntoViewDebounced = ve.debounce( this.scrollSelectionIntoView.bind( this ), 500 );
+	this.scrollSelectionIntoViewPromise = $.Deferred().resolve().promise();
 	this.debugBar = null;
 	this.placeholder = null;
 	this.placeholderVisible = false;
@@ -589,95 +590,106 @@ ve.ui.Surface.prototype.onModelSelect = function () {
  * @param {Object} [scrollConfig.extraPadding] Extra padding to apply when scrolling into view, added to surface padding.
  *  Defaults to 5px on each side. Use this instead of scrollConfig.padding to avoid having to calculate the surface padding yourself.
  * @param {boolean} [isAdjustment] (For internal use) Whether this scroll is an adjustment after a previous scroll
+ * @return {jQuery.Promise} Promise resolved when scrolling is complete
  * @fires ve.ui.Surface#scroll
  */
 ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scrollConfig, isAdjustment ) {
-	selectionModel = selectionModel || this.getModel().getSelection();
-	scrollConfig = scrollConfig || {};
-
-	const view = this.getView(),
-		selectionView = view.getSelection( selectionModel ),
-		isNative = selectionView.isNativeCursor();
-
-	// Scroll is suppressed, e.g. by selectAll
-	if ( view.noScrollSelecting ) {
-		return;
+	// TODO: Use the jQuery animation queue upstream in OOUI
+	if ( this.scrollSelectionIntoViewPromise.state() === 'resolved' ) {
+		// Reset promise to avoid memory leak from long chains of promises
+		this.scrollSelectionIntoViewPromise = ve.createDeferred().resolve().promise();
 	}
 
-	// We only care about the focus end of the selection, the anchor never
-	// moves and should be allowed off screen.
-	let clientRect = selectionView.getSelectionFocusRect();
-	const surfaceRect = this.getBoundingClientRect();
-	if ( !clientRect || !surfaceRect ) {
-		return;
-	}
+	this.scrollSelectionIntoViewPromise = this.scrollSelectionIntoViewPromise.then( () => {
+		selectionModel = selectionModel || this.getModel().getSelection();
+		scrollConfig = scrollConfig || {};
 
-	// We want viewport-relative coordinates, so we need to translate it
-	clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
+		const view = this.getView(),
+			selectionView = view.getSelection( selectionModel ),
+			isNative = selectionView.isNativeCursor();
 
-	const padding = ve.copy( this.getPadding() );
-	const paddingBefore = ve.copy( padding );
+		// Scroll is suppressed, e.g. by selectAll
+		if ( view.noScrollSelecting ) {
+			return ve.createDeferred().resolve().promise();
+		}
 
-	let animate = true;
-	if ( isNative ) {
-		animate = false;
-		if (
-			OO.ui.isMobile() &&
-			!selectionModel.isCollapsed()
-		) {
-			const profile = $.client.profile();
-			// Assume that if the selection has been expanded, then a context menu is visible
-			// above the selection. We don't want this to obscure the toolbar so add on an
-			// estimate of its height.
-			// Previously we applied this fix to iOS, even though scrolling closed the context,
-			// because the user could touch the selection to re-open it. However sometime between
-			// iOS 12 and 12.3, scrolling stopped closing the context, but it doesn't move it either,
-			// so this fix became useless.
-			// Older versions of Android draw the context menu in the address bar and so
-			// don't need to be fixed.
-			if ( profile.name === 'android' && profile.versionNumber >= 6 ) {
-				padding.top += 60;
+		// We only care about the focus end of the selection, the anchor never
+		// moves and should be allowed off screen.
+		let clientRect = selectionView.getSelectionFocusRect();
+		const surfaceRect = this.getBoundingClientRect();
+		if ( !clientRect || !surfaceRect ) {
+			return ve.createDeferred().resolve().promise();
+		}
+
+		// We want viewport-relative coordinates, so we need to translate it
+		clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
+
+		const padding = ve.copy( this.getPadding() );
+		const paddingBefore = ve.copy( padding );
+
+		let animate = true;
+		if ( isNative ) {
+			animate = false;
+			if (
+				OO.ui.isMobile() &&
+				!selectionModel.isCollapsed()
+			) {
+				const profile = $.client.profile();
+				// Assume that if the selection has been expanded, then a context menu is visible
+				// above the selection. We don't want this to obscure the toolbar so add on an
+				// estimate of its height.
+				// Previously we applied this fix to iOS, even though scrolling closed the context,
+				// because the user could touch the selection to re-open it. However sometime between
+				// iOS 12 and 12.3, scrolling stopped closing the context, but it doesn't move it either,
+				// so this fix became useless.
+				// Older versions of Android draw the context menu in the address bar and so
+				// don't need to be fixed.
+				if ( profile.name === 'android' && profile.versionNumber >= 6 ) {
+					padding.top += 60;
+				}
+				// Also assume there are selection handles below on Android. (T204718)
+				if ( profile.name === 'android' || profile.name === 'firefox' ) {
+					padding.bottom += 30;
+				}
 			}
-			// Also assume there are selection handles below on Android. (T204718)
-			if ( profile.name === 'android' || profile.name === 'firefox' ) {
-				padding.bottom += 30;
+		} else {
+			// Don't attempt to scroll non-native selections into view if they
+			// are taller than the viewport (T305862).
+			const viewportDimensions = this.getViewportDimensions();
+			if ( clientRect.height > viewportDimensions.height ) {
+				return ve.createDeferred().resolve().promise();
 			}
 		}
-	} else {
-		// Don't attempt to scroll non-native selections into view if they
-		// are taller than the viewport (T305862).
-		const viewportDimensions = this.getViewportDimensions();
-		if ( clientRect.height > viewportDimensions.height ) {
-			return;
-		}
-	}
 
-	// Add some minimum padding so the selection doesn't touch the edge of the viewport
-	const extraPadding = ve.extendObject( { top: 5, right: 5, bottom: 5, left: 5 }, scrollConfig.extraPadding );
+		// Add some minimum padding so the selection doesn't touch the edge of the viewport
+		const extraPadding = ve.extendObject( { top: 5, right: 5, bottom: 5, left: 5 }, scrollConfig.extraPadding );
 
-	padding.top += extraPadding.top;
-	padding.bottom += extraPadding.bottom;
-	padding.left += extraPadding.left;
-	padding.right += extraPadding.right;
+		padding.top += extraPadding.top;
+		padding.bottom += extraPadding.bottom;
+		padding.left += extraPadding.left;
+		padding.right += extraPadding.right;
 
-	return ve.scrollIntoView( clientRect, ve.extendObject( {
-		animate,
-		scrollContainer: this.$scrollContainer[ 0 ],
-		padding
-	}, scrollConfig ) ).then( () => {
-		if ( !isAdjustment && !OO.compare( this.getPadding(), paddingBefore ) ) {
-			this.scrollSelectionIntoView(
-				selectionModel,
-				// Adjustment scroll should always be fast, as it's probably quite small.
-				ve.extendObject( scrollConfig, { duration: 100 } ),
-				true
-			);
-		} else if ( isNative ) {
-			// TODO: This event has only ever been emitted for native selection
-			// scroll changes. Perhaps rename it.
-			this.emit( 'scroll' );
-		}
+		return ve.scrollIntoView( clientRect, ve.extendObject( {
+			animate,
+			scrollContainer: this.$scrollContainer[ 0 ],
+			padding
+		}, scrollConfig ) ).then( () => {
+			if ( !isAdjustment && !OO.compare( this.getPadding(), paddingBefore ) ) {
+				// We don't need to chain this promise as this.scrollSelectionIntoViewPromise handles chaining
+				this.scrollSelectionIntoView(
+					selectionModel,
+					// Adjustment scroll should always be fast, as it's probably quite small.
+					ve.extendObject( scrollConfig, { duration: 100 } ),
+					true
+				);
+			} else if ( isNative ) {
+				// TODO: This event has only ever been emitted for native selection
+				// scroll changes. Perhaps rename it.
+				this.emit( 'scroll' );
+			}
+		} );
 	} );
+	return this.scrollSelectionIntoViewPromise;
 };
 
 // Deprecated alias
