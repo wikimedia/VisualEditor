@@ -459,8 +459,12 @@ ve.ui.Surface.prototype.getDialogs = function () {
  * @return {ve.ui.WindowManager} Toolbar dialogs window set
  */
 ve.ui.Surface.prototype.getToolbarDialogs = function ( position = 'side' ) {
-	this.toolbarDialogs[ position ] = this.toolbarDialogs[ position ] ||
-		new ve.ui.ToolbarDialogWindowManager( this, { factory: ve.ui.windowFactory } );
+	if ( !this.toolbarDialogs[ position ] ) {
+		this.toolbarDialogs[ position ] = new ve.ui.ToolbarDialogWindowManager( this, { factory: ve.ui.windowFactory } );
+		this.toolbarDialogs[ position ].on( 'resize', () => {
+			this.recalculatePadding();
+		} );
+	}
 	return this.toolbarDialogs[ position ];
 };
 
