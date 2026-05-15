@@ -178,8 +178,13 @@ ve.ui.MobileContext.prototype.isVisible = function () {
 ve.ui.MobileContext.prototype.isInspectable = function () {
 	// Parent method
 	return ve.ui.MobileContext.super.prototype.isInspectable.call( this ) &&
-		// Suppress context when virtual keyboard is visible
-		!this.getSurface().getTarget().isVirtualKeyboardOpen();
+		// Suppress context when
+		!(
+			// ...the virtual keyboard is open
+			this.getSurface().getTarget().isVirtualKeyboardOpen() &&
+			// ...the virtual keyboard isn't about to close
+			this.getSurface().getView().hasNativeCursorSelection()
+		);
 };
 
 /**
