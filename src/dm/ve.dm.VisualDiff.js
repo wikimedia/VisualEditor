@@ -942,25 +942,30 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 		newDocInternalListNode = newInternalList.getListNode();
 
 	/**
-	 * @param {number[]} indexOrder Possibly a sparse array
+	 * @param {ve.dm.InternalListNodeGroup} nodeGroup
 	 * @param {ve.dm.Node[]} nodes
 	 * @param {number} [action] One of the {@link ve.DiffMatchPatch}.static.DIFF_… constants
 	 * @return {{toDiff: ve.dm.Node[], indices: Object[]}}
 	 */
-	function getInternalListItemsToDiff( indexOrder, nodes, action ) {
+	function getInternalListItemsToDiff( nodeGroup, nodes, action ) {
 		const toDiff = [];
 		const indices = [];
 
-		indexOrder.forEach( ( nodeIndex, j ) => {
-			if ( nodeIndex !== null ) {
-				toDiff.push( nodes[ nodeIndex ] );
+		const nodeLookup = nodeGroup.buildReflistNumbering();
+		Object.values( nodeLookup )
+			.sort( ( a, b ) => ( a.topLevelNumber !== b.topLevelNumber ) ?
+				a.topLevelNumber - b.topLevelNumber :
+				( a.subrefNumber || 0 ) - ( b.subrefNumber || 0 )
+			)
+			.forEach( ( ref ) => {
+				toDiff.push( nodes[ ref.internalListIndex ] );
 				indices.push( {
 					diff: action,
-					indexOrder: j,
-					nodeIndex
+					// TODO: replace with the fully-rendered label
+					indexOrder: ref.topLevelNumber - 1,
+					nodeIndex: ref.internalListIndex
 				} );
-			}
-		} );
+			} );
 
 		return { toDiff, indices };
 	}
@@ -996,11 +1001,11 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 				// Diff internal list items
 				diff = this.diffList(
 					getInternalListItemsToDiff(
-						oldDocNodeGroups[ group.group ].indexOrder,
+						oldDocNodeGroups[ group.group ],
 						oldDocInternalListNode.children
 					).toDiff,
 					getInternalListItemsToDiff(
-						newDocNodeGroups[ group.group ].indexOrder,
+						newDocNodeGroups[ group.group ],
 						newDocInternalListNode.children
 					).toDiff
 				);
@@ -1013,7 +1018,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 			case 'insert': {
 				// Get new doc internal list items for this group and mark as inserted
 				const listItems = getInternalListItemsToDiff(
-					newDocNodeGroups[ group.group ].indexOrder,
+					newDocNodeGroups[ group.group ],
 					newDocInternalListNode.children,
 					ve.DiffMatchPatch.static.DIFF_INSERT
 				);
@@ -1025,7 +1030,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 			case 'remove': {
 				// Get old doc internal list items for this group and mark as removed
 				const listItems = getInternalListItemsToDiff(
-					oldDocNodeGroups[ group.group ].indexOrder,
+					oldDocNodeGroups[ group.group ],
 					oldDocInternalListNode.children,
 					ve.DiffMatchPatch.static.DIFF_DELETE
 				);
