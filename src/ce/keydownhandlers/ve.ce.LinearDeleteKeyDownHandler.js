@@ -207,8 +207,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 
 		const documentModelSelectedNodes = documentModel.selectNodes( rangeToRemove, 'siblings' );
 		for ( let i = 0; i < documentModelSelectedNodes.length; i++ ) {
-			const node = documentModelSelectedNodes[ i ].node;
-			const nodeOuterRange = documentModelSelectedNodes[ i ].nodeOuterRange;
+			const { node, nodeOuterRange } = documentModelSelectedNodes[ i ];
 			let adjacentBlockSelection = null;
 			if ( node instanceof ve.dm.TableNode ) {
 				// Prevent backspacing/deleting over table cells

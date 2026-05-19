@@ -997,8 +997,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteFromExternalContextRange = function (
 	// Sanitize context to match data
 	this.afterPasteSanitize( context, isMultiline );
 
-	let leftText = beforePasteData.leftText;
-	let rightText = beforePasteData.rightText;
+	let { leftText, rightText } = beforePasteData;
 
 	// Remove matching context from the left
 	let left = 0;

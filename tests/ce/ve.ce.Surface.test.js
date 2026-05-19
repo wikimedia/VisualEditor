@@ -31,17 +31,19 @@ QUnit.module( 've.ce.Surface', {
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	let promise = Promise.resolve();
 	const then = ( f ) => {
-			promise = promise.then( f );
-		},
-		htmlOrDoc = caseItem.htmlOrDoc,
-		rangeOrSelection = caseItem.rangeOrSelection,
-		keys = caseItem.keys,
-		expectedData = caseItem.expectedData,
-		expectedRangeOrSelection = caseItem.expectedRangeOrSelection,
-		expectedDefaultPrevented = caseItem.expectedDefaultPrevented,
-		msg = caseItem.msg,
-		forceSelection = caseItem.forceSelection,
-		view = typeof htmlOrDoc === 'string' ?
+		promise = promise.then( f );
+	};
+	const {
+		htmlOrDoc,
+		rangeOrSelection,
+		keys,
+		expectedData,
+		expectedRangeOrSelection,
+		expectedDefaultPrevented,
+		msg,
+		forceSelection
+	} = caseItem;
+	const view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc, caseItem.surfaceConfig ) :
 			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument(), caseItem.surfaceConfig ) ),
 		model = view.getModel(),

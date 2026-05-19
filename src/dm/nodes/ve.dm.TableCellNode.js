@@ -79,8 +79,7 @@ ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
 ve.dm.TableCellNode.static.setAlignmentAttributes = function ( attributes, domElements ) {
 	const align = domElements[ 0 ].getAttribute( 'align' );
 	const valign = domElements[ 0 ].getAttribute( 'valign' );
-	const textAlign = domElements[ 0 ].style.textAlign;
-	const verticalAlign = domElements[ 0 ].style.verticalAlign;
+	const { textAlign, verticalAlign } = domElements[ 0 ].style;
 	if ( align ) {
 		attributes.align = align;
 	}

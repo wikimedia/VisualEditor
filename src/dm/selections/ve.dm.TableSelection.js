@@ -420,9 +420,8 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( doc, fromColOffset
 
 	function adjust( mode, cell, offset ) {
 		const dir = offset > 0 ? 1 : -1;
-		let nextCell,
-			col = cell.col,
-			row = cell.row;
+		let nextCell;
+		let { col, row } = cell;
 
 		while ( offset !== 0 ) {
 			if ( mode === 'col' ) {

@@ -161,8 +161,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function ensureText( position ) {
-		const node = position.node,
-			offset = position.offset;
+		const { node, offset } = position;
 		if ( node.type === 'text' ) {
 			return position;
 		}
@@ -186,8 +185,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function ensureNotText( position ) {
-		const node = position.node,
-			offset = position.offset;
+		const { node, offset } = position;
 		if ( node.type !== 'text' ) {
 			return position;
 		}

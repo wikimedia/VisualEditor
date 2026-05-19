@@ -80,8 +80,7 @@ ve.Range.static.newCoveringRange = function ( ranges, backwards ) {
 	if ( ranges.length === 0 ) {
 		throw new Error( 'newCoveringRange() requires at least one range' );
 	}
-	let minStart = ranges[ 0 ].start;
-	let maxEnd = ranges[ 0 ].end;
+	let { start: minStart, end: maxEnd } = ranges[ 0 ];
 	ranges.forEach( ( range, i ) => {
 		if ( i === 0 ) {
 			return;

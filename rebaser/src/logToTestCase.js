@@ -32,9 +32,7 @@ function toTestCase( parsedLog ) {
 		ops = [],
 		clientStates = {};
 	for ( let i = 0; i < parsedLog.length; i++ ) {
-		const type = parsedLog[ i ].type;
-		const authorId = parsedLog[ i ].authorId;
-		const clientId = parsedLog[ i ].clientId;
+		const { type, authorId, clientId } = parsedLog[ i ];
 		if ( type === 'newClient' ) {
 			clients.push( authorId );
 			clientStates[ authorId ] = {

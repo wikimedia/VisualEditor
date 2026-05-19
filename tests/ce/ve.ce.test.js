@@ -357,9 +357,7 @@ QUnit.test( 'fakeImes', ( assert ) => {
 		// Start at 1 to omit the testInfo
 		let died = false;
 		for ( let j = 1; j < testActions.length; j++ ) {
-			const action = testActions[ j ].action;
-			const args = testActions[ j ].args;
-			const seq = testActions[ j ].seq;
+			const { action, args, seq } = testActions[ j ];
 			if ( !died ) {
 				if ( action === 'sendEvent' ) {
 					// TODO: make preventDefault work

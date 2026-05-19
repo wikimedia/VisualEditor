@@ -105,18 +105,17 @@ ve.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
  * @throws {Error} Failed to select any nodes
  */
 ve.Document.prototype.selectNodes = function ( range, mode = 'leaves' ) {
-	const doc = this.getDocumentNode(),
-		start = range.start,
-		end = range.end,
-		stack = [ {
-			// Node we are currently stepping through
-			// Note each iteration visits a child of node, not node itself
-			node: doc,
-			// Index of the child in node we're visiting
-			index: 0,
-			// First offset inside node
-			startOffset: 0
-		} ];
+	const doc = this.getDocumentNode();
+	const { start, end } = range;
+	const stack = [ {
+		// Node we are currently stepping through
+		// Note each iteration visits a child of node, not node itself
+		node: doc,
+		// Index of the child in node we're visiting
+		index: 0,
+		// First offset inside node
+		startOffset: 0
+	} ];
 	let retval = [],
 		currentFrame = stack[ 0 ],
 		startFound = false;

@@ -3157,8 +3157,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding = 0 ) {
 	 * @return {number} DM offset
 	 */
 	const binarySearch = ( offset, range, side, isStart ) => {
-		let start = range.start,
-			end = range.end,
+		let { start, end } = range,
 			lastLength = Infinity;
 
 		while ( range.getLength() < lastLength ) {

@@ -564,9 +564,8 @@ ve.ui.DiffElement.prototype.getChangedNodeData = function ( diff, oldNode, newNo
  * @return {ve.dm.LinearData.Item[]} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedLeafNodeData = function ( newNode, diff ) {
-	const nodeData = this.constructor.static.getDataFromNode( newNode ),
-		linearDiff = diff.linearDiff,
-		attributeChange = diff.attributeChange;
+	const nodeData = this.constructor.static.getDataFromNode( newNode );
+	const { linearDiff, attributeChange } = diff;
 
 	if ( linearDiff ) {
 		// If there is a content change, splice it in
@@ -1015,13 +1014,15 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
  */
 ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldTreeNode, newTreeNode, diff ) {
 	const nodeData = this.constructor.static.getDataFromNode( newTreeNode ),
-		nodeRange = newTreeNode.getOuterRange(),
-		treeDiff = diff.treeDiff,
-		diffInfo = diff.diffInfo,
-		oldNodes = diff.oldTreeOrderedNodes,
-		newNodes = diff.newTreeOrderedNodes,
-		correspondingNodes = diff.correspondingNodes,
-		structuralRemoves = [],
+		nodeRange = newTreeNode.getOuterRange();
+	const {
+		treeDiff,
+		diffInfo,
+		oldTreeOrderedNodes: oldNodes,
+		newTreeOrderedNodes: newNodes,
+		correspondingNodes
+	} = diff;
+	const structuralRemoves = [],
 		highestRemovedAncestors = {};
 
 	/**

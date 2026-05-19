@@ -120,9 +120,7 @@ ve.dm.ProtocolServer.prototype.onLogEvent = function ( context, event ) {
  * @param {Function} [usernameGenerator] Function which returns a username, with an authorID argument
  */
 ve.dm.ProtocolServer.prototype.welcomeClient = function ( context, startLength = 0, usernameGenerator = undefined ) {
-	const docName = context.docName,
-		serverId = context.serverId,
-		authorId = context.authorId;
+	const { docName, serverId, authorId } = context;
 
 	this.rebaseServer.updateDocState( docName, authorId, null, {
 		name: usernameGenerator ? usernameGenerator( authorId ) : 'User ' + authorId,

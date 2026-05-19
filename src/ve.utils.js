@@ -1119,8 +1119,7 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
  * @see ve.isHardCursorStep
  */
 ve.adjacentDomPosition = function ( position, direction, options ) {
-	let node = position.node,
-		offset = position.offset;
+	let { node, offset } = position;
 	const steps = [];
 
 	const noDescend = options.noDescend || ve.rejectsCursor;

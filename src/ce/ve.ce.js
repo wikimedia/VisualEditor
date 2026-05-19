@@ -88,8 +88,7 @@ ve.ce.getDomText = function ( element ) {
  * @return {string} Hash of DOM element
  */
 ve.ce.getDomHash = function ( element ) {
-	const nodeType = element.nodeType,
-		nodeName = element.nodeName;
+	const { nodeType, nodeName } = element;
 	let hash = '';
 
 	if ( nodeType === Node.TEXT_NODE || nodeType === Node.CDATA_SECTION_NODE ) {
