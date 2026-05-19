@@ -136,3 +136,53 @@ QUnit.test( 'getUniqueListKey', ( assert ) => {
 	generatedName = internalList.getNodeGroup( 'g2' ).getUniqueListKey( 'auto/4', 'literal/:' );
 	assert.strictEqual( generatedName, 'literal/:0', 'Different groups are treated separately' );
 } );
+
+QUnit.test( 'buildReflistNumbering', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument( 'references' );
+	const internalList = doc.getInternalList();
+	const nodeGroup = internalList.getNodeGroup( 'g1' );
+
+	const result = nodeGroup.buildReflistNumbering();
+
+	assert.deepEqual( result,
+		[
+			{
+				internalListIndex: 0,
+				topLevelNumber: 1
+			}
+		]
+	);
+} );
+
+QUnit.test( 'buildReflistNumbering with sub-references', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument( 'sub-references' );
+	const internalList = doc.getInternalList();
+	const nodeGroup = internalList.getNodeGroup( '' );
+
+	const result = nodeGroup.buildReflistNumbering();
+
+	assert.deepEqual( result,
+		[
+			{
+				internalListIndex: 0,
+				mainListIndex: 1,
+				subrefNumber: 1,
+				topLevelNumber: 1
+			},
+			{
+				internalListIndex: 1,
+				topLevelNumber: 1
+			},
+			{
+				internalListIndex: 2,
+				mainListIndex: 3,
+				subrefNumber: 1,
+				topLevelNumber: 2
+			},
+			{
+				internalListIndex: 3,
+				topLevelNumber: 2
+			}
+		]
+	);
+} );

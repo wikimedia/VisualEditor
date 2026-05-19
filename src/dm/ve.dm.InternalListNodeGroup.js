@@ -47,6 +47,29 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	this.indexOrder = [];
 };
 
+/* Inheritance */
+
+OO.initClass( ve.dm.InternalListNodeGroup );
+
+/* Types */
+
+/**
+ * @typedef {Object} ve.dm.InternalListNodeGroup.RefInfo
+ * @property {number} internalListIndex list index of the ve.dm.InternalItemNode
+ *   in a ve.dm.InternalList.
+ * @property {number} [mainListIndex] List index of a sub-reference's parent, or
+ *   omitted for a main reference.
+ * @property {number} topLevelNumber Main footnote number.  For a sub-reference,
+ *   this is the number of the parent.
+ * @property {number} [subrefNumber] Sub-reference footnote number, or omitted
+ *   for a main reference.
+ * @property {ve.dm.InternalListNodeGroup.RefInfo[]} [subrefs] Only
+ *   included in the "buildReflistStructure" output flavor. This is a list of
+ *   sub-references on a main ref, in document order.
+ */
+
+/* Methods */
+
 /**
  * @return {boolean}
  */
@@ -300,4 +323,58 @@ ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, 
 
 	this.uniqueListKeys[ oldListKey ] = result;
 	return result;
+};
+
+/**
+ * Calculate the numbering that will be assigned to each reference in the internal list group.
+ *
+ * @return {ve.dm.InternalListNodeGroup.RefInfo[]}
+ */
+ve.dm.InternalListNodeGroup.prototype.buildReflistNumbering = function () {
+	const footnoteNumberLookup = {};
+	const subRefsByMain = {};
+	let topLevelCounter = 1;
+
+	const getOrAllocateTopLevelNumber = function ( listIndex ) {
+		if ( !( listIndex in footnoteNumberLookup ) ) {
+			const topLevelNumber = topLevelCounter++;
+			footnoteNumberLookup[ listIndex ] = {
+				internalListIndex: listIndex,
+				topLevelNumber
+			};
+		}
+		return footnoteNumberLookup[ listIndex ].topLevelNumber;
+	};
+
+	const addSubref = function ( mainListIndex, subRefIndex, subRefNode ) {
+		if ( !( mainListIndex in subRefsByMain ) ) {
+			subRefsByMain[ mainListIndex ] = [];
+		}
+		subRefsByMain[ mainListIndex ].push( subRefNode );
+		const subrefNumber = subRefsByMain[ mainListIndex ].length;
+
+		const topLevelNumber = getOrAllocateTopLevelNumber( mainListIndex );
+		footnoteNumberLookup[ subRefIndex ] = {
+			internalListIndex: subRefIndex,
+			mainListIndex,
+			topLevelNumber,
+			subrefNumber
+		};
+
+		return footnoteNumberLookup[ subRefIndex ];
+	};
+
+	this.getFirstNodesInIndexOrder()
+		.filter( ( node ) => !node.getAttribute( 'placeholder' ) )
+		.forEach( ( node ) => {
+			const listIndex = node.getAttribute( 'listIndex' );
+			const mainListIndex = node.getAttribute( 'mainListIndex' );
+			if ( mainListIndex !== undefined ) {
+				addSubref( mainListIndex, listIndex, node );
+			} else {
+				getOrAllocateTopLevelNumber( listIndex );
+			}
+		} );
+
+	return Object.values( footnoteNumberLookup );
 };

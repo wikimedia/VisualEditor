@@ -724,6 +724,71 @@ ve.dm.example.references = [
 	// 28
 ];
 
+ve.dm.example[ 'sub-references' ] = [
+	{ type: 'paragraph' },
+	...'Simple main plus details',
+	{ type: 'stubReference',
+		attributes: {
+			listGroup: '',
+			listKey: 'auto/0',
+			listIndex: 0,
+			mainBodyHtml: 'main plus details (body)',
+			mainListKey: 'literal/main1',
+			mainListIndex: 1
+		}
+	},
+	{ type: '/stubReference' },
+	{ type: '/paragraph' },
+	{ type: 'paragraph' },
+	...'Sub before main',
+	{
+		type: 'stubReference',
+		attributes: {
+			listGroup: '',
+			listKey: 'auto/1',
+			listIndex: 2,
+			mainListKey: 'literal/main',
+			mainListIndex: 3
+		}
+	},
+	{ type: '/stubReference' },
+	{ type: '/paragraph' },
+	{ type: 'paragraph' },
+	...'Main for sub',
+	{
+		type: 'stubReference',
+		attributes: {
+			listGroup: '',
+			listKey: 'literal/main',
+			listIndex: 3
+		}
+	},
+	{ type: '/stubReference' },
+	{ type: '/paragraph' },
+	{ type: 'internalList' },
+	{ type: 'internalItem' },
+	{ type: 'paragraph' },
+	...'p. 123',
+	{ type: '/paragraph' },
+	{ type: '/internalItem' },
+	{ type: 'internalItem' },
+	{ type: 'paragraph' },
+	...'main plus details (body)',
+	{ type: '/paragraph' },
+	{ type: '/internalItem' },
+	{ type: 'internalItem' },
+	{ type: 'paragraph' },
+	...'p. 321',
+	{ type: '/paragraph' },
+	{ type: '/internalItem' },
+	{ type: 'internalItem' },
+	{ type: 'paragraph' },
+	...'Standalone main',
+	{ type: '/paragraph' },
+	{ type: '/internalItem' },
+	{ type: '/internalList' }
+];
+
 ve.dm.example.internalData.internalItems = [
 	{ group: 'test', key: 'bar', body: 'Bar' },
 	{ group: 'test', key: 'baz', body: 'Baz' }
