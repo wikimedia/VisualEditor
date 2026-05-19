@@ -220,8 +220,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			attributes = element.attributes || null;
 		} else if ( Array.isArray( element ) ) {
 			$label.addClass( 've-ui-debugBar-dump-achar' );
-			text = element[ 0 ];
-			annotations = element[ 1 ];
+			[ text, annotations ] = element;
 		} else {
 			$label.addClass( 've-ui-debugBar-dump-char' );
 			text = element;

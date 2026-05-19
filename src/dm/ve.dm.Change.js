@@ -548,9 +548,7 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 		};
 	}
 
-	const op0 = tx.operations[ 0 ];
-	const op1 = tx.operations[ 1 ];
-	const op2 = tx.operations[ 2 ];
+	const [ op0, op1, op2 ] = tx.operations;
 	let replaceOp, start, end, docLength;
 	if (
 		op0 &&

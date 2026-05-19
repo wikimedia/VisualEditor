@@ -55,10 +55,7 @@ ve.DiffMatchPatch.prototype.isEqualString = function ( a, b ) {
 	if ( a === b ) {
 		return true;
 	}
-	if ( a === null || b === null ) {
-		return false;
-	}
-	if ( a.length !== b.length ) {
+	if ( !a || !b || a.length !== b.length ) {
 		return false;
 	}
 
@@ -78,6 +75,12 @@ ve.DiffMatchPatch.prototype.getEmptyString = function () {
 	return [];
 };
 
+/**
+ * @param {ve.dm.LinearData.Item[]} text
+ * @param {ve.dm.LinearData.Item[]} searchValue
+ * @param {number} [fromIndex]
+ * @return {number}
+ */
 ve.DiffMatchPatch.prototype.indexOf = function indexOf( text, searchValue, fromIndex ) {
 	// fromIndex defaults to 0 and is bounded by 0 and text.length
 	// Note that indexOf( 'foo', '', 99 ) is supposed to return 3 (text.length), which is why we allow
@@ -102,6 +105,12 @@ ve.DiffMatchPatch.prototype.indexOf = function indexOf( text, searchValue, fromI
 	return -1;
 };
 
+/**
+ * @param {ve.dm.LinearData.Item[]} text
+ * @param {ve.dm.LinearData.Item[]} searchValue
+ * @param {number} [fromIndex]
+ * @return {number}
+ */
 ve.DiffMatchPatch.prototype.lastIndexOf = function lastIndexOf( text, searchValue, fromIndex ) {
 	const iLen = text.length - searchValue.length;
 	// fromIndex defaults to the end, and must be greater than 0
@@ -159,23 +168,19 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	 * Get the index of the first or last wordbreak in a data array
 	 *
 	 * @param {ve.dm.LinearData.Item[]} data Linear data
-	 * @param {boolean} reversed Get the index of the last wordbreak
+	 * @param {boolean} [reversed=false] Get the index of the last wordbreak
 	 * @return {number|null} Index of the first or last wordbreak, or null if no
 	 *  wordbreak was found
 	 */
 	function findWordbreaks( data, reversed ) {
 		const dataString = new ve.dm.DataString( data );
 
-		const offset = unicodeJS.wordbreak.moveBreakOffset(
-			reversed ? -1 : 1,
-			dataString,
-			reversed ? data.length : 0
-		);
-
-		if ( ( reversed && offset === 0 ) || ( !reversed && offset === data.length ) ) {
-			return null;
+		if ( !reversed ) {
+			const offset = unicodeJS.wordbreak.moveBreakOffset( 1, dataString, 0 );
+			return offset < data.length ? offset : null;
 		} else {
-			return offset;
+			const offset = unicodeJS.wordbreak.moveBreakOffset( -1, dataString, data.length );
+			return offset > 0 ? offset : null;
 		}
 	}
 
@@ -236,10 +241,13 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 
 		// Where the same data is removed and inserted, replace it with a retain
 		for ( let i = 0; i < diff.length; i++ ) {
-			const action = diff[ i ][ 0 ];
-			const data = diff[ i ][ 1 ];
+			const [ action, data ] = diff[ i ];
 			// Should improve on JSON.stringify
-			if ( ( action > 0 || previousAction > 0 ) && action + previousAction === 0 && JSON.stringify( data ) === JSON.stringify( previousData ) ) {
+			if ( action !== DIFF_EQUAL &&
+				// When the two actions are the exact opposite, e.g. DIFF_DELETE and DIFF_INSERT
+				action === -previousAction &&
+				JSON.stringify( data ) === JSON.stringify( previousData )
+			) {
 				diff.splice( i - 1, 2, [ DIFF_EQUAL, data ] );
 				i++;
 			}
@@ -251,12 +259,12 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 
 		// Join any consecutive actions that are the same
 		for ( let i = 0; i < diff.length; i++ ) {
-			const action = diff[ i ][ 0 ];
+			const [ action, data ] = diff[ i ];
 			if ( action === previousAction ) {
-				ve.batchPush( diff[ i - 1 ][ 1 ], diff[ i ][ 1 ] );
+				ve.batchPush( diff[ i - 1 ][ 1 ], data );
 				diff.splice( i, 1 );
 				i--;
-			} else if ( diff[ i ][ 1 ].length === 0 ) {
+			} else if ( !data.length ) {
 				diff.splice( i, 1 );
 				i--;
 				continue;
@@ -267,8 +275,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		// Convert any retains that do not end and start with spaces into remove-
 		// inserts
 		for ( let i = 0; i < diff.length; i++ ) {
-			const action = diff[ i ][ 0 ];
-			const data = diff[ i ][ 1 ];
+			const [ action, data ] = diff[ i ];
 			if ( action === DIFF_EQUAL ) {
 				let start = [];
 				let end = [];
@@ -306,11 +313,11 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 					// At this point the only portion we want to retain is what's left of
 					// data (if anything; if firstWordbreak === lastWordbreak !== null, then
 					// data has been spliced away completely).
-					if ( start.length > 0 ) {
+					if ( start.length ) {
 						diff.splice( i, 0, [ DIFF_DELETE, start ], [ DIFF_INSERT, start ] );
 						i += 2;
 					}
-					if ( end.length > 0 ) {
+					if ( end.length ) {
 						diff.splice( i + 1, 0, [ DIFF_DELETE, end ], [ DIFF_INSERT, end ] );
 						i += 2;
 					}
@@ -322,34 +329,33 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		// In a sequence of -remove-insert-remove-insert- make the removes into a
 		// single action and the inserts into a single action
 		for ( let i = 0; i < diff.length; i++ ) {
-			const action = diff[ i ][ 0 ];
-			const data = diff[ i ][ 1 ];
+			const [ action, data ] = diff[ i ];
 			if ( action === DIFF_DELETE ) {
 				ve.batchPush( remove, data );
 			} else if ( action === DIFF_INSERT ) {
 				ve.batchPush( insert, data );
-			} else if ( action === DIFF_EQUAL && data.length > 0 ) {
+			} else if ( action === DIFF_EQUAL && data.length ) {
 				if ( data.every( isWhitespace ) ) {
 					ve.batchPush( remove, data );
 					ve.batchPush( insert, data );
 				} else {
-					if ( remove.length > 0 ) {
+					if ( remove.length ) {
 						cleanDiff.push( [ DIFF_DELETE, remove ] );
+						remove = [];
 					}
-					remove = [];
-					if ( insert.length > 0 ) {
+					if ( insert.length ) {
 						cleanDiff.push( [ DIFF_INSERT, insert ] );
+						insert = [];
 					}
-					insert = [];
 					cleanDiff.push( diff[ i ] );
 				}
 			}
 		}
 
-		if ( remove.length > 0 ) {
+		if ( remove.length ) {
 			cleanDiff.push( [ DIFF_DELETE, remove ] );
 		}
-		if ( insert.length > 0 ) {
+		if ( insert.length ) {
 			cleanDiff.push( [ DIFF_INSERT, insert ] );
 		}
 
@@ -357,12 +363,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		// if they have the same character data, or are modified content nodes,
 		// make them changes instead
 		for ( let i = 0, ilen = cleanDiff.length - 1; i < ilen; i++ ) {
-			const aItem = cleanDiff[ i ];
-			const bItem = cleanDiff[ i + 1 ];
-			const aData = aItem[ 1 ];
-			const bData = bItem[ 1 ];
-			const aAction = aItem[ 0 ];
-			const bAction = bItem[ 0 ];
+			const [ aAction, aData ] = cleanDiff[ i ];
+			const [ bAction, bData ] = cleanDiff[ i + 1 ];
 			// If they have the same length content and they are a consecutive
 			// remove and insert, and they have the same content then mark the
 			// old one as a change-remove (-2) and the new one as a change-insert
@@ -419,7 +421,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 				}
 
 				// No need to check bItem against the following item
-				i += 1;
+				i++;
 			}
 		}
 
