@@ -247,6 +247,15 @@ ve.init.Platform.prototype.parseNumber = null;
 ve.init.Platform.prototype.formatNumber = null;
 
 /**
+ * For a number as a string, omitting grouping separators eg. "5000"
+ *
+ * @abstract
+ * @param {number} number Number to be formatted
+ * @return {string} Formatted number
+ */
+ve.init.Platform.prototype.formatNumberWithoutSeparators = null;
+
+/**
  * Get an HTML message from the localization system, with HTML or DOM arguments
  *
  * @abstract

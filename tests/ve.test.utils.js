@@ -23,6 +23,9 @@
 	DummyPlatform.prototype.formatNumber = function ( number ) {
 		return number.toLocaleString();
 	};
+	DummyPlatform.prototype.formatNumberWithoutSeparators = function ( number ) {
+		return number.toLocaleString( undefined, { useGrouping: false } );
+	};
 	DummyPlatform.prototype.getUserLanguages = function () {
 		return [ 'en' ];
 	};

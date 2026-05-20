@@ -143,6 +143,14 @@ ve.init.sa.Platform.prototype.formatNumber = function ( number ) {
 };
 
 /**
+ * @method
+ * @inheritdoc
+ */
+ve.init.sa.Platform.prototype.formatNumberWithoutSeparators = function ( number ) {
+	return number.toLocaleString( undefined, { useGrouping: false } );
+};
+
+/**
  * @inheritdoc
  */
 ve.init.sa.Platform.prototype.getHtmlMessage = function ( key ) {

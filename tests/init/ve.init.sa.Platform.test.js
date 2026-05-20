@@ -130,3 +130,21 @@ QUnit.test( 'parsedMessage', ( assert ) => {
 		);
 	} );
 } );
+
+QUnit.test( 'formatNumber methods', ( assert ) => {
+	const platform = new ve.init.sa.Platform();
+
+	return platform.getInitializedPromise().then( () => {
+		assert.strictEqual(
+			platform.formatNumber( 1234 ),
+			'1,234',
+			'Standalone number formatting'
+		);
+
+		assert.strictEqual(
+			platform.formatNumberWithoutSeparators( 1234 ),
+			'1234',
+			'Standalone number formatting without separators'
+		);
+	} );
+} );
