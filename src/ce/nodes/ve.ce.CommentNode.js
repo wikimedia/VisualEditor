@@ -40,7 +40,7 @@ ve.ce.CommentNode.static.name = 'comment';
 
 ve.ce.CommentNode.static.primaryCommandName = 'comment';
 
-ve.ce.CommentNode.static.iconWhenInvisible = 'speechBubbleNotice';
+ve.ce.CommentNode.static.iconWhenInvisible = 'speechBubbleAlert';
 
 /* Static Methods */
 
