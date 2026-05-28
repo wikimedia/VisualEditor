@@ -20,8 +20,8 @@ ve.dm.MetaList = function VeDmMetaList( doc ) {
 	this.doc = doc;
 
 	/**
-	 * Sorted array of attached ve.dm.MetaItem nodes in document order
-	 * @property {ve.dm.MetaItem[]} items
+	 * @property {ve.dm.MetaItem[]} items Sorted array of attached ve.dm.MetaItem nodes in document
+	 *  order
 	 */
 	this.items = [];
 

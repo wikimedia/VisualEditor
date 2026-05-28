@@ -1298,7 +1298,7 @@ ve.countEdgeMatches = function ( before, after, equals ) {
  * Wait for a transitionend on an element
  *
  * @param {jQuery} $element
- * @param {function} callback
+ * @param {Function} callback
  * @param {number} [timeout=500] fallback timer to run the callback regardless
  */
 ve.waitForTransition = function ( $element, callback, timeout = 500 ) {

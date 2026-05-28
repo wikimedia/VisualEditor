@@ -11,7 +11,7 @@
  */
 ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	/**
-	 * @private Please access via {@link getAllReuses} etc. if possible
+	 * @private Please access via {@link #getAllReuses} etc. if possible
 	 * @property {Object.<string,ve.dm.Node[]>} keyedNodes Indexed by the internal listKey.
 	 *
 	 * Practically, one of these arrays can contain multiple elements when a reference (with the
@@ -20,7 +20,7 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	this.keyedNodes = {};
 
 	/**
-	 * @private Please access via {@link getFirstNodeByListIndex} etc. if possible
+	 * @private Please access via {@link #getFirstNodeByListIndex} etc. if possible
 	 * @property {Array.<ve.dm.Node|undefined>} firstNodes When {@link #keyedNodes} contains more
 	 * than one node per listKey then firstNodes can be used to identify the node that appears first
 	 * in the document. If there is only one node it's just that node. Array keys correspond to the
@@ -37,7 +37,7 @@ ve.dm.InternalListNodeGroup = function VeDmInternalListNodeGroup() {
 	this.firstNodes = [];
 
 	/**
-	 * @private Please access via {@link getFirstNodesInIndexOrder} etc. if possible
+	 * @private Please access via {@link #getFirstNodesInIndexOrder} etc. if possible
 	 * @property {number[]} indexOrder Sorted to reflect the order of first appearance in the
 	 * document. Values are indexes for the {@link #firstNodes} array.
 	 *
