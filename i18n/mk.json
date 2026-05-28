@@ -205,7 +205,7 @@
 	"visualeditor-table-contextitem-selectionmode-cells": "Избери ќелии",
 	"visualeditor-table-contextitem-selectionmode-contents": "Избери содржина",
 	"visualeditor-table-delete-col": "Избриши {{PLURAL:$1|столб|столбови}}",
-	"visualeditor-table-delete-row": "Избриши {{PLURAL:$1|ред|редови}}",
+	"visualeditor-table-delete-row": "Избриши {{PLURAL:$1|ред|реда}}",
 	"visualeditor-table-format-data": "Содржинска ќелија",
 	"visualeditor-table-format-header": "Заглавна ќелија",
 	"visualeditor-table-insert-col-after": "Вметни по",
