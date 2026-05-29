@@ -743,11 +743,11 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  * If the content is a plain text string containing linebreaks, each line will be wrapped
  * in a paragraph.
  *
- * @param {string|ve.dm.LinearData.Item[]} content Content to insert, can be either a string or array of data
- * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated
- *  with annotations covering the selection / annotations at the current offset, or a set of
- *  annotations to annotate the content with.
- *  or an AnnotationSet from the current offset (calculated from the view)
+ * @param {string|ve.dm.LinearData.Item[]} content Content to insert, as a string or array of data.
+ *  If an array is given, and `annotateOrSet` is given too, it will be mutated in place.
+ * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] If true, `content` will be automatically
+ *  annotated with annotations covering the selection / annotations at the current offset.
+ *  If a `ve.dm.AnnotationSet` is given, `content` will be annotated with it instead.
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */

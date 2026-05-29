@@ -1956,7 +1956,7 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 			}
 			// Check a plain space was inserted and replace it with an NBSP.
 			if ( fragment.getText() === ' ' ) {
-				fragment.insertContent( nbspContent ).collapseToEnd().select();
+				fragment.insertContent( nbspContent, true ).collapseToEnd().select();
 			}
 		} );
 	}

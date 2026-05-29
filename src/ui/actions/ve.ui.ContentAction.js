@@ -41,6 +41,11 @@ ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpeci
  */
 ve.ui.ContentAction.prototype.insert = function ( content, annotate, collapseToEnd ) {
 	const fragment = this.surface.getModel().getFragment();
+	if ( annotate ) {
+		// Deep clone to avoid mutating the content (which may be defined in a ve.ui.Command)
+		// with the annotations (T427594)
+		content = ve.copy( content );
+	}
 	fragment.insertContent( content, annotate );
 	if ( collapseToEnd ) {
 		fragment.collapseToEnd().select();
