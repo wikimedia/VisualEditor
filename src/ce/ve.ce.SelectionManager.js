@@ -94,7 +94,7 @@ ve.ce.SelectionManager.prototype.destroy = function () {
 /**
  * Get the surface
  *
- * Will return null after the selectionmanager has been destroyed
+ * Will return null after the selection manager has been destroyed
  *
  * @return {ve.ce.Surface|null}
  */
@@ -538,10 +538,10 @@ ve.ce.SelectionManager.SelectionGroup.prototype.setSelections = function ( selec
 	// Assume all selections will be visible, unless clipped later
 	this.visibleSelections = selections;
 
-	const surfacemodel = surface.getModel();
+	const surfaceModel = surface.getModel();
 	// Store fragments so we can automatically update selections even after
 	// the document has been modified (which eventually fires a position event)
-	this.fragments = selections.map( ( selection ) => surfacemodel.getFragment( selection.getModel(), true, true ) );
+	this.fragments = selections.map( ( selection ) => surfaceModel.getFragment( selection.getModel(), true, true ) );
 };
 
 /**
