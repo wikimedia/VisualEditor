@@ -214,7 +214,7 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data = {} ) {
 			this.initialFragment = this.surface.getModel().getFragment( null, true );
 
 			// Events
-			this.surface.getView().connect( this, { position: 'onSurfaceModelDocumentUpdate' } );
+			this.surface.getModel().connect( this, { documentUpdate: 'onDocumentUpdate' } );
 
 			this.updateFragments();
 		} );
@@ -240,7 +240,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 				surfaceModel = this.surface.getModel();
 
 			// Events
-			surfaceView.disconnect( this );
+			surfaceModel.disconnect( this );
 
 			// Restore selection
 			let selection;
@@ -267,7 +267,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 /**
  * Handle documentUpdate events from the surface model
  */
-ve.ui.FindAndReplaceDialog.prototype.onSurfaceModelDocumentUpdate = function () {
+ve.ui.FindAndReplaceDialog.prototype.onDocumentUpdate = function () {
 	if ( this.replacing ) {
 		return;
 	}
@@ -543,10 +543,7 @@ ve.ui.FindAndReplaceDialog.prototype.replace = function ( index ) {
 		this.fragments[ index ].insertContent( replace, true );
 	}
 
-	// 'position' event is deferred, so block that too
-	setTimeout( () => {
-		this.replacing = false;
-	} );
+	this.replacing = false;
 };
 
 /**
