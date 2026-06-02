@@ -354,7 +354,7 @@ ve.ce.TableNode.prototype.onTableMouseUp = function () {
  * Set the editing state of the table
  *
  * @param {boolean} isEditing The table is being edited
- * @param {boolean} noSelect Don't change the selection
+ * @param {boolean} [noSelect=false] Don't change the selection
  */
 ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 	const surfaceModel = this.surface.getModel(),

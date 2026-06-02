@@ -56,7 +56,7 @@ ve.ce.SurfaceObserver.prototype.startTimerLoop = function () {
 /**
  * Loop once with `setTimeout`
  *
- * @param {boolean} firstTime Wait before polling
+ * @param {boolean} [firstTime=false] Wait before polling
  */
 ve.ce.SurfaceObserver.prototype.timerLoop = function ( firstTime ) {
 	if ( this.timeoutId ) {
@@ -128,8 +128,8 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  * Poll for changes.
  *
  * @private
- * @param {boolean} signalChanges If there changes are observed, call Surface#handleObservedChange
- * @param {boolean} selectionOnly Check for selection changes only
+ * @param {boolean} [signalChanges=false] If there changes are observed, call Surface#handleObservedChange
+ * @param {boolean} [selectionOnly=false] Check for selection changes only
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, selectionOnly ) {
 	if ( !this.domDocument || this.disabled ) {

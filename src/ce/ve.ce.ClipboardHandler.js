@@ -607,8 +607,8 @@ ve.ce.ClipboardHandler.prototype.afterPasteExtractClipboardData = function () {
  * LinearData sanitize helper, for pasted data
  *
  * @param {ve.dm.LinearData} linearData Data to sanitize
- * @param {boolean} isMultiline Sanitize for a multiline context
- * @param {boolean} isExternal Treat as external content
+ * @param {boolean} [isMultiline=false] Sanitize for a multiline context
+ * @param {boolean} [isExternal=false] Treat as external content
  */
 ve.ce.ClipboardHandler.prototype.afterPasteSanitize = function ( linearData, isMultiline, isExternal ) {
 	const importRules = this.afterPasteImportRules( isMultiline );
@@ -621,7 +621,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteSanitize = function ( linearData, isM
 /**
  * Helper to build import rules for pasted data
  *
- * @param {boolean} isMultiline Get rules for a multiline context
+ * @param {boolean} [isMultiline=false] Get rules for a multiline context
  * @return {Object.<string,Object>} Import rules
  */
 ve.ce.ClipboardHandler.prototype.afterPasteImportRules = function ( isMultiline ) {
@@ -641,7 +641,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteImportRules = function ( isMultiline 
  * @param {ve.dm.DocumentSlice} slice Slice of document to paste
  * @param {ve.dm.SurfaceFragment} fragment Current fragment
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
- * @param {boolean} isMultiline Pasting to a multiline context
+ * @param {boolean} [isMultiline=false] Pasting to a multiline context
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromInternal = function ( slice, fragment, targetFragment, isMultiline ) {
@@ -735,8 +735,8 @@ ve.ce.ClipboardHandler.prototype.afterPasteInsertInternalData = function ( targe
  * @param {jQuery|undefined} $clipboardHtml Clipboard HTML, if used to find the key
  * @param {ve.dm.SurfaceFragment} fragment Current fragment
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
- * @param {boolean} [isMultiline] Pasting to a multiline context
- * @param {boolean} [forceClipboardData] Ignore the clipboard handler element, and use only clipboard html
+ * @param {boolean} [isMultiline=false] Pasting to a multiline context
+ * @param {boolean} [forceClipboardData=false] Ignore the clipboard handler element, and use only clipboard html
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function ( clipboardKey, $clipboardHtml, fragment, targetFragment, isMultiline, forceClipboardData ) {
@@ -982,8 +982,8 @@ ve.ce.ClipboardHandler.prototype.afterPasteInsertExternalData = function ( targe
  * Helper to work out the context range for an external paste
  *
  * @param {ve.dm.Document} pastedDocumentModel Model for pasted data
- * @param {boolean} isMultiline Whether pasting to a multiline context
- * @param {boolean} forceClipboardData Whether the current attempted paste is the result of forcing use of clipboard data
+ * @param {boolean} [isMultiline=false] Whether pasting to a multiline context
+ * @param {boolean} [forceClipboardData=false] Whether the current attempted paste is the result of forcing use of clipboard data
  * @return {ve.Range|boolean} Context range, or false if data appeared corrupted
  */
 ve.ce.ClipboardHandler.prototype.afterPasteFromExternalContextRange = function ( pastedDocumentModel, isMultiline, forceClipboardData ) {

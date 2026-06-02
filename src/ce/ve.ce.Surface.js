@@ -1551,7 +1551,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
  * with the left/rightarrow keys, the cursor will have to be moved again to produce the cursor
  * movement the user expected. Set the fixupCursor parameter to true to enable this behavior.
  *
- * @param {boolean} fixupCursor If destroying unicorns, fix up left/rightarrow cursor position
+ * @param {boolean} [fixupCursor=false] If destroying unicorns, fix up left/rightarrow cursor position
  * @return {boolean} Whether unicorns have been destroyed
  */
 ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
@@ -1651,7 +1651,7 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function () {
  * Handle the insertion of a data transfer object
  *
  * @param {DataTransfer} dataTransfer Data transfer
- * @param {boolean} isPaste Handlers being used for paste
+ * @param {boolean} [isPaste=false] Handlers being used for paste
  * @param {ve.dm.SurfaceFragment} [targetFragment] Fragment to insert data items at, defaults to current selection
  * @return {boolean} One more items was handled
  */
@@ -1752,7 +1752,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
  * Handle the insertion of data transfer items
  *
  * @param {ve.ui.DataTransferItem[]} items Data transfer items
- * @param {boolean} isPaste Handlers being used for paste
+ * @param {boolean} [isPaste=false] Handlers being used for paste
  * @param {ve.dm.SurfaceFragment} [targetFragment] Fragment to insert data items at, defaults to current selection
  * @return {boolean} One more items was handled
  */
@@ -1956,7 +1956,7 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 			}
 			// Check a plain space was inserted and replace it with an NBSP.
 			if ( fragment.getText() === ' ' ) {
-				fragment.insertContent( nbspContent, true ).collapseToEnd().select();
+				fragment.insertContent( nbspContent ).collapseToEnd().select();
 			}
 		} );
 	}
@@ -2120,7 +2120,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 /**
  * Prepare the clipboard handler for a copy event by selecting some text
  *
- * @param {boolean} force Force a native selection, even on mobile (used for click-to-copy)
+ * @param {boolean} [force=false] Force a native selection, even on mobile (used for click-to-copy)
  */
 ve.ce.Surface.prototype.prepareClipboardHandlerForCopy = function ( force ) {
 	// As FF won't fire a copy event with nothing selected, create a native selection.
@@ -2483,7 +2483,7 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
  * Move cursor if it is between annotation nails
  *
  * @param {number} direction Direction of travel, 1=forwards, -1=backwards, 0=unknown
- * @param {boolean} extend Whether the anchor should stay where it is
+ * @param {boolean} [extend=false] Whether the anchor should stay where it is
  *
  * TODO: Improve name
  */
@@ -3153,7 +3153,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding = 0 ) {
 	 * @param {number} offset Vertical offset to find
 	 * @param {ve.Range} range Document range
 	 * @param {string} side Side of the viewport align with, 'bottom' or 'top'
-	 * @param {boolean} isStart Find the start of the range, otherwise the end
+	 * @param {boolean} [isStart=false] Find the start of the range, otherwise the end
 	 * @return {number} DM offset
 	 */
 	const binarySearch = ( offset, range, side, isStart ) => {
@@ -3697,7 +3697,7 @@ ve.ce.Surface.prototype.getNativeRange = function ( range ) {
  * Append passed highlights to highlight container.
  *
  * @param {jQuery} $highlights Highlights to append
- * @param {boolean} focused Highlights are currently focused
+ * @param {boolean} [focused=false] Highlights are currently focused
  */
 ve.ce.Surface.prototype.appendHighlights = function ( $highlights, focused ) {
 	// Only one item can be blurred-highlighted at a time, so remove the others.

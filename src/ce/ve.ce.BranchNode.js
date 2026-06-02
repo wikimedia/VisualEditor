@@ -295,7 +295,7 @@ ve.ce.BranchNode.prototype.removeSlugs = function () {
  *
  * Existing slugs will be removed before new ones are added.
  *
- * @param {boolean} isBlock Set up block slugs, otherwise setup inline slugs
+ * @param {boolean} [isBlock=false] Set up block slugs, otherwise setup inline slugs
  */
 ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 	// Source mode optimization

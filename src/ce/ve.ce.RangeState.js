@@ -12,7 +12,7 @@
  * @constructor
  * @param {ve.ce.RangeState|null} old Previous range state
  * @param {ve.ce.BranchNode} root Surface root
- * @param {boolean} selectionOnly The caller promises the content has not changed from old
+ * @param {boolean} [selectionOnly=false] The caller promises the content has not changed from old
  */
 ve.ce.RangeState = function VeCeRangeState( old, root, selectionOnly ) {
 	/**
@@ -86,7 +86,7 @@ OO.initClass( ve.ce.RangeState );
  *
  * @param {ve.ce.RangeState|null} old Previous range state
  * @param {ve.ce.BranchNode} root Surface root
- * @param {boolean} selectionOnly The caller promises the content has not changed from old
+ * @param {boolean} [selectionOnly=false] The caller promises the content has not changed from old
  */
 ve.ce.RangeState.prototype.saveState = function ( old, root, selectionOnly ) {
 	const oldSelection = old ? old.misleadingSelection : ve.SelectionState.static.newNullSelection(),
