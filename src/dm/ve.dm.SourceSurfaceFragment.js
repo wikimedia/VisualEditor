@@ -153,7 +153,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 /**
  * @inheritdoc
  */
-ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) {
+ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach = [] ) {
 	const range = this.getSelection().getCoveringRange();
 
 	if ( !range ) {
@@ -174,8 +174,6 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
 	if ( !Array.isArray( wrapOuter ) ) {
 		wrapOuter = [ wrapOuter ];
 	}
-
-	wrapEach = wrapEach || [];
 
 	if ( !Array.isArray( wrapEach ) ) {
 		wrapEach = [ wrapEach ];

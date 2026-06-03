@@ -1049,7 +1049,7 @@ ve.dm.LinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  *
  * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
  * @param {boolean} [ignoreNonContentNodes=false] Ignore all non-content nodes, e.g. paragraphs, headings, lists
- * @param {string[]} [ignoredTypes] Only ignore specific non-content types
+ * @param {string[]} [ignoredTypes=[]] Only ignore specific non-content types
  * @param {boolean} [ignoreCoveringAnnotations=false] Ignore covering annotations
  * @param {boolean} [ignoreAllAnnotations=false] Ignore all annotations
  * @return {boolean} The data is plain text

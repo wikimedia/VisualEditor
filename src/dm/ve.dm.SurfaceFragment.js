@@ -12,8 +12,8 @@
  * @constructor
  * @param {ve.dm.Surface} surface Target surface
  * @param {ve.dm.Selection} [selection] Selection within target document, current selection used by default
- * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
- * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
+ * @param {boolean} [noAutoSelect=false] Don't update the surface's selection when making changes
+ * @param {boolean} [excludeInsertions=false] Exclude inserted content at the boundaries when updating range
  */
 ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, selection, noAutoSelect, excludeInsertions ) {
 	// Properties
@@ -63,7 +63,7 @@ ve.dm.SurfaceFragment.prototype.getSelectedModels = function ( all ) {
 		}
 	}
 
-	return nodes.concat( !annotations.isEmpty() ? annotations.get() : [] );
+	return annotations.isEmpty() ? nodes : nodes.concat( annotations.get() );
 };
 
 /**
@@ -209,7 +209,7 @@ ve.dm.SurfaceFragment.prototype.willExcludeInsertions = function () {
  * this fragment's selection in response to transactions will not include content inserted at the
  * boundaries of the selection; if it is disabled, insertions will be included.
  *
- * @param {boolean} excludeInsertions Whether to exclude insertions
+ * @param {boolean} [excludeInsertions=false] Whether to exclude insertions
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
@@ -284,7 +284,7 @@ ve.dm.SurfaceFragment.prototype.trimLinearSelection = function () {
 	const oldRange = this.getSelection().getRange();
 	let newRange;
 
-	if ( this.getText().trim().length === 0 ) {
+	if ( !this.getText().trim() ) {
 		// oldRange is only whitespace
 		newRange = new ve.Range( oldRange.start );
 	} else {
@@ -389,10 +389,7 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope = 'pare
  */
 ve.dm.SurfaceFragment.prototype.getData = function ( deep ) {
 	const range = this.getSelection().getCoveringRange();
-	if ( !range ) {
-		return [];
-	}
-	return this.document.getData( range, deep );
+	return range ? this.document.getData( range, deep ) : [];
 };
 
 /**
@@ -403,10 +400,7 @@ ve.dm.SurfaceFragment.prototype.getData = function ( deep ) {
  */
 ve.dm.SurfaceFragment.prototype.getText = function ( maintainIndices ) {
 	const range = this.getSelection().getCoveringRange();
-	if ( !range ) {
-		return '';
-	}
-	return this.document.data.getText( maintainIndices, range );
+	return range ? this.document.data.getText( maintainIndices, range ) : '';
 };
 
 /**
@@ -420,7 +414,7 @@ ve.dm.SurfaceFragment.prototype.containsOnlyText = function () {
 	if ( !range ) {
 		return true;
 	}
-	return this.document.data.isPlainText( range, false, false, false, true );
+	return this.document.data.isPlainText( range, false, [], false, true );
 };
 
 /**
@@ -476,9 +470,9 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
  * @return {boolean} The fragment contains at least one annotation
  */
 ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
-	const ranges = this.getSelection().getRanges( this.getDocument() );
-
-	return ranges.some( ( range ) => this.getDocument().data.hasAnnotationsInRange( range ) );
+	return this.getSelection()
+		.getRanges( this.getDocument() )
+		.some( ( range ) => this.getDocument().data.hasAnnotationsInRange( range ) );
 };
 
 /**
@@ -548,10 +542,7 @@ ve.dm.SurfaceFragment.prototype.getSelectedNode = function () {
  */
 ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
 	const range = this.getSelection().getCoveringRange();
-	if ( !range ) {
-		return [];
-	}
-	return this.document.selectNodes( range, 'covered' );
+	return range ? this.document.selectNodes( range, 'covered' ) : [];
 };
 
 /**
@@ -565,10 +556,7 @@ ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
  */
 ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
 	const range = this.getSelection().getCoveringRange();
-	if ( !range ) {
-		return [];
-	}
-	return this.document.selectNodes( range, 'siblings' );
+	return range ? this.document.selectNodes( range, 'siblings' ) : [];
 };
 
 /**
@@ -576,7 +564,7 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
  *
  * @param {string} type Node type to match
  * @param {Object} [attributes] Node attributes to match
- * @param {boolean} [matchFirstAncestorOfType] Require the match to be the first of its type, e.g. if type is 'list',
+ * @param {boolean} [matchFirstAncestorOfType=false] Require the match to be the first of its type, e.g. if type is 'list',
  *  only match the first 'list' ancestor, then check if the attributes match.
  * @return {boolean} Nodes have a matching ancestor
  */
@@ -763,32 +751,25 @@ ve.dm.SurfaceFragment.prototype.doesRangeCoverDocument = function ( range ) {
  *
  * @param {string|ve.dm.LinearData.Item[]} content Content to insert, as a string or array of data.
  *  If an array is given, and `annotateOrSet` is given too, it will be mutated in place.
- * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] If true, `content` will be automatically
+ * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet=false] If true, `content` will be automatically
  *  annotated with annotations covering the selection / annotations at the current offset.
  *  If a `ve.dm.AnnotationSet` is given, `content` will be annotated with it instead.
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotateOrSet ) {
-	const range = this.getSelection().getCoveringRange(),
-		doc = this.getDocument();
-
+	const range = this.getSelection().getCoveringRange();
 	if ( !range ) {
 		return this;
 	}
 
-	let annotations, annotate;
-	if ( annotateOrSet instanceof ve.dm.AnnotationSet ) {
-		annotations = annotateOrSet;
-		annotate = true;
-	} else {
-		annotate = annotateOrSet;
-	}
+	const doc = this.getDocument();
+	let annotations = annotateOrSet instanceof ve.dm.AnnotationSet ? annotateOrSet : null;
 
 	const removalEmptiesDocument = this.doesRangeCoverDocument( range );
 
 	if ( !range.isCollapsed() ) {
-		if ( annotate && !annotations ) {
+		if ( !annotations && annotateOrSet ) {
 			// If we're replacing content, use the annotations selected
 			// instead of continuing from the left
 			annotations = this.getAnnotations();
@@ -802,7 +783,6 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotateOrSe
 	// Auto-convert content to array of plain text characters
 	if ( typeof content === 'string' ) {
 		const lines = content.split( /[\r\n]+/ );
-
 		if ( lines.length > 1 ) {
 			content = [];
 			lines.forEach( ( line ) => {
@@ -817,14 +797,14 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotateOrSe
 		}
 	}
 	if ( content.length ) {
-		if ( annotate && !annotations ) {
+		if ( !annotations && annotateOrSet ) {
 			// TODO T126021: Don't reach into properties of document
 			// FIXME T126022: the logic we actually need for annotating inserted content
 			// correctly is much more complicated
 			annotations = doc.data
 				.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 		}
-		if ( annotations && annotations.getLength() > 0 ) {
+		if ( annotations && !annotations.isEmpty() ) {
 			// Add the annotations to the content, passing the
 			// replaceComparable argument which will remove any comparable
 			// annotations from content so that they can be replaced with
@@ -870,7 +850,7 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  *
  * @param {ve.dm.Document} newDoc Document to insert
  * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
- * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated
+ * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet=false] Content should be automatically annotated
  *  with annotations covering the selection / annotations at the current offset, or a set of
  *  annotations to annotate the content with.
  *  or an AnnotationSet from the current offset (calculated from the view)
@@ -878,25 +858,18 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange, annotateOrSet ) {
-	const range = this.getSelection().getCoveringRange(),
-		doc = this.getDocument();
-
+	const range = this.getSelection().getCoveringRange();
 	if ( !range ) {
 		return this;
 	}
 
-	let annotations, annotate;
-	if ( annotateOrSet instanceof ve.dm.AnnotationSet ) {
-		annotations = annotateOrSet;
-		annotate = true;
-	} else {
-		annotate = annotateOrSet;
-	}
+	const doc = this.getDocument();
+	let annotations = annotateOrSet instanceof ve.dm.AnnotationSet ? annotateOrSet : null;
 
 	const removalEmptiesDocument = this.doesRangeCoverDocument( range );
 
 	if ( !range.isCollapsed() ) {
-		if ( annotate && !annotations ) {
+		if ( !annotations && annotateOrSet ) {
 			// If we're replacing content, use the annotations selected
 			// instead of continuing from the left
 			annotations = this.getAnnotations();
@@ -907,14 +880,14 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 	// Insert inside the paragraph the removal left behind, not before it
 	const offset = removalEmptiesDocument ? range.start + 1 : range.start;
 
-	if ( annotate && !annotations ) {
+	if ( !annotations && annotateOrSet ) {
 		// TODO T126021: Don't reach into properties of document
 		annotations = doc.data
 			.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 	}
 
 	let annotatedDoc;
-	if ( !annotations || annotations.getLength() === 0 ) {
+	if ( !annotations || annotations.isEmpty() ) {
 		annotatedDoc = newDoc;
 	} else {
 		// Build shallow-cloned annotatedData array, copying on write as we go
@@ -942,14 +915,9 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
  */
 ve.dm.SurfaceFragment.prototype.removeContent = function () {
 	const range = this.getSelection().getCoveringRange();
-	if ( !range ) {
-		return this;
-	}
-
-	if ( !range.isCollapsed() ) {
+	if ( range && !range.isCollapsed() ) {
 		this.change( ve.dm.TransactionBuilder.static.newFromRemoval( this.document, range ) );
 	}
-
 	return this;
 };
 
@@ -962,7 +930,6 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
  */
 ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete = -1 ) {
 	const rangeToRemove = this.getSelection().getCoveringRange();
-
 	if ( !rangeToRemove || rangeToRemove.isCollapsed() ) {
 		return this;
 	}
@@ -1050,7 +1017,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete = -1 ) 
 		// If undefined (e.g. cut), default to backwards movement
 		directionAfterDelete
 	);
-	if ( nearestOffset > -1 ) {
+	if ( nearestOffset !== -1 ) {
 		rangeAfterRemove = new ve.Range( nearestOffset );
 	} else {
 		// There isn't a valid content offset. This probably means that we're
@@ -1077,14 +1044,11 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete = -1 ) 
  */
 ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr, internal ) {
 	const range = this.getSelection().getCoveringRange();
-	if ( !range ) {
-		return this;
+	if ( range ) {
+		this.change( ve.dm.TransactionBuilder.static.newFromContentBranchConversion(
+			this.document, range, type, attr, internal
+		) );
 	}
-
-	this.change( ve.dm.TransactionBuilder.static.newFromContentBranchConversion(
-		this.document, range, type, attr, internal
-	) );
-
 	return this;
 };
 
@@ -1138,7 +1102,6 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
  */
 ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth ) {
 	const range = this.getSelection().getCoveringRange();
-
 	if ( !range ) {
 		return this;
 	}
@@ -1187,7 +1150,6 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
  */
 ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 	const range = this.getSelection().getCoveringRange();
-
 	if ( !range ) {
 		return this;
 	}
@@ -1234,11 +1196,11 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
  *     // fragment is now a selection of: <ul><li><p>a</p><p>b</p></li></ul>
  *
  * @param {Object|Object[]} wrapOuter Opening element(s) to wrap around the range
- * @param {Object|Object[]} wrapEach Opening element(s) to wrap around each top-level element in the range
+ * @param {Object|Object[]} [wrapEach=[]] Opening element(s) to wrap around each top-level element in the range
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) {
+ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach = [] ) {
 	const range = this.getSelection().getCoveringRange();
 	if ( !range ) {
 		return this;
@@ -1247,8 +1209,6 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) 
 	if ( !Array.isArray( wrapOuter ) ) {
 		wrapOuter = [ wrapOuter ];
 	}
-
-	wrapEach = wrapEach || [];
 
 	if ( !Array.isArray( wrapEach ) ) {
 		wrapEach = [ wrapEach ];
@@ -1280,9 +1240,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) 
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
-	const range = this.getSelection().getCoveringRange(),
-		unwrapper = [];
-
+	const range = this.getSelection().getCoveringRange();
 	if ( !range ) {
 		return this;
 	}
@@ -1301,6 +1259,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
 	}
 
+	const unwrapper = [];
 	for ( let i = 0; i < depth; i++ ) {
 		unwrapper.push( this.document.data.getData( range.start + i ) );
 	}
@@ -1433,7 +1392,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
  * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
  *
  * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
- * @param {number} offset Document offset to insert at; must be a valid offset for metadata;
+ * @param {number} [offset] Document offset to insert at; must be a valid offset for metadata;
  * defaults to document end
  */
 ve.dm.SurfaceFragment.prototype.insertMeta = function ( meta, offset ) {

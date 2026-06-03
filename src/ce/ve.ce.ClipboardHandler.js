@@ -993,7 +993,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteInsertExternalData = function ( targe
 	// then run it as a plain text transfer item. In core this will never
 	// do anything, but implementations can provide their own handler for
 	// conversion actions here.
-	if ( pastedDocumentModel.data.isPlainText( contextRange, true, undefined, true ) ) {
+	if ( pastedDocumentModel.data.isPlainText( contextRange, true, [], true ) ) {
 		const pastedText = pastedDocumentModel.data.getText( true, contextRange );
 		if ( pastedText ) {
 			handled = this.getSurface().handleDataTransferItems(
