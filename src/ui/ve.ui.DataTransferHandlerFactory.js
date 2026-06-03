@@ -72,7 +72,7 @@ ve.ui.DataTransferHandlerFactory.prototype.unregister = function ( constructor )
  * Update indexes used for handler lookup
  *
  * @param {Function} constructor Handler's constructor to insert/remove
- * @param {boolean} insert Insert the handler into the indexes, remove otherwise
+ * @param {boolean} [insert=false] Insert the handler into the indexes, remove otherwise
  */
 ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructor, insert ) {
 	function ensureArray( obj, prop ) {
@@ -137,8 +137,8 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
  * Get a handler name for a specific data transfer item
  *
  * @param {ve.ui.DataTransferItem} item Data transfer item
- * @param {boolean} isPaste Handler being used for paste
- * @param {boolean} isPasteSpecial Handler being used for "paste special"
+ * @param {boolean} [isPaste=false] Handler being used for paste
+ * @param {boolean} [isPasteSpecial=false] Handler being used for "paste special"
  * @return {string|undefined} Handler name, or undefined if not found
  */
 ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item, isPaste, isPasteSpecial ) {

@@ -125,7 +125,7 @@ ve.ui.ProgressDialog.prototype.getActionProcess = function ( action ) {
  * Progress has completed for an item
  *
  * @param {jQuery} $row Row containing progress bar which has completed
- * @param {boolean} failed The item failed
+ * @param {boolean} [failed=false] The item failed
  */
 ve.ui.ProgressDialog.prototype.progressComplete = function ( $row, failed ) {
 	this.inProgress--;

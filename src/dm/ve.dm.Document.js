@@ -963,7 +963,7 @@ ve.dm.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
  * @param {ve.Range} range Input range
  * @param {number} direction Direction to look in, +1 or -1
  * @param {string} unit Unit [word|character]
- * @param {boolean} expand Expanding range
+ * @param {boolean} [expand=false] Expanding range
  * @param {ve.Range} [limit] Optional limiting range. If the relative range is not in this range
  *                           the input range is returned instead.
  * @return {ve.Range} Relative range
@@ -1255,7 +1255,7 @@ ve.dm.Document.prototype.updateNodesByType = function ( addedNodes, removedNodes
  * String type matching will be faster than class matching.
  *
  * @param {string|Function} type Node type name or node constructor
- * @param {boolean} sort Sort nodes by document order
+ * @param {boolean} [sort=false] Sort nodes by document order
  * @return {ve.dm.Node[]} Nodes of a specific type
  */
 ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {

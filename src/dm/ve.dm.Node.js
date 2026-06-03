@@ -357,8 +357,8 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * @static
  * @param {Object} element
  * @param {ve.dm.HashValueStore} store Hash-value store used by element
- * @param {boolean} preserveGenerated Preserve internal.generated property of element
- * @param {boolean} resetAttributes Reset attributes for an empty clone, as defined in #static-resetForClone
+ * @param {boolean} [preserveGenerated=false] Preserve internal.generated property of element
+ * @param {boolean} [resetAttributes=false] Reset attributes for an empty clone, as defined in #static-resetForClone
  * @return {Object} Cloned element object
  */
 ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated, resetAttributes ) {
@@ -438,8 +438,8 @@ ve.dm.Node.prototype.getStore = function () {
  * @see #static-cloneElement
  * Implementations should override the static method, not this one
  *
- * @param {boolean} preserveGenerated Preserve internal.generated property of element
- * @param {boolean} resetAttributes Reset attributes for an empty clone, as defined in #static-resetForClone
+ * @param {boolean} [preserveGenerated=false] Preserve internal.generated property of element
+ * @param {boolean} [resetAttributes=false] Reset attributes for an empty clone, as defined in #static-resetForClone
  * @return {Object} Cloned element object
  */
 ve.dm.Node.prototype.getClonedElement = function ( preserveGenerated, resetAttributes ) {

@@ -652,7 +652,7 @@ ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, l
  *
  * @param {ve.dm.Node} newDoclistNode Node from new document
  * @param {Object} diff Object describing the diff
- * @param {boolean} neverProcess Never process the diffQueue (always show the whole document)
+ * @param {boolean} [neverProcess=false] Never process the diffQueue (always show the whole document)
  * @return {ve.dm.LinearData.Item[]} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedDocListData = function ( newDoclistNode, diff, neverProcess ) {

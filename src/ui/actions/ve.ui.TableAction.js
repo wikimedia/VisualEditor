@@ -278,7 +278,7 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
  * Import a table at the current selection, overwriting data cell by cell
  *
  * @param {ve.dm.TableNode} importedTableNode Table node to import
- * @param {boolean} importInternalList Import the table document's internalList
+ * @param {boolean} [importInternalList=false] Import the table document's internalList
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importInternalList ) {

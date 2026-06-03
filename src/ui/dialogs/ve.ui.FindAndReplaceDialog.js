@@ -395,7 +395,7 @@ ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
 /**
  * Highlight the focused result marker
  *
- * @param {boolean} scrollIntoView Scroll the marker into view
+ * @param {boolean} [scrollIntoView=false] Scroll the marker into view
  */
 ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoView ) {
 	const surfaceView = this.surface.getView();

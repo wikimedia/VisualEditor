@@ -85,7 +85,7 @@ ve.ui.SymbolListBookletLayout.prototype.renderRecentlyUsed = function () {
  * Inserts a character at the start of the recently-used list and updates the user preference.
  *
  * @param {string|Object} character A symbol string or object
- * @param {boolean} fromRecentList Set when the symbol was chosen from the recently-used list. Inhibits a rerender.
+ * @param {boolean} [fromRecentList=false] Set when the symbol was chosen from the recently-used list. Inhibits a rerender.
  */
 ve.ui.SymbolListBookletLayout.prototype.updateRecentlyUsed = function ( character, fromRecentList ) {
 	if ( this.recentlyUsed === undefined ) {

@@ -148,7 +148,7 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
  *
  * @param {ve.dm.Node} oldRoot Old root
  * @param {ve.dm.Node} newRoot New root
- * @param {boolean} skipInternalLists Skip internal list nodes
+ * @param {boolean} [skipInternalLists=false] Skip internal list nodes
  * @return {ve.dm.VisualDiff.DocDiff} Object containing diff information
  */
 ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalLists ) {

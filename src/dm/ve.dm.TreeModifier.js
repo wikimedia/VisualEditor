@@ -923,7 +923,7 @@ ve.dm.TreeModifier.prototype.findOrCreateAdjustmentNode = function ( position ) 
  *
  * @param {number[]} rawPosition Unadjusted offset path
  * @param {number} diff Adjustment at rawPosition
- * @param {boolean} deleteDescendants If true, delete all adjustments at paths descending from here
+ * @param {boolean} [deleteDescendants=false] If true, delete all adjustments at paths descending from here
  */
 ve.dm.TreeModifier.prototype.modifyAdjustmentTree = function ( rawPosition, diff, deleteDescendants ) {
 	const adjustmentNode = this.findOrCreateAdjustmentNode( rawPosition );
@@ -1024,7 +1024,7 @@ ve.dm.TreeModifier.prototype.getRawPosition = function ( path, offset, node ) {
  * Get the adjusted position of a raw position
  *
  * @param {number[]} position The raw position
- * @param {boolean} isInserter True for an inserter position; false for a remover position
+ * @param {boolean} [isInserter=false] True for an inserter position; false for a remover position
  * @return {number[]} Adjusted pathAndOffset, with offsets inside a ContentBranchNode linearized
  */
 ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInserter ) {

@@ -785,7 +785,7 @@ ve.dm.TransactionBuilder.prototype.addSafeRemoveOps = function ( doc, removeStar
  * @param {number} offset Offset to start at
  * @param {number} removeLength Number of data items to remove
  * @param {ve.dm.LinearData.Item[]} insert Data to insert
- * @param {boolean} removeMetadata Remove metadata instead of collapsing it
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
  * @param {number} [insertedDataOffset] Offset of the originally inserted data in the resulting operation data
  * @param {number} [insertedDataLength] Length of the originally inserted data in the resulting operation data
  */

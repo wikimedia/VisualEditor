@@ -987,7 +987,7 @@ ve.ui.Surface.prototype.suppressScrollPadding = function ( scrollPaddingSuppress
  *
  * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
  * @param {jQuery|string|Function} label Progress bar label
- * @param {boolean} nonCancellable Progress item can't be cancelled
+ * @param {boolean} [nonCancellable=false] Progress item can't be cancelled
  * @return {jQuery.Promise} Promise which resolves with a progress bar widget and fails if cancelled
  */
 ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, label, nonCancellable ) {

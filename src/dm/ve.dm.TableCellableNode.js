@@ -57,7 +57,7 @@ ve.dm.TableCellableNode.static.areNodesCellable = function ( domNodes ) {
 /**
  * @param {ve.dm.TableCellableNode.TableAttributes} attributes
  * @param {HTMLElement[]} domElements
- * @param {boolean} isAlien
+ * @param {boolean} [isAlien=false]
  */
 ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElements, isAlien ) {
 	if ( isAlien ) {
