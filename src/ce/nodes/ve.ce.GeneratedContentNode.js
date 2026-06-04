@@ -287,8 +287,12 @@ ve.ce.GeneratedContentNode.prototype.validateGeneratedContents = function () {
  * @param {boolean} [staged=false] Update happened in staging mode
  */
 ve.ce.GeneratedContentNode.prototype.update = function ( config, staged ) {
-	const store = this.model.doc.getStore(),
-		contents = store.value( store.hashOfValue( null, OO.getHash( [ this.model.getHashObjectForRendering(), config ] ) ) );
+	const contents = this.model.constructor.static.fetchGeneratedContents(
+		this.model.element,
+		this.model.doc.getStore(),
+		config
+	);
+
 	if ( contents ) {
 		this.render( contents, staged );
 	} else {
@@ -371,9 +375,14 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 	// Because doneGenerating is invoked asynchronously, the model node may have become detached
 	// in the meantime. Handle this gracefully.
 	if ( this.model && this.model.doc ) {
-		const store = this.model.doc.getStore();
-		const hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
-		store.hash( generatedContents, hash );
+
+		this.model.constructor.static.storeGeneratedContents(
+			this.model.element,
+			generatedContents,
+			this.model.doc.getStore(),
+			config
+		);
+
 		this.render( generatedContents, staged );
 	}
 };

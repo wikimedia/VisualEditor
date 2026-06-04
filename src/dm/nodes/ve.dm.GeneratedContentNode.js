@@ -35,11 +35,26 @@ OO.initClass( ve.dm.GeneratedContentNode );
  * @param {ve.dm.LinearData.Element} dataElement Data element
  * @param {Object|string|Array} generatedContents Generated contents
  * @param {ve.dm.HashValueStore} store Hash-value store
+ * @param {Object} [config] Additional data
  * @return {string} Hash of stored data
  */
-ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElement, generatedContents, store ) {
-	const hash = OO.getHash( [ this.getHashObjectForRendering( dataElement ), undefined ] );
+ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElement, generatedContents, store, config ) {
+	const hash = OO.getHash( [ this.getHashObjectForRendering( dataElement ), config ] );
 	return store.hash( generatedContents, hash );
+};
+
+/**
+ * Fetch generated contents from store
+ *
+ * @static
+ * @param {ve.dm.LinearData.Element} dataElement Data element
+ * @param {ve.dm.HashValueStore} store Hash-value store
+ * @param {Object} [config] Additional data
+ * @return {Object|string|Array} Generated contents, or null if not found
+ */
+ve.dm.GeneratedContentNode.static.fetchGeneratedContents = function ( dataElement, store, config ) {
+	const hash = OO.getHash( [ this.getHashObjectForRendering( dataElement ), config ] );
+	return store.value( store.hashOfValue( null, hash ) );
 };
 
 /**
@@ -68,4 +83,14 @@ ve.dm.GeneratedContentNode.static.getHashObjectForRendering = function ( dataEle
  */
 ve.dm.GeneratedContentNode.prototype.getHashObjectForRendering = function () {
 	return this.constructor.static.getHashObjectForRendering( this.element );
+};
+
+/**
+ * Fetch generated contents from store
+ *
+ * @param {Object} [config] Additional data
+ * @return {Object|string|Array} Generated contents, or null if not found
+ */
+ve.dm.GeneratedContentNode.prototype.fetchGeneratedContents = function ( config ) {
+	return this.doc ? this.constructor.static.fetchGeneratedContents( this.element, this.doc.getStore(), config ) : null;
 };
