@@ -306,7 +306,7 @@ ve.dm.Node.static.sanitize = function () {
  * @static
  * @inheritable
  * @param {ve.dm.LinearData.Element} dataElement Data element (opening) to remap. Will be modified.
- * @param {Object} mapping Object mapping old internal list indexes to new internal list indexes
+ * @param {Object.<number,number>} mapping Object mapping old internal list indexes to new internal list indexes
  * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
  *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
  */

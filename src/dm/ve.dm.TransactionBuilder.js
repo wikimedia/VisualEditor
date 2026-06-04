@@ -137,7 +137,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 	// If the new list is empty, and the insertion offset is before the list, we
 	// can skip list merging completely.
 	if ( newListNode.length || offset >= listNodeRange.start ) {
-		const listMerge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength || 0 );
+		const listMerge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength );
 		// Remap the indexes in the data
 		data.remapInternalListIndexes( listMerge.mapping, doc.internalList );
 		// Get data for the new internal list

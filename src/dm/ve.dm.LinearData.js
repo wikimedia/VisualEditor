@@ -1432,7 +1432,7 @@ ve.dm.LinearData.prototype.getWordRange = function ( offset ) {
  *
  * Calls remapInternalListIndexes() for each node.
  *
- * @param {Object} mapping Mapping from internal list indexes to internal list indexes
+ * @param {Object.<number,number>} mapping Mapping from internal list indexes to internal list indexes
  * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
  *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
  */

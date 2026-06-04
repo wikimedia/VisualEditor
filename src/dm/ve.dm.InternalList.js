@@ -91,6 +91,10 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( listGroup, listKey, html
 		index = this.getKeyIndex( listGroup, listKey );
 
 	if ( index === undefined ) {
+		// This assigns a listIndex to all references based exclusively on loading order, i.e. the
+		// order in which they appear in the document. This happens only a single time when the
+		// document is loaded. Node creation is delayed, which is why this uses a different,
+		// temporary data structure as source.
 		index = this.itemHtmlQueue.length;
 		this.keyIndexes[ listGroup + '/' + listKey ] = index;
 		this.itemHtmlQueue.push( html );
@@ -241,6 +245,9 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( listGroup, listKey, d
 		};
 	}
 
+	// This assigns a new listIndex to a new reference that's added after the document was loaded.
+	// This assumes the itemHtmlQueue is fully processed and obsolete by now, and instead uses the
+	// actual nodes to continue the sequence.
 	index = this.getItemNodeCount();
 	this.keyIndexes[ listGroup + '/' + listKey ] = index;
 	return {
@@ -347,51 +354,54 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
  * indexes in this, as well as a set of ranges that should be copied from list's linear model
  * into this list's linear model by the caller.
  *
- * @param {ve.dm.InternalList} list Internal list to merge into this list
- * @param {number} commonLength The number of elements, counted from the beginning, that the lists have in common
+ * @param {ve.dm.InternalList} otherList The other internal list to merge into this
+ * @param {number} [commonLength=0] The number of elements, counted from the beginning, that the
+ *  lists have in common
  * @return {{mapping: Object.<number,number>, newItemRanges: ve.Range[]}} mapping is an object
- *  mapping indexes in list to indexes in this; newItemRanges is an array of ranges of internal
+ *  mapping indexes from otherList to indexes in this; newItemRanges is an array of ranges of internal
  *  nodes in list's document that should be copied into our document
  */
-ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
-	const listLen = list.getItemNodeCount(),
-		newItemRanges = [],
-		mapping = {};
-	let nextIndex = this.getItemNodeCount();
+ve.dm.InternalList.prototype.merge = function ( otherList, commonLength ) {
+	commonLength = commonLength || 0;
 
-	if ( list.keyIndexes && list.keyIndexes.length ) {
+	const listIndexMap = {},
+		newItemRanges = [];
+	let nextListIndex = this.getItemNodeCount();
+
+	if ( otherList.keyIndexes && otherList.keyIndexes.length ) {
 		// Looking for potentially dead code here T416558
 		ve.error( 'T416558 ve.dm.InternalList.merge() list.keyIndexes not empty' );
 	}
 
 	for ( let i = 0; i < commonLength; i++ ) {
-		mapping[ i ] = i;
+		// Identity
+		listIndexMap[ i ] = i;
 	}
-	for ( let i = commonLength; i < listLen; i++ ) {
-		// Try to find i in list.keyIndexes
-		let key = null;
-		for ( const k in list.keyIndexes ) {
-			if ( list.keyIndexes[ k ] === i ) {
-				key = k;
-				break;
-			}
-		}
 
-		if ( this.keyIndexes[ key ] !== undefined ) {
+	const otherLength = otherList.getItemNodeCount();
+	for ( let i = commonLength; i < otherLength; i++ ) {
+		// Map each listIndex back to the string key from the other keyIndexes map
+		// FIXME: It appears like the other keyIndexes map is always empty because it's not cloned
+		const otherKey = Object.keys( otherList.keyIndexes )
+			.find( ( key ) => otherList.keyIndexes[ key ] === i );
+
+		const existingListIndex = otherKey && this.keyIndexes[ otherKey ];
+		if ( existingListIndex !== undefined ) {
 			// We already have this key in this internal list. Ignore the duplicate that the other
 			// list is trying to merge in.
 			// NOTE: This case cannot occur in VE currently, but may be possible in the future with
 			// collaborative editing, which is why this code needs to be rewritten before we do
 			// collaborative editing.
-			mapping[ i ] = this.keyIndexes[ key ];
+			listIndexMap[ i ] = existingListIndex;
 		} else {
-			mapping[ i ] = nextIndex;
-			if ( key !== null ) {
-				this.keyIndexes[ key ] = nextIndex;
+			listIndexMap[ i ] = nextListIndex++;
+			newItemRanges.push( otherList.getItemNode( i ).getOuterRange() );
+
+			if ( otherKey ) {
+				// Remember the new listIndex we just assigned for deduplication purposes
+				this.keyIndexes[ otherKey ] = listIndexMap[ i ];
 			}
-			nextIndex++;
-			newItemRanges.push( list.getItemNode( i ).getOuterRange() );
 		}
 	}
-	return { mapping, newItemRanges };
+	return { mapping: listIndexMap, newItemRanges };
 };
