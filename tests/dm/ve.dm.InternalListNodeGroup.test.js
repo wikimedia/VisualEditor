@@ -119,21 +119,21 @@ QUnit.test( 'getUniqueListKey', ( assert ) => {
 	const nodeGroup = internalList.getNodeGroup( 'g1' );
 
 	let generatedName;
-	generatedName = nodeGroup.getUniqueListKey( 'auto/0', 'literal/:' );
+	generatedName = nodeGroup.getUniqueListKey( 'auto/0' );
 	assert.strictEqual( generatedName, 'literal/:0', '0 maps to 0' );
-	generatedName = nodeGroup.getUniqueListKey( 'auto/1', 'literal/:' );
+	generatedName = nodeGroup.getUniqueListKey( 'auto/1' );
 	assert.strictEqual( generatedName, 'literal/:1', '1 maps to 1' );
-	generatedName = nodeGroup.getUniqueListKey( 'auto/2', 'literal/:' );
+	generatedName = nodeGroup.getUniqueListKey( 'auto/2' );
 	assert.strictEqual( generatedName, 'literal/:2', '2 maps to 2' );
-	generatedName = nodeGroup.getUniqueListKey( 'auto/3', 'literal/:' );
+	generatedName = nodeGroup.getUniqueListKey( 'auto/3' );
 	assert.strictEqual( generatedName, 'literal/:4', '3 maps to 4 (because a literal :3 is present)' );
-	generatedName = nodeGroup.getUniqueListKey( 'auto/4', 'literal/:' );
+	generatedName = nodeGroup.getUniqueListKey( 'auto/4' );
 	assert.strictEqual( generatedName, 'literal/:5', '4 maps to 5' );
 
-	generatedName = nodeGroup.getUniqueListKey( 'auto/0', 'literal/:' );
+	generatedName = nodeGroup.getUniqueListKey( 'auto/0' );
 	assert.strictEqual( generatedName, 'literal/:0', 'Reusing a key reuses the name' );
 
-	generatedName = internalList.getNodeGroup( 'g2' ).getUniqueListKey( 'auto/4', 'literal/:' );
+	generatedName = internalList.getNodeGroup( 'g2' ).getUniqueListKey( 'auto/4' );
 	assert.strictEqual( generatedName, 'literal/:0', 'Different groups are treated separately' );
 } );
 

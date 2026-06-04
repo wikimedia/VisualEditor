@@ -310,11 +310,11 @@ ve.dm.InternalListNodeGroup.prototype.unsetNode = function ( listKey, node ) {
  *
  * @param {string} oldListKey Current list key (typically something like "auto/0") to associate the
  *  generated list key with
- * @param {string} prefix Prefix for the generated key. Must match the prefix used in
+ * @param {string} [prefix="literal/:"] Prefix for the generated key. Must match the prefix used in
  *  {@link #keyedNodes} (typically "literal/") for the duplicate detection to work.
  * @return {string} Generated unique list key, or existing unique key associated with oldListKey
  */
-ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, prefix ) {
+ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, prefix = 'literal/:' ) {
 	// Initialize properties dynamically; nobody needs to see this before it's used
 	if ( !this.uniqueListKeys ) {
 		this.uniqueListKeys = {};
