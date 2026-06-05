@@ -377,11 +377,6 @@ ve.dm.InternalList.prototype.merge = function ( otherList, commonLength ) {
 		newItemRanges = [];
 	let nextListIndex = this.getItemNodeCount();
 
-	if ( otherList.keyIndexes && otherList.keyIndexes.size ) {
-		// Looking for potentially dead code here T416558
-		ve.error( 'T416558 ve.dm.InternalList.merge() list.keyIndexes not empty' );
-	}
-
 	for ( let i = 0; i < commonLength; i++ ) {
 		// Identity
 		listIndexMap[ i ] = i;
@@ -389,28 +384,9 @@ ve.dm.InternalList.prototype.merge = function ( otherList, commonLength ) {
 
 	const otherLength = otherList.getItemNodeCount();
 	for ( let i = commonLength; i < otherLength; i++ ) {
-		// Map each listIndex back to the string key from the other keyIndexes map
-		// FIXME: It appears like the other keyIndexes map is always empty because it's not cloned
-		const otherKey = Array.from( otherList.keyIndexes.keys() )
-			.find( ( key ) => otherList.keyIndexes.get( key ) === i );
-
-		const existingListIndex = otherKey && this.keyIndexes.get( otherKey );
-		if ( existingListIndex !== undefined ) {
-			// We already have this key in this internal list. Ignore the duplicate that the other
-			// list is trying to merge in.
-			// NOTE: This case cannot occur in VE currently, but may be possible in the future with
-			// collaborative editing, which is why this code needs to be rewritten before we do
-			// collaborative editing.
-			listIndexMap[ i ] = existingListIndex;
-		} else {
-			listIndexMap[ i ] = nextListIndex++;
-			newItemRanges.push( otherList.getItemNode( i ).getOuterRange() );
-
-			if ( otherKey ) {
-				// Remember the new listIndex we just assigned for deduplication purposes
-				this.keyIndexes.set( otherKey, listIndexMap[ i ] );
-			}
-		}
+		listIndexMap[ i ] = nextListIndex++;
+		newItemRanges.push( otherList.getItemNode( i ).getOuterRange() );
 	}
+
 	return { mapping: listIndexMap, newItemRanges };
 };
