@@ -14,7 +14,7 @@
  * @param {ve.dm.Document} doc
  */
 ve.dm.SourceSurfaceFragment = function VeDmSourceSurfaceFragment() {
-	// Parent constructors
+	// Parent constructor
 	ve.dm.SourceSurfaceFragment.super.apply( this, arguments );
 };
 

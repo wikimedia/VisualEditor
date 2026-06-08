@@ -234,7 +234,6 @@ ve.Node.prototype.isDiffedAsDocument = null;
  * This is the fallback behaviour if the node is not diffed as
  * a list,leaf or document.
  *
- * @abstract
  * @return {boolean} Node behaves like a tree branch
  */
 ve.Node.prototype.isDiffedAsTree = function () {
