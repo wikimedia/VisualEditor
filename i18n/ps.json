@@ -158,6 +158,8 @@
 	"visualeditor-languageinspector-title": "ژبه",
 	"visualeditor-languageinspector-widget-changelang": "ژبه موندل",
 	"visualeditor-languageinspector-widget-label-direction": "لوری",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "له کيڼ ښي خوا ته",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "له ښي کيڼ خوا ته",
 	"visualeditor-languageinspector-widget-label-langcode": "ژب‌کوډ",
 	"visualeditor-languageinspector-widget-label-language": "ژبه",
 	"visualeditor-linkcontext-label-change": "ليک بدلول",
