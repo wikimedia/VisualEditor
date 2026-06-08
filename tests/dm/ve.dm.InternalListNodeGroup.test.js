@@ -163,6 +163,7 @@ QUnit.test( 'buildReflistNumbering', ( assert ) => {
 		[
 			{
 				internalListIndex: 0,
+				label: '1',
 				topLevelNumber: 1
 			}
 		]
@@ -180,22 +181,26 @@ QUnit.test( 'buildReflistNumbering with sub-references', ( assert ) => {
 		[
 			{
 				internalListIndex: 0,
+				label: '1.1',
 				mainListIndex: 1,
 				subrefNumber: 1,
 				topLevelNumber: 1
 			},
 			{
 				internalListIndex: 1,
+				label: '1',
 				topLevelNumber: 1
 			},
 			{
 				internalListIndex: 2,
+				label: '2.1',
 				mainListIndex: 3,
 				subrefNumber: 1,
 				topLevelNumber: 2
 			},
 			{
 				internalListIndex: 3,
+				label: '2',
 				topLevelNumber: 2
 			}
 		]

@@ -57,6 +57,8 @@ OO.initClass( ve.dm.InternalListNodeGroup );
  * @typedef {Object} ve.dm.InternalListNodeGroup.RefInfo
  * @property {number} internalListIndex list index of the ve.dm.InternalItemNode
  *   in a ve.dm.InternalList.
+ * @property {string} label Rendered footnote number including any sub-reference
+ *   number.
  * @property {number} [mainListIndex] List index of a sub-reference's parent, or
  *   omitted for a main reference.
  * @property {number} topLevelNumber Main footnote number.  For a sub-reference,
@@ -371,6 +373,7 @@ ve.dm.InternalListNodeGroup.prototype.buildReflistNumbering = function () {
 			const topLevelNumber = topLevelCounter++;
 			footnoteNumberLookup[ listIndex ] = {
 				internalListIndex: listIndex,
+				label: ve.init.platform.formatNumberWithoutSeparators( topLevelNumber ),
 				topLevelNumber
 			};
 		}
@@ -387,6 +390,9 @@ ve.dm.InternalListNodeGroup.prototype.buildReflistNumbering = function () {
 		const topLevelNumber = getOrAllocateTopLevelNumber( mainListIndex );
 		footnoteNumberLookup[ subRefIndex ] = {
 			internalListIndex: subRefIndex,
+			label: ve.init.platform.formatNumberWithoutSeparators( topLevelNumber ) +
+				// FIXME: RTL, and customization of the separator like with mw:referencedBy
+				'.' + ve.init.platform.formatNumberWithoutSeparators( subrefNumber ),
 			mainListIndex,
 			topLevelNumber,
 			subrefNumber

@@ -125,11 +125,11 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 
 	for ( const groupName in internalListGroups ) {
 		const group = internalListGroups[ groupName ];
-		group.getKeysInIndexOrder().forEach( ( key, i ) => {
-			const reuses = group.getAllReuses( key ) || [];
+		group.buildReflistNumbering().forEach( ( ref ) => {
+			const reuses = group.getAllReusesByListIndex( ref.internalListIndex ) || [];
 			reuses.forEach( ( node ) => {
 				doc.data.modifyData( node.getOffset(), ( item ) => {
-					ve.setProp( item, 'internal', 'overrideIndex', i + 1 );
+					ve.setProp( item, 'internal', 'overrideIndex', ref.label );
 				} );
 			} );
 		} );
