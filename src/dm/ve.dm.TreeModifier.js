@@ -499,14 +499,12 @@ ve.dm.TreeModifier.prototype.processImplicitFinalRetain = function () {
 		) ) {
 			return;
 		}
-		let retainLength;
+		let retainLength = 1;
 		if ( node.type === 'text' ) {
 			// Retain all remaining text; if there is no remaining text then
 			// retain a single offset.
 			retainLength = Math.max( 1, node.length - this.remover.offset );
-		} else if ( !node.hasChildren() ) {
-			retainLength = 1;
-		} else {
+		} else if ( node.hasChildren() ) {
 			const item = node.children[ this.remover.offset ];
 			retainLength = item ? item.getOuterLength() : 1;
 		}
@@ -523,11 +521,7 @@ ve.dm.TreeModifier.prototype.cursorsMatch = function () {
 	if ( this.insertedPositions.length > 0 ) {
 		return false;
 	}
-	const rawRemoverPosition = this.getRawRemoverPosition( {
-		path: this.remover.path,
-		offset: this.remover.offset,
-		node: this.remover.node
-	} );
+	const rawRemoverPosition = this.getRawRemoverPosition( this.remover );
 	const rawInserterPosition = this.getRawInserterPosition();
 	const adjustedRemoverPosition = this.adjustRemoverPosition( rawRemoverPosition );
 	const adjustedInserterPosition = this.adjustInserterPosition( rawInserterPosition );
@@ -656,19 +650,20 @@ ve.dm.TreeModifier.prototype.processRetain = function ( maxLength ) {
 ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData ) {
 	const cursorsMatch = this.cursorsMatch(),
 		length = itemOrData.length || 1,
-		step = this.remover.stepAtMost( length );
+		step = this.remover.stepAtMost( length ),
+		type = step && step.type;
 
-	if ( cursorsMatch && ( step.type === 'cross' || step.type === 'crosstext' ) ) {
+	if ( cursorsMatch && ( type === 'cross' || type === 'crosstext' ) ) {
 		this.inserter.stepAtMost( length );
 	}
 
-	if ( step.type === 'crosstext' ) {
+	if ( type === 'crosstext' ) {
 		this.pushRemoveTextOp( step );
-	} else if ( step.type === 'cross' ) {
+	} else if ( type === 'cross' ) {
 		this.pushRemoveLast();
-	} else if ( step.type === 'open' ) {
+	} else if ( type === 'open' ) {
 		this.deletions.push( step.item );
-	} else if ( step.type === 'close' ) {
+	} else if ( type === 'close' ) {
 		this.pushRemoveLastIfInDeletions();
 	}
 };
@@ -907,7 +902,7 @@ ve.dm.TreeModifier.prototype.pushRemoveTextOp = function ( removerStep ) {
 ve.dm.TreeModifier.prototype.findOrCreateAdjustmentNode = function ( position ) {
 	let adjustmentNode = this.adjustmentTree;
 	position.forEach( ( offset ) => {
-		if ( !adjustmentNode[ offset ] ) {
+		if ( !( offset in adjustmentNode ) ) {
 			adjustmentNode[ offset ] = { offsetsUsed: [] };
 			adjustmentNode.offsetsUsed.push( offset );
 		}
@@ -1122,13 +1117,10 @@ ve.dm.TreeModifier.prototype.getTypeAtInserter = function () {
  * @throws {Error} Cannot insert text into a foo node
  */
 ve.dm.TreeModifier.prototype.checkCanInsertText = function () {
-	const parentType = this.getTypeAtInserter();
+	const type = this.getTypeAtInserter();
 
-	if ( parentType === 'text' ) {
-		return;
-	}
-	if ( !ve.dm.nodeFactory.canNodeContainContent( parentType ) ) {
-		throw new Error( 'Cannot insert text into a ' + parentType + ' node' );
+	if ( type !== 'text' && !ve.dm.nodeFactory.canNodeContainContent( type ) ) {
+		throw new Error( 'Cannot insert text into a ' + type + ' node' );
 	}
 };
 
