@@ -357,7 +357,7 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
  * @param {ve.dm.InternalList} otherList The other internal list to merge into this
  * @param {number} [commonLength=0] The number of elements, counted from the beginning, that the
  *  lists have in common
- * @return {{mapping: Object.<number,number>, newItemRanges: ve.Range[]}} mapping is an object
+ * @return {{mapping: Object.<string,number>, newItemRanges: ve.Range[]}} mapping is an object
  *  mapping indexes from otherList to indexes in this; newItemRanges is an array of ranges of internal
  *  nodes in list's document that should be copied into our document
  */

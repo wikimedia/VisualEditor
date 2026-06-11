@@ -181,8 +181,8 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
  * @typedef {Object} ve.dm.VisualDiff.ListDiff
  * @property {ve.dm.Node[]} oldNodes
  * @property {ve.dm.Node[]} newNodes
- * @property {Object.<number,number|Object>} oldToNew
- * @property {Object.<number,number|Object>} newToOld
+ * @property {Object.<string,number|Object>} oldToNew
+ * @property {Object.<string,number|Object>} newToOld
  * @property {number[]} remove
  * @property {number[]} insert
  * @property {Array.<number|string>} moves
@@ -269,10 +269,10 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
  * indices. Those indices in the longest increasing subsequence represent the unmoved
  * nodes.
  *
- * @param {Object.<number,number|Object>} oldToNew Map of oldDoc nodes to corresponding newDoc nodes.
+ * @param {Object.<string,number|Object>} oldToNew Map of oldDoc nodes to corresponding newDoc nodes.
  *   Keys are indices of nodes in the list. Values are either indices of nodes in the list for
  *   unchanged nodes, or objects where the `node` property is the index for changed nodes.
- * @param {Object.<number,number|Object>} newToOld Map of newDoc nodes to corresponding oldDoc nodes.
+ * @param {Object.<string,number|Object>} newToOld Map of newDoc nodes to corresponding oldDoc nodes.
  *   Same format at oldToNew.
  * @return {Array.<number|string>} Record of whether and how each newDoc node has moved (0, 'up', 'down')
  */
