@@ -724,6 +724,59 @@ ve.dm.example.references = [
 	// 28
 ];
 
+ve.dm.example[ 'single sub-reference and reused main' ] = [
+	{ type: 'paragraph' },
+	...'Simple main plus details',
+	{ type: 'stubReference',
+		attributes: {
+			listGroup: '',
+			listKey: 'auto/0',
+			listIndex: 0,
+			mainBodyHtml: 'main plus details (body)',
+			mainListKey: 'literal/:0',
+			mainListIndex: 1
+		}
+	},
+	{ type: '/stubReference' },
+	...'Reused main',
+	{
+		type: 'stubReference',
+		attributes: {
+			listGroup: '',
+			listKey: 'auto/1',
+			listIndex: 2
+		}
+	},
+	{ type: '/stubReference' },
+	{
+		type: 'stubReference',
+		attributes: {
+			listGroup: '',
+			listKey: 'auto/1',
+			listIndex: 2
+		}
+	},
+	{ type: '/stubReference' },
+	{ type: '/paragraph' },
+	{ type: 'internalList' },
+	{ type: 'internalItem' },
+	{ type: 'paragraph' },
+	...'p. 123',
+	{ type: '/paragraph' },
+	{ type: '/internalItem' },
+	{ type: 'internalItem' },
+	{ type: 'paragraph' },
+	...'main plus details (body)',
+	{ type: '/paragraph' },
+	{ type: '/internalItem' },
+	{ type: 'internalItem' },
+	{ type: 'paragraph' },
+	...'Reused main',
+	{ type: '/paragraph' },
+	{ type: '/internalItem' },
+	{ type: '/internalList' }
+];
+
 ve.dm.example[ 'sub-references' ] = [
 	{ type: 'paragraph' },
 	...'Simple main plus details',

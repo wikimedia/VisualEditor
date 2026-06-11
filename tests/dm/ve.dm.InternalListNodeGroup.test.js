@@ -137,6 +137,15 @@ QUnit.test( 'getUniqueListKey', ( assert ) => {
 	assert.strictEqual( generatedName, 'literal/:0', 'Different groups are treated separately' );
 } );
 
+QUnit.test( 'getUniqueListKey with main + details', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument( 'single sub-reference and reused main' );
+	const internalList = doc.getInternalList();
+	const nodeGroup = internalList.getNodeGroup( '' );
+
+	const generatedName = nodeGroup.getUniqueListKey( 'auto/1' );
+	assert.strictEqual( generatedName, 'literal/:1', 'Correct auto-name when main ref is not a node' );
+} );
+
 QUnit.test( 'buildReflistNumbering', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument( 'references' );
 	const internalList = doc.getInternalList();

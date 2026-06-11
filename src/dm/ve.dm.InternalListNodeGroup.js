@@ -327,10 +327,24 @@ ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, 
 	do {
 		result = prefix + this.uniqueNameSequence++;
 		// Skip values that already appear in the document, e.g. from previous edits
-	} while ( this.keyedNodes[ result ] );
+	} while ( this.isKnownMainListKey( result ) );
 
 	this.uniqueListKeys[ oldListKey ] = result;
 	return result;
+};
+
+/**
+ * @private
+ * @param {string} newListKey
+ * @return {boolean}
+ */
+ve.dm.InternalListNodeGroup.prototype.isKnownMainListKey = function ( newListKey ) {
+	// The cheapest possible way to check existing listKeys of normal main references
+	return newListKey in this.keyedNodes ||
+		// Sub-references are tracked as "auto/0" etc., their main ref's listKey is somewhere else
+		this.firstNodes.some(
+			( node ) => node.getAttribute( 'mainListKey' ) === newListKey
+		);
 };
 
 /**
