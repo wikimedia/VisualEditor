@@ -65,7 +65,7 @@ ve.ce.pasteSourceDetectors = new ve.ce.PasteSourceDetectorRegistry();
  * @class
  * @constructor
  * @param {string} name Detector name
- * @param {Function} match Match function, called with clipboardData
+ * @param {Function} match Test function, called with clipboardData, expected to return a bool
  * @param {string[]} categories Detector categories
  */
 ve.ce.PasteSourceDetector = function VeCePasteSourceDetector( name, match, categories ) {
@@ -102,13 +102,13 @@ ve.ce.PasteSourceDetector.prototype.getData = function () {
 ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	'googleDocs',
 	( clipboardData ) => clipboardData.types.some( ( type ) => type.startsWith( 'application/x-vnd.google-docs' ) ) ||
-		clipboardData.getData( 'text/html' ).match( /id=['"]?docs-internal-guid/i ),
+		/id=['"]?docs-internal-guid/i.test( clipboardData.getData( 'text/html' ) ),
 	[ 'wordProcessor' ]
 ) );
 
 ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	'libreOffice',
-	( clipboardData ) => clipboardData.getData( 'text/html' ).match( /content=['"]?LibreOffice/i ),
+	( clipboardData ) => /content=['"]?LibreOffice/i.test( clipboardData.getData( 'text/html' ) ),
 	[ 'wordProcessor' ]
 ) );
 
@@ -117,9 +117,9 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	( clipboardData ) => {
 		const html = clipboardData.getData( 'text/html' );
 		// Word365 (Desktop)
-		return html.match( /content=Word.Document/i ) ||
+		return /content=Word.Document/i.test( html ) ||
 			// Word365 (web)
-			( html.match( /data-contrast=["']/i ) && html.includes( 'TextRun' ) );
+			/data-contrast=["']/i.test( html ) && html.includes( 'TextRun' );
 	},
 	[ 'wordProcessor' ]
 ) );
@@ -129,9 +129,9 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	( clipboardData ) => {
 		const html = clipboardData.getData( 'text/html' );
 		// Generic HTML attributes
-		return ( html.match( /data-start=["']/i ) && html.match( /data-end=["']/i ) ) ||
+		return ( /data-start=["']/i.test( html ) && /data-end=["']/i.test( html ) ) ||
 			// Query string added to links
-			html.match( /utm_source=chatgpt\.com/i );
+			/utm_source=chatgpt\.com/i.test( html );
 	},
 	[ 'ai' ]
 ) );
@@ -141,17 +141,17 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	( clipboardData ) => {
 		const html = clipboardData.getData( 'text/html' );
 		// Generic HTML attributes
-		return html.match( /data-path-to-node=["']/i ) ||
-			html.match( /<response-element/i ) ||
+		return /data-path-to-node=["']/i.test( html ) ||
+			/<response-element/i.test( html ) ||
 			// Attribute value added to links
-			html.match( /BardVeMetadataKey/i );
+			/BardVeMetadataKey/i.test( html );
 	},
 	[ 'ai' ]
 ) );
 
 ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	'claude',
-	( clipboardData ) => clipboardData.getData( 'text/html' ).match( /font-claude-/i ),
+	( clipboardData ) => /font-claude-/i.test( clipboardData.getData( 'text/html' ) ),
 	[ 'ai' ]
 ) );
 
