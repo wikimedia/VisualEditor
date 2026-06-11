@@ -121,7 +121,8 @@ ve.dm.VisualDiff.static.compareNodes = function ( oldNode, newNode ) {
  * @param {ve.dm.Document} doc
  */
 ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
-	const internalListGroups = doc.getInternalList().getNodeGroups();
+	const internalList = doc.getInternalList();
+	const internalListGroups = internalList.getNodeGroups();
 
 	for ( const groupName in internalListGroups ) {
 		const group = internalListGroups[ groupName ];
@@ -132,6 +133,14 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 					ve.setProp( item, 'internal', 'overrideIndex', ref.label );
 				} );
 			} );
+			const internalItemNode = internalList.getItemNode( ref.internalListIndex );
+			if ( internalItemNode ) {
+				// TODO: doc.data.modifyData the internalItemNode like above, once T428580 is resolved.
+				ve.setProp( internalItemNode, 'internal', 'overrideIndex', ref.label );
+				if ( ref.subrefNumber ) {
+					ve.setProp( internalItemNode, 'internal', 'isSubref', true );
+				}
+			}
 		} );
 	}
 };
