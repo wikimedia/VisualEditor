@@ -338,7 +338,7 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
 		retainedData.forEach( ( item ) => {
 			const type = item.type;
 			if ( type !== undefined ) {
-				this.retainDepth += type.charAt( 0 ) === '/' ? -1 : 1;
+				this.retainDepth += type.startsWith( '/' ) ? -1 : 1;
 			}
 		} );
 	}
@@ -387,7 +387,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	op.remove.forEach( ( item ) => {
 		const type = item.type;
 		if ( type !== undefined ) {
-			if ( type.charAt( 0 ) === '/' ) {
+			if ( type.startsWith( '/' ) ) {
 				// Closing element
 				this.replaceRemoveLevel--;
 			} else {
@@ -399,7 +399,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	op.insert.forEach( ( item ) => {
 		const type = item.type;
 		if ( type !== undefined ) {
-			if ( type.charAt( 0 ) === '/' ) {
+			if ( type.startsWith( '/' ) ) {
 				// Closing element
 				this.replaceInsertLevel--;
 			} else {

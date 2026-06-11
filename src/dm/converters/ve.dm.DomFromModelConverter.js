@@ -479,7 +479,7 @@ ve.dm.DomFromModelConverter.prototype.getDomSubtreeFromData = function ( data, c
 		let n, depth;
 		for ( n = k + 1, depth = 1; n < dataLen && depth > 0; n++ ) {
 			if ( data[ n ].type ) {
-				depth += data[ n ].type.charAt( 0 ) === '/' ? -1 : 1;
+				depth += data[ n ].type.startsWith( '/' ) ? -1 : 1;
 			}
 		}
 		if ( depth !== 0 ) {
@@ -617,7 +617,7 @@ ve.dm.DomFromModelConverter.prototype.getDomSubtreeFromData = function ( data, c
 		} else if ( data[ i ].type !== undefined ) {
 			const dataElement = data[ i ];
 			// Element
-			if ( dataElement.type.charAt( 0 ) === '/' ) {
+			if ( dataElement.type.startsWith( '/' ) ) {
 				// Close element
 				const parentDomElement = domElement.parentNode;
 				const type = data[ i ].type.slice( 1 );
@@ -709,7 +709,7 @@ ve.dm.DomFromModelConverter.prototype.getDomSubtreeFromData = function ( data, c
 									// then check that we are the last child
 									// before unwrapping (and therefore destroying)
 									data[ i + 1 ] === undefined ||
-									data[ i + 1 ].type.charAt( 0 ) === '/' ||
+									data[ i + 1 ].type.startsWith( '/' ) ||
 									// Document ends when we encounter the internal list
 									(
 										data[ i + 1 ].type &&

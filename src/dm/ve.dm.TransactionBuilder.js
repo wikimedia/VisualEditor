@@ -261,7 +261,7 @@ ve.dm.TransactionBuilder.static.newFromAttributeChanges = function ( doc, offset
 		throw new Error( 'Cannot set attributes to non-element data' );
 	}
 	// Verify element is not a closing
-	if ( data[ offset ].type.charAt( 0 ) === '/' ) {
+	if ( data[ offset ].type.startsWith( '/' ) ) {
 		throw new Error( 'Cannot set attributes on closing element' );
 	}
 	// Retain up to element
@@ -1032,7 +1032,7 @@ ve.dm.TransactionBuilder.prototype.pushMeta = function ( doc, offset, metaItems 
 			if ( !type || typeof type !== 'string' ) {
 				continue;
 			}
-			if ( type.charAt( 0 ) === '/' ) {
+			if ( type.startsWith( '/' ) ) {
 				// Close element, so going backwards we're getting deeper
 				relDepth++;
 				continue;

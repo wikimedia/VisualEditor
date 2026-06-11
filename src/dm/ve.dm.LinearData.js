@@ -636,7 +636,7 @@ ve.dm.LinearData.prototype.isStructuralOffset = function ( offset, unrestricted 
 			// <list><listItem><paragraph>a</paragraph>|</listItem>|</list>|
 			(
 				// Is a closing
-				left.type.charAt( 0 ) === '/' &&
+				left.type.startsWith( '/' ) &&
 				// Is a branch or non-content leaf
 				(
 					factory.canNodeHaveChildren( left.type.slice( 1 ) ) ||
@@ -655,7 +655,7 @@ ve.dm.LinearData.prototype.isStructuralOffset = function ( offset, unrestricted 
 			// |<list>|<listItem>|<paragraph>a</paragraph></listItem></list>
 			(
 				// Is not a closing
-				right.type.charAt( 0 ) !== '/' &&
+				!right.type.startsWith( '/' ) &&
 				// Is a branch or non-content leaf
 				(
 					factory.canNodeHaveChildren( right.type ) ||
@@ -701,7 +701,7 @@ ve.dm.LinearData.prototype.isContentData = function () {
 	while ( i-- ) {
 		const item = this.getData( i );
 		if ( item.type !== undefined &&
-			item.type.charAt( 0 ) !== '/' &&
+			!item.type.startsWith( '/' ) &&
 			!ve.dm.nodeFactory.isNodeContent( item.type )
 		) {
 			return false;

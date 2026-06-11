@@ -1344,7 +1344,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	function writeElement( element, index ) {
 		if ( element.type !== undefined ) {
 			// Content, do nothing
-			if ( element.type.charAt( 0 ) !== '/' ) {
+			if ( !element.type.startsWith( '/' ) ) {
 				// Opening
 				// Check if this opening balances an earlier closing of a node that was already in
 				// the document. This is only the case if openingStack is empty (otherwise we still
@@ -1453,7 +1453,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 			parentType = openingStack.length > 0 ?
 				openingStack[ openingStack.length - 1 ].type : parentNode.getType();
 		}
-		if ( data[ i ].type === undefined || data[ i ].type.charAt( 0 ) !== '/' ) {
+		if ( data[ i ].type === undefined || !data[ i ].type.startsWith( '/' ) ) {
 			// The type of the node we're currently inserting. When the to-be-inserted node
 			// is wrapped, this is set to the type of the outer wrapper.
 			let childType = data[ i ].type || 'text';

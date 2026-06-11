@@ -684,7 +684,7 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
 	let item, type, data;
 	if ( itemOrData.type ) {
 		item = itemOrData;
-		type = item.type.charAt( 0 ) === '/' ? 'close' : 'open';
+		type = item.type.startsWith( '/' ) ? 'close' : 'open';
 	} else {
 		data = itemOrData;
 		type = 'crosstext';
