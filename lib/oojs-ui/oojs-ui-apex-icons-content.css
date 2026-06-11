@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 .oo-ui-icon-article {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/article-ltr.svg);
@@ -42,6 +42,9 @@
 }
 .oo-ui-icon-articleRedirect {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/articleRedirect-ltr.svg);
+}
+.oo-ui-icon-asterisk {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/asterisk.svg);
 }
 .oo-ui-icon-database {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/database.svg);
@@ -84,8 +87,17 @@
 .oo-ui-icon-share {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/share.svg);
 }
+.oo-ui-icon-shareAndroid {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/shareAndroid.svg);
+}
+.oo-ui-icon-shareIOS {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/shareIOS.svg);
+}
 .oo-ui-icon-specialPages {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/specialPages-ltr.svg);
+}
+.oo-ui-icon-tabs {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/tabs-ltr.svg);
 }
 .oo-ui-icon-tag {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/tag-ltr.svg);
@@ -97,5 +109,5 @@
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/upload.svg);
 }
 .oo-ui-icon-window {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/window.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/window-ltr.svg);
 }

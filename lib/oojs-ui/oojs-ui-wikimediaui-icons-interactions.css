@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 /* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-add {
@@ -90,6 +90,15 @@
 .oo-ui-image-progressive.oo-ui-icon-close {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/close-progressive.svg);
 }
+.oo-ui-icon-configure {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/configure.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-configure {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/configure-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-configure {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/configure-progressive.svg);
+}
 .oo-ui-icon-ellipsis {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/ellipsis.svg);
 }
@@ -117,17 +126,35 @@
 .oo-ui-image-progressive.oo-ui-icon-feedback {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/feedback-ltr-progressive.svg);
 }
+.oo-ui-icon-filter {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/filter.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-filter {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/filter-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-filter {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/filter-progressive.svg);
+}
 .oo-ui-icon-funnel {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel-ltr.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel.svg);
 }
 .oo-ui-image-destructive.oo-ui-icon-funnel {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel-ltr-destructive.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel-destructive.svg);
 }
 .oo-ui-image-invert.oo-ui-icon-funnel {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel-ltr-invert.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel-invert.svg);
 }
 .oo-ui-image-progressive.oo-ui-icon-funnel {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel-ltr-progressive.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel-progressive.svg);
+}
+.oo-ui-icon-funnelMatch {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnelMatch-ltr.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-funnelMatch {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnelMatch-ltr-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-funnelMatch {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnelMatch-ltr-progressive.svg);
 }
 .oo-ui-icon-hand {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/hand.svg);
@@ -149,6 +176,15 @@
 }
 .oo-ui-image-progressive.oo-ui-icon-heart {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/heart-progressive.svg);
+}
+.oo-ui-icon-heartOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/heartOutline.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-heartOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/heartOutline-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-heartOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/heartOutline-progressive.svg);
 }
 .oo-ui-icon-help {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/help-ltr.svg);
@@ -252,6 +288,15 @@
 .oo-ui-image-progressive.oo-ui-icon-lightbulb {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulb-progressive.svg);
 }
+.oo-ui-icon-lightbulbOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulbOutline.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-lightbulbOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulbOutline-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-lightbulbOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulbOutline-progressive.svg);
+}
 .oo-ui-icon-logIn {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logIn-ltr.svg);
 }
@@ -269,6 +314,15 @@
 }
 .oo-ui-image-progressive.oo-ui-icon-logOut {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logOut-ltr-progressive.svg);
+}
+.oo-ui-icon-magicWand {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/magicWand.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-magicWand {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/magicWand-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-magicWand {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/magicWand-progressive.svg);
 }
 .oo-ui-icon-network {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/network.svg);
@@ -331,6 +385,24 @@
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/reload-invert.svg);
 }
 .oo-ui-image-progressive.oo-ui-icon-reload {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/reload-progressive.svg);
+}
+.oo-ui-icon-restart {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/restart.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-restart {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/restart-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-restart {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/restart-progressive.svg);
+}
+.oo-ui-icon-rotate {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/reload.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-rotate {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/reload-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-rotate {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/reload-progressive.svg);
 }
 .oo-ui-icon-search {

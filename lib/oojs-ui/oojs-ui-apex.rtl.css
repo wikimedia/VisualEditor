@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -1920,14 +1920,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -2619,14 +2619,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3207,14 +3207,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 
 .oo-ui-window {
@@ -3622,14 +3622,14 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 .oo-ui-icon-arrowDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowDown.svg);
@@ -3651,6 +3651,12 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-icon-draggable {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggable.svg);
+}
+.oo-ui-icon-draggableHorizontal {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableHorizontal.svg);
+}
+.oo-ui-icon-draggableXY {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableXY.svg);
 }
 .oo-ui-icon-doubleChevronEnd {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/doubleChevronEnd-rtl.svg);
@@ -3718,6 +3724,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-articleRedirect {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/articleRedirect-rtl.svg);
 }
+.oo-ui-icon-asterisk {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/asterisk.svg);
+}
 .oo-ui-icon-database {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/database.svg);
 }
@@ -3759,8 +3768,17 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-share {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/share.svg);
 }
+.oo-ui-icon-shareAndroid {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/shareAndroid.svg);
+}
+.oo-ui-icon-shareIOS {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/shareIOS.svg);
+}
 .oo-ui-icon-specialPages {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/specialPages-rtl.svg);
+}
+.oo-ui-icon-tabs {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/tabs-rtl.svg);
 }
 .oo-ui-icon-tag {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/tag-rtl.svg);
@@ -3772,7 +3790,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/upload.svg);
 }
 .oo-ui-icon-window {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/window.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/window-rtl.svg);
 }
 
 .oo-ui-icon-alert {
@@ -3787,6 +3805,21 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-error {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/error.svg);
 }
+.oo-ui-icon-levelNone {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/levelNone-rtl.svg);
+}
+.oo-ui-icon-levelOne {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/levelOne-rtl.svg);
+}
+.oo-ui-icon-levelTwo {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/levelTwo-rtl.svg);
+}
+.oo-ui-icon-levelThree {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/levelThree-rtl.svg);
+}
+.oo-ui-icon-live {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/live.svg);
+}
 .oo-ui-icon-message {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/message.svg);
 }
@@ -3795,6 +3828,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-icon-speechBubble {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/speechBubble-rtl.svg);
+}
+.oo-ui-icon-speechBubbleAlert {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/speechBubbleAlert-rtl.svg);
 }
 .oo-ui-icon-speechBubbleAdd {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/speechBubbleAdd-rtl.svg);
@@ -3833,6 +3869,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-close {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/close.svg);
 }
+.oo-ui-icon-configure {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/configure.svg);
+}
 .oo-ui-icon-ellipsis {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/ellipsis.svg);
 }
@@ -3842,14 +3881,23 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-feedback {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/feedback-rtl.svg);
 }
+.oo-ui-icon-filter {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/filter.svg);
+}
 .oo-ui-icon-funnel {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel-rtl.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnel.svg);
+}
+.oo-ui-icon-funnelMatch {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/funnelMatch-rtl.svg);
 }
 .oo-ui-icon-hand {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/hand.svg);
 }
 .oo-ui-icon-heart {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/heart.svg);
+}
+.oo-ui-icon-heartOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/heartOutline.svg);
 }
 .oo-ui-icon-help {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/help-rtl.svg);
@@ -3885,11 +3933,17 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-lightbulb {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulb.svg);
 }
+.oo-ui-icon-lightbulbOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulbOutline.svg);
+}
 .oo-ui-icon-logIn {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logIn-rtl.svg);
 }
 .oo-ui-icon-logOut {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/logOut-rtl.svg);
+}
+.oo-ui-icon-magicWand {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/magicWand.svg);
 }
 .oo-ui-icon-network {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/network.svg);
@@ -3912,6 +3966,12 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-reload {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/reload.svg);
 }
+.oo-ui-icon-restart {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/restart.svg);
+}
+.oo-ui-icon-rotate {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/reload.svg);
+}
 .oo-ui-icon-search {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/search.svg);
 }
@@ -3930,6 +3990,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-icon-block {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/block.svg);
+}
+.oo-ui-icon-blockOutline {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/blockOutline.svg);
 }
 .oo-ui-icon-unBlock {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/unBlock.svg);
@@ -4366,6 +4429,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-cut {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/cut-rtl.svg);
 }
+.oo-ui-icon-diffs {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/diffs-rtl.svg);
+}
 .oo-ui-icon-hieroglyph {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/hieroglyph.svg);
 }
@@ -4415,7 +4481,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/ocr.svg);
 }
 .oo-ui-icon-outline {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/outline-rtl.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/outline.svg);
 }
 .oo-ui-icon-palette {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/palette-rtl.svg);
@@ -4491,7 +4557,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 .oo-ui-icon-book {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/book-rtl.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/book.svg);
 }
 .oo-ui-icon-journal {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/journal-rtl.svg);
@@ -4500,7 +4566,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/newspaper-rtl.svg);
 }
 .oo-ui-icon-reference {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/reference.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/reference-rtl.svg);
 }
 .oo-ui-icon-referenceExisting {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/referenceExisting-rtl.svg);
@@ -4514,6 +4580,18 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-icon-chart {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/chart.svg);
+}
+.oo-ui-icon-chartBar {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/chartBar.svg);
+}
+.oo-ui-icon-chartLine {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/chartLine.svg);
+}
+.oo-ui-icon-chartPie {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/chartPie.svg);
+}
+.oo-ui-icon-chartScatter {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/chartScatter.svg);
 }
 .oo-ui-icon-exitFullscreen {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/exitFullscreen.svg);
@@ -4534,7 +4612,7 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/imageLock-rtl.svg);
 }
 .oo-ui-icon-imageGallery {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/imageGallery.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/imageGallery-rtl.svg);
 }
 .oo-ui-icon-musicalScore {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/musicalScore.svg);
@@ -4542,11 +4620,20 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-pause {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/pause.svg);
 }
+.oo-ui-icon-pictureInPicture {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/pictureInPicture.svg);
+}
 .oo-ui-icon-play {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/play.svg);
 }
 .oo-ui-icon-stop {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/stop.svg);
+}
+.oo-ui-icon-subtitle {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/subtitle.svg);
+}
+.oo-ui-icon-threeDimensional {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/threeDimensional.svg);
 }
 .oo-ui-icon-volumeDown {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/volumeDown-rtl.svg);
@@ -4598,11 +4685,20 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 .oo-ui-icon-userBlocked {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userBlocked.svg);
 }
+.oo-ui-icon-userChat {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userChat-rtl.svg);
+}
 .oo-ui-icon-userContributions {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userContributions-rtl.svg);
 }
 .oo-ui-icon-userGroup {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userGroup-rtl.svg);
+}
+.oo-ui-icon-userMentor {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userMentor-rtl.svg);
+}
+.oo-ui-icon-userPages {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userPages-rtl.svg);
 }
 .oo-ui-icon-userRights {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userRights-rtl.svg);
@@ -4665,6 +4761,9 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-icon-smallerText {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/smallerText.svg);
+}
+.oo-ui-icon-universalDesign {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/universalDesign.svg);
 }
 .oo-ui-icon-visionSimulator {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/visionSimulator.svg);

@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 .oo-ui-icon-alert {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/alert.svg);
@@ -20,6 +20,21 @@
 .oo-ui-icon-error {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/error.svg);
 }
+.oo-ui-icon-levelNone {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/levelNone-rtl.svg);
+}
+.oo-ui-icon-levelOne {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/levelOne-rtl.svg);
+}
+.oo-ui-icon-levelTwo {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/levelTwo-rtl.svg);
+}
+.oo-ui-icon-levelThree {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/levelThree-rtl.svg);
+}
+.oo-ui-icon-live {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/live.svg);
+}
 .oo-ui-icon-message {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/message.svg);
 }
@@ -28,6 +43,9 @@
 }
 .oo-ui-icon-speechBubble {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/speechBubble-rtl.svg);
+}
+.oo-ui-icon-speechBubbleAlert {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/speechBubbleAlert-rtl.svg);
 }
 .oo-ui-icon-speechBubbleAdd {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/speechBubbleAdd-rtl.svg);

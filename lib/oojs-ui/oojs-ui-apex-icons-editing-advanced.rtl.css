@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 .oo-ui-icon-alignCenter {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/alignCenter.svg);
@@ -31,6 +31,9 @@
 }
 .oo-ui-icon-cut {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/cut-rtl.svg);
+}
+.oo-ui-icon-diffs {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/diffs-rtl.svg);
 }
 .oo-ui-icon-hieroglyph {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/hieroglyph.svg);
@@ -81,7 +84,7 @@
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/ocr.svg);
 }
 .oo-ui-icon-outline {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/outline-rtl.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/outline.svg);
 }
 .oo-ui-icon-palette {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/palette-rtl.svg);

@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 /* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-bookmarkList {
@@ -63,6 +63,15 @@
 .oo-ui-image-progressive.oo-ui-icon-userBlocked {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userBlocked-progressive.svg);
 }
+.oo-ui-icon-userChat {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userChat-ltr.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-userChat {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userChat-ltr-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-userChat {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userChat-ltr-progressive.svg);
+}
 .oo-ui-icon-userContributions {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userContributions-ltr.svg);
 }
@@ -80,6 +89,24 @@
 }
 .oo-ui-image-progressive.oo-ui-icon-userGroup {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userGroup-ltr-progressive.svg);
+}
+.oo-ui-icon-userMentor {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userMentor-ltr.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-userMentor {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userMentor-ltr-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-userMentor {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userMentor-ltr-progressive.svg);
+}
+.oo-ui-icon-userPages {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userPages-ltr.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-userPages {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userPages-ltr-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-userPages {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userPages-ltr-progressive.svg);
 }
 .oo-ui-icon-userRights {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userRights-ltr.svg);

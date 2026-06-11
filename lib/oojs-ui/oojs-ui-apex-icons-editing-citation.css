@@ -1,15 +1,15 @@
 /*!
- * OOUI v0.53.2
+ * OOUI v0.54.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-04-21T12:46:11Z
+ * Date: 2026-06-11T21:42:20Z
  */
 .oo-ui-icon-book {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/book-ltr.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/book.svg);
 }
 .oo-ui-icon-journal {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/journal-ltr.svg);
@@ -18,7 +18,7 @@
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/newspaper-ltr.svg);
 }
 .oo-ui-icon-reference {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/reference.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/reference-ltr.svg);
 }
 .oo-ui-icon-referenceExisting {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/referenceExisting-ltr.svg);
