@@ -425,7 +425,7 @@ ve.init.Target.prototype.bindHandlers = function () {
 		visibilitychange: this.onDocumentVisibilityChangeHandler
 	} );
 	this.$element.on( 'keydown', this.onTargetKeyDownHandler );
-	this.$scrollListener[ 0 ].addEventListener( 'scroll', this.onContainerScrollHandler, { passive: true } );
+	this.$scrollListener.on( 'scroll', this.onContainerScrollHandler );
 
 	if ( 'visualViewport' in window ) {
 		this.viewportScrollContainer = OO.ui.Element.static.getClosestScrollableContainer( document.body );
@@ -444,7 +444,7 @@ ve.init.Target.prototype.unbindHandlers = function () {
 		visibilitychange: this.onDocumentVisibilityChangeHandler
 	} );
 	this.$element.off( 'keydown', this.onTargetKeyDownHandler );
-	this.$scrollListener[ 0 ].removeEventListener( 'scroll', this.onContainerScrollHandler );
+	this.$scrollListener.off( 'scroll', this.onContainerScrollHandler );
 	if ( 'visualViewport' in window ) {
 		$( visualViewport ).off( 'resize', this.onVirtualKeyboardChangeThrottled );
 	}

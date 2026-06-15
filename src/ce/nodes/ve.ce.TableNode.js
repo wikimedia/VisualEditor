@@ -100,7 +100,7 @@ ve.ce.TableNode.prototype.onSetup = function () {
 		position: this.updateOverlayDebounced,
 		activation: 'onSurfaceActivation'
 	} );
-	this.surface.getSurface().$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollThrottled, { passive: true } );
+	this.surface.getSurface().$scrollListener.on( 'scroll', this.onWindowScrollThrottled );
 };
 
 /**
@@ -121,7 +121,7 @@ ve.ce.TableNode.prototype.onTeardown = function () {
 	this.surface.getModel().disconnect( this );
 	this.surface.disconnect( this );
 	this.$overlay.remove();
-	this.surface.getSurface().$scrollListener[ 0 ].removeEventListener( 'scroll', this.onWindowScrollThrottled );
+	this.surface.getSurface().$scrollListener.off( 'scroll', this.onWindowScrollThrottled );
 
 	this.surface = null;
 };

@@ -55,7 +55,7 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 	this.getSurface().connect( this, { position: this.onSurfacePositionDebounced } );
 
 	this.onWindowScrollDebounced = ve.debounceWithTest( teardownCheck, this.onWindowScroll.bind( this ), 250 );
-	this.getSurface().getSurface().$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollDebounced, { passive: true } );
+	this.getSurface().getSurface().$scrollListener.on( 'scroll', this.onWindowScrollDebounced );
 
 	this.$element.addClass( 've-ce-selectionManager' );
 	this.$overlay = $( '<div>' ).addClass( 've-ce-selectionManager-overlay' );
@@ -86,7 +86,7 @@ ve.ce.SelectionManager.prototype.destroy = function () {
 	}
 	this.$element.remove();
 	this.$overlay.remove();
-	this.getSurface().getSurface().$scrollListener[ 0 ].removeEventListener( 'scroll', this.onWindowScrollDebounced );
+	this.getSurface().getSurface().$scrollListener.off( 'scroll', this.onWindowScrollDebounced );
 
 	this.surface = null;
 };

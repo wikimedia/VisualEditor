@@ -85,7 +85,7 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
 		} );
 	}
 	if ( this.isFloatable() ) {
-		this.target.$scrollListener[ 0 ].addEventListener( 'scroll', this.onWindowScrollThrottled, { passive: true } );
+		this.target.$scrollListener.on( 'scroll', this.onWindowScrollThrottled );
 	}
 };
 
@@ -100,7 +100,7 @@ ve.ui.PositionedTargetToolbar.prototype.detach = function () {
 			this.getSurface().getToolbarDialogs( dialogPosition ).clearWindows();
 		} );
 	}
-	this.target.$scrollListener[ 0 ].removeEventListener( 'scroll', this.onWindowScrollThrottled );
+	this.target.$scrollListener.off( 'scroll', this.onWindowScrollThrottled );
 
 	// Parent method
 	ve.ui.PositionedTargetToolbar.super.prototype.detach.apply( this, arguments );
