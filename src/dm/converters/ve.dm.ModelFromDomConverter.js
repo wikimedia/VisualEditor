@@ -426,7 +426,7 @@ ve.dm.ModelFromDomConverter.prototype.getDataFromDomSubtree = function ( domElem
 						ve.batchPush( toInsert, this.constructor.static.getDataContentFromText(
 							wrappedMetaItem.internal.whitespace[ 0 ], context.annotations
 						) );
-						delete wrappedMetaItem.internal;
+						ve.deleteProp( wrappedMetaItem, 'internal', 'whitespace' );
 					} else if ( whitespaceTreatment === 'fixup' ) {
 						addWhitespace( prev, 3, wrappedMetaItem.internal.whitespace[ 0 ] );
 					}

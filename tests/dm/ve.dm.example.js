@@ -3647,6 +3647,21 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
+			' ',
+			'\n',
+			...ve.dm.example.annotateText( 'Bar', ve.dm.example.italic ),
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $.parseHTML( '<meta />' )
+			},
+			{ type: '/alienMeta' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		]
 	},
 	'whitespace surrounding metadata in a wrapper followed by inline node': {
@@ -3667,6 +3682,64 @@ ve.dm.example.domToDataCases = {
 			},
 			{ type: '/alienInline' },
 			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			...ve.dm.example.annotateText( 'Foo', ve.dm.example.bold ),
+			' ',
+			'\n',
+			{
+				type: 'alienInline',
+				originalDomElements: $.parseHTML( '<span rel="ve:Alien"></span>' )
+			},
+			{ type: '/alienInline' },
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $.parseHTML( '<meta />' )
+			},
+			{ type: '/alienMeta' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'two metadata items in a wrapper paragraph': {
+		body: 'Foo <meta />Bar<meta /> Baz',
+		data: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			...'Foo ',
+			{
+				type: 'alienMeta',
+				originalDomElements: $.parseHTML( '<meta />' )
+			},
+			{ type: '/alienMeta' },
+			...'Bar',
+			{
+				type: 'alienMeta',
+				originalDomElements: $.parseHTML( '<meta />' )
+			},
+			{ type: '/alienMeta' },
+			...' Baz',
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			...'Foo Bar Baz',
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $.parseHTML( '<meta />' )
+			},
+			{ type: '/alienMeta' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $.parseHTML( '<meta />' )
+			},
+			{ type: '/alienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
