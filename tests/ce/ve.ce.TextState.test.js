@@ -21,9 +21,9 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 		boldHash = ve.dm.example.boldHash,
 		annHash = ve.dm.example.annHash,
 		store = new ve.dm.HashValueStore(),
-		importedHash = ( source ) => ve.dm.example.createAnnotationSet(
+		imeHash = ve.dm.example.createAnnotationSet(
 			store,
-			[ ve.dm.example.getImportedAnnotation( source ) ]
+			[ ve.dm.example.getImportedAnnotation( { name: 'ime', categories: [ 'ime' ] } ) ]
 		).getHashes()[ 0 ],
 		charactersThreshold = ve.ce.TextState.static.pasteThresholds.characters,
 		wordbreaksThreshold = ve.ce.TextState.static.pasteThresholds.wordbreaks;
@@ -87,7 +87,7 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 					remove: [ ...'quux' ],
 					insert: [ ...ve.dm.example.annotateText(
 						'foo '.repeat( wordbreaksThreshold ).slice( 0, -1 ),
-						importedHash( 'ime' )
+						imeHash
 					) ]
 				},
 				{ type: 'retain', length: 3 }
@@ -107,7 +107,7 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 					remove: [],
 					insert: [ ...ve.dm.example.annotateText(
 						'bar '.repeat( wordbreaksThreshold ),
-						[ annHash( 'b' ), importedHash( 'ime' ) ]
+						[ annHash( 'b' ), imeHash ]
 					) ]
 				},
 				{ type: 'retain', length: 7 }
@@ -140,7 +140,7 @@ QUnit.test( 'getChangeTransaction', ( assert ) => {
 				{
 					type: 'replace',
 					remove: [ ...'quux' ],
-					insert: [ ...ve.dm.example.annotateText( 'z'.repeat( charactersThreshold ), importedHash( 'ime' ) ) ]
+					insert: [ ...ve.dm.example.annotateText( 'z'.repeat( charactersThreshold ), imeHash ) ]
 				},
 				{ type: 'retain', length: 3 }
 			]

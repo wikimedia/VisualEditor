@@ -453,7 +453,10 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			const importedAnn = ve.dm.annotationFactory.createFromElement( {
 				type: 'meta/importedData',
 				attributes: {
-					source: 'ime',
+					source: {
+						name: 'ime',
+						categories: [ 'ime' ]
+					},
 					eventId: ve.init.platform.generateUniqueId()
 				}
 			} );
