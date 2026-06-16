@@ -344,7 +344,7 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 	}
 
 	// State variable that allows nodes to know that they are being
-	// appended in order.
+	// appended in order. Used by ve.dm.InternalList#addNode.
 	doc.buildingNodeTree = true;
 
 	// The end state is nodeStack = [ [this.documentNode], [ array, of, its, children ] ]

@@ -211,7 +211,6 @@ ve.dm.InternalListNodeGroup.prototype.appendNode = function ( listKey, newNode )
 };
 
 /**
- * @private
  * @param {string} listKey
  * @param {ve.dm.Node} newNode Reference node to add
  * @param {number} listIndex Existing listIndex; ignored when this is not the first node for this key

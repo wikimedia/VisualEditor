@@ -17,6 +17,34 @@ QUnit.test( 'getters', ( assert ) => {
 	assert.deepEqual( Object.keys( internalList.getNodeGroups() ), [ 'g1', 'g2' ] );
 } );
 
+QUnit.test( 'addNode appends by index while building the tree (T429355)', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument();
+	const internalList = doc.getInternalList();
+
+	// node2 sorts before node1 by document offset, but is added second.
+	const node1 = new ve.dm.TextNode( 1 );
+	const node2 = new ve.dm.TextNode( 1 );
+	node1.getDocument = node2.getDocument = () => doc;
+	node1.getOffset = () => 100;
+	node2.getOffset = () => 0;
+
+	// While the tree is being built the document is incomplete, so node offsets
+	// aren't valid yet. addNode must append in insertion order rather than sorting
+	// by getOffset(); doing the latter (as insertNodeInDocumentOrder does) would
+	// also cache subroot offsets from the partial document and break later offset
+	// lookups, crashing the converter (T429355).
+	doc.buildingNodeTree = true;
+	internalList.addNode( 'group', 'key', 0, node1 );
+	internalList.addNode( 'group', 'key', 1, node2 );
+	doc.buildingNodeTree = false;
+
+	assert.deepEqual(
+		internalList.getNodeGroup( 'group' ).getAllReuses( 'key' ),
+		[ node1, node2 ],
+		'nodes kept in insertion order, offsets not consulted during build'
+	);
+} );
+
 QUnit.test( 'queueItemHtml', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument(),
 		internalList = doc.getInternalList();

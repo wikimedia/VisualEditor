@@ -45,35 +45,41 @@ QUnit.test( 'appendNode', ( assert ) => {
 	assert.strictEqual( nodeGroup.getListKeyForListIndex( 0 ), 'key' );
 } );
 
-QUnit.test( 'insertNodeInDocumentOrder & unsetNode', ( assert ) => {
-	const nodeGroup = new ve.dm.InternalListNodeGroup();
+// When adding the first node for a key with a known index, insertNodeInDocumentOrder
+// falls back to appendNodeWithKnownIndex, so both must behave identically. addNode
+// uses appendNodeWithKnownIndex during the initial tree build (when offsets aren't
+// valid yet) and insertNodeInDocumentOrder afterwards (T429355), so keep both covered.
+[ 'appendNodeWithKnownIndex', 'insertNodeInDocumentOrder' ].forEach( ( method ) => {
+	QUnit.test( method + ' (with known index) & unsetNode', ( assert ) => {
+		const nodeGroup = new ve.dm.InternalListNodeGroup();
 
-	const node1 = new ve.dm.TextNode( 1 );
-	nodeGroup.insertNodeInDocumentOrder( 'key1', node1, 2 );
-	// Note: We need this incomplete array structure to record the index, but shouldn't expose it
-	assert.deepEqual( nodeGroup.firstNodes, [ undefined, undefined, node1 ] );
-	assert.deepEqual( nodeGroup.indexOrder, [ 2 ] );
-	assert.deepEqual( nodeGroup.getAllReuses( 'key1' ), [ node1 ] );
-	assert.deepEqual( nodeGroup.getFirstNode( 'key1' ), node1 );
-	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node1 ] );
-	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key1' ] );
+		const node1 = new ve.dm.TextNode( 1 );
+		nodeGroup[ method ]( 'key1', node1, 2 );
+		// Note: We need this incomplete array structure to record the index, but shouldn't expose it
+		assert.deepEqual( nodeGroup.firstNodes, [ undefined, undefined, node1 ] );
+		assert.deepEqual( nodeGroup.indexOrder, [ 2 ] );
+		assert.deepEqual( nodeGroup.getAllReuses( 'key1' ), [ node1 ] );
+		assert.deepEqual( nodeGroup.getFirstNode( 'key1' ), node1 );
+		assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node1 ] );
+		assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key1' ] );
 
-	const node2 = new ve.dm.TextNode( 2 );
-	nodeGroup.insertNodeInDocumentOrder( 'key2', node2, 1 );
-	assert.deepEqual( nodeGroup.firstNodes, [ undefined, node2, node1 ] );
-	assert.deepEqual( nodeGroup.indexOrder, [ 2, 1 ] );
-	assert.deepEqual( nodeGroup.getAllReuses( 'key2' ), [ node2 ] );
-	assert.deepEqual( nodeGroup.getFirstNode( 'key2' ), node2 );
-	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node1, node2 ] );
-	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key1', 'key2' ] );
+		const node2 = new ve.dm.TextNode( 2 );
+		nodeGroup[ method ]( 'key2', node2, 1 );
+		assert.deepEqual( nodeGroup.firstNodes, [ undefined, node2, node1 ] );
+		assert.deepEqual( nodeGroup.indexOrder, [ 2, 1 ] );
+		assert.deepEqual( nodeGroup.getAllReuses( 'key2' ), [ node2 ] );
+		assert.deepEqual( nodeGroup.getFirstNode( 'key2' ), node2 );
+		assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node1, node2 ] );
+		assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key1', 'key2' ] );
 
-	nodeGroup.unsetNode( 'key1', node1 );
-	assert.deepEqual( nodeGroup.firstNodes, [ undefined, node2, undefined ] );
-	assert.deepEqual( nodeGroup.indexOrder, [ 1 ] );
-	assert.strictEqual( nodeGroup.getAllReuses( 'key1' ), undefined );
-	assert.strictEqual( nodeGroup.getFirstNode( 'key1' ), undefined );
-	assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node2 ] );
-	assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key2' ] );
+		nodeGroup.unsetNode( 'key1', node1 );
+		assert.deepEqual( nodeGroup.firstNodes, [ undefined, node2, undefined ] );
+		assert.deepEqual( nodeGroup.indexOrder, [ 1 ] );
+		assert.strictEqual( nodeGroup.getAllReuses( 'key1' ), undefined );
+		assert.strictEqual( nodeGroup.getFirstNode( 'key1' ), undefined );
+		assert.deepEqual( nodeGroup.getFirstNodesInIndexOrder(), [ node2 ] );
+		assert.deepEqual( nodeGroup.getKeysInIndexOrder(), [ 'key2' ] );
+	} );
 } );
 
 QUnit.test( 'insertNodeInDocumentOrder in reverse document order', ( assert ) => {

@@ -286,7 +286,16 @@ ve.dm.InternalList.prototype.addNode = function ( listGroup, listKey, listIndex,
 	if ( !group ) {
 		group = this.nodes[ listGroup ] = new ve.dm.InternalListNodeGroup();
 	}
-	group.insertNodeInDocumentOrder( listKey, node, listIndex );
+	if ( node.getDocument().buildingNodeTree ) {
+		// During the initial tree build, items are added in document order, so we
+		// append by known index. Crucially we must NOT call getOffset() here (as
+		// insertNodeInDocumentOrder does): the tree is still being attached, so it
+		// would cache subroot offsets computed from an incomplete document, which
+		// then go stale and break later offset lookups (T429355).
+		group.appendNodeWithKnownIndex( listKey, node, listIndex );
+	} else {
+		group.insertNodeInDocumentOrder( listKey, node, listIndex );
+	}
 	this.markGroupAsChanged( listGroup );
 };
 
