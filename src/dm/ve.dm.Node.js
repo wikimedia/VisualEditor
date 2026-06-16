@@ -782,7 +782,7 @@ ve.dm.Node.prototype.getOffset = function () {
 	}
 
 	const doc = this.getDocument();
-	if ( doc.bypassCachedData ) {
+	if ( doc.bypassCachedData || doc.getDocumentNode().buildingNodeTree ) {
 		// Since getOffset is used inside transaction processing, we bypass the cache
 		// here to avoid a series of cache misses and log messages
 		return this.getRelativeOffset( this.root );
