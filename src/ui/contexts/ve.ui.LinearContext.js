@@ -325,11 +325,14 @@ ve.ui.LinearContext.prototype.destroy = function () {
 	this.inspectors.disconnect( this );
 
 	// Destroy inspectors WindowManager
-	this.inspectors.destroy();
+	const promise = this.inspectors.destroy();
 
 	// Stop timers
 	clearTimeout( this.afterContextChangeTimeout );
 
-	// Parent method
-	return ve.ui.LinearContext.super.prototype.destroy.call( this );
+	return ve.promiseAll( [
+		promise,
+		// Parent method
+		ve.ui.LinearContext.super.prototype.destroy.call( this )
+	] );
 };

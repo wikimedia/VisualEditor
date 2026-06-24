@@ -210,16 +210,17 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
 /**
  * Destroy the surface, releasing all memory and removing all DOM elements.
  *
- * @return {ve.ui.Surface}
- * @chainable
+ * @return {jQuery.Promise} Promise resolved when surface is destroyed
  * @fires ve.ui.Surface#destroy
  */
 ve.ui.Surface.prototype.destroy = function () {
+	const promises = [];
 	// Destroy the ce.Surface, the ui.Context and window managers
-	this.context.destroy();
-	this.dialogs.destroy();
+	promises.push( this.context.destroy() );
+	promises.push( this.dialogs.destroy() );
+	promises.push( this.getSidebarDialogs().destroy() );
 	for ( const side in this.toolbarDialogs ) {
-		this.toolbarDialogs[ side ].destroy();
+		promises.push( this.toolbarDialogs[ side ].destroy() );
 	}
 	this.view.destroy();
 	if ( this.debugBar ) {
@@ -243,7 +244,7 @@ ve.ui.Surface.prototype.destroy = function () {
 	// Let others know we have been destroyed
 	this.emit( 'destroy' );
 
-	return this;
+	return ve.promiseAll( promises );
 };
 
 /**

@@ -257,15 +257,14 @@ ve.ui.Context.prototype.updateDimensions = function () {
 /**
  * Destroy the context, removing all DOM elements.
  *
- * @return {ve.ui.Context}
- * @chainable
+ * @return {jQuery.Promise} Promise resolved when context is destroyed
  */
 ve.ui.Context.prototype.destroy = function () {
 	// Disconnect events
 	this.surface.getModel().disconnect( this );
 
 	this.$element.remove();
-	return this;
+	return ve.createDeferred().resolve().promise();
 };
 
 /**

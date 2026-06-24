@@ -50,3 +50,14 @@ ve.ui.WindowManager.prototype.getDir = function () {
 ve.ui.WindowManager.prototype.getOverlay = function () {
 	return this.overlay;
 };
+
+/**
+ * TODO: Upstream to OOUI
+ *
+ * @inheritdoc
+ */
+ve.ui.WindowManager.prototype.destroy = function () {
+	const promise = this.clearWindows();
+	this.$element.remove();
+	return promise;
+};

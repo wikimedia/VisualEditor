@@ -669,14 +669,18 @@ ve.init.Target.prototype.addSurface = function ( dmDocOrSurface, config = {} ) {
 
 /**
  * Destroy and remove all surfaces from the target
+ *
+ * @return {jQuery.Promise} Promise which resolves when all surfaces have been destroyed
  */
 ve.init.Target.prototype.clearSurfaces = function () {
 	// We're about to destroy this.surface, so unset it for sanity
 	// Otherwise, getSurface() could return a destroyed surface
 	this.surface = null;
+	const promises = [];
 	while ( this.surfaces.length ) {
-		this.surfaces.pop().destroy();
+		promises.push( this.surfaces.pop().destroy() );
 	}
+	return ve.promiseAll( promises );
 };
 
 /**
