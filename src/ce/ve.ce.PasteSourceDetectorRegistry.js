@@ -156,6 +156,18 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 ) );
 
 ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
+	'deepSeek',
+	( clipboardData ) => /ds-markdown-paragraph/i.test( clipboardData.getData( 'text/html' ) ),
+	[ 'ai' ]
+) );
+
+ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
+	'copilot',
+	( clipboardData ) => /id=["']?[^-]+-content-[0-9]+/i.test( clipboardData.getData( 'text/html' ) ),
+	[ 'ai' ]
+) );
+
+ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	'plainText',
 	( clipboardData ) => clipboardData.types.length === 1 && clipboardData.types[ 0 ] === 'text/plain',
 	[ 'plain' ]

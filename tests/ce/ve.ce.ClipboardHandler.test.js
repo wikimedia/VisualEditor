@@ -2311,6 +2311,46 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<p class="ds-markdown-paragraph" style=""><span class="">Foo</span></p>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'deepSeek', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from DeepSeek'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<div id="Q3DpZeHLT4Yr9nf4FTr7E-content-0"><p><span style="white-space: pre-wrap;">Foo</span></p></div>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'copilot', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Copilot'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
 				pasteText: 'Foo',
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				annotateImportedData: true,
