@@ -847,7 +847,8 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function 
 	} );
 
 	// HTML sanitization
-	const htmlBlacklist = ve.getProp( this.afterPasteImportRules( isMultiline ), 'external', 'htmlBlacklist' );
+	const importRules = this.afterPasteImportRules( isMultiline );
+	const htmlBlacklist = ve.getProp( importRules, 'external', 'htmlBlacklist' );
 	if ( htmlBlacklist && !clipboardKey ) {
 		if ( htmlBlacklist.remove ) {
 			Object.keys( htmlBlacklist.remove ).forEach( ( selector ) => {
@@ -863,6 +864,53 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function 
 				}
 			} );
 		}
+	}
+
+	// Replace elements matching a selector with a different tag, preserving
+	// attributes and contents. Keyed by selector; the value is either a
+	// replacement tag name, or an array of { tagName, source } objects to map
+	// the same selector differently depending on the paste source, e.g.
+	// { 'h1': [ { tagName: 'h2', source: 'googleDocs' } ] }. The first entry
+	// with no source or a matching source is used.
+	const htmlMappings = ve.getProp( importRules, 'external', 'htmlMappings' );
+	if ( htmlMappings && !clipboardKey ) {
+		const sourceName = beforePasteData.source && beforePasteData.source.name;
+		// Collect all matching elements up front, against the unmodified DOM,
+		// so that elements created by one mapping are not re-matched by a
+		// later one (e.g. h1→h2 then h2→h3 must not turn an h1 into an h3).
+		const mappings = [];
+		const seen = new Set();
+		Object.keys( htmlMappings ).forEach( ( selector ) => {
+			let rules = htmlMappings[ selector ];
+			if ( typeof rules === 'string' ) {
+				rules = [ { tagName: rules } ];
+			}
+			// Use the first rule with no source or a matching source
+			const rule = rules.find( ( r ) => !r.source || r.source === sourceName );
+			if ( !rule ) {
+				return;
+			}
+			$( htmlDoc.body ).find( selector ).each( ( n, element ) => {
+				// Guard against overlapping selectors mapping the same element twice
+				if ( seen.has( element ) ) {
+					return;
+				}
+				seen.add( element );
+				mappings.push( { element, tagName: rule.tagName } );
+			} );
+		} );
+		// Apply mappings
+		mappings.forEach( ( mapping ) => {
+			const newElement = htmlDoc.createElement( mapping.tagName );
+			for ( let i = 0; i < mapping.element.attributes.length; i++ ) {
+				const attr = mapping.element.attributes[ i ];
+				newElement.setAttribute( attr.name, attr.value );
+			}
+			while ( mapping.element.firstChild ) {
+				newElement.appendChild( mapping.element.firstChild );
+			}
+			mapping.element.parentNode.replaceChild( newElement, mapping.element );
+		} );
 	}
 
 	// External paste

@@ -2124,6 +2124,102 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
+				pasteHtml: '<h1>A</h1><h3>B</h3><h6>C</h6>',
+				config: {
+					importRules: {
+						external: {
+							htmlMappings: {
+								h1: 'h2',
+								h3: 'h4'
+							}
+						}
+					}
+				},
+				expectedHtml: '<h2>A</h2><h4>B</h4><h6>C</h6>',
+				msg: 'htmlMappings remaps matched tags (unmapped h6 unchanged)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
+				pasteHtml: '<h1>A</h1><h2>B</h2>',
+				config: {
+					importRules: {
+						external: {
+							htmlMappings: {
+								h1: 'h2',
+								h2: 'h3'
+							}
+						}
+					}
+				},
+				expectedHtml: '<h2>A</h2><h3>B</h3>',
+				msg: 'htmlMappings does not re-map newly created elements (h1 becomes h2, not h3)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
+				pasteHtml: '<span id="docs-internal-guid-111-111-111"></span><h1>A</h1><h3>B</h3>',
+				config: {
+					importRules: {
+						external: {
+							htmlMappings: {
+								h1: [ { tagName: 'h2', source: 'googleDocs' } ],
+								h3: [ { tagName: 'h4', source: 'googleDocs' } ]
+							}
+						}
+					}
+				},
+				expectedHtml: '<h2>A</h2><h4>B</h4>',
+				msg: 'htmlMappings with matching source is applied'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
+				pasteHtml: '<h1>A</h1><h3>B</h3>',
+				config: {
+					importRules: {
+						external: {
+							htmlMappings: {
+								h1: [ { tagName: 'h2', source: 'googleDocs' } ],
+								h3: [ { tagName: 'h4', source: 'googleDocs' } ]
+							}
+						}
+					}
+				},
+				expectedHtml: '<h1>A</h1><h3>B</h3>',
+				msg: 'htmlMappings with non-matching source is skipped'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
+				pasteHtml: '<span id="docs-internal-guid-111-111-111"></span><h1>A</h1><h1>B</h1>',
+				config: {
+					importRules: {
+						external: {
+							htmlMappings: {
+								// Same selector, different source: only the rule
+								// for the matching source (googleDocs) is applied.
+								h1: [
+									{ tagName: 'h2', source: 'googleDocs' },
+									{ tagName: 'h5', source: 'microsoftOffice' }
+								]
+							}
+						}
+					}
+				},
+				expectedHtml: '<h2>A</h2><h2>B</h2>',
+				msg: 'htmlMappings supports the same selector for different sources'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
+				pasteHtml: '<h1>A</h1><h3>B</h3><h6>C</h6>',
+				expectedHtml: '<h1>A</h1><h3>B</h3><h6>C</h6>',
+				msg: 'Headings unchanged when no htmlMappings configured'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
 				pasteHtml: 'Foo',
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				annotateImportedData: true,

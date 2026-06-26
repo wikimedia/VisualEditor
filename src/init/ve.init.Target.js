@@ -270,7 +270,7 @@ ve.init.Target.static.enforceResizesContent = false;
  * One set for external (non-VE) paste sources and one for all paste sources.
  *
  * Most rules are handled in ve.dm.LinearData#sanitize, but htmlBlacklist
- * is handled in ve.ce.Surface#afterPaste.
+ * and htmlMappings are handled in ve.ce.Surface#afterPaste.
  *
  * @type {Object}
  */
@@ -304,6 +304,20 @@ ve.init.Target.static.importRules = {
 				'h1 b, h2 b, h3 b, h4 b, h5 b, h6 b': true,
 				'h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong': true
 			}
+		},
+		// Replace elements matching a selector with a different tag, preserving
+		// attributes and contents. Runs after htmlBlacklist. Keyed by selector;
+		// the value is either a replacement tag name, or an array of
+		// { tagName, source } objects to map the same selector differently
+		// depending on the paste source. The first entry with no source or a
+		// matching source is used.
+		htmlMappings: {
+			'p[aria-level="1"]': [ { tagName: 'h1', source: 'microsoftOffice' } ],
+			'p[aria-level="2"]': [ { tagName: 'h2', source: 'microsoftOffice' } ],
+			'p[aria-level="3"]': [ { tagName: 'h3', source: 'microsoftOffice' } ],
+			'p[aria-level="4"]': [ { tagName: 'h4', source: 'microsoftOffice' } ],
+			'p[aria-level="5"]': [ { tagName: 'h5', source: 'microsoftOffice' } ],
+			'p[aria-level="6"]': [ { tagName: 'h6', source: 'microsoftOffice' } ]
 		},
 		nodeSanitization: true
 	},
