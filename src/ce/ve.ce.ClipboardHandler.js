@@ -344,6 +344,7 @@ ve.ce.ClipboardHandler.prototype.beforePaste = function ( e ) {
 		this.beforePasteData.clipboardKey = clipboardData.getData( this.constructor.static.clipboardKeyMimeType ) ||
 			// Backwards compatibility with older versions of VE which used text/xcustom
 			clipboardData.getData( 'text/xcustom' );
+		this.beforePasteData.plainText = clipboardData.getData( 'text/plain' );
 		this.beforePasteData.html = clipboardData.getData( 'text/html' );
 		if ( this.beforePasteData.html ) {
 			// http://msdn.microsoft.com/en-US/en-%20us/library/ms649015(VS.85).aspx
@@ -508,7 +509,9 @@ ve.ce.ClipboardHandler.prototype.afterPaste = function () {
 	if ( pasteData.slice ) {
 		pending = this.afterPasteAddToFragmentFromInternal( pasteData.slice, fragment, targetFragment, isMultiline );
 	} else {
-		pending = this.afterPasteAddToFragmentFromExternal( pasteData.clipboardKey, pasteData.$clipboardHtml, fragment, targetFragment, isMultiline );
+		pending = this.afterPasteAddToFragmentFromExternal(
+			pasteData.clipboardKey, pasteData.$clipboardHtml, beforePasteData.plainText, fragment, targetFragment, isMultiline
+		);
 	}
 	return pending.then( () => {
 		if ( surface.getSelection().isNativeCursor() ) {
@@ -733,13 +736,14 @@ ve.ce.ClipboardHandler.prototype.afterPasteInsertInternalData = function ( targe
  *
  * @param {string|undefined} clipboardKey Clipboard key for pasted data
  * @param {jQuery|undefined} $clipboardHtml Clipboard HTML, if used to find the key
+ * @param {string|undefined} clipboardPlaintext Clipboard plaintext, if available
  * @param {ve.dm.SurfaceFragment} fragment Current fragment
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
  * @param {boolean} [isMultiline=false] Pasting to a multiline context
  * @param {boolean} [forceClipboardData=false] Ignore the clipboard handler element, and use only clipboard html
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
-ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function ( clipboardKey, $clipboardHtml, fragment, targetFragment, isMultiline, forceClipboardData ) {
+ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function ( clipboardKey, $clipboardHtml, clipboardPlaintext, fragment, targetFragment, isMultiline, forceClipboardData ) {
 	const importantElement = '[id],[typeof],[rel],figure',
 		items = [],
 		surfaceModel = this.getSurface().getModel(),
@@ -951,7 +955,9 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function 
 		// If the paste was given context, calculate the range of the inserted data
 		contextRange = this.afterPasteFromExternalContextRange( pastedDocumentModel, isMultiline, forceClipboardData );
 		if ( !contextRange ) {
-			return this.afterPasteAddToFragmentFromExternal( clipboardKey, $clipboardHtml, fragment, targetFragment, isMultiline, true );
+			return this.afterPasteAddToFragmentFromExternal(
+				clipboardKey, $clipboardHtml, clipboardPlaintext, fragment, targetFragment, isMultiline, true
+			);
 		}
 	} else {
 		contextRange = pastedDocumentModel.getDocumentRange();
@@ -971,7 +977,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function 
 		}
 	}
 
-	return this.afterPasteInsertExternalData( targetFragment, pastedDocumentModel, contextRange );
+	return this.afterPasteInsertExternalData( targetFragment, pastedDocumentModel, contextRange, clipboardPlaintext );
 };
 
 /**
@@ -980,9 +986,10 @@ ve.ce.ClipboardHandler.prototype.afterPasteAddToFragmentFromExternal = function 
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
  * @param {ve.dm.Document} pastedDocumentModel Model generated from pasted data
  * @param {ve.Range} contextRange Range of data in generated model to consider
+ * @param {string|undefined} clipboardPlaintext Clipboard plaintext, if available
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
-ve.ce.ClipboardHandler.prototype.afterPasteInsertExternalData = function ( targetFragment, pastedDocumentModel, contextRange ) {
+ve.ce.ClipboardHandler.prototype.afterPasteInsertExternalData = function ( targetFragment, pastedDocumentModel, contextRange, clipboardPlaintext ) {
 	// Temporary tracking for T362358
 	if ( pastedDocumentModel.getInternalList().getItemNodeCount() > 0 ) {
 		ve.track( 'activity.clipboard', { action: 'paste-ref-external' } );
@@ -994,7 +1001,7 @@ ve.ce.ClipboardHandler.prototype.afterPasteInsertExternalData = function ( targe
 	// do anything, but implementations can provide their own handler for
 	// conversion actions here.
 	if ( pastedDocumentModel.data.isPlainText( contextRange, true, [], true ) ) {
-		const pastedText = pastedDocumentModel.data.getText( true, contextRange );
+		const pastedText = clipboardPlaintext || pastedDocumentModel.data.getText( true, contextRange );
 		if ( pastedText ) {
 			handled = this.getSurface().handleDataTransferItems(
 				[ ve.ui.DataTransferItem.static.newFromString( pastedText ) ],
@@ -1021,7 +1028,14 @@ ve.ce.ClipboardHandler.prototype.afterPasteInsertExternalData = function ( targe
 			);
 		}
 
-		targetFragment.insertDocument( pastedDocumentModel, contextRange, annotations );
+		if ( this.getSurface().getModel().sourceMode && clipboardPlaintext ) {
+			// The model path replaces pasted non-breaking spaces, in #sanitize (T183647)
+			// and again in ve.dm.SourceSurfaceFragment#insertDocument (T154382), as they
+			// usually come from the copied HTML and are invisible in source.
+			targetFragment.insertContent( clipboardPlaintext.replace( /\u00a0/g, ' ' ) );
+		} else {
+			targetFragment.insertDocument( pastedDocumentModel, contextRange, annotations );
+		}
 	}
 	return targetFragment.getPending();
 };

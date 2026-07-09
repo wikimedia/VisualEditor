@@ -2464,6 +2464,25 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					]
 				],
 				msg: 'Plain text paste annotated as plain'
+			},
+			{
+				documentHtml: '<p>Foo</p>',
+				config: { mode: 'source' },
+				rangeOrSelection: new ve.Range( 4 ),
+				// The bold is not covering, so the model range is not plain text and
+				// this takes the source mode clipboard plain text path
+				pasteHtml: '<b>bar</b>&nbsp;baz',
+				pasteText: 'bar\u00a0baz',
+				expectedHtml: '<p>Foobar baz</p>',
+				msg: 'Source mode paste uses clipboard plain text, without non-breaking spaces'
+			},
+			{
+				documentHtml: '<p>Foo</p>',
+				rangeOrSelection: new ve.Range( 4 ),
+				pasteHtml: 'bar&nbsp;baz',
+				pasteText: 'bar\u00a0baz',
+				expectedHtml: '<p>Foobar baz</p>',
+				msg: 'Non-breaking spaces are also removed when pasting into visual mode (T183647)'
 			}
 		];
 
