@@ -105,6 +105,10 @@ ve.ui.CompletionWidget.prototype.setup = function ( action, isolateInput ) {
 		this.wasActive = false;
 	}
 
+	// Clear any suggestions left over from a previous invocation so they aren't
+	// shown before the first update()'s (possibly asynchronous) suggestions arrive.
+	this.menu.clearItems();
+
 	this.update();
 
 	this.surfaceModel.connect( this, { select: 'onModelSelect' } );
