@@ -149,6 +149,9 @@ ve.ui.PreviewElement.prototype.afterRender = function () {
 		this.view = null;
 	}
 
+	// Make sure any asynchronously generated links open in a new window
+	ve.targetLinksToNewWindow( this.$element[ 0 ] );
+
 	// Event
 	this.emit( 'render' );
 };
