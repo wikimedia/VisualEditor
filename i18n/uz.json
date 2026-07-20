@@ -3,6 +3,7 @@
 		"authors": [
 			"CoderSI",
 			"Malikxan",
+			"Nataev",
 			"Noor2020",
 			"Sociologist",
 			"පසිඳු කාවින්ද"
@@ -133,6 +134,7 @@
 	"visualeditor-toolbar-history": "Tarix",
 	"visualeditor-toolbar-insert": "Qoʻyish",
 	"visualeditor-toolbar-paragraph-format": "Formatlash",
+	"visualeditor-toolbar-search-help-label": "Instrumental panelida qidirish",
 	"visualeditor-toolbar-structure": "Tuzilma",
 	"visualeditor-toolbar-style-tooltip": "Matn uslubi",
 	"visualeditor-toolbar-table": "Jadval",
