@@ -89,3 +89,26 @@ QUnit.test( 'redrawSelections, deactivated selection and options', ( assert ) =>
 
 	view.destroy();
 } );
+
+QUnit.test( 'drawSelections with an empty list drops the group', ( assert ) => {
+	const view = ve.test.utils.createSurfaceViewFromHtml( '<p>Foo bar baz</p>' ),
+		selectionManager = view.getSelectionManager();
+
+	selectionManager.drawSelections( 'test', [ view.getSelection( new ve.dm.LinearSelection( new ve.Range( 1, 4 ) ) ) ] );
+	assert.true( selectionManager.selectionGroups.has( 'test' ), 'Group created' );
+
+	let lastHasSelections = null;
+	selectionManager.on( 'update', ( hasSelections ) => {
+		lastHasSelections = hasSelections;
+	} );
+
+	selectionManager.drawSelections( 'test', [] );
+	assert.false( selectionManager.selectionGroups.has( 'test' ), 'Group dropped when cleared with an empty list' );
+	assert.strictEqual( lastHasSelections, false, 'update emitted with no remaining selections' );
+
+	// Clearing an unknown group is a no-op and does not create it
+	selectionManager.drawSelections( 'unknown', [] );
+	assert.false( selectionManager.selectionGroups.has( 'unknown' ), 'Clearing an unknown group does not create it' );
+
+	view.destroy();
+} );

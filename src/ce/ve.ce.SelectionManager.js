@@ -106,7 +106,7 @@ ve.ce.SelectionManager.prototype.getSurface = function () {
  * Draw selections.
  *
  * @param {string} name Unique name for the selection being drawn
- * @param {ve.ce.Selection[]} selections Selections to draw
+ * @param {ve.ce.Selection[]} selections Selections to draw; an empty array removes the group
  * @param {Object} [options]
  * @param {string} [options.color] CSS color for the selection. Should usually be set in a stylesheet using the generated class name.
  * @param {string} [options.wrapperClass] Additional CSS class string to add to the $selections wrapper.
@@ -123,6 +123,23 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 	if ( !surface ) {
 		return;
 	}
+
+	// An empty selections drops the group entirely:
+	if ( !selections.length ) {
+		const cleared = this.selectionGroups.get( name );
+		if ( cleared ) {
+			cleared.cancelIdleCallbacks();
+			cleared.$selections.remove();
+			cleared.$overlays.remove();
+			this.selectionGroups.delete( name );
+		}
+		this.emit(
+			'update',
+			Array.from( this.selectionGroups.values() ).some( ( group ) => group.hasSelections() )
+		);
+		return;
+	}
+
 	if ( !this.selectionGroups.has( name ) ) {
 		this.selectionGroups.set( name, new ve.ce.SelectionManager.SelectionGroup( name, this ) );
 	}
