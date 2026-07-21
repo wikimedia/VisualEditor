@@ -958,6 +958,7 @@
 			"tests/ui/ve.ui.Sequence.test.js",
 			"tests/ui/ve.ui.DiffElement.test.js",
 			"tests/ui/ve.ui.PreviewElement.test.js",
+			"tests/ui/ve.ui.CompletionWidget.test.js",
 			"tests/ui/actions/ve.ui.AnnotationAction.test.js",
 			"tests/ui/actions/ve.ui.BlockquoteAction.test.js",
 			"tests/ui/actions/ve.ui.ContentAction.test.js",

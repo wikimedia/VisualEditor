@@ -58,7 +58,6 @@ module.exports = function ( config ) {
 						'src/dm/nodes/ve.dm.SectionNode.js',
 						// CE
 						'src/ce/ve.ce.DragDropHandler.js',
-						'src/ce/ve.ce.SelectionManager.js',
 						'src/ce/ve.ce.SurfaceSynchronizer.js',
 						'src/ce/nodes/ve.ce.CheckListItemNode.js',
 						'src/ce/nodes/ve.ce.GeneratedContentNode.js',
@@ -98,6 +97,7 @@ module.exports = function ( config ) {
 						'src/ui/pages/*.js',
 						'src/ui/tools/*.js',
 						'src/ui/widgets/*.js',
+						'!src/ui/widgets/ve.ui.CompletionWidget.js',
 						'!src/ui/widgets/ve.ui.NoFocusButtonWidget.js',
 						'src/ui/windowmanagers/*.js'
 					] ),
