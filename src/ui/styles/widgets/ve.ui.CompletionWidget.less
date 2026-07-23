@@ -4,6 +4,8 @@
  * @copyright See AUTHORS.txt
  */
 
+@import '../../../../lib/codex-design-tokens/theme-wikimedia-ui.less';
+
 .ve-ui-completionWidget {
 	position: absolute;
 	margin-top: 0.5em;
@@ -24,5 +26,9 @@
 	.oo-ui-textInputWidget {
 		min-width: 15em;
 		margin-bottom: -1px;
+	}
+
+	&-header > .oo-ui-labelElement-label {
+		color: @color-placeholder;
 	}
 }
