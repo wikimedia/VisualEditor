@@ -1188,12 +1188,16 @@ ve.dm.Document.prototype.rebuildTree = function () {
  * Rebuild the node tree from linear model data from a specific range.
  *
  * @param {ve.dm.BranchNode} rootNode Node to rebuild
+ * @param {ve.Range} [range] Linear range to rebuild from; defaults to `rootNode`'s range.
+ *  Pass explicitly when the tree is temporarily out of sync with the linear data.
  */
-ve.dm.Document.prototype.rebuildTreeNode = function ( rootNode ) {
+ve.dm.Document.prototype.rebuildTreeNode = function ( rootNode, range ) {
 	if ( !rootNode.length ) {
 		this.buildNodeTree();
 	}
-	const range = rootNode.getRange();
+	if ( !range ) {
+		range = rootNode.getRange();
+	}
 	const data = this.data.sliceObject( range.start, range.end );
 	// Build document fragment from data
 	// Use plain ve.dm.Document, instead of whatever this.constructor is.

@@ -668,3 +668,115 @@ QUnit.test( 'undo clear annotation', ( assert ) => {
 	doc.commit( tx.reversed() );
 	assert.deepEqual( doc.data.data, origData, 'Roundtrip difference undoing unbold under italic' );
 } );
+
+/* Large replace fast path (T189557) */
+
+QUnit.module( 've.dm.TransactionProcessor (large replace fast path)' );
+
+// Build a multi-line source-mode document. getModelFromSourceText sets sourceMode = true;
+// building the tree up front lets getLargeReplaceOp read the attached-root range.
+const makeSourceDoc = () => {
+	const doc = ve.dm.sourceConverter.getModelFromSourceText(
+		'Line one\nLine two\nLine three\nLine four\nLine five\nLine six'
+	);
+	doc.getDocumentNode();
+	return doc;
+};
+
+// Transaction replacing the whole document content, like Ctrl+A then type/delete.
+const fullReplaceTx = ( doc, insert ) => ve.dm.TransactionBuilder.static.newFromReplacement(
+	doc, doc.getDocumentRange(), insert
+);
+
+const qualifiesForFastPath = ( doc, tx ) => new ve.dm.TransactionProcessor( doc, tx ).getLargeReplaceOp() !== null;
+
+QUnit.test( 'fast path result matches the incremental path', ( assert ) => {
+	const insert = [
+		{ type: 'paragraph' }, ...'aaa', { type: '/paragraph' },
+		{ type: 'paragraph' }, ...'bbb', { type: '/paragraph' }
+	];
+
+	// Fast path (default configuration)
+	const fastDoc = makeSourceDoc();
+	const fastTx = fullReplaceTx( fastDoc, ve.copy( insert ) );
+	assert.strictEqual( qualifiesForFastPath( fastDoc, fastTx ), true, 'large source-mode replace takes the fast path' );
+	fastDoc.commit( fastTx );
+
+	// Reference: an identical document + transaction forced through the incremental path
+	const slowDoc = makeSourceDoc();
+	const slowTx = fullReplaceTx( slowDoc, ve.copy( insert ) );
+	const originalFraction = ve.dm.TransactionProcessor.largeReplaceFraction;
+	ve.dm.TransactionProcessor.largeReplaceFraction = Infinity;
+	try {
+		assert.strictEqual( qualifiesForFastPath( slowDoc, slowTx ), false, 'fast path disabled for the reference document' );
+		slowDoc.commit( slowTx );
+	} finally {
+		ve.dm.TransactionProcessor.largeReplaceFraction = originalFraction;
+	}
+
+	assert.equalLinearData(
+		fastDoc.getFullData(), slowDoc.getFullData(),
+		'linear data is identical to the incremental path'
+	);
+	assert.equalNodeTree(
+		fastDoc.getDocumentNode(), slowDoc.getDocumentNode(),
+		'node tree is identical to the incremental path'
+	);
+} );
+
+QUnit.test( 'undo of a large replace restores the document exactly', ( assert ) => {
+	const doc = makeSourceDoc();
+	const originalData = ve.copy( doc.data.data );
+	// Delete the whole document (replace with a single empty paragraph)
+	const tx = fullReplaceTx( doc, [ { type: 'paragraph' }, { type: '/paragraph' } ] );
+	doc.commit( tx );
+	assert.notDeepEqual( doc.data.data, originalData, 'the replace changed the document' );
+
+	// The reversed transaction is a large insert, which must also take the fast path
+	const reversed = tx.reversed();
+	assert.strictEqual( qualifiesForFastPath( doc, reversed ), true, 'reversed (large insert) transaction also takes the fast path' );
+	doc.commit( reversed );
+	assert.deepEqual( doc.data.data, originalData, 'undo restores the original linear data' );
+} );
+
+QUnit.test( 'small edits stay on the incremental path', ( assert ) => {
+	const doc = makeSourceDoc();
+	const tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 2, [ 'y' ] );
+	assert.strictEqual( qualifiesForFastPath( doc, tx ), false, 'a one-character insertion does not take the fast path' );
+} );
+
+QUnit.test( 'visual-mode documents stay on the incremental path', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocumentFromData( [
+		{ type: 'paragraph' }, ...'Foo', { type: '/paragraph' },
+		{ type: 'internalList' }, { type: '/internalList' }
+	] );
+	assert.strictEqual( doc.sourceMode, false, 'document is not in source mode' );
+	const tx = ve.dm.TransactionBuilder.static.newFromReplacement(
+		doc, doc.getDocumentRange(), [ { type: 'paragraph' }, ...'Bar', { type: '/paragraph' } ]
+	);
+	assert.strictEqual( qualifiesForFastPath( doc, tx ), false, 'source-mode gate keeps visual-mode documents incremental' );
+} );
+
+QUnit.test( 'compound transactions (more than one replace) stay on the incremental path', ( assert ) => {
+	const doc = makeSourceDoc();
+	const half = Math.ceil( doc.getDocumentRange().getLength() / 2 );
+	const bigRemove = () => doc.getData( new ve.Range( 0, half ) );
+	const bigInsert = () => [ { type: 'paragraph' }, ...'x', { type: '/paragraph' } ];
+
+	// The large replace on its own qualifies for the fast path...
+	const singleTx = new ve.dm.Transaction( [
+		{ type: 'replace', remove: bigRemove(), insert: bigInsert() },
+		{ type: 'retain', length: doc.data.getLength() - half }
+	] );
+	assert.strictEqual( qualifiesForFastPath( doc, singleTx ), true, 'a lone large replace qualifies' );
+
+	// ...but adding a second, small replace later makes getLargeReplaceOp bail, so the whole
+	// transaction uses the incremental path (only qualification is checked here, not commit).
+	const compoundTx = new ve.dm.Transaction( [
+		{ type: 'replace', remove: bigRemove(), insert: bigInsert() },
+		{ type: 'retain', length: 3 },
+		{ type: 'replace', remove: [ 'e' ], insert: [ 'E' ] },
+		{ type: 'retain', length: 3 }
+	] );
+	assert.strictEqual( qualifiesForFastPath( doc, compoundTx ), false, 'a second replace disables the fast path' );
+} );

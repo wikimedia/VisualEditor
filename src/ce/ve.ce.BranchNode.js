@@ -255,6 +255,12 @@ ve.ce.BranchNode.prototype.onSplice = function ( index, deleteCount, ...modelNod
 	// TODO: restructure to clarify the logic (exactly one of these is a no-op)
 	this.setupBlockSlugs();
 	this.setupInlineSlugs();
+
+	// Content branch views built during a doc-root rebuild (e.g. the large-replace fast path,
+	// T189557) render while detached and don't flag the surface; flag it so selection re-renders.
+	if ( deleteCount && viewNodes.length && this.root instanceof ve.ce.DocumentNode ) {
+		this.root.getSurface().setContentBranchNodeChanged();
+	}
 };
 
 /**

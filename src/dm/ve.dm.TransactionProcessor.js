@@ -51,6 +51,14 @@ ve.dm.TransactionProcessor.modifiers = {};
 /* See ve.dm.TransactionProcessor.processors */
 ve.dm.TransactionProcessor.processors = {};
 
+/**
+ * Fraction of the attached root that a single replace must remove or insert to use the fast
+ * rebuild path instead of the incremental per-node TreeModifier path (T189557).
+ *
+ * @type {number}
+ */
+ve.dm.TransactionProcessor.largeReplaceFraction = 0.5;
+
 /* Methods */
 
 /**
@@ -103,11 +111,18 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	}
 
 	let completed;
+	// TreeModifier applies a replace one node at a time (O(nodes) linear splices => O(N^2)).
+	// A large replace is far cheaper as one splice plus a single tree rebuild (T189557).
+	const largeReplace = this.getLargeReplaceOp();
 	// Apply the queued modifications
 	try {
 		completed = false;
 		this.applyModifications();
-		ve.dm.treeModifier.process( this.document, this.transaction );
+		if ( largeReplace ) {
+			this.applyLargeReplace( largeReplace );
+		} else {
+			ve.dm.treeModifier.process( this.document, this.transaction );
+		}
 		completed = true;
 	} finally {
 		// Don't catch and re-throw errors so that they are reported properly
@@ -126,6 +141,75 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	this.transaction.markAsApplied();
 	// Emit events in the queue
 	this.emitQueuedEvents();
+};
+
+/**
+ * Detect a single large replace that can take the fast rebuild path: retains plus exactly
+ * one replace (no attribute ops) that removes or inserts at least
+ * {@link ve.dm.TransactionProcessor.largeReplaceFraction} of the attached root.
+ *
+ * @private
+ * @return {Object|null} `{ op, offset }` for the qualifying replace (offset is its
+ *   linear-model offset), else null to use the incremental TreeModifier path
+ */
+ve.dm.TransactionProcessor.prototype.getLargeReplaceOp = function () {
+	// Source mode only: its flat one-paragraph-per-line documents rebuild exactly. Visual-mode
+	// documents need per-node bookkeeping (slugs, changesSinceLoad) the rebuild would drop.
+	if ( !this.document.sourceMode ) {
+		return null;
+	}
+	let offset = 0;
+	let found = null;
+	for ( const op of this.operations ) {
+		if ( op.type === 'retain' ) {
+			offset += op.length;
+		} else if ( op.type === 'replace' ) {
+			if ( found ) {
+				// More than one replace: use the incremental path
+				return null;
+			}
+			found = { op, offset };
+			offset += op.remove.length;
+		} else {
+			// Attribute (or other) ops need per-node handling
+			return null;
+		}
+	}
+	if ( !found ) {
+		return null;
+	}
+	// Larger of removed / inserted, so undoing a large delete (a large insert) also qualifies.
+	const rootLength = this.document.getAttachedRootRange().getLength();
+	const size = Math.max( found.op.remove.length, found.op.insert.length );
+	return size >= ve.dm.TransactionProcessor.largeReplaceFraction * rootLength ? found : null;
+};
+
+/**
+ * Apply a large replace as a single linear splice plus a one-pass tree rebuild, instead of
+ * TreeModifier's per-node application. See {@link #getLargeReplaceOp}.
+ *
+ * @private
+ * @param {Object} largeReplace `{ op, offset }` from {@link #getLargeReplaceOp}
+ */
+ve.dm.TransactionProcessor.prototype.applyLargeReplace = function ( largeReplace ) {
+	const doc = this.document;
+	const data = doc.data;
+	const { op, offset } = largeReplace;
+	// Freeze inserted data as TreeModifier's spliceLinear does
+	const insert = ve.deepFreeze( op.insert, true );
+	// Capture the range while the tree still matches the data (rootNode.getRange() goes stale
+	// after the splice below, so we adjust and pass it to rebuildTreeNode explicitly).
+	const rootNode = doc.getAttachedRoot();
+	const oldRange = rootNode.getRange();
+	const removed = data.batchSplice( offset, op.remove.length, insert );
+	// Queue the inverse so an error during the rebuild rolls the linear data back
+	this.queueUndoFunction( () => {
+		data.batchSplice( offset, insert.length, removed );
+	} );
+	// The splice shifts everything after it (incl. the internal list) by delta; rebuild the
+	// subtree over the adjusted range in one pass (one 'splice' => one CE onSplice).
+	const delta = insert.length - op.remove.length;
+	doc.rebuildTreeNode( rootNode, new ve.Range( oldRange.start, oldRange.end + delta ) );
 };
 
 /**
