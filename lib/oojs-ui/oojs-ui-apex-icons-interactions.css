@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.54.0
+ * OOUI v0.54.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-06-11T21:42:20Z
+ * Date: 2026-07-21T20:54:32Z
  */
 .oo-ui-icon-add {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/add.svg);
@@ -83,6 +83,17 @@
 /* @noflip */
 .oo-ui-icon-helpNotice:lang(yi) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNotice-ltr.svg);
+}
+.oo-ui-icon-helpNoticeFilled {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr.svg);
+}
+/* @noflip */
+.oo-ui-icon-helpNoticeFilled:lang(he) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr.svg);
+}
+/* @noflip */
+.oo-ui-icon-helpNoticeFilled:lang(yi) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr.svg);
 }
 .oo-ui-icon-home {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/home.svg);

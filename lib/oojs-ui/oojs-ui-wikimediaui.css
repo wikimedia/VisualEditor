@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.54.0
+ * OOUI v0.54.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-06-11T21:42:20Z
+ * Date: 2026-07-21T20:54:32Z
  */
 /* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-element-hidden {
@@ -2507,14 +2507,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.54.0
+ * OOUI v0.54.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-06-11T21:42:20Z
+ * Date: 2026-07-21T20:54:32Z
  */
 /* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
@@ -3287,14 +3287,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.54.0
+ * OOUI v0.54.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-06-11T21:42:20Z
+ * Date: 2026-07-21T20:54:32Z
  */
 /* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-tool {
@@ -4027,14 +4027,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.54.0
+ * OOUI v0.54.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-06-11T21:42:20Z
+ * Date: 2026-07-21T20:54:32Z
  */
 /* stylelint-disable-next-line @stylistic/indentation */
 
@@ -4460,14 +4460,14 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 
 /*!
- * OOUI v0.54.0
+ * OOUI v0.54.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-06-11T21:42:20Z
+ * Date: 2026-07-21T20:54:32Z
  */
 /* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-arrowDown {
@@ -4525,13 +4525,13 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/downTriangle-progressive.svg);
 }
 .oo-ui-icon-draggable {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggable.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical.svg);
 }
 .oo-ui-image-invert.oo-ui-icon-draggable {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggable-invert.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical-invert.svg);
 }
 .oo-ui-image-progressive.oo-ui-icon-draggable {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggable-progressive.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical-progressive.svg);
 }
 .oo-ui-icon-draggableHorizontal {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableHorizontal.svg);
@@ -4541,6 +4541,15 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-image-progressive.oo-ui-icon-draggableHorizontal {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableHorizontal-progressive.svg);
+}
+.oo-ui-icon-draggableVertical {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-draggableVertical {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-draggableVertical {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical-progressive.svg);
 }
 .oo-ui-icon-draggableXY {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableXY.svg);
@@ -5369,6 +5378,39 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-helpNotice:lang(yi) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNotice-ltr-progressive.svg);
+}
+.oo-ui-icon-helpNoticeFilled {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr.svg);
+}
+/* @noflip */
+.oo-ui-icon-helpNoticeFilled:lang(he) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr.svg);
+}
+/* @noflip */
+.oo-ui-icon-helpNoticeFilled:lang(yi) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-helpNoticeFilled {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr-invert.svg);
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-helpNoticeFilled:lang(he) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr-invert.svg);
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-helpNoticeFilled:lang(yi) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-helpNoticeFilled {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-helpNoticeFilled:lang(he) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr-progressive.svg);
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-helpNoticeFilled:lang(yi) {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/helpNoticeFilled-ltr-progressive.svg);
 }
 .oo-ui-icon-home {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/home.svg);
@@ -7569,6 +7611,15 @@ html.oo-ui-windowManager-modal-active:not( .oo-ui-windowManager-modal-active-ful
 }
 .oo-ui-image-progressive.oo-ui-icon-imageGallery {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/imageGallery-ltr-progressive.svg);
+}
+.oo-ui-icon-microphone {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/microphone.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-microphone {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/microphone-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-microphone {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/microphone-progressive.svg);
 }
 .oo-ui-icon-musicalScore {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/musicalScore.svg);

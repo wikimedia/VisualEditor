@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.54.0
+ * OOUI v0.54.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-06-11T21:42:20Z
+ * Date: 2026-07-21T20:54:32Z
  */
 .oo-ui-icon-camera {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/camera.svg);
@@ -46,6 +46,9 @@
 }
 .oo-ui-icon-imageGallery {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/imageGallery-ltr.svg);
+}
+.oo-ui-icon-microphone {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/microphone.svg);
 }
 .oo-ui-icon-musicalScore {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/musicalScore.svg);

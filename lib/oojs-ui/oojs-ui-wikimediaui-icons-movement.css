@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.54.0
+ * OOUI v0.54.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2026 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2026-06-11T21:42:20Z
+ * Date: 2026-07-21T20:54:32Z
  */
 /* stylelint-disable-next-line @stylistic/indentation */
 .oo-ui-icon-arrowDown {
@@ -64,13 +64,13 @@
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/downTriangle-progressive.svg);
 }
 .oo-ui-icon-draggable {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggable.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical.svg);
 }
 .oo-ui-image-invert.oo-ui-icon-draggable {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggable-invert.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical-invert.svg);
 }
 .oo-ui-image-progressive.oo-ui-icon-draggable {
-  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggable-progressive.svg);
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical-progressive.svg);
 }
 .oo-ui-icon-draggableHorizontal {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableHorizontal.svg);
@@ -80,6 +80,15 @@
 }
 .oo-ui-image-progressive.oo-ui-icon-draggableHorizontal {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableHorizontal-progressive.svg);
+}
+.oo-ui-icon-draggableVertical {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-draggableVertical {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-draggableVertical {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableVertical-progressive.svg);
 }
 .oo-ui-icon-draggableXY {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/draggableXY.svg);
