@@ -188,10 +188,10 @@ ve.dm.example.getImportedAnnotation = ( source = null ) => ( {
 } );
 
 // hash = store.hashOfValue( ve.dm.example.bold )
-ve.dm.example.boldHash = 'h49981eab0f8056ff';
-ve.dm.example.italicHash = 'hefd27ef3bf2041dd';
-ve.dm.example.underlineHash = 'hf214c680fbc361da';
-ve.dm.example.strongHash = 'ha5aaf526d1c3af54';
+ve.dm.example.boldHash = 'h8b59cac928a13709';
+ve.dm.example.italicHash = 'h24823d49a30e7a57';
+ve.dm.example.underlineHash = 'hde2a649eedbec3de';
+ve.dm.example.strongHash = 'h2fd35dfd937d6fb4';
 
 ve.dm.example.inlineSlug = '<span class="ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug"></span>';
 ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug ve-ce-surface-interface"></div>';

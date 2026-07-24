@@ -10,9 +10,9 @@ QUnit.module( 've.ui.LinkAnnotationInspector' );
 
 QUnit.test( 'Lifecycle tests', ( assert ) => {
 	const testsDone = assert.async(),
-		fooHash = 'hd5a13e54366d44db',
-		barHash = 'h071cb84c069d07a4',
-		quuxHash = 'hb085ebec56a162a4',
+		fooHash = 'hab9514777ddb4f1d',
+		barHash = 'h9b5b1dbb3333b733',
+		quuxHash = 'h9af0f519552cb864',
 		cases = [
 			{
 				msg: 'Collapsed selection expands to word',

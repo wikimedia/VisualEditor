@@ -18,7 +18,7 @@ QUnit.test( 'Lifecycle tests', ( assert ) => {
 				expectedData: ( data ) => {
 					data.splice(
 						2, 1,
-						[ 'o', [ 'h785e2045ecc398c1' ] ]
+						[ 'o', [ 'h0d3533ce61e92ff2' ] ]
 					);
 				}
 			},
@@ -27,7 +27,7 @@ QUnit.test( 'Lifecycle tests', ( assert ) => {
 				range: new ve.Range( 13 ),
 				expectedRange: new ve.Range( 13 ),
 				expectedData: () => {},
-				expectedInsertionAnnotations: [ 'h785e2045ecc398c1' ]
+				expectedInsertionAnnotations: [ 'h0d3533ce61e92ff2' ]
 			}
 		].map( ( caseItem ) => Object.assign( { name: 'language' }, caseItem ) );
 

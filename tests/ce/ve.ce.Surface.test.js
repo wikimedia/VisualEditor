@@ -157,7 +157,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 };
 
 QUnit.test( 'handleObservedChanges (content changes)', ( assert ) => {
-	const linkHash = 'hdee7b89d544aa584',
+	const linkHash = 'h73cdbde3c446b448',
 		cases = [
 			{
 				prevHtml: '<p></p>',
@@ -223,7 +223,7 @@ QUnit.test( 'handleObservedChanges (content changes)', ( assert ) => {
 						{ type: 'retain', length: 2 },
 						{
 							type: 'replace',
-							insert: [ [ 'Y', [ 'h96560f31226e3199' ] ] ],
+							insert: [ [ 'Y', [ 'h236f7538ae993276' ] ] ],
 							remove: []
 						},
 						{ type: 'retain', length: 3 }

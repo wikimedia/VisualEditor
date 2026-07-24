@@ -1821,9 +1821,9 @@ QUnit.test( 'sanitize', ( assert ) => {
 					{
 						type: 'removableAlienMeta',
 						internal: {
-							loadMetaParentHash: 'hd25d21d36fa98e7a',
+							loadMetaParentHash: 'h48612d38ac931b69',
 							loadMetaParentOffset: 1,
-							preservedAnnotations: [ 'h96560f31226e3199' ]
+							preservedAnnotations: [ 'h236f7538ae993276' ]
 						}
 					},
 					{ type: '/removableAlienMeta' },
@@ -2124,7 +2124,7 @@ QUnit.test( 'sanitize', ( assert ) => {
 					{
 						type: 'alienMeta',
 						internal: {
-							loadMetaParentHash: 'h069d094b1fb89d8a',
+							loadMetaParentHash: 'h2cd5ba64da411fe7',
 							loadMetaParentOffset: 1
 						}
 					},

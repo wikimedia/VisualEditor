@@ -127,6 +127,11 @@ Color Picker
  – MIT license
  – Taufik Nurrohman and other contributors
 
+cyrb53
+ – https://github.com/bryc/code
+ – Public domain (or MIT if needed)
+ – bryc
+
 Diff Match and Patch
  – https://code.google.com/p/google-diff-match-patch/
  – Apache license 2.0

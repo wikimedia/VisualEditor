@@ -4,8 +4,6 @@
  * @copyright See AUTHORS.txt
  */
 
-/* global SparkMD5 */
-
 /**
  * Ordered append-only hash store, whose values once inserted are immutable
  *
@@ -174,6 +172,38 @@ ve.dm.HashValueStore.prototype.replaceHash = function ( oldHash, value ) {
 };
 
 /**
+ * Fast non-cryptographic string hash (cyrb64), returning 16 hex digits.
+ *
+ * Uses two independent 32-bit lanes combined into a 64-bit hex string, giving the same
+ * ~2^64 hash space as the previous 16-hex-digit MD5 truncation. The store only needs low
+ * collision probability, not cryptographic strength (see #hashOfValue); this avoids the
+ * pure-JS MD5 that otherwise dominates document load on large pages (it is called once per
+ * element, over each element's serialized DOM).
+ *
+ * Based on the cyrb53 hash by bryc, extended here to a 64-bit output by emitting both
+ * 32-bit lanes. Upstream license: "Public domain (or MIT if needed). Attribution
+ * appreciated." See https://github.com/bryc/code (jshash).
+ *
+ * @param {string} str String to hash
+ * @return {string} 16-digit hex hash
+ */
+ve.dm.HashValueStore.static.hashString = function ( str ) {
+	// Bitwise mixing of two lanes (cyrb64)
+	/* eslint-disable no-bitwise */
+	let h1 = 0xdeadbeef;
+	let h2 = 0x41c6ce57;
+	for ( let i = 0; i < str.length; i++ ) {
+		const ch = str.charCodeAt( i );
+		h1 = Math.imul( h1 ^ ch, 2654435761 );
+		h2 = Math.imul( h2 ^ ch, 1597334677 );
+	}
+	h1 = Math.imul( h1 ^ ( h1 >>> 16 ), 2246822507 ) ^ Math.imul( h2 ^ ( h2 >>> 13 ), 3266489909 );
+	h2 = Math.imul( h2 ^ ( h2 >>> 16 ), 2246822507 ) ^ Math.imul( h1 ^ ( h1 >>> 13 ), 3266489909 );
+	return ( h2 >>> 0 ).toString( 16 ).padStart( 8, '0' ) + ( h1 >>> 0 ).toString( 16 ).padStart( 8, '0' );
+	/* eslint-enable no-bitwise */
+};
+
+/**
  * Get the hash of a value without inserting it in the store
  *
  * @param {Object|string|Array} value Value to hash
@@ -185,15 +215,11 @@ ve.dm.HashValueStore.prototype.hashOfValue = function ( value, stringified ) {
 		stringified = OO.getHash( value );
 	}
 
-	// We don't need cryptographically strong hashes, just low collision probability. Given
-	// effectively random hash distribution, for n values hashed into a space of m hash
-	// strings, the probability of a collision is roughly n^2 / (2m). We use 16 hex digits
-	// of MD5 i.e. 2^64 possible hash strings, so given 2^16 stored values the collision
-	// probability is about 2^-33 =~ 0.0000000001 , i.e. negligible.
-	//
-	// Prefix with a letter to prevent all numeric hashes, and to constrain the space of
-	// possible object property values.
-	return 'h' + SparkMD5.hash( stringified ).slice( 0, 16 );
+	// We don't need cryptographically strong hashes, just low collision probability: stores
+	// are merged assuming two values have the same hash only if equal (see class docs), so the
+	// only requirement is that distinct values rarely collide. Prefix with a letter to prevent
+	// all-numeric hashes, and to constrain the space of possible object property values.
+	return 'h' + this.constructor.static.hashString( stringified );
 };
 
 /**
