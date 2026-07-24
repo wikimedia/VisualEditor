@@ -273,28 +273,56 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 };
 
 /**
+ * Focusable nodes queued for a batched invisible-icon check. #hasRendering reads offsetWidth,
+ * forcing a reflow, so measuring per node during a bulk insert of many focusable nodes is O(N)
+ * forced layouts; batching does one reflow instead (bad on error-heavy pages and slow devices).
+ *
+ * A single shared queue across all subclasses.
+ *
+ * @static
+ * @property {Set}
+ * @private
+ */
+ve.ce.FocusableNode.static.pendingInvisibleIconChecks = new Set();
+
+/**
+ * Measure and update all queued nodes with a single reflow, by grouping reads: detach every
+ * icon, then measure every node, then apply the results.
+ *
+ * @static
+ * @private
+ */
+ve.ce.FocusableNode.static.flushInvisibleIconChecks = function () {
+	const pending = ve.ce.FocusableNode.static.pendingInvisibleIconChecks;
+	// Skip nodes destroyed before the flush
+	const nodes = [ ...pending ].filter( ( node ) => node.getModel() );
+	pending.clear();
+	nodes.forEach( ( node ) => {
+		if ( node.icon ) {
+			node.icon.$element.detach();
+		}
+	} );
+	const showIcons = nodes.map( ( node ) => !node.hasRendering() );
+	nodes.forEach( ( node, i ) => node.updateInvisibleIconSync( showIcons[ i ] ) );
+};
+
+/**
  * Update the state of icon if this node is invisible
  *
  * If the node doesn't have a visible rendering, we insert an icon to represent
  * it. If the icon was already present, and this is called again when rendering
- * has developed, we remove the icon.
+ * has developed, we remove the icon. Measurement is batched (see #flushInvisibleIconChecks).
  */
 ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 	if ( !this.constructor.static.iconWhenInvisible ) {
 		return;
 	}
-
-	// Make sure any existing icon is detached before measuring
-	if ( this.icon ) {
-		this.icon.$element.detach();
+	const pending = ve.ce.FocusableNode.static.pendingInvisibleIconChecks;
+	// A non-empty queue means a flush is already scheduled
+	if ( !pending.size ) {
+		requestAnimationFrame( ve.ce.FocusableNode.static.flushInvisibleIconChecks );
 	}
-	const showIcon = !this.hasRendering();
-
-	// Defer updating the DOM. If we don't do this, the hasRendering() call for the next
-	// FocusableNode will force a reflow, which is slow.
-	requestAnimationFrame( () => {
-		this.updateInvisibleIconSync( showIcon );
-	} );
+	pending.add( this );
 };
 
 /**
