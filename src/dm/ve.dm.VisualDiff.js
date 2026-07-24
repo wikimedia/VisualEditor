@@ -87,6 +87,40 @@ ve.dm.VisualDiff.static.getDataFromNode = function ( node, innerRange ) {
 };
 
 /**
+ * @typedef {Object} ve.dm.VisualDiff.NodeComparisonData
+ * @property {ve.dm.LinearData.Item[]} data Outer-range linear data
+ * @property {string} json JSON serialisation of the data
+ */
+
+/**
+ * Cache for stringified linear data for nodes, to avoid repeated JSON.stringify calls.
+ *
+ * As we are using a WeakMap, we don't need to worry about
+ * garbage collection across multiple diff instances.
+ *
+ * @private
+ * @type {WeakMap.<ve.dm.Node,ve.dm.VisualDiff.NodeComparisonData>}
+ */
+ve.dm.VisualDiff.static.jsonCache = new WeakMap();
+
+/**
+ * Get a node's outer-range linear data together with its JSON serialisation,
+ * memoized per node.
+ *
+ * @param {ve.dm.Node} node Node
+ * @return {ve.dm.VisualDiff.NodeComparisonData} Cached comparison data
+ */
+ve.dm.VisualDiff.static.getComparisonData = function ( node ) {
+	let comparison = this.jsonCache.get( node );
+	if ( !comparison ) {
+		const data = this.getDataFromNode( node );
+		comparison = { data, json: JSON.stringify( data ) };
+		this.jsonCache.set( node, comparison );
+	}
+	return comparison;
+};
+
+/**
  * Compare the linear data for two nodes
  *
  * @param {ve.dm.Node} oldNode Node from the old document
@@ -98,10 +132,10 @@ ve.dm.VisualDiff.static.compareNodes = function ( oldNode, newNode ) {
 		return false;
 	}
 
-	const oldData = this.getDataFromNode( oldNode );
-	const newData = this.getDataFromNode( newNode );
+	const oldComparison = this.getComparisonData( oldNode );
+	const newComparison = this.getComparisonData( newNode );
 
-	if ( JSON.stringify( oldData ) === JSON.stringify( newData ) ) {
+	if ( oldComparison.json === newComparison.json ) {
 		return true;
 	}
 
@@ -110,7 +144,7 @@ ve.dm.VisualDiff.static.compareNodes = function ( oldNode, newNode ) {
 	const oldStore = oldNode.getRoot().getDocument().getStore();
 	const newStore = newNode.getRoot().getDocument().getStore();
 
-	return oldData.every( ( oldItem, i ) => ve.dm.LinearData.static.compareElements( oldItem, newData[ i ], oldStore, newStore ) );
+	return oldComparison.data.every( ( oldItem, i ) => ve.dm.LinearData.static.compareElements( oldItem, newComparison.data[ i ], oldStore, newStore ) );
 };
 
 /**
