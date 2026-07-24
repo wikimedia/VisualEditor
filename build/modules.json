@@ -148,11 +148,6 @@
 			"lib/rangefix/rangefix.js"
 		]
 	},
-	"spark-md5": {
-		"scripts": [
-			"lib/spark-md5/spark-md5.js"
-		]
-	},
 	"jquery.i18n": {
 		"scripts": [
 			"lib/jquery.i18n/src/jquery.i18n.js",
@@ -276,7 +271,6 @@
 		"dependencies": [
 			"unicodejs",
 			"rangefix",
-			"spark-md5",
 			"visualEditor.core.utils",
 			"visualEditor.core.utils.parsing",
 			"visualEditor.core.init"
