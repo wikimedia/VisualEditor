@@ -196,6 +196,8 @@
 	"visualeditor-languageinspector-title": "Язык",
 	"visualeditor-languageinspector-widget-changelang": "Найти язык",
 	"visualeditor-languageinspector-widget-label-direction": "Направление",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Слева направо",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Справа налево",
 	"visualeditor-languageinspector-widget-label-langcode": "Код языка",
 	"visualeditor-languageinspector-widget-label-language": "Язык",
 	"visualeditor-linkcontext-label-change": "Изменить текст",
