@@ -755,6 +755,41 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 		).data,
 		'inserting document over selection (annotate=[bold])'
 	);
+
+	// A removal can leave an empty node behind where the removed content was; the insertion
+	// has to go inside it rather than be pushed in front of it
+	const wholeDocData = [
+		{ type: 'paragraph' },
+		...'Foo',
+		{ type: '/paragraph' },
+		{ type: 'internalList' }, { type: '/internalList' }
+	];
+	const replacedWholeDocData = [
+		{ type: 'paragraph' },
+		...'Bar',
+		{ type: '/paragraph' },
+		{ type: 'internalList' }, { type: '/internalList' }
+	];
+
+	doc = ve.dm.example.createExampleDocumentFromData( wholeDocData );
+	surface = new ve.dm.Surface( doc );
+	fragment = surface.getLinearFragment( new ve.Range( 0 ) ).expandLinearSelection( 'root' );
+	fragment.insertContent( 'Bar' );
+	assert.deepEqual(
+		doc.getData(),
+		replacedWholeDocData,
+		'inserting content over the whole document leaves no trailing empty paragraph'
+	);
+
+	doc = ve.dm.example.createExampleDocumentFromData( wholeDocData );
+	surface = new ve.dm.Surface( doc );
+	fragment = surface.getLinearFragment( new ve.Range( 0 ) ).expandLinearSelection( 'root' );
+	fragment.insertDocument( ve.dm.example.createExampleDocumentFromData( replacedWholeDocData ) );
+	assert.deepEqual(
+		doc.getData(),
+		replacedWholeDocData,
+		'inserting a document over the whole document leaves no trailing empty paragraph'
+	);
 } );
 
 QUnit.test( 'changeAttributes', ( assert ) => {

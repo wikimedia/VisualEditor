@@ -94,6 +94,71 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 				'r',
 				{ type: '/paragraph' }
 			]
+		},
+		{
+			msg: 'Replacing the whole document leaves no trailing empty paragraph',
+			data: [
+				{ type: 'paragraph' },
+				...'foo',
+				{ type: '/paragraph' },
+				{ type: 'paragraph' },
+				...'bar',
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			range: new ve.Range( 0, 10 ),
+			insert: 'baz',
+			expected: [
+				{ type: 'paragraph' },
+				...'baz',
+				{ type: '/paragraph' }
+			]
+		},
+		{
+			msg: 'Replacing the whole document with multiple lines',
+			data: [
+				{ type: 'paragraph' },
+				...'foo',
+				{ type: '/paragraph' },
+				{ type: 'paragraph' },
+				...'bar',
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			range: new ve.Range( 0, 10 ),
+			insert: 'baz\nqux',
+			expected: [
+				{ type: 'paragraph' },
+				...'baz',
+				{ type: '/paragraph' },
+				{ type: 'paragraph' },
+				...'qux',
+				{ type: '/paragraph' }
+			]
+		},
+		{
+			msg: 'Replacing the whole document with a leading newline',
+			data: [
+				{ type: 'paragraph' },
+				...'foo',
+				{ type: '/paragraph' },
+				{ type: 'paragraph' },
+				...'bar',
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			range: new ve.Range( 0, 10 ),
+			insert: '\nbaz',
+			expected: [
+				{ type: 'paragraph' },
+				{ type: '/paragraph' },
+				{ type: 'paragraph' },
+				...'baz',
+				{ type: '/paragraph' }
+			]
 		}
 	];
 

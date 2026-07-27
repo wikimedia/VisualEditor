@@ -734,6 +734,24 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 };
 
 /**
+ * Check whether a range covers the entire document range
+ *
+ * ve.dm.TransactionBuilder.static.newFromRemoval never leaves the document completely empty, so
+ * such a removal leaves an empty paragraph behind. Content replacing the removed range has to go
+ * inside that paragraph, otherwise it is inserted before the paragraph and the paragraph survives
+ * after it as a spurious empty line.
+ *
+ * @private
+ * @param {ve.Range} range Range to be removed
+ * @return {boolean} Removing the range would empty the document
+ */
+ve.dm.SurfaceFragment.prototype.doesRangeCoverDocument = function ( range ) {
+	return !range.isCollapsed() &&
+		range.start === 0 &&
+		range.end >= this.getDocument().getDocumentRange().end;
+};
+
+/**
  * Remove content in the fragment and insert content before it.
  *
  * This will move the fragment's range to cover the inserted content. Note that this may be
@@ -767,6 +785,8 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotateOrSe
 		annotate = annotateOrSet;
 	}
 
+	const removalEmptiesDocument = this.doesRangeCoverDocument( range );
+
 	if ( !range.isCollapsed() ) {
 		if ( annotate && !annotations ) {
 			// If we're replacing content, use the annotations selected
@@ -776,7 +796,9 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotateOrSe
 		this.removeContent();
 	}
 
-	const offset = range.start;
+	// Insert inside the paragraph the removal left behind, not before it
+	const offset = removalEmptiesDocument ? range.start + 1 : range.start;
+
 	// Auto-convert content to array of plain text characters
 	if ( typeof content === 'string' ) {
 		const lines = content.split( /[\r\n]+/ );
@@ -871,6 +893,8 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 		annotate = annotateOrSet;
 	}
 
+	const removalEmptiesDocument = this.doesRangeCoverDocument( range );
+
 	if ( !range.isCollapsed() ) {
 		if ( annotate && !annotations ) {
 			// If we're replacing content, use the annotations selected
@@ -880,7 +904,9 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 		this.removeContent();
 	}
 
-	const offset = range.start;
+	// Insert inside the paragraph the removal left behind, not before it
+	const offset = removalEmptiesDocument ? range.start + 1 : range.start;
+
 	if ( annotate && !annotations ) {
 		// TODO T126021: Don't reach into properties of document
 		annotations = doc.data
