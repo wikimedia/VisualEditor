@@ -792,6 +792,83 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 	);
 } );
 
+QUnit.test( 'insertContent offset after removal', ( assert ) => {
+	const paragraph = ( ...content ) => [ { type: 'paragraph' }, ...content, { type: '/paragraph' } ],
+		wrapperParagraph = ( ...content ) => [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } }, ...content, { type: '/paragraph' }
+		],
+		heading = ( ...content ) => [
+			{ type: 'heading', attributes: { level: 1 } }, ...content, { type: '/heading' }
+		],
+		listItem = ( ...content ) => [ { type: 'listItem' }, ...paragraph( ...content ), { type: '/listItem' } ],
+		list = ( ...items ) => [
+			{ type: 'list', attributes: { style: 'bullet' } }, ...items, { type: '/list' }
+		],
+		cell = ( ...content ) => [
+			{ type: 'tableCell', attributes: { style: 'data' } }, ...paragraph( ...content ), { type: '/tableCell' }
+		],
+		table = ( ...cells ) => [
+			{ type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' },
+			...cells,
+			{ type: '/tableRow' }, { type: '/tableSection' }, { type: '/table' }
+		];
+
+	// A removal can leave an emptied node, an untouched node, or a node the removal never
+	// reached at the start of the removed range. Only the first may absorb the insertion.
+	const cases = [
+		{
+			msg: 'replacing across a heading and a paragraph inserts in the heading',
+			data: [ ...heading( ...'Foo' ), ...paragraph( ...'Bar' ) ],
+			range: new ve.Range( 2, 7 ),
+			expected: [ ...heading( 'F', ...'XY' ), ...paragraph( ...'ar' ) ]
+		},
+		{
+			msg: 'replacing across a paragraph and a list item inserts in the paragraph',
+			data: [ ...paragraph( ...'Foo' ), ...list( ...listItem( ...'Bar' ) ) ],
+			range: new ve.Range( 2, 9 ),
+			expected: [ ...paragraph( 'F', ...'XY' ), ...list( ...listItem( ...'ar' ) ) ]
+		},
+		{
+			msg: 'replacing from before a list does not insert into the list',
+			data: [ ...list( ...listItem( ...'Foo' ), ...listItem( ...'Bar' ) ) ],
+			range: new ve.Range( 0, 3 ),
+			expected: [
+				...wrapperParagraph( ...'XY' ),
+				...list( ...listItem( ...'Foo' ), ...listItem( ...'Bar' ) )
+			]
+		},
+		{
+			msg: 'replacing from before a table does not insert into the table',
+			data: table( ...cell( ...'Foo' ), ...cell( ...'Bar' ) ),
+			range: new ve.Range( 0, 5 ),
+			expected: [
+				...wrapperParagraph( ...'XY' ),
+				...table( ...cell( ...'Foo' ), ...cell( ...'Bar' ) )
+			]
+		},
+		{
+			msg: 'removing a whole node preserves a following empty node',
+			data: [ ...paragraph( ...'Foo' ), ...paragraph(), ...paragraph( ...'Bar' ) ],
+			range: new ve.Range( 0, 5 ),
+			expected: [ ...wrapperParagraph( ...'XY' ), ...paragraph(), ...paragraph( ...'Bar' ) ]
+		}
+	];
+
+	cases.forEach( ( caseItem ) => {
+		const doc = ve.dm.example.createExampleDocumentFromData(
+				caseItem.data.concat( [ { type: 'internalList' }, { type: '/internalList' } ] )
+			),
+			surface = new ve.dm.Surface( doc );
+
+		surface.getLinearFragment( caseItem.range ).insertContent( 'XY' );
+		assert.deepEqual(
+			doc.getData( doc.getDocumentRange() ),
+			caseItem.expected,
+			caseItem.msg
+		);
+	} );
+} );
+
 QUnit.test( 'changeAttributes', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
