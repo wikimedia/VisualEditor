@@ -137,10 +137,11 @@ ve.ui.triggerRegistry.register(
 	'strikethrough', { mac: new ve.ui.Trigger( 'cmd+shift+5' ), pc: new ve.ui.Trigger( 'ctrl+shift+5' ) }
 );
 ve.ui.triggerRegistry.register(
-	'subscript', { mac: new ve.ui.Trigger( 'cmd+,' ), pc: new ve.ui.Trigger( 'ctrl+,' ) }
+	// Not localized for mac because cmd+, is the universal settings shortcut. Chrome lets you override it, but Safari does not.
+	'subscript', new ve.ui.Trigger( 'ctrl+,' )
 );
 ve.ui.triggerRegistry.register(
-	'superscript', { mac: new ve.ui.Trigger( 'cmd+.' ), pc: new ve.ui.Trigger( 'ctrl+.' ) }
+	'superscript', new ve.ui.Trigger( 'ctrl+.' )
 );
 ve.ui.triggerRegistry.register(
 	'indent', {
