@@ -166,11 +166,6 @@ ve.ui.TableLineContext.prototype.toggleMenu = function ( show, restoreEditing ) 
 		surfaceModel.connect( this, { select: 'onModelSelect' } );
 		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
 		surfaceView.deactivate();
-		const dir = surfaceView.getSelectionDirectionality();
-		// eslint-disable-next-line mediawiki/class-doc
-		this.$element
-			.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' )
-			.addClass( 've-ui-dir-block-' + dir );
 	} else {
 		surfaceModel.disconnect( this );
 		surfaceView.$document.off( 'mousedown', this.onDocumentMouseDownHandler );

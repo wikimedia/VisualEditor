@@ -20,17 +20,8 @@ ve.ui.Toolbar = function VeUiToolbar( config = {} ) {
 	this.updateToolStateDebounced = ve.debounce( this.updateToolState.bind( this ) );
 
 	this.groups = null;
-	// Default directions
-	this.contextDirection = { inline: 'ltr', block: 'ltr' };
-	// The following classes are used here:
-	// * ve-ui-dir-inline-ltr
-	// * ve-ui-dir-inline-rtl
-	// * ve-ui-dir-block-ltr
-	// * ve-ui-dir-block-rtl
-	this.$element
-		.addClass( 've-ui-toolbar' )
-		.addClass( 've-ui-dir-inline-' + this.contextDirection.inline )
-		.addClass( 've-ui-dir-block-' + this.contextDirection.block );
+
+	this.$element.addClass( 've-ui-toolbar' );
 };
 
 /* Inheritance */
@@ -42,7 +33,6 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
 /**
  * @event ve.ui.Toolbar#updateState
  * @param {ve.dm.SurfaceFragment|null} fragment Surface fragment. Null if no surface is active.
- * @param {Object|null} direction Context direction with 'inline' & 'block' properties if a surface exists. Null if no surface is active.
  * @param {string[]} activeDialogs List of names of currently open dialogs.
  */
 
@@ -188,41 +178,11 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
  */
 ve.ui.Toolbar.prototype.updateToolState = function () {
 	if ( !this.getSurface() ) {
-		this.emit( 'updateState', null, null );
+		this.emit( 'updateState', null, [] );
 		return;
 	}
 
 	const fragment = this.getSurface().getModel().getFragment();
-
-	// Update context direction for button icons UI.
-	// By default, inline and block directions are the same.
-	// If no context direction is available, use document model direction.
-	let dirInline = this.surface.getView().getSelectionDirectionality();
-	const dirBlock = dirInline;
-
-	// 'inline' direction is different only if we are inside a language annotation
-	const fragmentAnnotation = fragment.getAnnotations();
-	if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
-		dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
-	}
-
-	if ( dirInline !== this.contextDirection.inline ) {
-		// Remove previous class:
-		this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
-		// The following classes are used here:
-		// * ve-ui-dir-inline-ltr
-		// * ve-ui-dir-inline-rtl
-		this.$element.addClass( 've-ui-dir-inline-' + dirInline );
-		this.contextDirection.inline = dirInline;
-	}
-	if ( dirBlock !== this.contextDirection.block ) {
-		this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
-		// The following classes are used here:
-		// * ve-ui-dir-block-ltr
-		// * ve-ui-dir-block-rtl
-		this.$element.addClass( 've-ui-dir-block-' + dirBlock );
-		this.contextDirection.block = dirBlock;
-	}
 
 	const activeDialogs = [
 		this.surface.getDialogs(),
@@ -237,7 +197,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		return null;
 	} ).filter( ( name ) => name !== null );
 
-	this.emit( 'updateState', fragment, this.contextDirection, activeDialogs );
+	this.emit( 'updateState', fragment, activeDialogs );
 };
 
 /**

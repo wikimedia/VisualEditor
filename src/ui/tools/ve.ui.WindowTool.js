@@ -40,7 +40,7 @@ ve.ui.WindowTool.static.associatedWindows = null;
 /**
  * @inheritdoc
  */
-ve.ui.WindowTool.prototype.onUpdateState = function ( fragment, contextDirection, activeDialogs ) {
+ve.ui.WindowTool.prototype.onUpdateState = function ( fragment, activeDialogs ) {
 	let myWindowNames = [];
 
 	// Parent method

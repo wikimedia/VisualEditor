@@ -263,11 +263,6 @@ ve.ui.Surface.prototype.initialize = function () {
 		this.setupDebugBar();
 	}
 
-	// The following classes are used here:
-	// * ve-ui-surface-dir-ltr
-	// * ve-ui-surface-dir-rtl
-	this.$element.addClass( 've-ui-surface-dir-' + this.getDir() );
-
 	this.getView().initialize();
 	this.getModel().initialize();
 
@@ -1032,12 +1027,12 @@ ve.ui.Surface.prototype.isMultiline = function () {
 };
 
 /**
- * Surface 'dir' property (GUI/User-Level Direction)
+ * Document directionality.
  *
  * @return {string} 'ltr' or 'rtl'
  */
 ve.ui.Surface.prototype.getDir = function () {
-	return this.$element.css( 'direction' );
+	return this.getView().getDocument().getDir();
 };
 
 /**
