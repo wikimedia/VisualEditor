@@ -10,14 +10,6 @@
 	flex-wrap: wrap;
 	align-items: stretch;
 
-	&-placeholder {
-		opacity: 0.33;
-		position: absolute;
-		left: 0;
-		right: 0;
-	}
-
-	&-placeholder,
 	.ve-ce-attachedRootNode {
 		/* Use an non-zero padding to disable margin collapse */
 		padding: 0.05px 0;
@@ -44,10 +36,30 @@
 			white-space: break-spaces;
 		}
 
-		.ve-ui-surface-placeholder,
 		.ve-ce-attachedRootNode {
 			-moz-tab-size: 4;
 			tab-size: 4;
 		}
 	}
+}
+
+/*
+ * Placeholder text, drawn on the document's first node so it inherits that node's box, font
+ * and direction. Out of flow, or the caret would sit after it; `left` and `right` then make
+ * long text wrap rather than overflow, and #getPlaceholderHeight reserves the height.
+ *
+ * Not nested inside .ve-ui-surface: skins override the colour with a descendant selector
+ */
+.ve-ce-attachedRootNode > [ data-ve-placeholder ] {
+	position: relative;
+}
+
+.ve-ce-attachedRootNode > [ data-ve-placeholder ]::before {
+	content: attr( data-ve-placeholder );
+	position: absolute;
+	left: 0;
+	right: 0;
+	opacity: 0.33;
+	pointer-events: none;
+	user-select: none;
 }

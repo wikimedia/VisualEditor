@@ -59,7 +59,6 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 	this.$blockers = $( '<div>' );
 	this.$controls = $( '<div>' );
 	this.$menus = $( '<div>' );
-	this.$placeholder = $( '<div>' ).addClass( 've-ui-surface-placeholder' );
 	this.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;
 	this.sequenceRegistry = config.sequenceRegistry || ve.ui.sequenceRegistry;
 	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.ui.dataTransferHandlerFactory;
@@ -99,6 +98,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 	this.debugBar = null;
 	this.placeholder = null;
 	this.placeholderVisible = false;
+	this.$placeholderNode = null;
 	this.setPlaceholder( config.placeholder );
 	this.setReadOnly( !!config.readOnly );
 	this.nullSelectionOnBlur = config.nullSelectionOnBlur !== false;
@@ -146,8 +146,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 		.append( this.view.$element, this.sidebarDialogs.$element );
 	if ( this.mode === 'source' ) {
 		// Separate class to make it easier to override
-		this.getView().$element.add( this.$placeholder )
-			.addClass( 've-ui-surface-source-font' );
+		this.getView().$element.addClass( 've-ui-surface-source-font' );
 	}
 	this.view.$element.after( this.localOverlaySelections.$element, this.localOverlay.$element );
 	this.localOverlay.$element.append( this.$blockers, this.$controls, this.$menus );
@@ -699,47 +698,65 @@ ve.ui.Surface.prototype.scrollCursorIntoView = ve.ui.Surface.prototype.scrollSel
 ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
 	this.placeholder = placeholder;
 	if ( this.placeholder ) {
-		this.$placeholder.prependTo( this.$element );
 		this.updatePlaceholder();
-		const documentView = this.getView().getDocument();
-		this.$placeholder.prop( {
-			dir: documentView.getDir(),
-			lang: documentView.getLang()
-		} );
 	} else {
-		this.$placeholder.detach();
-		this.placeholderVisible = false;
-		this.getView().$element.css( 'min-height', '' );
+		this.clearPlaceholder();
 	}
+	// The visible placeholder is decorative; this is what assistive technology reads.
 	this.getView().attachedRoot.$element.attr( 'aria-label', this.placeholder || null );
 };
 
 /**
- * Update placeholder rendering
+ * Stop showing the placeholder.
+ *
+ * @private
+ */
+ve.ui.Surface.prototype.clearPlaceholder = function () {
+	this.placeholderVisible = false;
+	if ( this.$placeholderNode ) {
+		this.$placeholderNode.removeAttr( 'data-ve-placeholder' );
+		this.$placeholderNode = null;
+	}
+	this.getView().$element.css( 'min-height', '' );
+};
+
+/**
+ * Update placeholder rendering.
+ *
+ * The text is a `::before` on the document's first node, so it inherits that node's box rather
+ * than needing one kept in step with it.
  */
 ve.ui.Surface.prototype.updatePlaceholder = function () {
 	const hasContent = this.getModel().getDocument().data.hasContent();
-
-	this.$placeholder.toggleClass( 'oo-ui-element-hidden', hasContent );
-	this.placeholderVisible = !hasContent;
-	if ( !hasContent ) {
-		// Use a clone of the first node in the document so the placeholder
-		// styling matches the text the users sees when they start typing
-		const firstNode = this.getView().attachedRoot.children[ 0 ];
-		let $wrapper;
-		if ( firstNode ) {
-			$wrapper = firstNode.$element.clone();
-			if ( ve.debug ) {
-				// In debug mode a background colour from the render animation may be present
-				$wrapper.removeAttr( 'style' );
-			}
-		} else {
-			$wrapper = $( '<p>' );
-		}
-		this.$placeholder.empty().append( $wrapper.text( this.placeholder ) );
-	} else {
-		this.getView().$element.css( 'min-height', '' );
+	if ( hasContent || !this.placeholder ) {
+		this.clearPlaceholder();
+		return;
 	}
+
+	// Re-derive: the first node changes with the document, and VE may have re-rendered it.
+	const firstNode = this.getView().attachedRoot.children[ 0 ];
+	if ( this.$placeholderNode && ( !firstNode || this.$placeholderNode[ 0 ] !== firstNode.$element[ 0 ] ) ) {
+		this.$placeholderNode.removeAttr( 'data-ve-placeholder' );
+		this.$placeholderNode = null;
+	}
+	if ( firstNode ) {
+		this.$placeholderNode = firstNode.$element.attr( 'data-ve-placeholder', this.placeholder );
+	}
+	this.placeholderVisible = !!this.$placeholderNode;
+};
+
+/**
+ * Height to reserve for the placeholder: it is out of flow, so it cannot size its own node, and
+ * text long enough to wrap would overflow.
+ *
+ * @return {string} CSS length, or '' if there is nothing to reserve
+ * @private
+ */
+ve.ui.Surface.prototype.getPlaceholderHeight = function () {
+	if ( !this.$placeholderNode ) {
+		return '';
+	}
+	return window.getComputedStyle( this.$placeholderNode[ 0 ], '::before' ).height;
 };
 
 /**
@@ -757,7 +774,7 @@ ve.ui.Surface.prototype.onViewPosition = function ( passive ) {
 		!passive
 	);
 	if ( this.placeholderVisible ) {
-		this.getView().$element.css( 'min-height', this.$placeholder.outerHeight() );
+		this.getView().$element.css( 'min-height', this.getPlaceholderHeight() );
 	}
 };
 
