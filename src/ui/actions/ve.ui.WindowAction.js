@@ -207,6 +207,10 @@ ve.ui.WindowAction.prototype.open = function ( name, data = {}, action = null ) 
 				} );
 			} );
 		} );
+	}, ( ...error ) => {
+		// Without a fragment the window is never opened, so settle the promise rather than
+		// leaving callers waiting on it forever (T433560).
+		openDeferred.reject( ...error );
 	} );
 
 	return openPromise;
