@@ -1307,8 +1307,13 @@ ve.waitForTransition = function ( $element, callback, timeout = 500 ) {
 		return;
 	}
 	let fallback;
-	$element.one( 'transitionend.waitForTransition', () => {
+	$element.on( 'transitionend.waitForTransition', ( e ) => {
+		// transitionend bubbles, so ignore the transitions of descendants
+		if ( e.target !== e.currentTarget ) {
+			return;
+		}
 		clearTimeout( fallback );
+		$element.off( 'transitionend.waitForTransition' );
 		callback();
 	} );
 	if ( timeout ) {
