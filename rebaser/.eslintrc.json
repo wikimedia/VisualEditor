@@ -1,11 +1,14 @@
 {
 	"root": true,
 	"extends": [
-		"wikimedia/client-es6",
+		"wikimedia/client/es6",
 		"wikimedia/jquery"
 	],
 	"globals": {
 		"ve": "readonly",
 		"OO": "readonly"
+	},
+	"rules": {
+		"no-jquery/no-done-fail": "off"
 	}
 }

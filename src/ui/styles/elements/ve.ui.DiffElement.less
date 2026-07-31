@@ -92,8 +92,6 @@
 		&.oo-ui-labelElement .oo-ui-labelElement-label {
 			/* Respect line breaks and prevent collapsing added/removed spaces */
 			white-space: pre-wrap;
-			word-break: break-word;
-			word-wrap: break-word;
 			overflow-wrap: break-word;
 
 			ol,
@@ -204,6 +202,7 @@ ins[ data-diff-action='insert' ] + span[ data-diff-action='change-remove' ] {
 }
 
 [ data-diff-action='insert' ],
+/* stylelint-disable-next-line no-descending-specificity */
 [ data-diff-action='remove' ],
 [ data-diff-action='change' ],
 [ data-diff-action='change-insert' ],
