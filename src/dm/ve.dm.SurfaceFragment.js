@@ -395,7 +395,8 @@ ve.dm.SurfaceFragment.prototype.getData = function ( deep ) {
 /**
  * Get plain text for the fragment.
  *
- * @param {boolean} [maintainIndices] Maintain data offset to string index alignment by replacing elements with line breaks
+ * @param {boolean|string} [maintainIndices] Maintain data offset to string index alignment
+ * by replacing elements with line breaks, or some specified replacement string
  * @return {string} Fragment text
  */
 ve.dm.SurfaceFragment.prototype.getText = function ( maintainIndices ) {

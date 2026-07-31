@@ -1135,7 +1135,8 @@ ve.dm.LinearData.prototype.getContentRuns = function ( range ) {
 /**
  * Get the data as plain text
  *
- * @param {boolean} [maintainIndices=false] Maintain data offset to string index alignment by replacing elements with line breaks
+ * @param {boolean|string} [maintainIndices=false] Maintain data offset to string index alignment
+ * by replacing elements with line breaks, or some specified replacement string
  * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
  * @return {string} Data as plain text
  */
@@ -1147,7 +1148,7 @@ ve.dm.LinearData.prototype.getText = function ( maintainIndices, range ) {
 		if ( !this.isElementData( i ) ) {
 			text += this.getCharacterData( i );
 		} else if ( maintainIndices ) {
-			text += '\n';
+			text += typeof maintainIndices === 'string' ? maintainIndices : '\n';
 		} else if ( this.isOpenElementData( i ) ) {
 			const nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			if ( nodeClass ) {
