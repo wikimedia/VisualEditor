@@ -257,3 +257,149 @@ QUnit.test( 'isolateInput mode deactivates the surface and shows a no-results ro
 
 	surface.destroy();
 } );
+
+QUnit.test( 'the completion covers the text entered, not the text before the cursor', ( assert ) => {
+	const surface = ve.test.utils.createSurfaceFromHtml( '<p>ab</p>' );
+	const surfaceModel = surface.getModel();
+	const completionWidget = new ve.ui.CompletionWidget( surface );
+	const action = createAction( { getSequenceLength: () => 2 } );
+
+	// "ab" is the triggering sequence, so the completion starts after it
+	surfaceModel.setLinearSelection( new ve.Range( 3 ) );
+	completionWidget.setup( action );
+	assert.deepEqual(
+		completionWidget.getCompletionRange( true ).toJSON(),
+		{ type: 'range', from: 1, to: 3 },
+		'the completion is the sequence alone before anything is entered'
+	);
+
+	// Enter "cde", one character at a time, as typing does
+	'cde'.split( '' ).forEach( ( character ) => {
+		surfaceModel.getFragment().insertContent( character ).collapseToEnd().select();
+	} );
+	assert.deepEqual(
+		completionWidget.getCompletionRange( true ).toJSON(),
+		{ type: 'range', from: 1, to: 6 },
+		'entered text extends the completion'
+	);
+
+	// Move the cursor back into the entered text, as an arrow key does
+	surfaceModel.setLinearSelection( new ve.Range( 4 ) );
+	assert.deepEqual(
+		completionWidget.getCompletionRange( true ).toJSON(),
+		{ type: 'range', from: 1, to: 6 },
+		'moving the cursor back leaves the completion as it is'
+	);
+	assert.strictEqual(
+		surfaceModel.getDocument().data.getText( false, completionWidget.getCompletionRange() ),
+		'cde',
+		'so a suggestion replaces all of the entered text, not only "c"'
+	);
+
+	// Enter a character where the cursor now is
+	surfaceModel.getFragment().insertContent( 'x' ).collapseToEnd().select();
+	assert.deepEqual(
+		completionWidget.getCompletionRange( true ).toJSON(),
+		{ type: 'range', from: 1, to: 7 },
+		'text entered inside the completion extends it too'
+	);
+
+	// Delete that character again
+	surfaceModel.getFragment( new ve.dm.LinearSelection( new ve.Range( 4, 5 ) ) ).removeContent();
+	assert.deepEqual(
+		completionWidget.getCompletionRange( true ).toJSON(),
+		{ type: 'range', from: 1, to: 6 },
+		'deleted text shortens the completion'
+	);
+
+	completionWidget.teardown();
+	surface.destroy();
+} );
+
+QUnit.test( 'onModelSelect tears down when the cursor leaves the entered text', ( assert ) => {
+	const action = createAction( { getSequenceLength: () => 2 } );
+
+	/**
+	 * Open a completion after "ab", with "gh" entered into it
+	 *
+	 * @return {Object} The surface and its completion widget
+	 */
+	function openCompletion() {
+		const surface = ve.test.utils.createSurfaceFromHtml( '<p>abcdef</p>' );
+		const completionWidget = new ve.ui.CompletionWidget( surface );
+		surface.getModel().setLinearSelection( new ve.Range( 3 ) );
+		completionWidget.setup( action );
+		surface.getModel().getFragment().insertContent( 'gh' ).collapseToEnd().select();
+		// The suggestions are of no interest here, and update() would request them
+		completionWidget.update = () => {};
+		return { surface, completionWidget };
+	}
+
+	const inside = openCompletion();
+	inside.surface.getModel().setLinearSelection( new ve.Range( 4 ) );
+	assert.strictEqual(
+		inside.completionWidget.action, action,
+		'the widget stays open while the cursor is inside the entered text'
+	);
+
+	// Past the end is text the user did not enter into the completion
+	const past = openCompletion();
+	past.surface.getModel().setLinearSelection( new ve.Range( 6 ) );
+	assert.strictEqual(
+		past.completionWidget.action, undefined,
+		'the widget tears down when the cursor moves past the entered text'
+	);
+
+	// And the triggering sequence is not part of the completion either
+	const before = openCompletion();
+	before.surface.getModel().setLinearSelection( new ve.Range( 2 ) );
+	assert.strictEqual(
+		before.completionWidget.action, undefined,
+		'the widget tears down when the cursor moves into the triggering sequence'
+	);
+
+	[ inside, past, before ].forEach( ( opened ) => {
+		opened.completionWidget.teardown();
+		opened.surface.destroy();
+	} );
+} );
+
+QUnit.test( 'an isolated input is not affected by the selection in the document', ( assert ) => {
+	const surface = ve.test.utils.createSurfaceFromHtml(
+		'<p>foo</p><table><tr><td>a</td><td>b</td></tr></table>'
+	);
+	const surfaceModel = surface.getModel();
+	const completionWidget = new ve.ui.CompletionWidget( surface );
+	// A command opens an isolated input, so there is no triggering sequence in the document
+	const action = createAction();
+
+	surfaceModel.setLinearSelection( new ve.Range( 4 ) );
+	completionWidget.setup( action, true );
+
+	assert.deepEqual(
+		completionWidget.getCompletionRange( true ).toJSON(),
+		{ type: 'range', from: 4, to: 4 },
+		'the completion is empty, because the text is entered outside the document'
+	);
+
+	// The text goes into the widget's own input, and leaves the document alone
+	completionWidget.input.setValue( 'para' );
+	assert.deepEqual(
+		completionWidget.getCompletionRange( true ).toJSON(),
+		{ type: 'range', from: 4, to: 4 },
+		'entering text in the isolated input leaves the completion empty'
+	);
+
+	// A table selection covers the whole table, which is not a cursor the user moved
+	const tableRange = surface.getModel().getDocument().getDocumentNode()
+		.children[ 1 ].getOuterRange();
+	completionWidget.update = () => {};
+	surfaceModel.setSelection( new ve.dm.TableSelection( tableRange, 0, 0 ) );
+	assert.strictEqual(
+		completionWidget.action, action,
+		'a selection in the document does not tear down an isolated input'
+	);
+
+	completionWidget.teardown();
+	surface.destroy();
+} );

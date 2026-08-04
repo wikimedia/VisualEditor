@@ -92,6 +92,8 @@ ve.ui.CompletionWidget.prototype.setup = function ( action, isolateInput ) {
 	this.isolateInput = !!isolateInput;
 	this.sequenceLength = this.action.getSequenceLength();
 	this.initialOffset = range.end - this.sequenceLength;
+	// Nothing is entered yet, so the completion is the triggering sequence only
+	this.typedOffset = range.end;
 
 	this.input.toggle( this.isolateInput );
 	if ( this.isolateInput ) {
@@ -111,7 +113,10 @@ ve.ui.CompletionWidget.prototype.setup = function ( action, isolateInput ) {
 
 	this.update();
 
-	this.surfaceModel.connect( this, { select: 'onModelSelect' } );
+	this.surfaceModel.connect( this, {
+		select: 'onModelSelect',
+		documentUpdate: 'onDocumentUpdate'
+	} );
 };
 
 /**
@@ -233,12 +238,28 @@ ve.ui.CompletionWidget.prototype.onMenuToggle = function ( visible ) {
 };
 
 /**
+ * Handle changes to the document while the widget is open
+ *
+ * The offsets move with the text they point at, so that a change elsewhere in the document,
+ * e.g. by another author, does not misplace the completion.
+ *
+ * @param {ve.dm.Transaction} tx Transaction that was processed
+ */
+ve.ui.CompletionWidget.prototype.onDocumentUpdate = function ( tx ) {
+	// Text entered at the end of the completion is part of it, so translate that offset
+	// forwards over an insertion, which ve.dm.Transaction#translateOffset does by default
+	this.initialOffset = tx.translateOffset( this.initialOffset );
+	this.typedOffset = tx.translateOffset( this.typedOffset );
+};
+
+/**
  * Handle select events from the document model
  *
  * @param {ve.dm.Selection} selection Selection
  */
 ve.ui.CompletionWidget.prototype.onModelSelect = function () {
-	const range = this.getCompletionRange();
+	const range = this.getCompletionRange(),
+		selectionRange = this.surfaceModel.getSelection().getCoveringRange();
 
 	const countMatches = () => {
 		let matches = this.menu.getItems().length;
@@ -251,7 +272,17 @@ ve.ui.CompletionWidget.prototype.onModelSelect = function () {
 		return matches;
 	};
 
-	if ( !range || range.isBackwards() || this.action.shouldAbandon( this.surfaceModel.getDocument().data.getText( false, range ), countMatches() ) ) {
+	if (
+		!range || !selectionRange || range.isBackwards() ||
+		// The cursor has left the text the completion is for. A change to the document
+		// arrives before the selection it makes, so this only sees a cursor the user moved.
+		// An isolated input has its own text, and the document selection is not part of it.
+		(
+			!this.isolateInput &&
+			( selectionRange.start < range.start || selectionRange.end > range.end )
+		) ||
+		this.action.shouldAbandon( this.surfaceModel.getDocument().data.getText( false, range ), countMatches() )
+	) {
 		this.teardown();
 	} else {
 		this.update();
@@ -261,13 +292,15 @@ ve.ui.CompletionWidget.prototype.onModelSelect = function () {
 /**
  * Get the range where the user has entered text in the document since opening the widget
  *
+ * The range ends where the entered text ends, not at the cursor. The cursor can be back inside
+ * that text, and a completion replaces all of it.
+ *
  * @param {boolean} [withSequence] Include the triggering sequence text in the range
  * @return {ve.Range|null} Range, null if not valid
  */
 ve.ui.CompletionWidget.prototype.getCompletionRange = function ( withSequence ) {
-	const range = this.surfaceModel.getSelection().getCoveringRange();
-	if ( !range || !this.action ) {
+	if ( !this.action || !this.surfaceModel.getSelection().getCoveringRange() ) {
 		return null;
 	}
-	return new ve.Range( this.initialOffset + ( withSequence ? 0 : this.sequenceLength ), range.end );
+	return new ve.Range( this.initialOffset + ( withSequence ? 0 : this.sequenceLength ), this.typedOffset );
 };
