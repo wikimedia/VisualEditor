@@ -1595,11 +1595,43 @@ ve.dm.LinearData.prototype.sanitize = function ( rules ) {
 			}
 
 			// Remove blacklisted nodes, and metadata if disallowed
+			const isBlacklisted = !!( rules.blacklist && rules.blacklist[ type ] );
 			if (
-				( rules.blacklist && rules.blacklist[ type ] ) ||
+				isBlacklisted ||
 				( rules.plainText && type !== 'paragraph' && type !== 'internalList' ) ||
 				( !rules.allowMetadata && ve.dm.nodeFactory.isMetaData( type ) )
 			) {
+				// In plainText mode, replace a childless node with its own plain text, if it
+				// has any, e.g. the character of an MWEntityNode or the source of a <pre>.
+				// Without this the text is lost with the node, as it is stored in the
+				// node's attributes. (T431638)
+				if (
+					rules.plainText && !isBlacklisted &&
+					isOpen && this.isCloseElementData( i + 1 )
+				) {
+					const nodeText = ve.dm.nodeFactory.lookup( type ).static.getText( this.getData( i ) );
+					if ( nodeText ) {
+						let replacement;
+						if ( ve.dm.nodeFactory.isNodeContent( type ) ) {
+							// A content node is already inside a content branch node, so it
+							// can only become characters, which cannot hold line breaks
+							replacement = nodeText.replace( /\n/g, ' ' ).split( '' );
+						} else {
+							// Characters must be inside a content branch node, so wrap the
+							// text, one paragraph per line
+							replacement = [];
+							nodeText.split( '\n' ).forEach( ( line ) => {
+								replacement.push( { type: 'paragraph' } );
+								ve.batchPush( replacement, line.split( '' ) );
+								replacement.push( { type: '/paragraph' } );
+							} );
+						}
+						this.splice( i, 2, ...replacement );
+						len += replacement.length - 2;
+						i += replacement.length - 1;
+						continue;
+					}
+				}
 				this.splice( i, 1 );
 				len--;
 				// Make sure you haven't just unwrapped a wrapper paragraph

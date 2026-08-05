@@ -1792,6 +1792,60 @@ QUnit.test( 'sanitize', ( assert ) => {
 				msg: 'Annotations removed in plainText mode'
 			},
 			{
+				html: '<p>B<span rel="ve:TextLeafStub">a</span>z</p>',
+				data: [
+					{ type: 'paragraph' },
+					...'Baz',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { plainText: true },
+				msg: 'Node with a plain text value is replaced by it in plainText mode'
+			},
+			{
+				html: '<p>B<span rel="ve:Alien">a</span>z</p>',
+				data: [
+					{ type: 'paragraph' },
+					...'Bz',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { plainText: true },
+				msg: 'Node without a plain text value is removed in plainText mode'
+			},
+			{
+				html: '<p>Foo</p><div rel="ve:BlockTextStub">Bar</div>',
+				data: [
+					{ type: 'paragraph' },
+					...'Foo',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					...'Bar',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { plainText: true },
+				msg: 'Block node with a plain text value is wrapped in a paragraph in plainText mode'
+			},
+			{
+				html: '<div rel="ve:BlockTextStub">Foo\nBar</div>',
+				data: [
+					{ type: 'paragraph' },
+					...'Foo',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					...'Bar',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { plainText: true },
+				msg: 'Block node plain text value is split into a paragraph per line'
+			},
+			{
 				html: '<p><b>a<span rel="ve:Alien">b</span>c</b></p>',
 				data: [
 					{ type: 'paragraph' },
@@ -2137,6 +2191,49 @@ QUnit.test( 'sanitize', ( assert ) => {
 			}
 		];
 
+	// A childless content node with a plain text value, like ve.dm.MWEntityNode
+	function TextLeafStub() {
+		TextLeafStub.super.apply( this, arguments );
+	}
+	OO.inheritClass( TextLeafStub, ve.dm.LeafNode );
+	TextLeafStub.static.name = 'textLeafStub';
+	TextLeafStub.static.isContent = true;
+	TextLeafStub.static.matchTagNames = [ 'span' ];
+	TextLeafStub.static.matchRdfaTypes = [ 've:TextLeafStub' ];
+	TextLeafStub.static.toDataElement = ( domElements ) => ( {
+		type: 'textLeafStub',
+		attributes: { text: domElements[ 0 ].textContent }
+	} );
+	TextLeafStub.static.toDomElements = ( dataElement, doc ) => {
+		const span = doc.createElement( 'span' );
+		span.setAttribute( 'rel', 've:TextLeafStub' );
+		span.appendChild( doc.createTextNode( dataElement.attributes.text ) );
+		return [ span ];
+	};
+	TextLeafStub.static.getText = ( dataElement ) => dataElement.attributes.text;
+	ve.dm.modelRegistry.register( TextLeafStub );
+
+	// As above, but a block node, so its text cannot replace it
+	function BlockTextStub() {
+		BlockTextStub.super.apply( this, arguments );
+	}
+	OO.inheritClass( BlockTextStub, ve.dm.LeafNode );
+	BlockTextStub.static.name = 'blockTextStub';
+	BlockTextStub.static.matchTagNames = [ 'div' ];
+	BlockTextStub.static.matchRdfaTypes = [ 've:BlockTextStub' ];
+	BlockTextStub.static.toDataElement = ( domElements ) => ( {
+		type: 'blockTextStub',
+		attributes: { text: domElements[ 0 ].textContent }
+	} );
+	BlockTextStub.static.toDomElements = ( dataElement, doc ) => {
+		const div = doc.createElement( 'div' );
+		div.setAttribute( 'rel', 've:BlockTextStub' );
+		div.appendChild( doc.createTextNode( dataElement.attributes.text ) );
+		return [ div ];
+	};
+	BlockTextStub.static.getText = ( dataElement ) => dataElement.attributes.text;
+	ve.dm.modelRegistry.register( BlockTextStub );
+
 	cases.forEach( ( caseItem ) => {
 		const model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.html ) );
 		const data = model.data;
@@ -2150,6 +2247,9 @@ QUnit.test( 'sanitize', ( assert ) => {
 			assert.deepEqualWithDomElements( actualStore, caseItem.store, caseItem.msg + ': store' );
 		}
 	} );
+
+	ve.dm.modelRegistry.unregister( TextLeafStub );
+	ve.dm.modelRegistry.unregister( BlockTextStub );
 } );
 
 QUnit.test( 'countNonInternalElements', ( assert ) => {
