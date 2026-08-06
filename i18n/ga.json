@@ -3,7 +3,8 @@
 		"authors": [
 			"Alison",
 			"Kscanne",
-			"Nmacu"
+			"Nmacu",
+			"Wikipidéanach"
 		]
 	},
 	"visualeditor": "EagarthóirAmhairc",
@@ -14,11 +15,15 @@
 	"visualeditor-dialog-action-goback": "Ar ais",
 	"visualeditor-dialog-action-insert": "Ionsáigh",
 	"visualeditor-formatdropdown-format-heading-label": "Ceannteideal (1-6)",
+	"visualeditor-formatdropdown-format-heading1": "Ceannteideal 1",
 	"visualeditor-formatdropdown-format-heading2": "Ceannteideal 2",
+	"visualeditor-formatdropdown-format-heading3": "Ceannteideal 3",
 	"visualeditor-formatdropdown-format-heading4": "Ceannteideal 4",
+	"visualeditor-formatdropdown-format-heading5": "Ceannteideal 5",
 	"visualeditor-formatdropdown-format-heading6": "Ceannteideal 6",
 	"visualeditor-formatdropdown-format-paragraph": "Alt",
 	"visualeditor-help-tool": "Cabhair",
+	"visualeditor-inspector-remove-tooltip": "Bain",
 	"visualeditor-key-insert": "Ionsáigh",
 	"visualeditor-languageinspector-title": "Teanga",
 	"visualeditor-languageinspector-widget-label-language": "Teanga",
