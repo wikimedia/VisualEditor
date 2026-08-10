@@ -112,9 +112,9 @@ ve.dm.TransactionBuilder.static.newFromRemoval = function ( doc, range, removeMe
  * @return {ve.dm.Transaction} Transaction that inserts the nodes and updates the internal list
  */
 ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offset, newDoc, newDocRange ) {
-	const listNode = doc.internalList.getListNode(),
+	const listNode = doc.getInternalList().getListNode(),
 		listNodeRange = listNode.getRange(),
-		newListNode = newDoc.internalList.getListNode(),
+		newListNode = newDoc.getInternalList().getListNode(),
 		newListNodeRange = newListNode.getRange(),
 		newListNodeOuterRange = newListNode.getOuterRange();
 
@@ -137,9 +137,11 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 	// If the new list is empty, and the insertion offset is before the list, we
 	// can skip list merging completely.
 	if ( newListNode.length || offset >= listNodeRange.start ) {
-		const listMerge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength );
+		const listMerge = doc.getInternalList().merge(
+			newDoc.getInternalList(), newDoc.origInternalListLength
+		);
 		// Remap the indexes in the data
-		data.remapInternalListIndexes( listMerge.mapping, doc.internalList );
+		data.remapInternalListIndexes( listMerge.mapping, doc.getInternalList() );
 		// Get data for the new internal list
 		let linearData;
 		if ( newDoc.origInternalListLength !== null ) {
@@ -148,8 +150,10 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 			// so that changes made in newDoc are reflected.
 			let oldEndOffset, newEndOffset;
 			if ( newDoc.origInternalListLength > 0 ) {
-				oldEndOffset = doc.internalList.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
-				newEndOffset = newDoc.internalList.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
+				oldEndOffset = doc.getInternalList()
+					.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
+				newEndOffset = newDoc.getInternalList()
+					.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
 			} else {
 				oldEndOffset = listNodeRange.start;
 				newEndOffset = newListNodeRange.start;
@@ -214,7 +218,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 		// Find item node in doc
 		let spliceItemRange;
 		while (
-			( spliceItemRange = doc.internalList.getItemNode( i ).getRange() ) &&
+			( spliceItemRange = doc.getInternalList().getItemNode( i ).getRange() ) &&
 			offset > spliceItemRange.end
 		) {
 			i++;
@@ -223,7 +227,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 		let spliceListNodeRange;
 		if ( newDoc.origInternalListLength !== null ) {
 			// Get spliceItemRange from newDoc
-			spliceItemRange = newDoc.internalList.getItemNode( i ).getRange();
+			spliceItemRange = newDoc.getInternalList().getItemNode( i ).getRange();
 			spliceListNodeRange = newListNodeRange;
 		} else {
 			// Get spliceItemRange from doc; the while loop has already set it
