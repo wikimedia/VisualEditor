@@ -2425,6 +2425,12 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 	if ( newState.branchNodeChanged && newState.node ) {
 		this.updateCursorHolders();
 		this.showModelSelection();
+	} else if ( newState.contentChanged && newState.node && !newState.node.root ) {
+		// A tree rebuild (ve.dm.TransactionProcessor#applyLargeReplace) detached the observed
+		// node and replaced the DOM that held the cursor. The render lock stopped
+		// #onModelSelect from showing the selection, because usually the DOM already shows the
+		// change. Show it here, where the model selection is final.
+		this.showModelSelection();
 	}
 	if ( !insertedText ) {
 		// Two likely cases here:

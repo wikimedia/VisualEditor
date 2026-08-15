@@ -362,6 +362,72 @@ QUnit.test( 'handleObservedChanges (content changes)', ( assert ) => {
 
 } );
 
+QUnit.test( 'handleObservedChanges (tree rebuild shows the selection again)', ( assert ) => {
+	// A replace that is large relative to the document rebuilds the tree instead of patching
+	// it (ve.dm.TransactionProcessor#applyLargeReplace). That detaches the observed node and
+	// replaces the DOM the cursor was in, so the selection has to be shown again. (T189557)
+	function testRunner( sourceText, prevHtml, nextHtml, expectDetached, msg ) {
+		const doc = ve.dm.sourceConverter.getModelFromSourceText( sourceText ),
+			view = ve.test.utils.createSurfaceViewFromDocument( doc, { mode: 'source' } ),
+			model = view.getModel(),
+			node = view.getDocument().getDocumentNode().children[ 0 ],
+			delayed = [],
+			prev = {
+				node,
+				text: ve.ce.getDomText( $( prevHtml )[ 0 ] ),
+				textState: new ve.ce.TextState( $( prevHtml )[ 0 ] ),
+				veRange: new ve.Range( 1 )
+			},
+			next = {
+				node,
+				text: ve.ce.getDomText( $( nextHtml )[ 0 ] ),
+				textState: new ve.ce.TextState( $( nextHtml )[ 0 ] ),
+				veRange: new ve.Range( 2 ),
+				selectionChanged: true,
+				contentChanged: true
+			};
+
+		let shown = 0;
+		view.showModelSelection = function () {
+			shown++;
+			return false;
+		};
+		view.afterRenderLock = function ( callback ) {
+			delayed.push( callback );
+		};
+
+		// Prime the selection, then count only what the observed change does
+		model.setLinearSelection( new ve.Range( 1 ) );
+		shown = 0;
+		// Hold the render lock, as #onDocumentInput does. It tells #onModelSelect the DOM
+		// already shows the change, which is what leaves the cursor behind after a rebuild.
+		view.incRenderLock();
+		try {
+			view.handleObservedChanges( prev, next );
+		} finally {
+			view.decRenderLock();
+		}
+		delayed.forEach( ( callback ) => {
+			callback();
+		} );
+
+		assert.strictEqual( !node.root, expectDetached, msg + ': node detached' );
+		assert.strictEqual( shown, expectDetached ? 1 : 0, msg + ': selection shown again' );
+		assert.equalRange( model.getSelection().getRange(), new ve.Range( 2 ), msg + ': range' );
+
+		view.destroy();
+	}
+
+	testRunner(
+		'', '<p></p>', '<p>A</p>', true,
+		'First character typed into an empty document'
+	);
+	testRunner(
+		'Lorem ipsum dolor sit amet', '<p>Lorem ipsum dolor sit amet</p>', '<p>ALorem ipsum dolor sit amet</p>', false,
+		'One character typed into a document large enough to be patched'
+	);
+} );
+
 QUnit.test( 'handleDataTransfer/handleDataTransferItems', ( assert ) => {
 	const surface = ve.test.utils.createViewOnlySurfaceFromHtml( '' ),
 		view = surface.getView(),
