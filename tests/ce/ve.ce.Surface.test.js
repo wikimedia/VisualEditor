@@ -419,7 +419,7 @@ QUnit.test( 'handleObservedChanges (tree rebuild shows the selection again)', ( 
 	}
 
 	testRunner(
-		'', '<p></p>', '<p>A</p>', true,
+		'', '<p></p>', '<p>A</p>', false,
 		'First character typed into an empty document'
 	);
 	testRunner(

@@ -675,10 +675,14 @@ QUnit.module( 've.dm.TransactionProcessor (large replace fast path)' );
 
 // Build a multi-line source-mode document. getModelFromSourceText sets sourceMode = true;
 // building the tree up front lets getLargeReplaceOp read the attached-root range.
-const makeSourceDoc = () => {
-	const doc = ve.dm.sourceConverter.getModelFromSourceText(
-		'Line one\nLine two\nLine three\nLine four\nLine five\nLine six'
-	);
+// 400 lines give more than twice largeReplaceMinimum. A replace of half the document must
+// still reach the minimum.
+const makeSourceDoc = ( lines = 400 ) => {
+	const text = [];
+	for ( let i = 0; i < lines; i++ ) {
+		text.push( 'Line ' + i );
+	}
+	const doc = ve.dm.sourceConverter.getModelFromSourceText( text.join( '\n' ) );
 	doc.getDocumentNode();
 	return doc;
 };
@@ -779,4 +783,37 @@ QUnit.test( 'compound transactions (more than one replace) stay on the increment
 		{ type: 'retain', length: 3 }
 	] );
 	assert.strictEqual( qualifiesForFastPath( doc, compoundTx ), false, 'a second replace disables the fast path' );
+} );
+
+QUnit.test( 'a nearly empty document stays on the incremental path', ( assert ) => {
+	// An empty source document is two offsets long, so the fraction threshold is one character.
+	// Only the minimum keeps this off the fast path (T435688).
+	const doc = ve.dm.sourceConverter.getModelFromSourceText( '' );
+	doc.getDocumentNode();
+	assert.strictEqual( doc.getAttachedRootRange().getLength(), 2, 'an empty source document is two offsets long' );
+
+	const tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'x' ] );
+	assert.strictEqual( qualifiesForFastPath( doc, tx ), false, 'typing one character does not take the fast path' );
+
+	// The minimum rejects it, not the fraction or an earlier gate.
+	const originalMinimum = ve.dm.TransactionProcessor.largeReplaceMinimum;
+	ve.dm.TransactionProcessor.largeReplaceMinimum = 1;
+	try {
+		assert.strictEqual(
+			qualifiesForFastPath( doc, tx ), true,
+			'the same transaction qualifies once the minimum is lowered'
+		);
+	} finally {
+		ve.dm.TransactionProcessor.largeReplaceMinimum = originalMinimum;
+	}
+} );
+
+QUnit.test( 'a whole-document replace below the minimum stays on the incremental path', ( assert ) => {
+	// A full replace of a short document reaches the fraction, but not the minimum.
+	const doc = makeSourceDoc( 6 );
+	const size = doc.getAttachedRootRange().getLength();
+	assert.true( size < ve.dm.TransactionProcessor.largeReplaceMinimum, 'the document is below the minimum' );
+
+	const tx = fullReplaceTx( doc, [ { type: 'paragraph' }, ...'x', { type: '/paragraph' } ] );
+	assert.strictEqual( qualifiesForFastPath( doc, tx ), false, 'replacing a short document does not take the fast path' );
 } );

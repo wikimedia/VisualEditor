@@ -59,6 +59,20 @@ ve.dm.TransactionProcessor.processors = {};
  */
 ve.dm.TransactionProcessor.largeReplaceFraction = 0.5;
 
+/**
+ * Minimum number of linear-model offsets a single replace must remove or insert to use the fast
+ * rebuild path. This limit applies together with
+ * {@link ve.dm.TransactionProcessor.largeReplaceFraction}.
+ *
+ * The fraction becomes small when the document is small. In a nearly empty
+ * document, a few characters are more than half of it. The rebuild replaces
+ * the ContentEditable node that holds the cursor. This stops an IME
+ * composition, because the composition belongs to that text node (T435688).
+ *
+ * @type {number}
+ */
+ve.dm.TransactionProcessor.largeReplaceMinimum = 1000;
+
 /* Methods */
 
 /**
@@ -146,7 +160,8 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 /**
  * Detect a single large replace that can take the fast rebuild path: retains plus exactly
  * one replace (no attribute ops) that removes or inserts at least
- * {@link ve.dm.TransactionProcessor.largeReplaceFraction} of the attached root.
+ * {@link ve.dm.TransactionProcessor.largeReplaceFraction} of the attached root, and at least
+ * {@link ve.dm.TransactionProcessor.largeReplaceMinimum} offsets.
  *
  * @private
  * @return {Object|null} `{ op, offset }` for the qualifying replace (offset is its
@@ -181,7 +196,9 @@ ve.dm.TransactionProcessor.prototype.getLargeReplaceOp = function () {
 	// Larger of removed / inserted, so undoing a large delete (a large insert) also qualifies.
 	const rootLength = this.document.getAttachedRootRange().getLength();
 	const size = Math.max( found.op.remove.length, found.op.insert.length );
-	return size >= ve.dm.TransactionProcessor.largeReplaceFraction * rootLength ? found : null;
+	const large = size >= ve.dm.TransactionProcessor.largeReplaceMinimum &&
+		size >= ve.dm.TransactionProcessor.largeReplaceFraction * rootLength;
+	return large ? found : null;
 };
 
 /**
