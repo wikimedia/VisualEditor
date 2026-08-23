@@ -362,10 +362,12 @@ QUnit.test( 'handleObservedChanges (content changes)', ( assert ) => {
 
 } );
 
-QUnit.test( 'handleObservedChanges (tree rebuild shows the selection again)', ( assert ) => {
-	// A replace that is large relative to the document rebuilds the tree instead of patching
-	// it (ve.dm.TransactionProcessor#applyLargeReplace). That detaches the observed node and
-	// replaces the DOM the cursor was in, so the selection has to be shown again. (T189557)
+QUnit.test( 'handleObservedChanges (the text observer never rebuilds the tree)', ( assert ) => {
+	// A large replace rebuilds the tree instead of patching it
+	// (ve.dm.TransactionProcessor#applyLargeReplace), which detaches the observed node and
+	// replaces the DOM the cursor was in. The observer cannot cause that: it reports a change
+	// inside one content branch node, and the fast path needs more than one paragraph. So the
+	// node stays attached and the selection needs no second show. (T189557, T435688)
 	function testRunner( sourceText, prevHtml, nextHtml, expectDetached, msg ) {
 		const doc = ve.dm.sourceConverter.getModelFromSourceText( sourceText ),
 			view = ve.test.utils.createSurfaceViewFromDocument( doc, { mode: 'source' } ),
@@ -425,6 +427,13 @@ QUnit.test( 'handleObservedChanges (tree rebuild shows the selection again)', ( 
 	testRunner(
 		'Lorem ipsum dolor sit amet', '<p>Lorem ipsum dolor sit amet</p>', '<p>ALorem ipsum dolor sit amet</p>', false,
 		'One character typed into a document large enough to be patched'
+	);
+	// The largest change the observer can report: it clears both size tests, and the paragraph
+	// test still rejects it.
+	const longText = 'x'.repeat( 1200 );
+	testRunner(
+		longText, '<p>' + longText + '</p>', '<p>y</p>', false,
+		'Nearly all of one long paragraph replaced'
 	);
 } );
 

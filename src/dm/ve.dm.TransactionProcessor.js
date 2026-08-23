@@ -73,6 +73,29 @@ ve.dm.TransactionProcessor.largeReplaceFraction = 0.5;
  */
 ve.dm.TransactionProcessor.largeReplaceMinimum = 1000;
 
+/**
+ * Check if linear data spans more than one paragraph.
+ *
+ * A source-mode document is flat, so each open element starts a paragraph. Data that does not
+ * start with an open element continues the paragraph before it.
+ *
+ * @private
+ * @param {Array} data Linear data from a replace operation
+ * @return {boolean} The data spans more than one paragraph
+ */
+ve.dm.TransactionProcessor.spansMultipleParagraphs = function ( data ) {
+	let count = ve.dm.LinearData.static.isOpenElementData( data[ 0 ] ) ? 0 : 1;
+	for ( const item of data ) {
+		if ( ve.dm.LinearData.static.isOpenElementData( item ) ) {
+			count++;
+			if ( count > 1 ) {
+				return true;
+			}
+		}
+	}
+	return false;
+};
+
 /* Methods */
 
 /**
@@ -158,10 +181,11 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 };
 
 /**
- * Detect a single large replace that can take the fast rebuild path: retains plus exactly
- * one replace (no attribute ops) that removes or inserts at least
- * {@link ve.dm.TransactionProcessor.largeReplaceFraction} of the attached root, and at least
- * {@link ve.dm.TransactionProcessor.largeReplaceMinimum} offsets.
+ * Detect a single large replace that can take the fast rebuild path. The transaction must hold
+ * retains plus exactly one replace, and no attribute ops. The replace must remove or insert at
+ * least {@link ve.dm.TransactionProcessor.largeReplaceFraction} of the attached root, and at
+ * least {@link ve.dm.TransactionProcessor.largeReplaceMinimum} offsets. It must also span more
+ * than one paragraph.
  *
  * @private
  * @return {Object|null} `{ op, offset }` for the qualifying replace (offset is its
@@ -196,9 +220,23 @@ ve.dm.TransactionProcessor.prototype.getLargeReplaceOp = function () {
 	// Larger of removed / inserted, so undoing a large delete (a large insert) also qualifies.
 	const rootLength = this.document.getAttachedRootRange().getLength();
 	const size = Math.max( found.op.remove.length, found.op.insert.length );
-	const large = size >= ve.dm.TransactionProcessor.largeReplaceMinimum &&
-		size >= ve.dm.TransactionProcessor.largeReplaceFraction * rootLength;
-	return large ? found : null;
+	// These size tests are quick, so they come before the paragraph test.
+	if (
+		size < ve.dm.TransactionProcessor.largeReplaceMinimum ||
+		size < ve.dm.TransactionProcessor.largeReplaceFraction * rootLength
+	) {
+		return null;
+	}
+	// The rebuild saves time because it replaces many paragraphs in one pass. A change inside one
+	// paragraph gains nothing. An IME composition always makes such a change, so this test also
+	// keeps a composition off the fast path (T435688).
+	if (
+		!ve.dm.TransactionProcessor.spansMultipleParagraphs( found.op.remove ) &&
+		!ve.dm.TransactionProcessor.spansMultipleParagraphs( found.op.insert )
+	) {
+		return null;
+	}
+	return found;
 };
 
 /**

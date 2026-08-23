@@ -787,7 +787,7 @@ QUnit.test( 'compound transactions (more than one replace) stay on the increment
 
 QUnit.test( 'a nearly empty document stays on the incremental path', ( assert ) => {
 	// An empty source document is two offsets long, so the fraction threshold is one character.
-	// Only the minimum keeps this off the fast path (T435688).
+	// The minimum and the paragraph test both keep this off the fast path (T435688).
 	const doc = ve.dm.sourceConverter.getModelFromSourceText( '' );
 	doc.getDocumentNode();
 	assert.strictEqual( doc.getAttachedRootRange().getLength(), 2, 'an empty source document is two offsets long' );
@@ -795,13 +795,13 @@ QUnit.test( 'a nearly empty document stays on the incremental path', ( assert ) 
 	const tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'x' ] );
 	assert.strictEqual( qualifiesForFastPath( doc, tx ), false, 'typing one character does not take the fast path' );
 
-	// The minimum rejects it, not the fraction or an earlier gate.
+	// The paragraph test rejects it on its own, so the minimum is not the only guard.
 	const originalMinimum = ve.dm.TransactionProcessor.largeReplaceMinimum;
 	ve.dm.TransactionProcessor.largeReplaceMinimum = 1;
 	try {
 		assert.strictEqual(
-			qualifiesForFastPath( doc, tx ), true,
-			'the same transaction qualifies once the minimum is lowered'
+			qualifiesForFastPath( doc, tx ), false,
+			'a lowered minimum does not admit it, because it touches one paragraph'
 		);
 	} finally {
 		ve.dm.TransactionProcessor.largeReplaceMinimum = originalMinimum;
@@ -816,4 +816,34 @@ QUnit.test( 'a whole-document replace below the minimum stays on the incremental
 
 	const tx = fullReplaceTx( doc, [ { type: 'paragraph' }, ...'x', { type: '/paragraph' } ] );
 	assert.strictEqual( qualifiesForFastPath( doc, tx ), false, 'replacing a short document does not take the fast path' );
+} );
+
+QUnit.test( 'a large text-only replace inside one paragraph stays on the incremental path', ( assert ) => {
+	// A single long line. A replace of its text passes both size tests, but spans one paragraph.
+	// The text observer builds this transaction for each IME composition event (T435688).
+	const doc = ve.dm.sourceConverter.getModelFromSourceText( 'x'.repeat( 2000 ) );
+	doc.getDocumentNode();
+	const tx = ve.dm.TransactionBuilder.static.newFromReplacement( doc, new ve.Range( 1, 2001 ), [ 'y' ] );
+	const op = tx.operations.find( ( operation ) => operation.type === 'replace' );
+
+	assert.strictEqual( op.remove.length, 2000, 'the replace is large enough for both size tests' );
+	assert.strictEqual(
+		op.remove.some( ( item ) => ve.dm.LinearData.static.isElementData( item ) ), false,
+		'the replace holds text only, with no elements'
+	);
+	assert.strictEqual( qualifiesForFastPath( doc, tx ), false, 'a one-paragraph replace does not take the fast path' );
+} );
+
+QUnit.test( 'spansMultipleParagraphs counts a partial first paragraph', ( assert ) => {
+	const spans = ve.dm.TransactionProcessor.spansMultipleParagraphs;
+	const p = { type: 'paragraph' };
+	const close = { type: '/paragraph' };
+
+	assert.strictEqual( spans( [] ), false, 'empty data' );
+	assert.strictEqual( spans( [ ...'abc' ] ), false, 'text only' );
+	assert.strictEqual( spans( [ p, ...'abc', close ] ), false, 'one whole paragraph' );
+	assert.strictEqual( spans( [ ...'ab', close, p, ...'cd' ] ), true, 'two partial paragraphs' );
+	assert.strictEqual( spans( [ p, ...'ab', close, p, ...'cd', close ] ), true, 'two whole paragraphs' );
+	assert.strictEqual( spans( [ ...'ab', close ] ), false, 'the end of one paragraph' );
+	assert.strictEqual( spans( [ p, ...'ab' ] ), false, 'the start of one paragraph' );
 } );
