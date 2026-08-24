@@ -714,10 +714,11 @@ ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
 ve.ui.Surface.prototype.clearPlaceholder = function () {
 	this.placeholderVisible = false;
 	if ( this.$placeholderNode ) {
-		this.$placeholderNode.removeAttr( 'data-ve-placeholder' );
+		this.$placeholderNode
+			.removeAttr( 'data-ve-placeholder' )
+			.css( 'min-height', '' );
 		this.$placeholderNode = null;
 	}
-	this.getView().$element.css( 'min-height', '' );
 };
 
 /**
@@ -736,8 +737,7 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 	// Re-derive: the first node changes with the document, and VE may have re-rendered it.
 	const firstNode = this.getView().attachedRoot.children[ 0 ];
 	if ( this.$placeholderNode && ( !firstNode || this.$placeholderNode[ 0 ] !== firstNode.$element[ 0 ] ) ) {
-		this.$placeholderNode.removeAttr( 'data-ve-placeholder' );
-		this.$placeholderNode = null;
+		this.clearPlaceholder();
 	}
 	if ( firstNode ) {
 		this.$placeholderNode = firstNode.$element.attr( 'data-ve-placeholder', this.placeholder );
@@ -746,8 +746,8 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 };
 
 /**
- * Height to reserve for the placeholder: it is out of flow, so it cannot size its own node, and
- * text long enough to wrap would overflow.
+ * Height to reserve on the placeholder's node: the text is out of flow, so it cannot size that
+ * node itself, and text long enough to wrap would overflow.
  *
  * @return {string} CSS length, or '' if there is nothing to reserve
  * @private
@@ -774,7 +774,7 @@ ve.ui.Surface.prototype.onViewPosition = function ( passive ) {
 		!passive
 	);
 	if ( this.placeholderVisible ) {
-		this.getView().$element.css( 'min-height', this.getPlaceholderHeight() );
+		this.$placeholderNode.css( 'min-height', this.getPlaceholderHeight() );
 	}
 };
 
