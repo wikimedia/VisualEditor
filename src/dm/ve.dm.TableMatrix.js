@@ -89,6 +89,11 @@ ve.dm.TableMatrix.prototype.update = function () {
 	// so called placeholders into the matrix.
 	let cellNode;
 	while ( ( cellNode = iterator.next() ) !== undefined ) {
+		if ( !cellNode && iterator.isMetaData ) {
+			// Metadata does not render, so it does not use a column. Other
+			// non-cell children get an anonymous cell from CSS. (T436265)
+			continue;
+		}
 		col++;
 		// Skip placeholders
 		while ( matrix[ row ][ col ] ) {

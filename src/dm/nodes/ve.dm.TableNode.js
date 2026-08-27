@@ -132,6 +132,7 @@ ve.dm.TableNodeCellIterator = function VeDmTableNodeCellIterator( tableNode ) {
 	this.sectionNode = null;
 	this.rowNode = null;
 	this.cellNode = null;
+	this.isMetaData = false;
 
 	this.finished = false;
 };
@@ -254,5 +255,7 @@ ve.dm.TableNodeCellIterator.prototype.nextCell = function () {
 	// Get the next node and make sure it's a cell node (and not an alien node)
 	const cellNode = this.rowNode.children[ this.cellIndex ];
 	this.cellNode = cellNode && cellNode.isCellable() ? cellNode : null;
+	// Tell the caller if a null cell is metadata, which does not render (T436265)
+	this.isMetaData = !!cellNode && cellNode.isMetaData();
 	this.cellIndex++;
 };

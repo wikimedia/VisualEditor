@@ -885,6 +885,7 @@
 			"tests/dm/ve.dm.LinkAnnotation.test.js",
 			"tests/dm/ve.dm.NodeFactory.test.js",
 			"tests/dm/ve.dm.Node.test.js",
+			"tests/dm/ve.dm.TableMatrix.test.js",
 			"tests/dm/ve.dm.Converter.test.js",
 			"tests/dm/ve.dm.SourceConverter.test.js",
 			"tests/dm/ve.dm.BranchNode.test.js",
