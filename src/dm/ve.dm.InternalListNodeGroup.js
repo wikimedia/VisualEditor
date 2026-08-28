@@ -319,14 +319,18 @@ ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, 
 	// Initialize properties dynamically; nobody needs to see this before it's used
 	if ( !this.uniqueListKeys ) {
 		this.uniqueListKeys = {};
-		this.uniqueNameSequence = 0;
+		this.uniqueNameSequence = {};
 	} else if ( oldListKey in this.uniqueListKeys ) {
 		return this.uniqueListKeys[ oldListKey ];
 	}
 
+	if ( !( prefix in this.uniqueNameSequence ) ) {
+		this.uniqueNameSequence[ prefix ] = 0;
+	}
+
 	let result;
 	do {
-		result = prefix + this.uniqueNameSequence++;
+		result = prefix + this.uniqueNameSequence[ prefix ]++;
 		// Skip values that already appear in the document, e.g. from previous edits
 	} while ( this.isKnownMainListKey( result ) );
 

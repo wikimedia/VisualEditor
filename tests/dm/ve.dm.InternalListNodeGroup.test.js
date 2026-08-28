@@ -152,6 +152,22 @@ QUnit.test( 'getUniqueListKey with main + details', ( assert ) => {
 	assert.strictEqual( generatedName, 'literal/:1', 'Correct auto-name when main ref is not a node' );
 } );
 
+QUnit.test( 'getUniqueListKey with different prefixes', ( assert ) => {
+	const doc = ve.dm.example.createExampleDocument( 'references' );
+	const internalList = doc.getInternalList();
+	const nodeGroup = internalList.getNodeGroup( 'g1' );
+
+	let generatedName;
+	generatedName = nodeGroup.getUniqueListKey( 'auto/0', 'literal/:' );
+	assert.strictEqual( generatedName, 'literal/:0', 'initially uses 0 on prefix' );
+
+	generatedName = nodeGroup.getUniqueListKey( 'auto/1', 'literal/Foo' );
+	assert.strictEqual( generatedName, 'literal/Foo0', 'uses 0 on prefix not used before' );
+
+	generatedName = nodeGroup.getUniqueListKey( 'auto/2', 'literal/:' );
+	assert.strictEqual( generatedName, 'literal/:1', 'counts up on prefix used before' );
+} );
+
 QUnit.test( 'buildReflistNumbering', ( assert ) => {
 	const doc = ve.dm.example.createExampleDocument( 'references' );
 	const internalList = doc.getInternalList();
