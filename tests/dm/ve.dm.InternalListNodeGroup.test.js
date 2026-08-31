@@ -126,21 +126,21 @@ QUnit.test( 'getUniqueListKey', ( assert ) => {
 
 	let generatedName;
 	generatedName = nodeGroup.getUniqueListKey( 'auto/0' );
-	assert.strictEqual( generatedName, 'literal/:0', '0 maps to 0' );
+	assert.strictEqual( generatedName, 'literal/:1', '1st autoname maps to 1' );
 	generatedName = nodeGroup.getUniqueListKey( 'auto/1' );
-	assert.strictEqual( generatedName, 'literal/:1', '1 maps to 1' );
+	assert.strictEqual( generatedName, 'literal/:2', '2nd autoname maps to 2' );
 	generatedName = nodeGroup.getUniqueListKey( 'auto/2' );
-	assert.strictEqual( generatedName, 'literal/:2', '2 maps to 2' );
+	assert.strictEqual( generatedName, 'literal/:4', '3rd autoname maps to 4 (because :3 is already present)' );
 	generatedName = nodeGroup.getUniqueListKey( 'auto/3' );
-	assert.strictEqual( generatedName, 'literal/:4', '3 maps to 4 (because a literal :3 is present)' );
+	assert.strictEqual( generatedName, 'literal/:5', '4th autoname maps to 5' );
 	generatedName = nodeGroup.getUniqueListKey( 'auto/4' );
-	assert.strictEqual( generatedName, 'literal/:5', '4 maps to 5' );
+	assert.strictEqual( generatedName, 'literal/:6', '5th autoname maps to 6' );
 
 	generatedName = nodeGroup.getUniqueListKey( 'auto/0' );
-	assert.strictEqual( generatedName, 'literal/:0', 'Reusing a key reuses the name' );
+	assert.strictEqual( generatedName, 'literal/:1', 'Reusing a key reuses the name' );
 
 	generatedName = internalList.getNodeGroup( 'g2' ).getUniqueListKey( 'auto/4' );
-	assert.strictEqual( generatedName, 'literal/:0', 'Different groups are treated separately' );
+	assert.strictEqual( generatedName, 'literal/:1', 'Different groups are treated separately' );
 } );
 
 QUnit.test( 'getUniqueListKey with main + details', ( assert ) => {
@@ -159,13 +159,13 @@ QUnit.test( 'getUniqueListKey with different prefixes', ( assert ) => {
 
 	let generatedName;
 	generatedName = nodeGroup.getUniqueListKey( 'auto/0', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:0', 'initially uses 0 on prefix' );
+	assert.strictEqual( generatedName, 'literal/:1', 'initially uses 1 on prefix' );
 
 	generatedName = nodeGroup.getUniqueListKey( 'auto/1', 'literal/Foo' );
-	assert.strictEqual( generatedName, 'literal/Foo0', 'uses 0 on prefix not used before' );
+	assert.strictEqual( generatedName, 'literal/Foo1', 'uses 1 on prefix not used before' );
 
 	generatedName = nodeGroup.getUniqueListKey( 'auto/2', 'literal/:' );
-	assert.strictEqual( generatedName, 'literal/:1', 'counts up on prefix used before' );
+	assert.strictEqual( generatedName, 'literal/:2', 'counts up on prefix used before' );
 } );
 
 QUnit.test( 'buildReflistNumbering', ( assert ) => {

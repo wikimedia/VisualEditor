@@ -325,7 +325,7 @@ ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, 
 	}
 
 	if ( !( prefix in this.uniqueNameSequence ) ) {
-		this.uniqueNameSequence[ prefix ] = 0;
+		this.uniqueNameSequence[ prefix ] = 1;
 	}
 
 	let result;
