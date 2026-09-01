@@ -28,6 +28,47 @@ ve.ui.Toolbar = function VeUiToolbar( config = {} ) {
 
 OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
 
+/* Static Properties */
+
+/**
+ * Storage key that holds the expanded state of every named tool group.
+ *
+ * @static
+ * @property {string}
+ */
+ve.ui.Toolbar.static.expandedStorageKey = 've-toolbar-expanded';
+
+/* Static Methods */
+
+/**
+ * Get the stored expanded state of a tool group.
+ *
+ * @static
+ * @param {string} name Symbolic name of the group
+ * @return {boolean|null} Stored state, or null if the group has none
+ */
+ve.ui.Toolbar.static.getStoredExpanded = function ( name ) {
+	// getObject gives false if storage is not available, null if the key is unset
+	const states = ve.init.platform.localStorage.getObject( this.expandedStorageKey );
+	if ( !states || typeof states[ name ] !== 'boolean' ) {
+		return null;
+	}
+	return states[ name ];
+};
+
+/**
+ * Store the expanded state of a tool group.
+ *
+ * @static
+ * @param {string} name Symbolic name of the group
+ * @param {boolean} expanded The collapsible tools are shown
+ */
+ve.ui.Toolbar.static.setStoredExpanded = function ( name, expanded ) {
+	const states = ve.init.platform.localStorage.getObject( this.expandedStorageKey ) || {};
+	states[ name ] = expanded;
+	ve.init.platform.localStorage.setObject( this.expandedStorageKey, states );
+};
+
 /* Events */
 
 /**
@@ -83,6 +124,7 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 			return group;
 		} );
 		ve.ui.Toolbar.super.prototype.setup.call( this, groups );
+		this.setupToolGroupExpansion();
 	}
 
 	this.groups = groups;
@@ -130,6 +172,37 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 			}
 		}
 	} );
+};
+
+/**
+ * Restore the expanded state of each collapsible tool group, and keep it stored.
+ *
+ * Each group stores the state against its symbolic name. Thus the groups stay
+ * independent of each other, and of the toolbar that holds them.
+ */
+ve.ui.Toolbar.prototype.setupToolGroupExpansion = function () {
+	for ( const name in this.groupsByName ) {
+		const toolGroup = this.groupsByName[ name ];
+		if ( !( toolGroup instanceof OO.ui.ListToolGroup ) ) {
+			continue;
+		}
+		const expanded = this.constructor.static.getStoredExpanded( name );
+		if ( expanded !== null ) {
+			toolGroup.setExpanded( expanded );
+		}
+		// Connect after the restore, to only store what the user changes
+		toolGroup.connect( this, { expand: [ 'onToolGroupExpand', name ] } );
+	}
+};
+
+/**
+ * Handle expand events from a tool group.
+ *
+ * @param {string} name Symbolic name of the group
+ * @param {boolean} expanded The collapsible tools are shown
+ */
+ve.ui.Toolbar.prototype.onToolGroupExpand = function ( name, expanded ) {
+	this.constructor.static.setStoredExpanded( name, expanded );
 };
 
 /**
