@@ -35,6 +35,8 @@ ve.ui.ClearAnnotationTool.static.title =
 
 ve.ui.ClearAnnotationTool.static.commandName = 'clear';
 
+ve.ui.ClearAnnotationTool.static.excludeFromModes = [ 'source' ];
+
 /* Registration */
 
 ve.ui.toolFactory.register( ve.ui.ClearAnnotationTool );

@@ -69,6 +69,15 @@ ve.ui.Tool.static.makesEmbeddableContextItem = true;
 ve.ui.Tool.static.fallbackIcon = null;
 
 /**
+ * Modes the tool is excluded from
+ *
+ * @static
+ * @property {string[]}
+ * @inheritable
+ */
+ve.ui.Tool.static.excludeFromModes = [];
+
+/**
  * Get the symbolic command name for this tool.
  *
  * @static

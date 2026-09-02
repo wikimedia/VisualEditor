@@ -139,11 +139,17 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 	if ( !ve.ui.Toolbar.super.prototype.isToolAvailable.apply( this, arguments ) ) {
 		return false;
 	}
-	// Check the tool's command is available on the surface
+	// Does the tool exist?
 	const tool = this.getToolFactory().lookup( name );
 	if ( !tool ) {
 		return false;
 	}
+	// Is the tool excluded from the current mode?
+	const surface = this.getSurface();
+	if ( surface && tool.static.excludeFromModes && tool.static.excludeFromModes.includes( surface.getMode() ) ) {
+		return false;
+	}
+	// Is the tool's command is available on the surface
 	// FIXME should use .static.getCommandName(), but we have tools that aren't ve.ui.Tool subclasses :(
 	const commandName = tool.static.commandName;
 	return !commandName || this.getCommands().includes( commandName );
