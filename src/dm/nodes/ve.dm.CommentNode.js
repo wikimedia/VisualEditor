@@ -67,8 +67,8 @@ ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter 
 		return els;
 	} else {
 		// Real comment node
-		// Encode & - > (see T95040, T144708)
-		const data = dataElement.attributes.text.replace( /[-&>]/g, ( c ) => '&#x' + c.charCodeAt( 0 ).toString( 16 ).toUpperCase() + ';' );
+		// Encode & - > and e when it could start 'esi' (see T95040, T144708, T436137)
+		const data = dataElement.attributes.text.replace( /[-&>]|^e(?=si)/g, ( c ) => '&#x' + c.charCodeAt( 0 ).toString( 16 ).toUpperCase() + ';' );
 		return [ doc.createComment( data ) ];
 	}
 };
