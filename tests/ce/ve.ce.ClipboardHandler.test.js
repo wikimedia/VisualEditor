@@ -21,6 +21,9 @@ QUnit.module( 've.ce.ClipboardHandler', {
 } );
 
 ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
+	// Deprecated: Use native QUnit.test.each() instead of loop with manual msg prefix inside QUnit.test
+	const msgPrefix = item.msg ? item.msg + ': ' : '';
+
 	const htmlOrView = item.documentHtml || '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tr></tbody></table><p><b>Quux</b></p>',
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView, item.config ) :
@@ -124,14 +127,14 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 				} );
 			}
 			if ( item.testOriginalDomElements ) {
-				assert.equalLinearDataWithDom( doc.getStore(), ops, item.expectedOps, item.msg + ': data' );
+				assert.equalLinearDataWithDom( doc.getStore(), ops, item.expectedOps, msgPrefix + 'data' );
 			} else {
-				assert.equalLinearData( ops, item.expectedOps, item.msg + ': data' );
+				assert.equalLinearData( ops, item.expectedOps, msgPrefix + 'data' );
 			}
 		}
 		if ( item.expectedRangeOrSelection ) {
 			const expectedSelection = ve.test.utils.selectionFromRangeOrSelection( doc, item.expectedRangeOrSelection );
-			assert.equalHash( model.getSelection(), expectedSelection, item.msg + ': selection' );
+			assert.equalHash( model.getSelection(), expectedSelection, msgPrefix + 'selection' );
 		}
 		if ( item.expectedHtml ) {
 			assert.equalDomElement(
@@ -140,7 +143,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 				item.msg + ': HTML'
 			);
 		}
-		assert.strictEqual( testEvent.isDefaultPrevented(), !!item.expectedDefaultPrevented, item.msg + ': default action ' + ( item.expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
+		assert.strictEqual( testEvent.isDefaultPrevented(), !!item.expectedDefaultPrevented, msgPrefix + 'default action ' + ( item.expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
 		view.destroy();
 
 		if ( item.annotateImportedData ) {
