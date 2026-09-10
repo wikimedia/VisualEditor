@@ -26,7 +26,7 @@
 		"eslint-config-wikimedia": "0.32.4",
 		"eslint-plugin-html": "8.1.1",
 		"fast-glob": "3.3.2",
-		"grunt": "1.6.2",
+		"grunt": "1.6.3",
 		"grunt-banana-checker": "0.13.0",
 		"grunt-contrib-clean": "2.0.1",
 		"grunt-contrib-concat": "2.1.0",
@@ -50,6 +50,6 @@
 		"qunit": "2.20.0",
 		"stringify-object": "3.3.0",
 		"stylelint-config-wikimedia": "0.19.1",
-		"svgo": "3.3.4"
+		"svgo": "3.3.5"
 	}
 }
