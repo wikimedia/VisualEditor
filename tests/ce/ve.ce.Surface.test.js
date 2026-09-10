@@ -660,6 +660,34 @@ QUnit.test( 'findBlockSlug', ( assert ) => {
 	}
 } );
 
+QUnit.test( 'findAdjacentUneditableBranchNode', ( assert ) => {
+	const cases = [
+		{
+			msg: 'Block image before a paragraph',
+			html: ve.dm.example.blockImage.html + '<p>Foo</p>',
+			// Start of the paragraph text
+			offset: ve.dm.example.blockImage.data.length + 1,
+			expected: 'FIGURE'
+		},
+		{
+			msg: 'Alien table cell before a table cell',
+			html: '<table><tbody><tr><td rel="ve:Alien">Alien</td><td>Foo</td></tr></tbody></table>',
+			// Start of the second cell's text
+			offset: 7,
+			// A cursor holder in a table row gets an anonymous cell, which adds a column
+			expected: null
+		}
+	];
+
+	cases.forEach( ( caseItem ) => {
+		const view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
+		view.getModel().setLinearSelection( new ve.Range( caseItem.offset ) );
+		view.showModelSelection();
+		const node = view.findAdjacentUneditableBranchNode( -1 );
+		assert.strictEqual( node && node.nodeName, caseItem.expected, caseItem.msg );
+	} );
+} );
+
 QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffset', ( assert ) => {
 	const cases = [
 		{

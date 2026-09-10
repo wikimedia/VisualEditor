@@ -2869,6 +2869,12 @@ ve.ce.Surface.prototype.findAdjacentUneditableBranchNode = function ( direction 
 				return null;
 			}
 			if ( $( node ).is( '.ve-ce-focusableNode,.ve-ce-tableNode' ) ) {
+				if ( $( node ).is( '.ve-ce-tableCellableNode' ) ) {
+					// A cursor holder goes next to the node, but a table row can
+					// hold only cells. The browser puts the holder in an anonymous
+					// cell, which adds a column and moves the other cells.
+					return null;
+				}
 				if ( activeNode ) {
 					const viewNode = $( node ).data( 'view' );
 					if ( !activeNode.getRange().containsRange( viewNode.getRange() ) ) {
