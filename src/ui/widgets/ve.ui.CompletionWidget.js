@@ -124,6 +124,10 @@ ve.ui.CompletionWidget.prototype.setup = function ( action, isolateInput ) {
  */
 ve.ui.CompletionWidget.prototype.teardown = function () {
 	this.tearingDown = true;
+	// Hide the menu, not only the popup that contains it. A visible menu keeps its key
+	// handler on the document node, which then swallows the arrow keys and can choose an
+	// item after the action has gone.
+	this.menu.toggle( false );
 	this.popup.toggle( false );
 	this.surfaceModel.disconnect( this );
 	if ( this.wasActive ) {

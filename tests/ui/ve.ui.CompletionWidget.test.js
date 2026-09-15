@@ -403,3 +403,42 @@ QUnit.test( 'an isolated input is not affected by the selection in the document'
 	completionWidget.teardown();
 	surface.destroy();
 } );
+
+QUnit.test( 'teardown hides the menu, so it stops handling keys', ( assert ) => {
+	const done = assert.async();
+	const surface = ve.test.utils.createSurfaceFromHtml( '<p>foo</p>' );
+	const completionWidget = new ve.ui.CompletionWidget( surface );
+
+	const deferred = ve.createDeferred();
+	const suggestionsPromise = deferred.promise();
+	const action = createAction( { getSuggestions: () => suggestionsPromise } );
+
+	surface.getModel().setLinearSelection( new ve.Range( 4 ) );
+	completionWidget.setup( action );
+	deferred.resolve( [ 'apple', 'apricot' ] );
+
+	// Same promise as the widget's handler, so this runs after the menu is populated.
+	suggestionsPromise.then( () => {
+		assert.strictEqual(
+			completionWidget.menu.isVisible(), true,
+			'the menu is visible while there are suggestions'
+		);
+
+		completionWidget.teardown();
+
+		// The menu binds a key handler on the document node while it is visible. Hiding
+		// only the popup left that handler bound: the arrow keys did not move the cursor
+		// any more, and Enter chose an item with no action to insert it (T438070).
+		assert.strictEqual(
+			completionWidget.menu.isVisible(), false,
+			'the menu is hidden on teardown, not only the popup that contains it'
+		);
+		assert.strictEqual(
+			completionWidget.popup.isVisible(), false,
+			'the popup is hidden on teardown'
+		);
+
+		surface.destroy();
+		done();
+	} );
+} );
