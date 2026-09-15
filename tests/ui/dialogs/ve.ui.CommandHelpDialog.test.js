@@ -6,6 +6,21 @@
 
 QUnit.module( 've.ui.CommandHelpDialog' );
 
+/**
+ * Build the shortcut text which the dialog shows for a trigger.
+ *
+ * The keys are platform-specific. On Mac, Tab is the symbol U+21E5. The dialog puts
+ * each key in its own element, then puts '+' between the elements.
+ *
+ * Allow an invalid primary key, as the dialog does.
+ *
+ * @param {string} trigger Trigger string
+ * @return {string} Shortcut text
+ */
+function shortcutText( trigger ) {
+	return new ve.ui.Trigger( trigger, true ).getMessage( true ).join( '+' );
+}
+
 /* Tests */
 
 QUnit.test( 'Command help dialog', ( assert ) => {
@@ -29,8 +44,8 @@ QUnit.test( 'Command help dialog', ( assert ) => {
 				'Command groups headings'
 			);
 			const shortcuts = dialog.$body.find( '.ve-ui-commandHelpDialog-shortcut' ).map( ( i, el ) => $( el ).text() ).get();
-			assert.true( shortcuts.includes( 'visualeditor-key-tab' ), 'Tab shortcut is included' );
-			assert.true( shortcuts.includes( 'visualeditor-key-shift+visualeditor-key-tab' ), 'Shift+Tab shortcut is included' );
+			assert.true( shortcuts.includes( shortcutText( 'tab' ) ), 'Tab shortcut is included' );
+			assert.true( shortcuts.includes( shortcutText( 'shift+tab' ) ), 'Shift+Tab shortcut is included' );
 
 			dialog.close().closed.then( () => {
 				surface.destroy();
@@ -65,8 +80,12 @@ QUnit.test( 'Command help dialog (allowTabFocusChange=true, excluded commands)',
 				'Command groups headings'
 			);
 			const shortcuts = dialog.$body.find( '.ve-ui-commandHelpDialog-shortcut' ).map( ( i, el ) => $( el ).text() ).get();
-			assert.false( shortcuts.includes( 'visualeditor-key-tab' ), 'Tab shortcut is not included' );
-			assert.false( shortcuts.includes( 'visualeditor-key-shift+visualeditor-key-tab' ), 'Shift+Tab shortcut is not included' );
+			assert.false( shortcuts.includes( shortcutText( 'tab' ) ), 'Tab shortcut is not included' );
+			assert.false( shortcuts.includes( shortcutText( 'shift+tab' ) ), 'Shift+Tab shortcut is not included' );
+			// The assertions above also pass if shortcutText stops matching the
+			// dialog. This one keeps them honest.
+			const boldTrigger = ve.ui.triggerRegistry.lookup( 'bold' )[ 0 ].toString();
+			assert.true( shortcuts.includes( shortcutText( boldTrigger ) ), 'Bold shortcut is included' );
 
 			dialog.close().closed.then( () => {
 				surface.destroy();

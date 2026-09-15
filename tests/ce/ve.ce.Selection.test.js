@@ -30,7 +30,10 @@ QUnit.test( 'Rects', ( assert ) => {
 			</div>
 		`,
 		view = ve.test.utils.createSurfaceViewFromHtml( html ),
-		slugHeight = view.getDocument().getDocumentNode().children[ 2 ].$element[ 0 ].childNodes[ 0 ].offsetHeight,
+		// The selection rects keep sub-pixel heights, but offsetHeight is an integer.
+		// Some fonts give a non-integer slug height. Read the same rect as
+		// ve.ce.LinearSelection#getNodeClientRectFromRange.
+		slugHeight = view.getDocument().getDocumentNode().children[ 2 ].$element[ 0 ].childNodes[ 0 ].getClientRects()[ 0 ].height,
 		model = view.getModel(),
 		cases = [
 			{
