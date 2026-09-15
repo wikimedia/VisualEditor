@@ -2086,8 +2086,7 @@ ve.dm.example.domToDataCases = {
 		],
 		annotationRanges: [
 			[ 2, 6, ve.dm.example.bold ],
-			[ 4, 6, ve.dm.example.italic ],
-			[ 6, 9, ve.dm.example.italic ]
+			[ 4, 9, ve.dm.example.italic ]
 		]
 	},
 	'annotated comments': {
@@ -3875,11 +3874,27 @@ ve.dm.example.domToDataCases = {
 		annotationRanges: [
 			[ 1, 5, ve.dm.example.link( 'Foo' ) ],
 			[ 2, 4, ve.dm.example.bold ],
-			[ 3, 4, ve.dm.example.italic ],
-			[ 4, 5, ve.dm.example.italic ],
-			[ 5, 10, ve.dm.example.italic ],
+			[ 3, 10, ve.dm.example.italic ],
 			[ 6, 7, ve.dm.example.bold ],
 			[ 8, 9, ve.dm.example.underline ]
+		]
+	},
+	'annotation continues past the end of an outer annotation': {
+		body: '<p><i>x<a href="Foo">y</a></i><a href="Foo">z</a></p>',
+		base: 'http://example.com/Bar/Baz',
+		data: [
+			{ type: 'paragraph' },
+			[ 'x', [ ve.dm.example.italic ] ],
+			[ 'y', [ ve.dm.example.italic, ve.dm.example.link( 'Foo' ) ] ],
+			[ 'z', [ ve.dm.example.link( 'Foo' ) ] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		annotationRanges: [
+			[ 1, 3, ve.dm.example.italic ],
+			// One range, although the link must close and re-open in the HTML
+			[ 2, 4, ve.dm.example.link( 'Foo' ) ]
 		]
 	},
 	'about grouping': {

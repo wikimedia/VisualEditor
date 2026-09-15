@@ -778,6 +778,7 @@ ve.dm.LinearData.prototype.getAnnotationHashesFromOffset = function ( offset, ig
 ve.dm.LinearData.prototype.getAnnotationRanges = function ( range ) {
 	const annotationRanges = [];
 	const startOffsets = {};
+	const lastRanges = {};
 	const annotationStack = new ve.dm.AnnotationSet( this.getStore() );
 	const open = ( i, ann ) => {
 		const key = JSON.stringify( ann.getComparableObject() );
@@ -786,10 +787,23 @@ ve.dm.LinearData.prototype.getAnnotationRanges = function ( range ) {
 	const close = ( i, ann ) => {
 		const key = JSON.stringify( ann.getComparableObject() );
 		const startOffset = startOffsets[ key ];
-		annotationRanges.push( {
+		const previous = lastRanges[ key ];
+		// openAndCloseAnnotations must close and re-open an annotation at the same
+		// offset to keep the nesting order of the annotations above it in the stack.
+		// One annotation in the data then gives more than one range, so join the
+		// ranges again. The store gives one object per hash, so compare the
+		// annotations by identity: two different annotations can be adjacent, and
+		// those ranges must stay separate. (T437749)
+		if ( previous && previous.annotation === ann && previous.range.end === startOffset ) {
+			previous.range = new ve.Range( previous.range.start, i );
+			return;
+		}
+		const annotationRange = {
 			annotation: ann,
 			range: new ve.Range( startOffset, i )
-		} );
+		};
+		lastRanges[ key ] = annotationRange;
+		annotationRanges.push( annotationRange );
 	};
 	range.forEach( ( i ) => {
 		const annotations = this.getAnnotationsFromOffset( i );
