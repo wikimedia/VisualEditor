@@ -41,8 +41,16 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		expectedRangeOrSelection,
 		expectedDefaultPrevented,
 		msg,
-		forceSelection
+		forceSelection,
+		skipSelectionAssertion
 	} = caseItem;
+	// A case must not drop the selection assertion by accident
+	if ( skipSelectionAssertion && expectedRangeOrSelection ) {
+		throw new Error( 'Only one of `expectedRangeOrSelection` and `skipSelectionAssertion` must be defined' );
+	}
+	if ( !skipSelectionAssertion && !expectedRangeOrSelection ) {
+		throw new Error( 'One of `expectedRangeOrSelection` and `skipSelectionAssertion` must be defined' );
+	}
 	const view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc, caseItem.surfaceConfig ) :
 			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument(), caseItem.surfaceConfig ) ),
@@ -126,11 +134,13 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		}
 		assert.deepEqual( wereDefaultsPrevented, expectedDefaultPrevented || Array( keys.length ).fill( true ), msg + ': defaultsPrevented' );
 
-		const expectedSelection = ve.dm.Selection.static.newFromJSON( expectedRangeOrSelection instanceof ve.Range ?
-			{ type: 'linear', range: expectedRangeOrSelection } :
-			expectedRangeOrSelection
-		);
-		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
+		if ( !skipSelectionAssertion ) {
+			const expectedSelection = ve.dm.Selection.static.newFromJSON( expectedRangeOrSelection instanceof ve.Range ?
+				{ type: 'linear', range: expectedRangeOrSelection } :
+				expectedRangeOrSelection
+			);
+			assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
+		}
 		if ( typeof caseItem.expectedHasFocus === 'boolean' ) {
 			assert.strictEqual( document.activeElement === view.getDocument().getDocumentNode().$element[ 0 ], caseItem.expectedHasFocus, msg + ': has focus' );
 		}

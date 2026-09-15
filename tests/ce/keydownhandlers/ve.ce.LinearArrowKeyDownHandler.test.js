@@ -343,7 +343,11 @@ QUnit.test( 'special key down: linear arrow keys', ( assert ) => {
 				surfaceConfig: {
 					allowTabFocusChange: true
 				},
-				expectedRangeOrSelection: new ve.Range( 1 ),
+				// The focus moves outside the surface. Safari then takes the native
+				// selection out of the surface and the model selection becomes
+				// null. Blink keeps it. This case tests the focus, not the
+				// selection.
+				skipSelectionAssertion: true,
 				expectedHasFocus: false,
 				msg: 'Tab with allowTabFocusChange moves the focus from the surface'
 			},
