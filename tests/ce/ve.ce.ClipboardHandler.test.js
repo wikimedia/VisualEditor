@@ -291,8 +291,11 @@ QUnit.test( 'onCopy', ( assert ) => {
 			);
 		}
 		if ( caseItem.expectedText ) {
-			// Different browsers and browser versions will produce different trailing whitespace, so just trim.
-			assert.strictEqual( clipboardData.getData( 'text/plain' ).trim(), caseItem.expectedText, caseItem.msg + ': text' );
+			// The plain text comes from innerText, which depends on the layout, so
+			// browsers give different whitespace. Safari adds a blank line after a
+			// table.
+			const text = clipboardData.getData( 'text/plain' ).trim().replace( /\n{3,}/g, '\n\n' );
+			assert.strictEqual( text, caseItem.expectedText, caseItem.msg + ': text' );
 		}
 		if ( !caseItem.noClipboardData ) {
 			assert.strictEqual(
@@ -311,6 +314,12 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 		bold = ve.dm.example.bold,
 		italic = ve.dm.example.italic,
 		link = ve.dm.example.link( 'Foo' ),
+		rdfaFigureHtml = ve.dm.example.singleLine`
+			<figure class="notIgnored" rev="ignored"
+			 data-ve-attributes='{"rev":"g","resource":"f","datatype":"c","content":"b","about":"a"}'>
+				<img>
+			</figure>
+		`,
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1 ),
@@ -349,6 +358,9 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			{
 				rangeOrSelection: new ve.Range( 4, 5 ),
 				pasteHtml: 'Bar',
+				// Firefox does not put the pasted HTML in the paste target. Set the
+				// target directly, as other cases in this file do.
+				clipboardHandlerHtml: '☀Bar☂',
 				expectedRangeOrSelection: new ve.Range( 7 ),
 				expectedOps: [
 					[
@@ -938,12 +950,11 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			},
 			{
 				rangeOrSelection: new ve.Range( 0 ),
-				pasteHtml: ve.dm.example.singleLine`
-					<figure class="notIgnored" rev="ignored"
-					 data-ve-attributes='{"rev":"g","resource":"f","datatype":"c","content":"b","about":"a"}'>
-						<img>
-					</figure>
-				`,
+				pasteHtml: rdfaFigureHtml,
+				// The paste target does not get data-ve-attributes in Firefox. The
+				// code then uses the clipboard data, which drops the attribute
+				// instead of applying it.
+				clipboardHandlerHtml: rdfaFigureHtml,
 				fromVe: true,
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				expectedOps: [
@@ -1082,7 +1093,9 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					<span style="font-weight:700; font-style:italic;">G</span>
 					<span style="color:red;">H</span>
 				`,
-				fromVe: true,
+				// Safari resolves relative styles, such as font-weight:bolder, when it
+				// puts the HTML into the paste target.
+				useClipboardData: true,
 				expectedOps: [
 					[
 						{ type: 'retain', length: 1 },
