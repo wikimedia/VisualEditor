@@ -166,6 +166,9 @@ QUnit.test( 'getUniqueListKey with different prefixes', ( assert ) => {
 
 	generatedName = nodeGroup.getUniqueListKey( 'auto/2', 'literal/:' );
 	assert.strictEqual( generatedName, 'literal/:2', 'counts up on prefix used before' );
+
+	generatedName = nodeGroup.getUniqueListKey( 'auto/1', 'literal/Bar' );
+	assert.strictEqual( generatedName, 'literal/Bar1', 'use a new name for the same key if the prefix changed' );
 } );
 
 QUnit.test( 'buildReflistNumbering', ( assert ) => {

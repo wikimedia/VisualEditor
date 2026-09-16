@@ -320,12 +320,13 @@ ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, 
 	if ( !this.uniqueListKeys ) {
 		this.uniqueListKeys = {};
 		this.uniqueNameSequence = {};
-	} else if ( oldListKey in this.uniqueListKeys ) {
-		return this.uniqueListKeys[ oldListKey ];
 	}
 
-	if ( !( prefix in this.uniqueNameSequence ) ) {
+	if ( !( prefix in this.uniqueListKeys ) ) {
+		this.uniqueListKeys[ prefix ] = {};
 		this.uniqueNameSequence[ prefix ] = 1;
+	} else if ( oldListKey in this.uniqueListKeys[ prefix ] ) {
+		return this.uniqueListKeys[ prefix ][ oldListKey ];
 	}
 
 	let result;
@@ -334,7 +335,7 @@ ve.dm.InternalListNodeGroup.prototype.getUniqueListKey = function ( oldListKey, 
 		// Skip values that already appear in the document, e.g. from previous edits
 	} while ( this.isKnownMainListKey( result ) );
 
-	this.uniqueListKeys[ oldListKey ] = result;
+	this.uniqueListKeys[ prefix ][ oldListKey ] = result;
 	return result;
 };
 
