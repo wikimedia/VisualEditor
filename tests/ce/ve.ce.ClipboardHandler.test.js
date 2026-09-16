@@ -293,8 +293,8 @@ QUnit.test( 'onCopy', ( assert ) => {
 		if ( caseItem.expectedText ) {
 			// The plain text comes from innerText, which depends on the layout, so
 			// browsers give different whitespace. Safari adds a blank line after a
-			// table.
-			const text = clipboardData.getData( 'text/plain' ).trim().replace( /\n{3,}/g, '\n\n' );
+			// table, and drops one after a <pre>.
+			const text = clipboardData.getData( 'text/plain' ).trim().replace( /\n+/g, '\n\n' );
 			assert.strictEqual( text, caseItem.expectedText, caseItem.msg + ': text' );
 		}
 		if ( !caseItem.noClipboardData ) {
