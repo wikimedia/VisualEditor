@@ -172,6 +172,8 @@
 	"visualeditor-languageinspector-title": "ভাষা",
 	"visualeditor-languageinspector-widget-changelang": "ভাষা খুঁজুন",
 	"visualeditor-languageinspector-widget-label-direction": "দিক",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "বাম থেকে ডানে",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "ডান থেকে বামে",
 	"visualeditor-languageinspector-widget-label-langcode": "ভাষা কোড",
 	"visualeditor-languageinspector-widget-label-language": "ভাষা",
 	"visualeditor-linkcontext-label-change": "পাঠ্য পরিবর্তন করুন",

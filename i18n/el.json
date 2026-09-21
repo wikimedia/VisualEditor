@@ -14,6 +14,7 @@
 			"NikosLikomitros",
 			"Nikosgranturismogt",
 			"Nikosguard",
+			"PrinceAzuka134",
 			"Tifa93"
 		]
 	},
@@ -53,6 +54,7 @@
 	"visualeditor-changedesc-link-removed": "Ο σύνδεσμος αφαιρέθηκε: $1",
 	"visualeditor-changedesc-list-indent": "Η εσοχή του στοιχείου της λίστας αυξήθηκε",
 	"visualeditor-changedesc-list-outdent": "Η εσοχή του στοιχείου της λίστας μειώθηκε",
+	"visualeditor-changedesc-list-style-indent": "Δαντελώνω",
 	"visualeditor-changedesc-no-key": "$1 άλλαξε σε $2",
 	"visualeditor-changedesc-set": "$1 ορίστηκε σε $2",
 	"visualeditor-changedesc-textstyle-added": "Μορφοποίηση κειμένου προστέθηκε: $1",
