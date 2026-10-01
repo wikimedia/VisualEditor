@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Ayaat123"
+		]
 	},
 	"visualeditor": "ظٲہِر اؠڈِٹ خانہٕ",
 	"visualeditor-align-desc-center": "مَنزَس",
@@ -80,7 +82,7 @@
 	"visualeditor-key-right": "دۄچھُن",
 	"visualeditor-key-space": "جاے",
 	"visualeditor-key-up": "ہیۆر",
-	"visualeditor-language-search-input-placeholder": "زَبان ناو یا زَبان کوڈ سٲتؠ کٔرِو تَلاش",
+	"visualeditor-language-search-input-placeholder": "زَبان ناو یا زَبان کوڈ سٟتؠ کٔرِو تَلاش",
 	"visualeditor-languagecontext-remove": "زَبان ہَٹٲوِو",
 	"visualeditor-languageinspector-title": "زَبان",
 	"visualeditor-languageinspector-widget-changelang": "زَبان کٔرِو تَلاش",
