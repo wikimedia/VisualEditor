@@ -131,7 +131,9 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 		// Generic HTML attributes
 		return ( /data-start=["']/i.test( html ) && /data-end=["']/i.test( html ) ) ||
 			// Query string added to links
-			/utm_source=chatgpt\.com/i.test( html );
+			/utm_source=chatgpt\.com/i.test( html ) ||
+			// Generated images (copy button)
+			/src=["']?https:\/\/images\.openai\.com\//i.test( html );
 	},
 	[ 'ai' ]
 ) );
@@ -143,6 +145,8 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 		// Generic HTML attributes
 		return /data-path-to-node=["']/i.test( html ) ||
 			/<response-element/i.test( html ) ||
+			// Response container (copy button)
+			/id=["']?model-response-message-content/i.test( html ) ||
 			// Attribute value added to links
 			/BardVeMetadataKey/i.test( html );
 	},
@@ -150,20 +154,40 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 ) );
 
 ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
+	// Google Search AI Overview and AI Mode
+	'googleOverview',
+	( clipboardData ) => /data-sfc-root=["']/i.test( clipboardData.getData( 'text/html' ) ),
+	[ 'ai' ]
+) );
+
+ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	'claude',
+	// This one only happens if you select the entire chat message
 	( clipboardData ) => /font-claude-/i.test( clipboardData.getData( 'text/html' ) ),
 	[ 'ai' ]
 ) );
 
 ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	'deepSeek',
-	( clipboardData ) => /ds-markdown-paragraph/i.test( clipboardData.getData( 'text/html' ) ),
+	( clipboardData ) => {
+		const html = clipboardData.getData( 'text/html' );
+		// Custom font in the computed style that Chrome adds to the selection
+		return /quote-cjk-patch/i.test( html ) ||
+			// This one only happens if you select the entire chat message
+			/ds-markdown-paragraph/i.test( html );
+	},
 	[ 'ai' ]
 ) );
 
 ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	'copilot',
-	( clipboardData ) => /id=["']?[^-]+-content-[0-9]+/i.test( clipboardData.getData( 'text/html' ) ),
+	( clipboardData ) => {
+		const html = clipboardData.getData( 'text/html' );
+		// Link color in the stylesheet that the copy handler adds
+		return /<style[^>]*>[^<]*color:\s*#464feb/i.test( html ) ||
+			// This one doesn't seem to appear any more, leaving it for a bit then will remove
+			/id=["']?[^-]+-content-[0-9]+/i.test( html );
+	},
 	[ 'ai' ]
 ) );
 

@@ -2340,6 +2340,37 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<p>Foo<img src="https://images.openai.com/static-rsc-4/abc?purpose=fullsize" alt="Image"></p>',
+				expectedRangeOrSelection: new ve.Range( 6 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'chatGPT', categories: [ 'ai' ] } ) ),
+								{
+									type: 'inlineImage',
+									attributes: {
+										src: 'https://images.openai.com/static-rsc-4/abc?purpose=fullsize',
+										alt: 'Image',
+										width: null,
+										height: null
+									},
+									annotations: [ ve.dm.example.getImportedAnnotation( { name: 'chatGPT', categories: [ 'ai' ] } ) ]
+								},
+								{ type: '/inlineImage' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from ChatGPT (image hosted by OpenAI)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
 				pasteHtml: '<p data-path-to-node="0">Foo</p>',
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				annotateImportedData: true,
@@ -2403,6 +2434,46 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<div _ngcontent-ng-c1339387189="" inline-copy-host="" class="markdown markdown-main-panel" id="model-response-message-contentr_6697ebefb8f62d5c" dir="ltr">Foo</div>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'gemini', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Gemini (model-response-message-content)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<div data-sfc-cp="" jsaction="" jscontroller="xUgpab#A1M9vc" data-sfc-root="ep" jsuid="AWr2Pc_0">Foo<!--TgQPHd|||[]--></div>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'googleOverview', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Google Search AI Mode (data-sfc-root)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
 				pasteHtml: '<p class="font-claude-response-body break-words whitespace-normal leading-[1.7]">Foo</span></span>',
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				annotateImportedData: true,
@@ -2420,6 +2491,26 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					]
 				],
 				msg: 'HTML from Claude'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<div style="--_prose-font-body: var(--font-claude-response, var(--cds-font-voice));"><div><p dir="ltr">Foo</p></div></div>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'claude', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Claude (CSS variable)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
@@ -2443,6 +2534,26 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<span style="color: rgb(15, 17, 21); font-family: quote-cjk-patch, Inter, system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif; font-size: 16px;">Foo</span>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'deepSeek', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from DeepSeek (font-family)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
 				pasteHtml: '<div id="Q3DpZeHLT4Yr9nf4FTr7E-content-0"><p><span style="white-space: pre-wrap;">Foo</span></p></div>',
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				annotateImportedData: true,
@@ -2460,6 +2571,26 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 					]
 				],
 				msg: 'HTML from Copilot'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<html contenteditable="false"><head><meta content="text/html; charset=us-ascii" http-equiv="Content-Type"><style>\na {\n    text-decoration: none;\n    color: #464feb;\n}\n</style></head><body><div style="font-family:\'Segoe UI\';font-size:14px"><p>Foo</p></div></body></html>',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				annotateImportedData: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'copilot', categories: [ 'ai' ] } ) )
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'HTML from Copilot (stylesheet)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
