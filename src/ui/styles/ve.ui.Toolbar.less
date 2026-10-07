@@ -57,8 +57,12 @@
 		min-height: 3em;
 	}
 
+	/* Every tool gets the same oversized width, then groups shrink in proportion
+	   to their content width (flex-shrink is weighted by flex-basis), so all tools
+	   end up equal width regardless of how many are in each group */
 	> .oo-ui-toolGroup {
-		flex: 1;
+		flex: 0 1 auto;
+		min-width: 0;
 	}
 
 	> .ve-ui-toolbar-group-back {
@@ -75,6 +79,8 @@
 	}
 
 	> .oo-ui-popupToolGroup {
+		width: 100vw;
+
 		> .oo-ui-popupToolGroup-handle {
 			> .oo-ui-iconElement-icon,
 			> .oo-ui-indicatorElement-indicator {
@@ -89,7 +95,7 @@
 
 		&.oo-ui-indicatorElement {
 			/* Indicator uses up whitespace, so increase width to make spacing look even */
-			flex: 1.2;
+			width: 120vw;
 
 			> .oo-ui-popupToolGroup-handle > .oo-ui-iconElement-icon {
 				margin-left: -1em;
@@ -106,8 +112,14 @@
 	> .oo-ui-barToolGroup {
 		text-align: center;
 
+		> .oo-ui-toolGroup-tools {
+			display: flex;
+		}
+
 		> .oo-ui-toolGroup-tools > .oo-ui-tool {
-			width: 100%;
+			flex: 0 1 auto;
+			width: 100vw;
+			min-width: 0;
 
 			> .oo-ui-tool-link {
 				padding: 0.875em 0;
