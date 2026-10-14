@@ -5,7 +5,7 @@
 		[ "visiblit(ies|y)", "visibilit$1" ],
 		[ "movablilties", "movabilities" ],
 		[ "inpsect(ors?|ion)", "inspect$1" ],
-		[ "\bteh\b", "the" ],
+		[ "\\bteh\\b", "the" ],
 		[ "intial(ization|ly|ized)", "initial$1" ],
 		[ "durring", "during" ],
 		[ "contian", "contain" ],
