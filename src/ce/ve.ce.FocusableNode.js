@@ -814,7 +814,8 @@ ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
  * Check if the rendering is visible
  *
  * "Visible", in this case, is defined as at least 10px × 4px
- * or 4px × 10px in dimensions (T307527)
+ * or 4px × 10px in dimensions (T307527). MathML only needs positive
+ * width and height, as a single visible symbol can be smaller than this.
  *
  * @return {boolean} The node has a visible rendering
  */
@@ -835,8 +836,9 @@ ve.ce.FocusableNode.prototype.hasRendering = function () {
 			width = rect.width;
 			height = rect.height;
 		}
+		const isMathML = element.namespaceURI === 'http://www.w3.org/1998/Math/MathML';
 		if (
-			checkSize( width, height ) ||
+			( isMathML ? width > 0 && height > 0 : checkSize( width, height ) ) ||
 			// Check width/height attribute as well. (T125767)
 			checkSize( element.width, element.height )
 		) {

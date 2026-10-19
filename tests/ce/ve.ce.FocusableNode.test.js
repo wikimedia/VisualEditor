@@ -87,7 +87,7 @@ QUnit.test( 'updateInvisibleIcon queues instead of measuring synchronously', ( a
 	}
 } );
 
-QUnit.test( 'MathML', ( assert ) => {
+QUnit.test( 'hasRendering', ( assert ) => {
 	const mathNS = 'http://www.w3.org/1998/Math/MathML';
 	const math = document.createElementNS( mathNS, 'math' );
 	// Firefox ignores CSS width/height on MathML elements, so size the content with mspace
@@ -95,15 +95,42 @@ QUnit.test( 'MathML', ( assert ) => {
 	mspace.setAttribute( 'width', '20px' );
 	mspace.setAttribute( 'height', '20px' );
 	math.appendChild( mspace );
+	const $math = $( math ),
+		$box = $( '<span>' ).css( { display: 'inline-block', width: 20, height: 20 } ),
+		$image = $( '<img>' ).attr( { width: 20, height: 20 } ).css( 'display', 'none' ),
+		hasRendering = ( $element ) => ve.ce.FocusableNode.prototype.hasRendering.call( { $element } );
 	// eslint-disable-next-line no-jquery/no-global-selector
-	$( '#qunit-fixture' ).append( math );
-	const mockViewNode = { $element: $( math ) };
+	$( '#qunit-fixture' ).append( $math, $box, $image );
 
 	assert.strictEqual( math.offsetWidth, undefined, 'MathML element has no offsetWidth' );
-	assert.true( ve.ce.FocusableNode.prototype.hasRendering.call( mockViewNode ), 'MathML element has a rendering' );
+	assert.true( hasRendering( $math ), 'MathML element has a rendering' );
+
+	mspace.setAttribute( 'width', '2px' );
+	mspace.setAttribute( 'height', '2px' );
+	const rect = math.getBoundingClientRect();
+	assert.true( rect.width > 0 && rect.width < 4 && rect.height > 0, 'MathML is below the usual size threshold' );
+	assert.true( hasRendering( $math ), 'Small MathML element has a rendering' );
 
 	mspace.setAttribute( 'width', '0' );
-	assert.false( ve.ce.FocusableNode.prototype.hasRendering.call( mockViewNode ), 'zero-width MathML element has no rendering' );
+	assert.false( hasRendering( $math ), 'zero-width MathML element has no rendering' );
 
-	mockViewNode.$element.remove();
+	const mi = document.createElementNS( mathNS, 'mi' );
+	math.replaceChild( mi, mspace );
+	$math.css( 'font-size', '8px' );
+	for ( const symbol of [ 'x', 't' ] ) {
+		mi.textContent = symbol;
+		assert.true( hasRendering( $math ), `Small MathML symbol ${ symbol } has a rendering` );
+	}
+	$math.hide();
+	assert.false( hasRendering( $math ), 'Hidden MathML has no rendering' );
+	$math.show().empty();
+	assert.false( hasRendering( $math ), 'Empty MathML has no rendering' );
+
+	assert.true( hasRendering( $box ), 'Visible HTML has a rendering' );
+	$box.width( 2 ).height( 2 );
+	assert.false( hasRendering( $box ), 'Small HTML is below the size threshold' );
+	$box.hide();
+	assert.false( hasRendering( $box ), 'Hidden HTML has no rendering' );
+	assert.true( hasRendering( $image ), 'Image dimensions are checked even without layout' );
+	assert.true( hasRendering( $math.add( $image ) ), 'Any rendered element is sufficient' );
 } );
