@@ -184,9 +184,7 @@ ve.ce.pasteSourceDetectors.register( new ve.ce.PasteSourceDetector(
 	( clipboardData ) => {
 		const html = clipboardData.getData( 'text/html' );
 		// Link color in the stylesheet that the copy handler adds
-		return /<style[^>]*>[^<]*color:\s*#464feb/i.test( html ) ||
-			// This one doesn't seem to appear any more, leaving it for a bit then will remove
-			/id=["']?[^-]+-content-[0-9]+/i.test( html );
+		return /<style[^>]*>[^<]*color:\s*#464feb/i.test( html );
 	},
 	[ 'ai' ]
 ) );

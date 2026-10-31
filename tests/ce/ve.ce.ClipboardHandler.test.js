@@ -2554,26 +2554,6 @@ QUnit.test( 'beforePaste/afterPaste', ( assert ) => {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml: '<div id="Q3DpZeHLT4Yr9nf4FTr7E-content-0"><p><span style="white-space: pre-wrap;">Foo</span></p></div>',
-				expectedRangeOrSelection: new ve.Range( 4 ),
-				annotateImportedData: true,
-				expectedOps: [
-					[
-						{ type: 'retain', length: 1 },
-						{
-							type: 'replace',
-							insert: [
-								...ve.dm.example.annotateText( 'Foo', ve.dm.example.getImportedAnnotation( { name: 'copilot', categories: [ 'ai' ] } ) )
-							],
-							remove: []
-						},
-						{ type: 'retain', length: docLen - 1 }
-					]
-				],
-				msg: 'HTML from Copilot'
-			},
-			{
-				rangeOrSelection: new ve.Range( 1 ),
 				pasteHtml: '<html contenteditable="false"><head><meta content="text/html; charset=us-ascii" http-equiv="Content-Type"><style>\na {\n    text-decoration: none;\n    color: #464feb;\n}\n</style></head><body><div style="font-family:\'Segoe UI\';font-size:14px"><p>Foo</p></div></body></html>',
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				annotateImportedData: true,
