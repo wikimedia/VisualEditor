@@ -4,6 +4,7 @@
 		"stylelint-config-wikimedia/mediawiki"
 	],
 	"rules": {
+		"wikimedia/selector-class-prefix": null,
 		"selector-class-pattern": "^(ve|oo-ui)-",
 		"declaration-property-unit-disallowed-list": null
 	}
