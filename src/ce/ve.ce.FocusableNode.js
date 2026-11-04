@@ -827,8 +827,16 @@ ve.ce.FocusableNode.prototype.hasRendering = function () {
 	}
 
 	this.$element.each( ( i, element ) => {
+		let width = element.offsetWidth;
+		let height = element.offsetHeight;
+		// Non-HTML elements (e.g. MathML) have no offsetWidth/offsetHeight (T443551)
+		if ( width === undefined && element.getBoundingClientRect ) {
+			const rect = element.getBoundingClientRect();
+			width = rect.width;
+			height = rect.height;
+		}
 		if (
-			checkSize( element.offsetWidth, element.offsetHeight ) ||
+			checkSize( width, height ) ||
 			// Check width/height attribute as well. (T125767)
 			checkSize( element.width, element.height )
 		) {

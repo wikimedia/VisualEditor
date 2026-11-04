@@ -86,3 +86,24 @@ QUnit.test( 'updateInvisibleIcon queues instead of measuring synchronously', ( a
 		pending.clear();
 	}
 } );
+
+QUnit.test( 'MathML', ( assert ) => {
+	const mathNS = 'http://www.w3.org/1998/Math/MathML';
+	const math = document.createElementNS( mathNS, 'math' );
+	// Firefox ignores CSS width/height on MathML elements, so size the content with mspace
+	const mspace = document.createElementNS( mathNS, 'mspace' );
+	mspace.setAttribute( 'width', '20px' );
+	mspace.setAttribute( 'height', '20px' );
+	math.appendChild( mspace );
+	// eslint-disable-next-line no-jquery/no-global-selector
+	$( '#qunit-fixture' ).append( math );
+	const mockViewNode = { $element: $( math ) };
+
+	assert.strictEqual( math.offsetWidth, undefined, 'MathML element has no offsetWidth' );
+	assert.true( ve.ce.FocusableNode.prototype.hasRendering.call( mockViewNode ), 'MathML element has a rendering' );
+
+	mspace.setAttribute( 'width', '0' );
+	assert.false( ve.ce.FocusableNode.prototype.hasRendering.call( mockViewNode ), 'zero-width MathML element has no rendering' );
+
+	mockViewNode.$element.remove();
+} );
