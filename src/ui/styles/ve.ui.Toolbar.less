@@ -50,6 +50,11 @@
 
 /* Mobile toolbar */
 
+.ve-ui-toolbar.ve-ui-targetToolbar-mobile > .oo-ui-toolbar-bar {
+	/* Shrink as a flex item, e.g. when the toolbar has other content, so the tools below can too */
+	min-width: 0;
+}
+
 .ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools {
 	display: flex;
 
