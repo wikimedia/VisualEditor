@@ -172,6 +172,8 @@
 	"visualeditor-languageinspector-title": "Jazyk",
 	"visualeditor-languageinspector-widget-changelang": "Najít jazyk",
 	"visualeditor-languageinspector-widget-label-direction": "Směr",
+	"visualeditor-languageinspector-widget-label-direction-ltr": "Zleva doprava",
+	"visualeditor-languageinspector-widget-label-direction-rtl": "Zprava doleva",
 	"visualeditor-languageinspector-widget-label-langcode": "Kód jazyka",
 	"visualeditor-languageinspector-widget-label-language": "Jazyk",
 	"visualeditor-linkcontext-label-change": "Změnit text",
