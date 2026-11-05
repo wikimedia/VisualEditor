@@ -4,8 +4,6 @@
  * @copyright See AUTHORS.txt
  */
 
-/* global difflib,diffview */
-
 ( function ( QUnit ) {
 	/**
 	 * Plugin for QUnit.
@@ -88,30 +86,6 @@
 		return value instanceof ve.dm.Node || value instanceof ve.ce.Node ?
 			getNodeTreeSummary( value ) :
 			value;
-	}
-
-	/**
-	 * Undo what QUnit's escapeText does.
-	 *
-	 * @ignore
-	 * @param {string} s
-	 * @return {string}
-	 */
-	function unescapeText( s ) {
-		return s.replace( /&(#039|quot|lt|gt|amp);/g, ( match, seq ) => {
-			switch ( seq ) {
-				case '#039':
-					return '\'';
-				case 'quot':
-					return '"';
-				case 'lt':
-					return '<';
-				case 'gt':
-					return '>';
-				case 'amp':
-					return '&';
-			}
-		} );
 	}
 
 	/**
@@ -370,25 +344,134 @@
 		} );
 	};
 
+	/* eslint-disable mediawiki/no-storage */
+	let sideBySide = true;
+	try {
+		sideBySide = localStorage.getItem( 've-qunit-diff-sideBySide' ) !== '0';
+	} catch ( e ) {}
+
+	function getToggleLabel() {
+		return sideBySide ? 'Inline' : 'Side by side';
+	}
+
+	$( document ).on( 'click', '.ve-qunit-diff-toggle', ( e ) => {
+		const $doc = $( e.delegateTarget );
+		sideBySide = !sideBySide;
+		try {
+			localStorage.setItem( 've-qunit-diff-sideBySide', sideBySide ? '1' : '0' );
+		} catch ( err ) {}
+		$doc.find( '.ve-qunit-diff-toggle' ).text( getToggleLabel() );
+		$doc.find( '.ve-qunit-diff-inline' ).prop( 'hidden', sideBySide );
+		$doc.find( '.ve-qunit-diff-split' ).prop( 'hidden', !sideBySide );
+	} );
+	/* eslint-enable mediawiki/no-storage */
+
+	function splitLines( text ) {
+		return text.match( /[^\n]*\n|[^\n]+$/g ) || [];
+	}
+
+	/**
+	 * Render a line-level diff as both inline and side-by-side HTML
+	 *
+	 * @ignore
+	 * @param {Array} diffs Line-level diff-match-patch diffs
+	 * @param {number} context Unchanged lines to show around each change
+	 * @return {string} HTML
+	 */
+	function renderLineDiff( diffs, context ) {
+		let inline = '',
+			rows = '',
+			oLine = 0,
+			nLine = 0;
+
+		function cells( num, line, tag ) {
+			if ( line === undefined ) {
+				return '<td class="ve-qunit-diff-num"></td><td class="ve-qunit-diff-empty"></td>';
+			}
+			const html = ve.escapeHtml( line.replace( /\n$/, '' ) );
+			return '<td class="ve-qunit-diff-num">' + num + '</td>' +
+				'<td>' + ( tag ? '<' + tag + '>' + html + '</' + tag + '>' : html ) + '</td>';
+		}
+
+		for ( let i = 0; i < diffs.length; i++ ) {
+			const [ op, text ] = diffs[ i ];
+			const lines = splitLines( text );
+			if ( op === 0 ) {
+				// Collapse unchanged lines outside the context window
+				const head = i > 0 ? context : 0,
+					tail = i < diffs.length - 1 ? context : 0,
+					skipped = lines.length - head - tail,
+					shown = skipped > 1 ?
+						[ ...lines.slice( 0, head ), null, ...lines.slice( lines.length - tail ) ] :
+						lines;
+				for ( const line of shown ) {
+					if ( line === null ) {
+						const marker = '⋮ ' + skipped + ' unchanged lines';
+						oLine += skipped;
+						nLine += skipped;
+						inline += marker + '\n';
+						rows += '<tr><td class="ve-qunit-diff-skip" colspan="4">' + marker + '</td></tr>';
+					} else {
+						inline += ve.escapeHtml( line );
+						rows += '<tr>' + cells( ++oLine, line ) + cells( ++nLine, line ) + '</tr>';
+					}
+				}
+				continue;
+			}
+			let oLines = [],
+				nLines = [];
+			if ( op === -1 ) {
+				oLines = lines;
+				// A delete followed by an insert is a replacement, so pair up their lines
+				if ( i + 1 < diffs.length && diffs[ i + 1 ][ 0 ] === 1 ) {
+					nLines = splitLines( diffs[ ++i ][ 1 ] );
+				}
+			} else {
+				nLines = lines;
+			}
+			if ( oLines.length ) {
+				inline += '<del>' + ve.escapeHtml( oLines.join( '' ) ) + '</del>';
+			}
+			if ( nLines.length ) {
+				inline += '<ins>' + ve.escapeHtml( nLines.join( '' ) ) + '</ins>';
+			}
+			for ( let j = 0; j < Math.max( oLines.length, nLines.length ); j++ ) {
+				rows += '<tr>' +
+					cells( j < oLines.length ? ++oLine : null, oLines[ j ], 'del' ) +
+					cells( j < nLines.length ? ++nLine : null, nLines[ j ], 'ins' ) +
+					'</tr>';
+			}
+		}
+
+		return '<button type="button" class="ve-qunit-diff-toggle">' + getToggleLabel() + '</button>' +
+			'<div class="ve-qunit-diff-inline"' + ( sideBySide ? ' hidden' : '' ) + '>' + inline + '</div>' +
+			'<table class="ve-qunit-diff-split"' + ( sideBySide ? '' : ' hidden' ) + '>' +
+			'<colgroup><col class="ve-qunit-diff-numcol"><col><col class="ve-qunit-diff-numcol"><col></colgroup>' +
+			'<tr><th colspan="2">Expected</th><th colspan="2">Result</th></tr>' +
+			rows +
+			'</table>';
+	}
+
 	QUnit.diff = function ( o, n ) {
-		// o and n are partially HTML escaped by QUnit. As difflib does
-		// its own escaping we should unescape them first.
-		const oLines = difflib.stringAsLines( unescapeText( o ) ),
-			nLines = difflib.stringAsLines( unescapeText( n ) ),
-			sm = new difflib.SequenceMatcher( oLines, nLines ),
-			opcodes = sm.get_opcodes(),
-			$div = $( '<div>' );
+		const DiffMatchPatch = ve.DiffMatchPatch.super,
+			dmp = new DiffMatchPatch();
 
-		$div.append( diffview.buildView( {
-			baseTextLines: oLines,
-			newTextLines: nLines,
-			opcodes,
-			baseTextName: 'Expected',
-			newTextName: 'Result',
-			contextSize: 10,
-			viewType: 0
-		} ) );
+		if ( o.includes( '\n' ) || n.includes( '\n' ) ) {
+			/* eslint-disable no-underscore-dangle */
+			const encoded = dmp.diff_linesToChars_( o, n );
+			const diffs = dmp.diff_main( encoded.chars1, encoded.chars2, false );
+			dmp.diff_charsToLines_( diffs, encoded.lineArray );
+			/* eslint-enable no-underscore-dangle */
+			return renderLineDiff( diffs, 10 );
+		}
 
-		return $div.html();
+		const diffs = dmp.diff_main( o, n );
+		dmp.diff_cleanupSemantic( diffs );
+		return diffs.map( ( [ op, text ] ) => {
+			const html = ve.escapeHtml( text );
+			return op === 1 ? '<ins>' + html + '</ins>' :
+				op === -1 ? '<del>' + html + '</del>' :
+					html;
+		} ).join( '' );
 	};
 }( QUnit ) );

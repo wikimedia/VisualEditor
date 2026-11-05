@@ -157,11 +157,6 @@ jQuery Client
  – MIT license
  – jquery-client maintainers and other contributors
 
-jsdifflib
- – http://snowtide.com/jsdifflib
- – BSD license
- – Snowtide Informatics Systems, Inc.
-
 OOjs
  – https://www.mediawiki.org/wiki/OOjs
  – MIT license

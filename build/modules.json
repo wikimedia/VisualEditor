@@ -27,15 +27,6 @@
 			{ "file": "node_modules/qunit/qunit/qunit.css", "test": true }
 		]
 	},
-	"jsdifflib": {
-		"scripts": [
-			"lib/jsdifflib/diffview.js",
-			"lib/jsdifflib/difflib.js"
-		],
-		"styles": [
-			{ "file": "lib/jsdifflib/diffview.css", "test": true }
-		]
-	},
 	"treeDiffer": {
 		"scripts": [
 			"lib/treeDiffer/treeDiffer-dist.js"
@@ -1013,8 +1004,10 @@
 			"tests/ce/imetests/leftarrow-firefox-ubuntu-none.js",
 			"tests/ce/imetests/leftarrow-ie9-win7-none.js"
 		],
+		"styles": [
+			{ "file": "tests/ve.qunit.css", "test": true }
+		],
 		"dependencies": [
-			"jsdifflib",
 			"qunit",
 			"visualEditor.desktop.standalone.wikimediaui",
 			"visualEditor.mobile.build",
