@@ -1,0 +1,53 @@
+/*!
+ * VisualEditor plugin for QUnit styles.
+ *
+ * @copyright See AUTHORS.txt
+ */
+
+/* Must beat QUnit's #qunit-tests rules */
+/* stylelint-disable selector-max-id */
+
+.ve-qunit-diff-toggle {
+	float: right;
+	margin-left: 1em;
+}
+
+#qunit-tests .ve-qunit-diff-split {
+	width: 100%;
+	table-layout: fixed;
+}
+
+#qunit-tests .ve-qunit-diff-split th {
+	text-align: left;
+	padding: 0 0.5em;
+}
+
+#qunit-tests .ve-qunit-diff-split td {
+	padding: 0 0.5em;
+}
+
+#qunit-tests .ve-qunit-diff-split del,
+#qunit-tests .ve-qunit-diff-split ins {
+	display: block;
+}
+
+.ve-qunit-diff-numcol {
+	width: 3em;
+}
+
+#qunit-tests .ve-qunit-diff-num {
+	color: #72777d;
+	text-align: right;
+	user-select: none;
+}
+
+#qunit-tests .ve-qunit-diff-empty {
+	background-color: #f8f9fa;
+}
+
+#qunit-tests .ve-qunit-diff-skip {
+	color: #72777d;
+	background-color: #eaecf0;
+	text-align: center;
+	user-select: none;
+}
