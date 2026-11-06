@@ -1,11 +1,11 @@
 Parse CSV with JavaScript
 ========================================
 
-Papa Parse is the [fastest](http://jsperf.com/javascript-csv-parsers/4) in-browser CSV (or delimited text) parser for JavaScript. It is reliable and correct according to [RFC 4180](https://tools.ietf.org/html/rfc4180), and it comes with these features:
+Papa Parse is the fastest in-browser CSV (or delimited text) parser for JavaScript. It is reliable and correct according to [RFC 4180](https://tools.ietf.org/html/rfc4180), and it comes with these features:
 
 - Easy to use
 - Parse CSV files directly (local or over the network)
-- Fast mode ([is really fast](http://jsperf.com/javascript-csv-parsers/3))
+- Fast mode
 - Stream large files (even via HTTP)
 - Reverse parsing (converts JSON to CSV)
 - Auto-detect delimiter
@@ -13,31 +13,40 @@ Papa Parse is the [fastest](http://jsperf.com/javascript-csv-parsers/4) in-brows
 - Header row support
 - Pause, resume, abort
 - Can convert numbers and booleans to their types
-- Optional jQuery integration to get files from `<input type="file">` elements
 - One of the only parsers that correctly handles line-breaks and quotations
 
-Papa Parse has **no dependencies** - not even jQuery.
+Papa Parse has **no dependencies**.
 
 Install
 -------
 
 papaparse is available on [npm](https://www.npmjs.com/package/papaparse). It
 can be installed with the following command:
-
-    npm install papaparse
+```shell
+npm install papaparse
+```
 
 If you don't want to use npm, [papaparse.min.js](https://unpkg.com/papaparse@latest/papaparse.min.js) can be downloaded to your project source.
 
+Usage
+-----
+```js
+import Papa from 'papaparse';
+
+Papa.parse(file, config);
+    
+const csv = Papa.unparse(data[, config]);
+```
 
 Homepage & Demo
 ----------------
 
-- [Homepage](http://papaparse.com)
-- [Demo](http://papaparse.com/demo)
+- [Homepage](https://www.papaparse.com)
+- [Demo](https://www.papaparse.com/demo)
 
 To learn how to use Papa Parse:
 
-- [Documentation](http://papaparse.com/docs)
+- [Documentation](https://www.papaparse.com/docs)
 
 The website is hosted on [Github Pages](https://pages.github.com/). Its content is also included in the docs folder of this repository. If you want to contribute on it just clone the master of this repository and open a pull request.
 
@@ -52,7 +61,7 @@ Papa Parse can also parse in a node streaming style which makes `.pipe` availabl
 Get Started
 -----------
 
-For usage instructions, see the [homepage](http://papaparse.com) and, for more detail, the [documentation](http://papaparse.com/docs).
+For usage instructions, see the [homepage](https://www.papaparse.com) and, for more detail, the [documentation](https://www.papaparse.com/docs).
 
 Tests
 -----
