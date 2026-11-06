@@ -58,6 +58,12 @@ module.exports = function ( grunt ) {
 			return path.relative( 'dist', targetAbsolute );
 		};
 
+		// Pass plain CSS through without LESS parsing it, as it may use syntax LESS
+		// doesn't support (e.g. escaped custom property names in color-picker)
+		if ( filepath.endsWith( '.css' ) && !/url\(/.test( src ) ) {
+			return `@import (inline) '${ makeRelative( path.basename( filepath ) ) }';\n`;
+		}
+
 		src = src.replace(
 			/@import ["'](.*)["']/g,
 			( ...args ) => `@import '${ makeRelative( args[ 1 ] ) }'`

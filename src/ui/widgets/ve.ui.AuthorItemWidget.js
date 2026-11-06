@@ -45,22 +45,31 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 		this.input.on( 'change', this.emit.bind( this, 'change' ) );
 
 		this.colorPicker = new CP( this.$color[ 0 ] );
-		this.colorPicker.on( 'change', ( color ) => {
-			this.color = color;
-			this.$color.css( 'background-color', '#' + color );
+		this.colorPicker.on( 'change', ( r, g, b ) => {
+			// Also fired by set() and, with black, on creation
+			if ( !this.colorPicker.visible ) {
+				return;
+			}
+			this.color = this.colorPicker.color( r, g, b, 1 ).slice( 1 );
+			this.$color.css( 'background-color', '#' + this.color );
 		} );
 		this.colorPicker.on( 'exit', () => {
 			if ( this.color !== null ) {
 				this.emit( 'changeColor', this.color );
 			}
 		} );
+		// Handling 'focus' replaces the default of opening in <body>
+		this.colorPicker.on( 'focus', () => {
+			if ( !this.colorPicker.visible ) {
+				this.colorPicker.enter( $overlay[ 0 ] );
+			}
+		} );
+		this.colorPicker.on( 'fit', () => {
+			this.colorPicker.self.style.left = this.$element[ 0 ].offsetLeft + 'px';
+			this.colorPicker.self.style.top = this.$element[ 0 ].offsetTop + 'px';
+		} );
 
-		this.colorPicker.picker.classList.add( 've-ui-authorItemWidget-colorPicker' );
-		this.colorPicker.fit = () => {
-			this.colorPicker.picker.style.left = this.$element[ 0 ].offsetLeft + 'px';
-			this.colorPicker.picker.style.top = this.$element[ 0 ].offsetTop + 'px';
-			$overlay[ 0 ].appendChild( this.colorPicker.picker );
-		};
+		this.colorPicker.self.classList.add( 've-ui-authorItemWidget-colorPicker' );
 
 		this.$element
 			.addClass( 've-ui-authorItemWidget-editable' )
@@ -129,7 +138,7 @@ ve.ui.AuthorItemWidget.prototype.update = function () {
 
 	if ( this.editable ) {
 		this.input.setValue( this.name );
-		this.colorPicker.set( '#' + this.color );
+		this.colorPicker.set( ...CP.HEX( '#' + this.color ) );
 	} else {
 		// TODO: Handle empty names with a message
 		this.setLabel( this.name || '…' );

@@ -19,13 +19,25 @@
 # lib/codex-design-tokens is managed by `grunt copy:codex` as an npm devDependency instead.
 
 color-picker:
-  # 1.3.5 predates the earliest upstream tag (v1.4.2)
   name: Color Picker
   authors: Taufik Nurrohman and other contributors
-  type: doc-only
+  type: multi-file
   license: MIT
-  version: 1.3.5
+  version: 2.4.4
   homepage: https://github.com/taufik-nurrohman/color-picker
+  files:
+    color-picker.js:
+      src: https://cdn.jsdelivr.net/npm/@taufik-nurrohman/color-picker@2.4.4/index.js
+      integrity: sha384-S5M7k9ezKM6s7xSYGP6y5j5kG8Fvpps54J+pLt7Lut/l1k/RFFpz/gqU9wyz+2Bp
+    color-picker.css:
+      src: https://cdn.jsdelivr.net/npm/@taufik-nurrohman/color-picker@2.4.4/index.css
+      integrity: sha384-CTNkmr7zFEmJ5c7JfDz8ASsiRW5wihKuWlWjnYK6YlAJdEUX03YJf8vryQ88N0dD
+    LICENSE:
+      src: https://cdn.jsdelivr.net/npm/@taufik-nurrohman/color-picker@2.4.4/LICENSE
+      integrity: sha384-tIABNdkDpSPYjRFpff0FZ4ET8zojXetEiYHCWo0NYXvczO3mNS7KuyCkjmV2z59l
+    README.md:
+      src: https://cdn.jsdelivr.net/npm/@taufik-nurrohman/color-picker@2.4.4/README.md
+      integrity: sha384-lhG66mU/MbKKwCJ94Q93WY5iTWvjynKpWuMHZELtW56N/T5HonH1grHwbMdx0JoF
 
 diff-match-patch:
   # Pre-GitHub code.google.com release. The GitHub version (e.g. 62f2e689) breaks ve.DiffMatchPatch.
