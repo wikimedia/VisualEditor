@@ -1,0 +1,222 @@
+# Vendored libraries in lib/, managed by bin/manage-foreign-resources.js
+#
+# Same format as MediaWiki core's resources/lib/foreign-resources.yaml.
+#
+# To add or update a library (requires Node 21+):
+# 1. Set `src` (and `version`). For npm packages use the registry tarball, and copy
+#    the published hash from `npm view <package>@<version> dist.integrity`.
+#    For other sources, leave `integrity` empty and run `npm run foreign-resources make-sri <name>`.
+# 2. Run `npm run foreign-resources update <name>`
+#
+# `npm run foreign-resources verify` checks that lib/ matches upstream exactly.
+#
+# Types: file, multi-file, tar, zip, doc-only (see core's file for details).
+# For tar/zip, `dest` maps globs within the archive to a subdirectory of lib/<name>/
+# (null for the root). `exclude` (not in core) lists globs, relative to lib/<name>/, to leave out.
+#
+# `name` (not in core) and `authors` are used for the MediaWiki extension's Special:Version credits.
+#
+# lib/codex-design-tokens is managed by `grunt copy:codex` as an npm devDependency instead.
+
+color-picker:
+  # 1.3.5 predates the earliest upstream tag (v1.4.2)
+  name: Color Picker
+  authors: Taufik Nurrohman and other contributors
+  type: doc-only
+  license: MIT
+  version: 1.3.5
+  homepage: https://github.com/taufik-nurrohman/color-picker
+
+diff-match-patch:
+  # Pre-GitHub code.google.com release. The GitHub version (e.g. 62f2e689) breaks ve.DiffMatchPatch.
+  name: Diff Match and Patch
+  authors: Google, Inc.
+  type: doc-only
+  license: Apache-2.0
+  homepage: https://github.com/google/diff-match-patch
+
+dompurify:
+  name: DOMPurify
+  authors: Mario Heiderich and other contributors
+  type: tar
+  license: MPL-2.0 OR Apache-2.0
+  version: 2.5.7
+  homepage: https://github.com/cure53/DOMPurify
+  src: https://registry.npmjs.org/dompurify/-/dompurify-2.5.7.tgz
+  integrity: sha512-2q4bEI+coQM8f5ez7kt2xclg1XsecaV9ASJk/54vwlfRRNQfDqJz2pzQ8t0Ix/ToBpXlVjrRIx7pFC/o8itG2Q==
+  dest:
+    package/dist/purify.js:
+    package/dist/purify.js.map:
+    package/LICENSE:
+
+jquery:
+  type: tar
+  license: MIT
+  version: 3.5.0
+  homepage: https://jquery.com/
+  src: https://registry.npmjs.org/jquery/-/jquery-3.5.0.tgz
+  integrity: sha512-Xb7SVYMvygPxbFMpTFQiHh1J7HClEaThguL15N/Gg37Lri/qKyhRGZYzHRyLH8Stq3Aow0LsHO2O2ci86fCrNQ==
+  dest:
+    package/dist/jquery.js:
+    package/AUTHORS.txt:
+    package/LICENSE.txt:
+    package/README.md:
+
+jquery.client:
+  type: tar
+  license: MIT
+  version: 2.0.0
+  homepage: https://gerrit.wikimedia.org/g/jquery-client
+  src: https://registry.npmjs.org/jquery-client/-/jquery-client-2.0.0.tgz
+  integrity: sha512-a5+Idkmtj9wl/SuFDz4V64JotFjDXgoTNrUt7I3pueXJFJl0DKbi246SVtLE/LggtuezXr29+3jb0La9MU4QaA==
+  dest:
+    package/jquery.client.js:
+    package/AUTHORS.txt:
+    package/LICENSE-MIT:
+    package/README.md:
+
+jquery.i18n:
+  type: tar
+  license: MIT OR GPL-2.0-or-later
+  version: 1.0.9
+  homepage: https://github.com/wikimedia/jquery.i18n
+  src: https://registry.npmjs.org/@wikimedia/jquery.i18n/-/jquery.i18n-1.0.9.tgz
+  integrity: sha512-g6nlCAeYX4n9o6CyCJniNnEB0wGSo1o6sw2WPneb0wOtWiGDFUCZtlkmgvPLL+ynkYRaf5IJiq/CNGQ7p6nB+Q==
+  dest:
+    package/src:
+    package/{CODE_OF_CONDUCT.md,CREDITS,GPL-LICENSE,MIT-LICENSE,README.md}:
+    package/libs/CLDRPluralRuleParser/{LICENSE.txt,README.md}: libs/CLDRPluralRuleParser
+    package/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js: libs/CLDRPluralRuleParser/src
+
+jquery.uls:
+  name: Universal Language Selector data
+  authors: Wikimedia Language Engineering Team and other contributors
+  type: multi-file
+  license: MIT OR GPL-2.0-or-later
+  version: ad2600a3bce4688c6c5ca4f4654a5b54210fe066
+  homepage: https://github.com/wikimedia/jquery.uls
+  files:
+    src/jquery.uls.data.js:
+      src: https://raw.githubusercontent.com/wikimedia/jquery.uls/ad2600a3bce4688c6c5ca4f4654a5b54210fe066/src/jquery.uls.data.js
+      integrity: sha384-JvwgdXpkBl1KWJ1gvj5m4X83FdF7r3O8dZ5GDjZwEdERuNeFWTlWUyv2OhWXxL9V
+    src/jquery.uls.data.utils.js:
+      src: https://raw.githubusercontent.com/wikimedia/jquery.uls/ad2600a3bce4688c6c5ca4f4654a5b54210fe066/src/jquery.uls.data.utils.js
+      integrity: sha384-WaYX0FSMu4L3SOMiHKb1vN8+94Lbx9TIMVdWiYVs7Y00Naz7gbKVM2lBUMnMSrA2
+    CREDITS:
+      src: https://raw.githubusercontent.com/wikimedia/jquery.uls/ad2600a3bce4688c6c5ca4f4654a5b54210fe066/CREDITS
+      integrity: sha384-qaQSwhWd8J2Q8yPsQS+DO9o4HNfz9pNhaWxL18Z2Ho3SiCWJzkkgtSDsWhUDLur4
+    GPL-LICENSE:
+      src: https://raw.githubusercontent.com/wikimedia/jquery.uls/ad2600a3bce4688c6c5ca4f4654a5b54210fe066/GPL-LICENSE
+      integrity: sha384-Eg4v2h08h6WDTJTVZnAk6LrxcIOsbVsAcPaas5+8aDyxRBmWdLvGK6NPQ7Ngzcv1
+    MIT-LICENSE:
+      src: https://raw.githubusercontent.com/wikimedia/jquery.uls/ad2600a3bce4688c6c5ca4f4654a5b54210fe066/MIT-LICENSE
+      integrity: sha384-tn0NDKR2QnSY3LDnCPX7lqJfKnwFLaTAWUoKL7c+ZACi5pMz5z/mIsmZc5iZH+68
+
+less:
+  type: tar
+  license: Apache-2.0
+  version: 4.1.2
+  homepage: https://lesscss.org/
+  src: https://registry.npmjs.org/less/-/less-4.1.2.tgz
+  integrity: sha512-EoQp/Et7OSOVu0aJknJOtlXZsnr8XE8KwuzTHOLeVSEx8pVWUICc8Q0VYRHgzyjX78nMEyC/oztWFbgyhtNfDA==
+  dest:
+    package/dist/less.js:
+
+oojs:
+  type: tar
+  license: MIT
+  version: 7.0.1
+  homepage: https://www.mediawiki.org/wiki/OOjs
+  src: https://registry.npmjs.org/oojs/-/oojs-7.0.1.tgz
+  integrity: sha512-DDN+B6PY29na74CyAB4bl0FgBM3ze31wd7LICghoWkd+SXrvn0W0GA1HurYdVESfBoIokqLuejk6yrbtq4PTTA==
+  dest:
+    package/dist/oojs.js:
+    package/{AUTHORS.txt,LICENSE-MIT,README.md}:
+
+oojs-ui:
+  type: tar
+  license: MIT
+  version: 0.54.2
+  homepage: https://www.mediawiki.org/wiki/OOUI
+  src: https://registry.npmjs.org/oojs-ui/-/oojs-ui-0.54.2.tgz
+  integrity: sha512-O9IlgcH4HWA9SU/REyC9AKu2rEVwFNiclRK3VqFjNIUy4I48Q9ROORztHdWyXcIDn7Es7oQqw8H1ltDAMBk5Fg==
+  dest:
+    package/dist/*:
+  # VE requires SVG support, so drops PNG fallbacks
+  exclude:
+    - oojs-ui*.min.*
+    - oojs-ui.js
+    - themes/**/images/*/*.png
+
+papaparse:
+  name: PapaParse
+  authors: Matthew Holt and other contributors
+  type: tar
+  license: MIT
+  version: 5.3.2
+  homepage: https://www.papaparse.com/
+  src: https://registry.npmjs.org/papaparse/-/papaparse-5.3.2.tgz
+  integrity: sha512-6dNZu0Ki+gyV0eBsFKJhYr+MdQYAzFUGlBMNj3GNrmHxmz1lfRa24CjFObPXtjcetlOv5Ad299MhIK0znp3afw==
+  dest:
+    package/{papaparse.js,LICENSE,README.md}:
+
+peerjs:
+  # Provenance unknown: matches no published 1.4.x build
+  name: PeerJS
+  authors: Michelle Bu, Eric Zhang and other contributors
+  type: doc-only
+  license: MIT
+  version: 1.4.7
+  homepage: https://peerjs.com/
+
+rangefix:
+  name: RangeFix
+  authors: Ed Sanders and other contributors
+  type: tar
+  license: MIT
+  version: 0.3.1
+  homepage: https://github.com/edg2s/rangefix
+  src: https://registry.npmjs.org/rangefix/-/rangefix-0.3.1.tgz
+  integrity: sha512-lHnWE/9LnYkQvuk+oSpFVdhJWS5vvd+fXQHd02ulHLkHq3qzeXJPxCl2zWHhQUag4dWwIUz9JWNInaJAC/Byrg==
+  dest:
+    package/src/rangefix.js:
+    package/{LICENSE.txt,README.md}:
+
+socket.io-client:
+  name: socket.io-client
+  authors: Guillermo Rauch and other contributors
+  type: tar
+  license: MIT
+  version: 4.4.0
+  homepage: https://socket.io/
+  src: https://registry.npmjs.org/socket.io-client/-/socket.io-client-4.4.0.tgz
+  integrity: sha512-g7riSEJXi7qCFImPow98oT8X++MSsHz6MMFRXkWNJ6uEROSHOa3kxdrsYWMq85dO+09CFMkcqlpjvbVXQl4z6g==
+  dest:
+    package/dist/socket.io.min.js{,.map}:
+    package/LICENSE:
+
+treeDiffer:
+  name: Tree Differ
+  authors: Thalia Chan
+  type: tar
+  license: MIT
+  version: 1.2.0
+  homepage: https://github.com/Tchanders/treeDiffer.js
+  src: https://registry.npmjs.org/treediffer/-/treediffer-1.2.0.tgz
+  integrity: sha512-diYyfhTsFXtEtlT2JGXwNNTCKFpIdz7kMHVXqckY7kYLvPAQmUfqRMBy2sJ0fcLGGVCrc6q/VN5wlnLCO4RkTQ==
+  dest:
+    package/dist/treeDiffer-dist.js{,.map}:
+    package/{LICENSE.txt,README.md}:
+
+unicodejs:
+  name: UnicodeJS
+  authors: Ed Sanders, David Chan and other contributors
+  type: tar
+  license: MIT
+  version: 15.0.0
+  homepage: https://gerrit.wikimedia.org/g/unicodejs
+  src: https://registry.npmjs.org/unicodejs/-/unicodejs-15.0.0.tgz
+  integrity: sha512-5JCBQu+YWoZYqiT87NI7C+jkyFbSp6YCYHWCz7TnRAvampMIfm0PjuX8fNF+LttPPa3TL7q9nXVizYAMwdWPUA==
+  dest:
+    package/dist/*:
+    package/LICENSE.txt:
