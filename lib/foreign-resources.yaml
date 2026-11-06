@@ -213,10 +213,10 @@ unicodejs:
   authors: Ed Sanders, David Chan and other contributors
   type: tar
   license: MIT
-  version: 15.0.0
+  version: 18.0.1
   homepage: https://gerrit.wikimedia.org/g/unicodejs
-  src: https://registry.npmjs.org/unicodejs/-/unicodejs-15.0.0.tgz
-  integrity: sha512-5JCBQu+YWoZYqiT87NI7C+jkyFbSp6YCYHWCz7TnRAvampMIfm0PjuX8fNF+LttPPa3TL7q9nXVizYAMwdWPUA==
+  src: https://registry.npmjs.org/unicodejs/-/unicodejs-18.0.1.tgz
+  integrity: sha512-PKe64JxiFmcW+vjt5zmGvRQPJMlGTshkmRm3IJWteT+qXNCBSTwTYzQtTfsy+poYr1LRutq7CjgyPCzhorQRrw==
   dest:
     package/dist/*:
     package/LICENSE.txt:

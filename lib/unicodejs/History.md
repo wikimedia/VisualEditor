@@ -1,5 +1,52 @@
 # UnicodeJS Release History
 
+## v18.0.1 / 2026-11-06
+Version bump to correctly build artefacts for release.
+
+## v18.0.0 / 2026-11-06
+* Update to Unicode 18.0.0 (Ed Sanders)
+* Update to Unicode 17.0.0 (Ed Sanders)
+* Update to Unicode 16.0.0 (Ed Sanders)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating jsdoc-wmf-theme to 1.3.1 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating eslint-config-wikimedia to 0.32.6 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating qs to 6.15.3 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating linkify-it to 5.0.2 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating jsdoc-wmf-theme to 1.3.0 (libraryupgrader)
+* build: Updating tmp to 0.2.7 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating eslint-config-wikimedia to 0.32.4 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating follow-redirects to 1.16.0 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating flatted to 3.4.1 (libraryupgrader)
+* build: Updating underscore to 1.13.8 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating lodash to 4.17.23 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* build: Updating eslint-config-wikimedia to 0.32.3 (libraryupgrader)
+* build: Updating eslint-config-wikimedia to 0.32.2 (libraryupgrader)
+* build: Updating npm dependencies (libraryupgrader)
+* wordbreak.moveBreakOffset: Fix documentation (Ed Sanders)
+* build: Updating tmp to 0.2.4 (libraryupgrader)
+* build: Updating eslint-config-wikimedia to 0.31.0 (libraryupgrader)
+* build: Updating brace-expansion to 1.1.12, 2.0.2 (libraryupgrader)
+* Update @copyright dates (Ed Sanders)
+* Simplify for loops (Ed Sanders)
+* ESLint: Enforce prefer-const and manually fix (Ed Sanders)
+* ESLint: Enforce no-var and autofix (Ed Sanders)
+* ESLint: Set ES version to 2017 (Ed Sanders)
+* build: Update devDependencies (Ed Sanders)
+* build: Upgrade jsdoc-wmf-theme from 1.0.1 to 1.1.0 (James D. Forrester)
+
 ## v15.0.0 / 2025-06-08
 * Update to Unicode 15.0.0 (Ed Sanders)
 
