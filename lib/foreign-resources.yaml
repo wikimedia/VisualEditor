@@ -2,7 +2,12 @@
 #
 # Same format as MediaWiki core's resources/lib/foreign-resources.yaml.
 #
-# To add or update a library (requires Node 21+):
+# Requires Node 21+.
+#
+# To update an npm library:
+#   npm run foreign-resources upgrade <name> [<version>]   # Default: latest
+#
+# To add or update another library:
 # 1. Set `src` (and `version`). For npm packages use the registry tarball, and copy
 #    the published hash from `npm view <package>@<version> dist.integrity`.
 #    For other sources, leave `integrity` empty and run `npm run foreign-resources make-sri <name>`.

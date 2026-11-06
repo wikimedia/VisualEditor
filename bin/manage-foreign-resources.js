@@ -5,6 +5,9 @@
  * A Node port of MediaWiki core's ForeignResourceManager, using the same registry format.
  *
  * Usage: node bin/manage-foreign-resources.js <update|verify|make-sri> [<module>|all] [--verbose]
+ *        node bin/manage-foreign-resources.js upgrade <module> [<version>] [--verbose]
+ *
+ * `upgrade` sets an npm tarball module to the given (default: latest) version, then updates it.
  */
 
 /* eslint-disable security/detect-non-literal-fs-filename */
@@ -23,12 +26,12 @@ const LIB_DIR = path.resolve( __dirname, '../lib' );
 const REGISTRY_FILE = path.join( LIB_DIR, 'foreign-resources.yaml' );
 const CACHE_DIR = path.join( process.env.XDG_CACHE_HOME || path.join( os.homedir(), '.cache' ), 'visualeditor-foreign-resources' );
 const DEFAULT_ALGO = 'sha384';
-const ACTIONS = [ 'update', 'verify', 'make-sri' ];
+const ACTIONS = [ 'update', 'verify', 'make-sri', 'upgrade' ];
 const TYPES = [ 'file', 'multi-file', 'tar', 'zip', 'doc-only' ];
 
 const args = process.argv.slice( 2 ).filter( ( a ) => !a.startsWith( '--' ) );
 const isVerbose = process.argv.includes( '--verbose' );
-const action = args[ 0 ];
+let action = args[ 0 ];
 const moduleArg = args[ 1 ] || 'all';
 
 let hasErrors = false;
@@ -191,10 +194,47 @@ async function handleTypeArchive( moduleName, destDir, info, tmpParentDir ) {
 	writeOrVerify( moduleName, destDir, files );
 }
 
+/**
+ * Point an npm tarball module at a new version, editing the registry text to keep comments.
+ *
+ * @param {Object} registry
+ * @param {string} moduleName
+ * @param {string} [version] Defaults to latest
+ */
+async function upgrade( registry, moduleName, version ) {
+	const info = registry[ moduleName ];
+	const match = info && info.type === 'tar' && ( info.src || '' ).match( /^https:\/\/registry\.npmjs\.org\/(.+)\/-\// );
+	if ( !match ) {
+		throw new Error( `Module '${ moduleName }' is not an npm tarball; edit lib/foreign-resources.yaml by hand.` );
+	}
+	const url = `https://registry.npmjs.org/${ match[ 1 ] }/${ version || 'latest' }`;
+	// eslint-disable-next-line n/no-unsupported-features/node-builtins
+	const response = await fetch( url );
+	if ( response.status !== 200 ) {
+		throw new Error( `Unexpected HTTP ${ response.status } response from ${ url }` );
+	}
+	const pkg = await response.json();
+	process.stdout.write( `... ${ moduleName }: ${ info.version } -> ${ pkg.version }\n` );
+
+	const lines = fs.readFileSync( REGISTRY_FILE, 'utf8' ).split( '\n' );
+	const values = { version: pkg.version, src: pkg.dist.tarball, integrity: pkg.dist.integrity };
+	for ( let i = lines.indexOf( moduleName + ':' ) + 1; i < lines.length && !/^\S/.test( lines[ i ] ); i++ ) {
+		const key = ( lines[ i ].match( /^ {2}(\w+):/ ) || [] )[ 1 ];
+		if ( values[ key ] ) {
+			lines[ i ] = `  ${ key }: ${ values[ key ] }`;
+		}
+	}
+	fs.writeFileSync( REGISTRY_FILE, lines.join( '\n' ) );
+}
+
 async function main() {
-	if ( !ACTIONS.includes( action ) ) {
+	if ( !ACTIONS.includes( action ) || ( action === 'upgrade' && moduleArg === 'all' ) ) {
 		process.stderr.write( `Usage: ${ path.basename( __filename ) } <${ ACTIONS.join( '|' ) }> [<module>|all] [--verbose]\n` );
 		return false;
+	}
+	if ( action === 'upgrade' ) {
+		await upgrade( yaml.load( fs.readFileSync( REGISTRY_FILE, 'utf8' ) ), moduleArg, args[ 2 ] );
+		action = 'update';
 	}
 	const registry = yaml.load( fs.readFileSync( REGISTRY_FILE, 'utf8' ) );
 	let modules;
