@@ -52,14 +52,14 @@ dompurify:
   authors: Mario Heiderich and other contributors
   type: tar
   license: MPL-2.0 OR Apache-2.0
-  version: 2.5.7
+  version: 3.4.17
   homepage: https://github.com/cure53/DOMPurify
-  src: https://registry.npmjs.org/dompurify/-/dompurify-2.5.7.tgz
-  integrity: sha512-2q4bEI+coQM8f5ez7kt2xclg1XsecaV9ASJk/54vwlfRRNQfDqJz2pzQ8t0Ix/ToBpXlVjrRIx7pFC/o8itG2Q==
+  src: https://registry.npmjs.org/dompurify/-/dompurify-3.4.17.tgz
+  integrity: sha512-B/pSlYVHQ58kqISD/yDjuJ1yfzI34m1gF4lAod2bwSRhiN4K5Cl3H8Af7hqB2PmTL911tdEudnnXn5FnhRoz0w==
   dest:
     package/dist/purify.js:
     package/dist/purify.js.map:
-    package/LICENSE:
+    package/{LICENSE,LICENSE-MPL}:
 
 jquery:
   type: tar
