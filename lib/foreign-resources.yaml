@@ -127,10 +127,10 @@ jquery.uls:
 less:
   type: tar
   license: Apache-2.0
-  version: 4.1.2
+  version: 4.9.1
   homepage: https://lesscss.org/
-  src: https://registry.npmjs.org/less/-/less-4.1.2.tgz
-  integrity: sha512-EoQp/Et7OSOVu0aJknJOtlXZsnr8XE8KwuzTHOLeVSEx8pVWUICc8Q0VYRHgzyjX78nMEyC/oztWFbgyhtNfDA==
+  src: https://registry.npmjs.org/less/-/less-4.9.1.tgz
+  integrity: sha512-orp15PfJvvNDIqJdVWzMI9Sjpjp3VTiw3sfvbB+67LlISTEn8uVT2EdYSuyl02BLvaftv6sdk9Umnxmm5rckmg==
   dest:
     package/dist/less.js:
 
