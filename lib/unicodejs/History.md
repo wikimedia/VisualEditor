@@ -1,5 +1,8 @@
 # UnicodeJS Release History
 
+## v15.0.0 / 2025-06-08
+* Update to Unicode 15.0.0 (Ed Sanders)
+
 ## v13.0.3 / 2021-04-23
 * Always check prevCodepoint is non-null (Ed Sanders)
 

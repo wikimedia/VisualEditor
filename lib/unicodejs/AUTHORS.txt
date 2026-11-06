@@ -1,10 +1,18 @@
-Principal Authors (major contributors, alphabetically)
+Principal Authors (major contributors)
 
 Ed Sanders <esanders@wikimedia.org>
 David Chan <david@troi.org>
 
 Patch Contributors (minor contributors, alphabetically)
 
+Antoine Musso <hashar@free.fr>
+Chad <chadh@wikimedia.org>
 James D. Forrester <jforrester@wikimedia.org>
+Kunal Mehta <legoktm@member.fsf.org>
+Mehmet Coskun <mehmet.coskun@fontoxml.com>
+Paladox <thomasmulhall410@yahoo.com>
+Ricordisamoa <ricordisamoa@openmailbox.org>
 Roan Kattouw <roan@wikimedia.org>
-Timo Tijhof <krinkle@wikimedia.org>
+Timo Tijhof <krinkle@fastmail.com>
+Umherirrender <umherirrender_de.wp@web.de>
+Zach <terracodes@tools.wmflabs.org>
