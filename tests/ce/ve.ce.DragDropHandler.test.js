@@ -84,3 +84,25 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', ( assert ) => {
 	} );
 
 } );
+
+QUnit.test( 'endRelocation on focusable node dragend', ( assert ) => {
+	const view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() ),
+		dragDropHandler = view.getDragDropHandler();
+	let relocationEndCount = 0;
+
+	view.on( 'relocationEnd', () => {
+		relocationEndCount++;
+	} );
+
+	dragDropHandler.startRelocation();
+	assert.notStrictEqual( dragDropHandler.relocatingSelection, null, 'Relocation started' );
+
+	// Drag ends with no drop event, e.g. the user cancels the drag
+	ve.ce.FocusableNode.prototype.onFocusableDragEnd.call( { focusableSurface: view } );
+
+	assert.strictEqual( dragDropHandler.relocatingSelection, null, 'Relocating selection cleared' );
+	assert.strictEqual( dragDropHandler.relocatingNode, null, 'Relocating node cleared' );
+	assert.strictEqual( relocationEndCount, 1, 'relocationEnd emitted' );
+
+	view.destroy();
+} );

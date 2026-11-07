@@ -527,13 +527,12 @@ ve.ce.FocusableNode.prototype.onFocusableDragStart = function ( e ) {
  *
  * If a relocation actually takes place the node is destroyed before this events fires.
  *
- * @param {jQuery.Event} e Drag end event
  */
-ve.ce.FocusableNode.prototype.onFocusableDragEnd = function ( e ) {
+ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
 	// endRelocation is usually triggered by onDocumentDrop in the surface, but if it isn't
-	// trigger it here instead
+	// trigger it here instead. The surface does not listen for dragend.
 	if ( this.focusableSurface ) {
-		this.focusableSurface.$element.trigger( e );
+		this.focusableSurface.getDragDropHandler().endRelocation();
 	}
 };
 
