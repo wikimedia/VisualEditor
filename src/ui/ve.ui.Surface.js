@@ -222,6 +222,8 @@ ve.ui.Surface.prototype.destroy = function () {
 		promises.push( this.toolbarDialogs[ side ].destroy() );
 	}
 	this.view.destroy();
+	// The interval holds a reference to the model, so the model cannot be garbage collected
+	this.getModel().stopHistoryTracking();
 	if ( this.debugBar ) {
 		this.debugBar.destroy();
 	}

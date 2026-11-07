@@ -252,9 +252,6 @@ ve.dm.Surface.prototype.startHistoryTracking = function () {
  * Stop tracking state changes in history.
  */
 ve.dm.Surface.prototype.stopHistoryTracking = function () {
-	if ( this.readOnly ) {
-		return;
-	}
 	if ( this.historyTrackingInterval !== null ) {
 		clearInterval( this.historyTrackingInterval );
 		this.historyTrackingInterval = null;

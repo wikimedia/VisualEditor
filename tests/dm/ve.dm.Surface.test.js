@@ -218,6 +218,22 @@ QUnit.test( 'breakpoint/undo/redo', ( assert ) => {
 
 } );
 
+QUnit.test( 'startHistoryTracking/stopHistoryTracking', ( assert ) => {
+	const surface = new ve.dm.SurfaceStub();
+
+	surface.initialize();
+	assert.notStrictEqual( surface.historyTrackingInterval, null, 'Tracking starts on initialize' );
+
+	surface.setReadOnly( true );
+	assert.strictEqual( surface.historyTrackingInterval, null, 'Tracking stops when made read-only' );
+
+	surface.setReadOnly( false );
+	assert.notStrictEqual( surface.historyTrackingInterval, null, 'Tracking restarts when made editable' );
+
+	surface.stopHistoryTracking();
+	assert.strictEqual( surface.historyTrackingInterval, null, 'Tracking stops' );
+} );
+
 QUnit.test( 'multi-user undo', ( assert ) => {
 	const surfaces = [];
 
