@@ -209,10 +209,10 @@ socket.io-client:
   authors: Guillermo Rauch and other contributors
   type: tar
   license: MIT
-  version: 4.4.0
+  version: 4.8.4
   homepage: https://socket.io/
-  src: https://registry.npmjs.org/socket.io-client/-/socket.io-client-4.4.0.tgz
-  integrity: sha512-g7riSEJXi7qCFImPow98oT8X++MSsHz6MMFRXkWNJ6uEROSHOa3kxdrsYWMq85dO+09CFMkcqlpjvbVXQl4z6g==
+  src: https://registry.npmjs.org/socket.io-client/-/socket.io-client-4.8.4.tgz
+  integrity: sha512-7wjKAvVXYOJsbmUgkWbnhPD4bFpkqrUR0++XOjpGFmqDqsqV1CI93VTraeExLxpjxEqrWgFoSRZu1ihjLWfkAA==
   dest:
     package/dist/socket.io.min.js{,.map}:
     package/LICENSE:
