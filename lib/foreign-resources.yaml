@@ -178,13 +178,18 @@ papaparse:
     package/{papaparse.js,LICENSE,README.md}:
 
 peerjs:
-  # Provenance unknown: matches no published 1.4.x build
   name: PeerJS
   authors: Michelle Bu, Eric Zhang and other contributors
-  type: doc-only
+  type: tar
   license: MIT
-  version: 1.4.7
+  version: 1.5.5
   homepage: https://peerjs.com/
+  src: https://registry.npmjs.org/peerjs/-/peerjs-1.5.5.tgz
+  integrity: sha512-viMUCPDL6CSfOu0ZqVcFqbWRXNHIbv2lPqNbrBIjbFYrflebOjItJ4hPfhjnuUCstqciHVu9vVJ7jFqqKi/EuQ==
+  dest:
+    package/dist/peerjs.js:
+    package/dist/peerjs.min.js:
+    package/LICENSE:
 
 rangefix:
   name: RangeFix

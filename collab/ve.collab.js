@@ -96,9 +96,6 @@ ve.collab.initPeerClient = function ( serverId, isMain, userName ) {
 
 	peerClient.on( 'open', ( /* id */ ) => {
 		const conn = peerClient.connect( serverId );
-		// On old js-BinaryPack (before https://github.com/peers/js-binarypack/pull/10 ),
-		// you need JSON serialization, else it crashes on Unicode code points over U+FFFF
-		// var conn = peerClient.connect( serverId, { serialization: 'json' } );
 		conn.on( 'open', () => {
 			surface.model.createSynchronizer( 'foo', { peerConnection: conn } );
 			surface.model.synchronizer.commitLength = completeHistory.getLength();
