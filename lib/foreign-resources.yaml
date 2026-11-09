@@ -82,10 +82,10 @@ jquery:
 jquery.client:
   type: tar
   license: MIT
-  version: 2.0.0
+  version: 3.0.0
   homepage: https://gerrit.wikimedia.org/g/jquery-client
-  src: https://registry.npmjs.org/jquery-client/-/jquery-client-2.0.0.tgz
-  integrity: sha512-a5+Idkmtj9wl/SuFDz4V64JotFjDXgoTNrUt7I3pueXJFJl0DKbi246SVtLE/LggtuezXr29+3jb0La9MU4QaA==
+  src: https://registry.npmjs.org/jquery-client/-/jquery-client-3.0.0.tgz
+  integrity: sha512-cZV8Xvhju+tqHkYk6z0O8C1WZiKsGogQnA7z+i59M7VpcSNMxfE5AOMMgXLnDvIH6YYb1njn414IiXGd/XfWYg==
   dest:
     package/jquery.client.js:
     package/AUTHORS.txt:
