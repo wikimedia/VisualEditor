@@ -29,8 +29,8 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.surface = surface;
 	this.doc = surface.documentModel;
 	this.store = this.doc.getStore();
-	this.authors = Object.create( null );
-	this.authorSelections = Object.create( null );
+	this.authors = new Map();
+	this.authorSelections = new Map();
 	this.documentId = documentId;
 
 	// Whether the document has been initialized
@@ -246,9 +246,8 @@ ve.dm.SurfaceSynchronizer.prototype.sendChange = function ( backtrack, change ) 
  */
 ve.dm.SurfaceSynchronizer.prototype.applyChange = function ( change ) {
 	// Author selections are superseded by change.selections, so no need to translate them
-	for ( let authorId in change.selections ) {
-		authorId = +authorId;
-		delete this.authorSelections[ authorId ];
+	for ( const authorId in change.selections ) {
+		this.authorSelections.delete( +authorId );
 	}
 	change.applyTo( this.surface );
 	// HACK: After applyTo(), the selections are wrong and applying them could crash.
@@ -331,29 +330,32 @@ ve.dm.SurfaceSynchronizer.prototype.onSurfaceSelect = function () {
 /**
  * Translate incoming selections by change, then apply them and fire authorSelect
  *
- * @param {Object} newSelections Each author (key) maps to a new incoming ve.dm.Selection
+ * @param {Object|Map} newSelections Each author (key) maps to a new incoming ve.dm.Selection
  * @param {ve.dm.Change|ve.dm.Transaction} [changeOrTx] Object to translate over, if any
  * @fires ve.dm.SurfaceSynchronizer#authorSelect
  */
 ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelections, changeOrTx ) {
 	const change = changeOrTx instanceof ve.dm.Change ? changeOrTx : null,
 		tx = changeOrTx instanceof ve.dm.Transaction ? changeOrTx : null;
-	for ( let authorId in newSelections ) {
-		authorId = +authorId;
+	// Copy entries, so this works correctly even if newSelections === this.authorSelections
+	const entries = newSelections instanceof Map ?
+		Array.from( newSelections ) :
+		Object.entries( newSelections );
+	for ( const [ key, selection ] of entries ) {
+		const authorId = +key;
 		if ( authorId === this.authorId ) {
 			continue;
 		}
 		let translatedSelection;
 		if ( change ) {
-			translatedSelection = newSelections[ authorId ].translateByChange( change, authorId );
+			translatedSelection = selection.translateByChange( change, authorId );
 		} else if ( tx ) {
-			translatedSelection = newSelections[ authorId ].translateByTransactionWithAuthor( tx, authorId );
+			translatedSelection = selection.translateByTransactionWithAuthor( tx, authorId );
 		} else {
-			translatedSelection = newSelections[ authorId ];
+			translatedSelection = selection;
 		}
-		if ( !translatedSelection.equals( this.authorSelections[ authorId ] ) ) {
-			// This works correctly even if newSelections === this.authorSelections
-			this.authorSelections[ authorId ] = translatedSelection;
+		if ( !translatedSelection.equals( this.authorSelections.get( authorId ) ) ) {
+			this.authorSelections.set( authorId, translatedSelection );
 			this.emit( 'authorSelect', authorId );
 		}
 	}
@@ -369,14 +371,14 @@ ve.dm.SurfaceSynchronizer.prototype.getAuthorData = function ( authorId ) {
 	if ( authorId === undefined ) {
 		authorId = this.getAuthorId();
 	}
-	return this.authors[ authorId ];
+	return this.authors.get( authorId );
 };
 
 ve.dm.SurfaceSynchronizer.prototype.onAuthorChange = function ( data ) {
-	let authorData = this.authors[ data.authorId ];
+	let authorData = this.authors.get( data.authorId );
 	if ( authorData === undefined ) {
 		authorData = Object.create( null );
-		this.authors[ data.authorId ] = authorData;
+		this.authors.set( data.authorId, authorData );
 	}
 	Object.keys( data.authorData ).forEach( ( key ) => {
 		authorData[ key ] = data.authorData[ key ];
@@ -392,8 +394,8 @@ ve.dm.SurfaceSynchronizer.prototype.changeAuthor = function ( data ) {
 };
 
 ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
-	delete this.authors[ authorId ];
-	delete this.authorSelections[ authorId ];
+	this.authors.delete( authorId );
+	this.authorSelections.delete( authorId );
 	this.emit( 'authorDisconnect', authorId );
 };
 

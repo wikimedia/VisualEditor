@@ -72,7 +72,7 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 	this.oldName = '';
 	this.updatingName = false;
 	this.synchronizer = surface.getModel().synchronizer;
-	this.authorItems = Object.create( null );
+	this.authorItems = new Map();
 
 	this.surface = surface;
 
@@ -101,8 +101,8 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 		authorDisconnect: 'onSynchronizerAuthorDisconnect'
 	} );
 
-	for ( const authorId in this.synchronizer.authors ) {
-		this.onSynchronizerAuthorUpdate( +authorId );
+	for ( const authorId of this.synchronizer.authors.keys() ) {
+		this.onSynchronizerAuthorUpdate( authorId );
 	}
 };
 
@@ -137,7 +137,7 @@ ve.ui.AuthorListPopupTool.prototype.changeName = function () {
  * Update the user count
  */
 ve.ui.AuthorListPopupTool.prototype.updateAuthorCount = function () {
-	this.setTitle( ( Object.keys( this.authorItems ).length + 1 ).toString() );
+	this.setTitle( ( this.authorItems.size + 1 ).toString() );
 };
 
 /**
@@ -146,12 +146,12 @@ ve.ui.AuthorListPopupTool.prototype.updateAuthorCount = function () {
  * @param {number} authorId The author ID
  */
 ve.ui.AuthorListPopupTool.prototype.onSynchronizerAuthorUpdate = function ( authorId ) {
-	let authorItem = this.authorItems[ authorId ];
+	let authorItem = this.authorItems.get( authorId );
 
 	if ( authorId !== this.synchronizer.getAuthorId() ) {
 		if ( !authorItem ) {
 			authorItem = new ve.ui.AuthorItemWidget( this.synchronizer, this.popup.$element, { authorId } );
-			this.authorItems[ authorId ] = authorItem;
+			this.authorItems.set( authorId, authorItem );
 			this.updateAuthorCount();
 			this.$authorList.append( authorItem.$element );
 		} else {
@@ -180,10 +180,10 @@ ve.ui.AuthorListPopupTool.prototype.onSynchronizerAuthorUpdate = function ( auth
  * @param {number} authorId The author ID
  */
 ve.ui.AuthorListPopupTool.prototype.onSynchronizerAuthorDisconnect = function ( authorId ) {
-	const authorItem = this.authorItems[ authorId ];
+	const authorItem = this.authorItems.get( authorId );
 	if ( authorItem ) {
 		authorItem.$element.remove();
-		delete this.authorItems[ authorId ];
+		this.authorItems.delete( authorId );
 		this.updateAuthorCount();
 	}
 };

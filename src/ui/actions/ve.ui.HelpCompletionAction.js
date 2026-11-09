@@ -194,16 +194,18 @@ ve.ui.HelpCompletionAction.prototype.getGroupForTool = function ( tool ) {
 };
 
 ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
-	const menuItemsByGroup = Object.create( null );
+	const menuItemsByGroup = new Map();
 	const toolGroups = this.constructor.static.toolGroups;
 	menuItems.forEach( ( menuItem ) => {
 		const tool = menuItem.getData();
 		const group = this.getGroupForTool( tool );
-		menuItemsByGroup[ group ] = menuItemsByGroup[ group ] || [];
-		menuItemsByGroup[ group ].push( menuItem );
+		if ( !menuItemsByGroup.has( group ) ) {
+			menuItemsByGroup.set( group, [] );
+		}
+		menuItemsByGroup.get( group ).push( menuItem );
 	} );
 	const newMenuItems = [];
-	const groups = Object.keys( menuItemsByGroup );
+	const groups = Array.from( menuItemsByGroup.keys() );
 	groups.sort( ( a, b ) => {
 		const weightA = toolGroups[ a ].weight || 0;
 		const weightB = toolGroups[ b ].weight || 0;
@@ -215,7 +217,7 @@ ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
 				label: toolGroups[ group ].title
 			} )
 		);
-		ve.batchPush( newMenuItems, menuItemsByGroup[ group ] );
+		ve.batchPush( newMenuItems, menuItemsByGroup.get( group ) );
 	} );
 	return newMenuItems;
 };

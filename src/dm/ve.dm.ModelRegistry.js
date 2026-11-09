@@ -17,18 +17,18 @@
 		// Parent constructor
 		OO.Registry.call( this );
 		// Map of func presence and tag names to model names
-		// [ { tagName: [modelNamesWithoutFunc] }, { tagName: [modelNamesWithFunc] } ]
-		this.modelsByTag = [ Object.create( null ), Object.create( null ) ];
+		// [ Map( tagName => [modelNamesWithoutFunc] ), Map( tagName => [modelNamesWithFunc] ) ]
+		this.modelsByTag = [ new Map(), new Map() ];
 		// Map of func presence and rdfaTypes to model names; only rdfaTypes specified as strings are in here
 		// { matchFunctionPresence: { rdfaType: { tagName: [modelNames] } } }
-		// [ { rdfaType: { tagName: [modelNamesWithoutFunc] } }, { rdfaType: { tagName: [modelNamesWithFunc] } ]
-		this.modelsByTypeAndTag = [];
+		// [ Map( rdfaType => Map( tagName => [modelNamesWithoutFunc] ) ), Map( rdfaType => Map( tagName => [modelNamesWithFunc] ) ) ]
+		this.modelsByTypeAndTag = [ new Map(), new Map() ];
 		// Map of func presence to array of model names with rdfaType regexps
 		// [ [modelNamesWithoutFunc], [modelNamesWithFunc] ]
 		this.modelsWithTypeRegExps = [ [], [] ];
 		// Map tracking registration order
-		// { nameA: 0, nameB: 1, … }
-		this.registrationOrder = Object.create( null );
+		// Map( nameA => 0, nameB => 1, … )
+		this.registrationOrder = new Map();
 		this.nextNumber = 0;
 		this.extSpecificTypes = [];
 	};
@@ -40,33 +40,71 @@
 	/* Private helper functions */
 
 	/**
-	 * Helper function for register(). Adds a value to the front of an array in a nested object.
-	 * Objects and arrays are created if needed. You can specify one or more keys and a value.
+	 * Get a child of an Array or Map
+	 *
+	 * @private
+	 * @param {Array|Map} container
+	 * @param {number|string} key
+	 * @return {any}
+	 */
+	function getChild( container, key ) {
+		return container instanceof Map ? container.get( key ) : container[ key ];
+	}
+
+	/**
+	 * Get a value from nested Arrays/Maps, or undefined if any level is missing
+	 *
+	 * @private
+	 * @param {Array|Map} container
+	 * @param {...(number|string)} keys
+	 * @return {any}
+	 */
+	function getNested( container, ...keys ) {
+		for ( const key of keys ) {
+			if ( container === undefined ) {
+				return undefined;
+			}
+			container = getChild( container, key );
+		}
+		return container;
+	}
+
+	/**
+	 * Helper function for register(). Adds a value to the front of an array in nested Arrays/Maps.
+	 * Maps and arrays are created if needed. You can specify one or more keys and a value.
 	 *
 	 * Specifically:
 	 *
 	 * - `addType( obj, keyA, value )` does `obj[keyA].unshift( value );`
-	 * - `addType( obj, keyA, keyB, value )` does `obj[keyA][keyB].unshift( value )`;
+	 * - `addType( obj, keyA, keyB, value )` does `obj[keyA].get(keyB).unshift( value )`;
 	 * - etc.
 	 *
 	 * @private
-	 * @param {Object} obj Object the array resides in
-	 * @param {...string} keys
+	 * @param {Array|Map} obj Container the array resides in
+	 * @param {...(number|string)} keys
 	 * @param {any} value
 	 */
 	function addType( obj, ...keys ) {
 		const value = keys.pop();
+		const lastKey = keys.pop();
 		let o = obj;
 
-		let i, len;
-		for ( i = 0, len = keys.length - 1; i < len; i++ ) {
-			if ( o[ keys[ i ] ] === undefined ) {
-				o[ keys[ i ] ] = Object.create( null );
+		for ( const key of keys ) {
+			if ( getChild( o, key ) === undefined ) {
+				o.set( key, new Map() );
 			}
-			o = o[ keys[ i ] ];
+			o = getChild( o, key );
 		}
-		o[ keys[ i ] ] = o[ keys[ i ] ] || [];
-		o[ keys[ i ] ].unshift( value );
+		let arr = getChild( o, lastKey );
+		if ( !arr ) {
+			arr = [];
+			if ( o instanceof Map ) {
+				o.set( lastKey, arr );
+			} else {
+				o[ lastKey ] = arr;
+			}
+		}
+		arr.unshift( value );
 	}
 
 	/**
@@ -75,13 +113,13 @@
 	 * Same arguments as addType, except removes the type from the list.
 	 *
 	 * @private
-	 * @param {Object} obj Object the array resides in
-	 * @param {...string} keys
+	 * @param {Array|Map} obj Container the array resides in
+	 * @param {...(number|string)} keys
 	 * @param {any} value to remove
 	 */
 	function removeType( obj, ...keys ) {
 		const value = keys.pop(),
-			arr = ve.getProp( obj, ...keys );
+			arr = getNested( obj, ...keys );
 
 		if ( arr ) {
 			const index = arr.indexOf( value );
@@ -156,7 +194,7 @@
 			}
 		} );
 
-		this.registrationOrder[ name ] = this.nextNumber++;
+		this.registrationOrder.set( name, this.nextNumber++ );
 	};
 
 	/**
@@ -216,7 +254,7 @@
 			}
 		} );
 
-		delete this.registrationOrder[ name ];
+		this.registrationOrder.delete( name );
 	};
 
 	/**
@@ -255,7 +293,7 @@
 		}
 		const forceAboutGrouping = aboutGroup.length > 1;
 
-		const byRegistrationOrderDesc = ( a, b ) => this.registrationOrder[ b ] - this.registrationOrder[ a ];
+		const byRegistrationOrderDesc = ( a, b ) => this.registrationOrder.get( b ) - this.registrationOrder.get( a );
 
 		const matchTypeRegExps = ( type, tag, withFunc ) => {
 			const matchedModels = [],
@@ -311,7 +349,7 @@
 				queue2 = [];
 			types.forEach( ( type ) => {
 				// Queue string matches and regexp matches separately
-				ve.batchPush( queue, ve.getProp( this.modelsByTypeAndTag, 1, type, tag ) || [] );
+				ve.batchPush( queue, getNested( this.modelsByTypeAndTag, 1, type, tag ) || [] );
 				if ( excludeTypes ) {
 					queue = OO.simpleArrayDifference( queue, excludeTypes );
 				}
@@ -339,7 +377,7 @@
 				winningName = null;
 			types.forEach( ( type ) => {
 				// Queue string and regexp matches separately
-				ve.batchPush( queue, ve.getProp( this.modelsByTypeAndTag, 0, type, tag ) || [] );
+				ve.batchPush( queue, getNested( this.modelsByTypeAndTag, 0, type, tag ) || [] );
 				if ( excludeTypes ) {
 					queue = OO.simpleArrayDifference( queue, excludeTypes );
 				}
@@ -359,7 +397,7 @@
 			queue.forEach( ( name ) => {
 				if (
 					winningName === null ||
-					this.registrationOrder[ winningName ] < this.registrationOrder[ name ]
+					this.registrationOrder.get( winningName ) < this.registrationOrder.get( name )
 				) {
 					winningName = name;
 				}
@@ -397,7 +435,7 @@
 		}
 
 		// func+tag match
-		const funcAndTagMatches = ve.getProp( this.modelsByTag, 1, nodeName ) || [];
+		const funcAndTagMatches = getNested( this.modelsByTag, 1, nodeName ) || [];
 		// No need to sort because individual arrays in modelsByTag are already sorted
 		// correctly
 		const funcAndTagMatched = funcAndTagMatches.find( ( match ) => {
@@ -417,7 +455,7 @@
 		// match this node.
 		// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
 		// correctly
-		const typeAndTagMatches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
+		const typeAndTagMatches = getNested( this.modelsByTypeAndTag, 1, '', '' ) || [];
 		const typeAndTagMatched = typeAndTagMatches.find( ( name ) => {
 			const model = this.registry[ name ];
 			return model.static.matchFunction( node, aboutGroup ) && allTypesAllowed( model );
@@ -441,7 +479,7 @@
 		}
 
 		// tag only
-		const tagOnlyMatches = ve.getProp( this.modelsByTag, 0, nodeName ) || [];
+		const tagOnlyMatches = getNested( this.modelsByTag, 0, nodeName ) || [];
 		// No need to track winningName because the individual arrays in modelsByTag are
 		// already sorted correctly
 		const tagOnlyMatched = tagOnlyMatches.find( ( name ) => {
@@ -458,7 +496,7 @@
 		// Rules with no type or tag specified
 		// These are the only rules that can still qualify at this point, the others we've either
 		// already processed or have a type or tag rule that disqualifies them
-		const otherMatches = ve.getProp( this.modelsByTypeAndTag, 0, '', '' ) || [];
+		const otherMatches = getNested( this.modelsByTypeAndTag, 0, '', '' ) || [];
 		const otherMatched = otherMatches.find( ( name ) => {
 			const model = this.registry[ name ];
 			return allTypesAllowed( model );

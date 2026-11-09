@@ -60,7 +60,7 @@ ve.ce.SurfaceSynchronizer.prototype.getSurface = function () {
  */
 ve.ce.SurfaceSynchronizer.prototype.paintAuthor = function ( authorId ) {
 	const authorData = this.getModel().getAuthorData( authorId ),
-		selection = this.getModel().authorSelections[ authorId ],
+		selection = this.getModel().authorSelections.get( authorId ),
 		selectionManager = this.getSurface().getSelectionManager();
 
 	if ( !authorData || !selection || authorId === this.getModel().getAuthorId() ) {
@@ -142,9 +142,8 @@ ve.ce.SurfaceSynchronizer.prototype.onSynchronizerPause = function () {
 ve.ce.SurfaceSynchronizer.prototype.onSurfacePosition = function () {
 	// Defer to allow synchronizer to adjust for transactions
 	setTimeout( () => {
-		const authorSelections = this.getModel().authorSelections;
-		for ( const authorId in authorSelections ) {
-			this.onSynchronizerAuthorUpdate( +authorId );
+		for ( const authorId of this.getModel().authorSelections.keys() ) {
+			this.onSynchronizerAuthorUpdate( authorId );
 		}
 	} );
 };

@@ -55,7 +55,7 @@ ve.dm.Document = function VeDmDocument(
 	// Properties
 	this.parentDocument = parentDocument;
 	this.originalDocument = originalDocument;
-	this.nodesByType = Object.create( null );
+	this.nodesByType = new Map();
 	this.origInternalListLength = null;
 	this.readOnly = false;
 	this.attachedRoot = this.documentNode;
@@ -788,7 +788,7 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
  */
 ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 	const insertedMetaItems = [],
-		insertions = Object.create( null ),
+		insertions = new Map(),
 		result = [];
 
 	range = range || this.data.getRange();
@@ -842,8 +842,8 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 					// No changes, so restore meta item offsets
 					metaItems.forEach( ( metaItem ) => {
 						const offset = i + metaItem.internal.loadMetaParentOffset;
-						if ( !insertions[ offset ] ) {
-							insertions[ offset ] = [];
+						if ( !insertions.has( offset ) ) {
+							insertions.set( offset, [] );
 						}
 
 						delete metaItem.internal.loadBranchNodeHash;
@@ -855,7 +855,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 						if ( Object.keys( metaItem.internal ).length === 0 ) {
 							delete metaItem.internal;
 						}
-						insertions[ offset ].push( stripMetaLoadInfo( metaItem ) );
+						insertions.get( offset ).push( stripMetaLoadInfo( metaItem ) );
 						insertedMetaItems.push( metaItem.originalDomElementsHash );
 					} );
 				} );
@@ -869,10 +869,10 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 			}
 		}
 		result.push( stripMetaLoadInfo( item ) );
-		if ( mode === 'roundTrip' && insertions[ i ] ) {
+		if ( mode === 'roundTrip' && insertions.has( i ) ) {
 			// There are meta items to reinsert outside of ContentBranchNodes.
 			// TODO: we should strip annotations from such meta items
-			insertions[ i ].forEach( ( metaItem ) => {
+			insertions.get( i ).forEach( ( metaItem ) => {
 				result.push( metaItem, { type: '/' + metaItem.type } );
 			} );
 		}
@@ -1219,22 +1219,26 @@ ve.dm.Document.prototype.rebuildTreeNode = function ( rootNode, range ) {
 ve.dm.Document.prototype.updateNodesByType = function ( addedNodes, removedNodes ) {
 	const remove = ( node ) => {
 		const type = node.getType(),
-			nodes = this.nodesByType[ type ] || [],
+			nodes = this.nodesByType.get( type ) || [],
 			index = nodes.indexOf( node );
 
 		if ( index !== -1 ) {
 			nodes.splice( index, 1 );
 			if ( !nodes.length ) {
-				delete this.nodesByType[ type ];
+				this.nodesByType.delete( type );
 			}
 		}
 	};
 
 	const add = ( node ) => {
 		const type = node.getType(),
-			nodes = this.nodesByType[ type ] = this.nodesByType[ type ] || [];
+			nodes = this.nodesByType.get( type );
 
-		nodes.push( node );
+		if ( nodes ) {
+			nodes.push( node );
+		} else {
+			this.nodesByType.set( type, [ node ] );
+		}
 	};
 
 	const traverse = ( nodes, action ) => {
@@ -1269,14 +1273,14 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
 	let nodes;
 	if ( type instanceof Function ) {
 		nodes = [];
-		for ( const t in this.nodesByType ) {
+		for ( const t of this.nodesByType.keys() ) {
 			const nodeType = ve.dm.nodeFactory.lookup( t );
 			if ( nodeType === type || nodeType.prototype instanceof type ) {
 				ve.batchPush( nodes, this.getNodesByType( t ) );
 			}
 		}
 	} else {
-		nodes = this.nodesByType[ type ] || [];
+		nodes = this.nodesByType.get( type ) || [];
 	}
 
 	if ( sort ) {

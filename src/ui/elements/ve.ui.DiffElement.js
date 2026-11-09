@@ -335,7 +335,7 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff, meta
 	internalListSpacerNode.setAttribute( 'class', 've-ui-diffElement-spacer-listWrapper' );
 	internalListSpacerNode.appendChild( documentSpacerNode.cloneNode( true ) );
 
-	const referencesListDiffs = Object.create( null );
+	const referencesListDiffs = new Map();
 	Object.keys( internalListDiff.groups ).forEach( ( group ) => {
 		const referencesListContainer = document.createElement( 'ol' );
 		const internalListGroup = internalListDiff.groups[ group ];
@@ -360,12 +360,12 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff, meta
 			this.processQueue( internalListDiffQueue ),
 			referencesListContainer, internalListSpacerNode
 		);
-		referencesListDiffs[ group ] = {
+		referencesListDiffs.set( group, {
 			element: referencesListContainer,
 			action: internalListGroup.changes ? 'change' : 'none',
 			descriptionItemsStack: this.descriptionItemsStack,
 			shown: false
-		};
+		} );
 		this.descriptionItemsStack = null;
 
 		internalListDiffQueue = [];
@@ -377,7 +377,7 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff, meta
 	const handleRefList = ( node, move ) => {
 		if (
 			node.type === 'mwReferencesList' &&
-			( referencesListDiff = referencesListDiffs[ node.element.attributes.listGroup ] )
+			( referencesListDiff = referencesListDiffs.get( node.element.attributes.listGroup ) )
 		) {
 			// New node is a references list node. If a reference has
 			// changed, the references list nodes appear unchanged,
@@ -416,8 +416,8 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff, meta
 
 	// Show any ref list diffs that weren't picked up by the main diff loop above,
 	// e.g. during a section diff.
-	Object.keys( referencesListDiffs ).forEach( ( group ) => {
-		referencesListDiff = referencesListDiffs[ group ];
+	referencesListDiffs.forEach( ( refListDiff ) => {
+		referencesListDiff = refListDiff;
 		if ( !referencesListDiff.shown ) {
 			diffQueue.push( [ this.getRefListNodeElements, referencesListDiff.element, referencesListDiff.action, null, referencesListDiff.descriptionItemsStack ] );
 		}

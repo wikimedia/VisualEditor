@@ -241,7 +241,7 @@ ve.ui.CommandHelpDialog.static.buildKeyNode = function ( key ) {
 ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( groupName, promote, demote ) {
 	const commands = ve.ui.commandHelpRegistry.lookupByGroup( groupName ),
 		keys = Object.keys( commands ),
-		used = Object.create( null ),
+		used = new Set(),
 		auto = [],
 		promoted = [],
 		demoted = [];
@@ -253,20 +253,20 @@ ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( groupName, p
 				return;
 			}
 			promoted.push( commands[ name ] );
-			used[ name ] = true;
+			used.add( name );
 		} );
 	}
 	if ( demote ) {
 		demote.forEach( ( name ) => {
-			if ( used[ name ] || !commands[ name ] ) {
+			if ( used.has( name ) || !commands[ name ] ) {
 				return;
 			}
 			demoted.push( commands[ name ] );
-			used[ name ] = true;
+			used.add( name );
 		} );
 	}
 	keys.forEach( ( name ) => {
-		if ( used[ name ] ) {
+		if ( used.has( name ) ) {
 			return;
 		}
 		auto.push( commands[ name ] );

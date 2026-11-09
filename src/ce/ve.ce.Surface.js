@@ -2607,14 +2607,14 @@ ve.ce.Surface.prototype.findAndExecuteDelayedSequences = function () {
 	} else {
 		matchingSequences = this.findMatchingSequences();
 	}
-	const matchingByName = Object.create( null );
+	const matchingByName = new Map();
 
 	matchingSequences.forEach( ( matchingSequence ) => {
-		matchingByName[ matchingSequence.sequence.getName() ] = matchingSequence;
+		matchingByName.set( matchingSequence.sequence.getName(), matchingSequence );
 	} );
 
 	this.delayedSequences.forEach( ( delayedSequence ) => {
-		const matchingSeq = matchingByName[ delayedSequence.sequence.getName() ];
+		const matchingSeq = matchingByName.get( delayedSequence.sequence.getName() );
 		if (
 			!matchingSeq ||
 			matchingSeq.range.start !== delayedSequence.range.start

@@ -113,7 +113,7 @@ QUnit.test( 'clone', ( assert ) => {
 	const internalList = doc.getInternalList();
 
 	// Validate the test setup
-	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` of original internalList is empty' );
+	assert.strictEqual( internalList.keyIndexes.size, 0, '`keyIndexes` of original internalList is empty' );
 
 	internalList.getNextUniqueNumber(); // =0
 	const internalListClone = internalList.clone();
@@ -121,8 +121,8 @@ QUnit.test( 'clone', ( assert ) => {
 	const internalListClone2 = internalList.clone( doc2 );
 	internalList.getNextUniqueNumber(); // =2
 
-	assert.deepEqual( internalListClone.keyIndexes, {}, '`keyIndexes` of first clone is empty' );
-	assert.deepEqual( internalListClone2.keyIndexes, {}, '`keyIndexes` of second clone is empty' );
+	assert.strictEqual( internalListClone.keyIndexes.size, 0, '`keyIndexes` of first clone is empty' );
+	assert.strictEqual( internalListClone2.keyIndexes.size, 0, '`keyIndexes` of second clone is empty' );
 
 	assert.strictEqual( internalListClone.getDocument(), internalList.getDocument(), 'Documents match' );
 	assert.strictEqual( internalListClone2.getDocument(), doc2, 'Cloning with document parameter' );
@@ -169,8 +169,8 @@ QUnit.test( 'merge (no common element)', ( assert ) => {
 	const otherInternalList = otherDoc.getInternalList();
 
 	// Validate the test setup, see comment at the top
-	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` is empty' );
-	assert.deepEqual( otherInternalList.keyIndexes, {}, '`keyIndexes` is empty' );
+	assert.strictEqual( internalList.keyIndexes.size, 0, '`keyIndexes` is empty' );
+	assert.strictEqual( otherInternalList.keyIndexes.size, 0, '`keyIndexes` is empty' );
 
 	const merge = internalList.merge( otherInternalList, 0 );
 	assert.deepEqual(
@@ -197,8 +197,8 @@ QUnit.test( 'merge (one common element)', ( assert ) => {
 	const otherInternalList = otherDoc.getInternalList();
 
 	// Validate the test setup, see comment at the top
-	assert.deepEqual( internalList.keyIndexes, {}, '`keyIndexes` is empty' );
-	assert.deepEqual( otherInternalList.keyIndexes, {}, '`keyIndexes` is empty' );
+	assert.strictEqual( internalList.keyIndexes.size, 0, '`keyIndexes` is empty' );
+	assert.strictEqual( otherInternalList.keyIndexes.size, 0, '`keyIndexes` is empty' );
 
 	const merge = internalList.merge( otherInternalList, 1 );
 	assert.deepEqual(

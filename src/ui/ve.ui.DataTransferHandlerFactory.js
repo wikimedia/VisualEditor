@@ -16,11 +16,11 @@ ve.ui.DataTransferHandlerFactory = function VeUiDataTransferHandlerFactory() {
 	ve.ui.DataTransferHandlerFactory.super.apply( this, arguments );
 
 	// Handlers which match all kinds and a specific type
-	this.handlerNamesByType = Object.create( null );
+	this.handlerNamesByType = new Map();
 	// Handlers which match a specific kind and type
-	this.handlerNamesByKindAndType = Object.create( null );
+	this.handlerNamesByKindAndType = new Map();
 	// Handlers which match a specific file extension as a fallback
-	this.handlerNamesByExtension = Object.create( null );
+	this.handlerNamesByExtension = new Map();
 };
 
 /* Inheritance */
@@ -75,18 +75,18 @@ ve.ui.DataTransferHandlerFactory.prototype.unregister = function ( constructor )
  * @param {boolean} [insert=false] Insert the handler into the indexes, remove otherwise
  */
 ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructor, insert ) {
-	function ensureArray( obj, prop ) {
-		if ( obj[ prop ] === undefined ) {
-			obj[ prop ] = [];
+	function ensureArray( map, key ) {
+		if ( !map.has( key ) ) {
+			map.set( key, [] );
 		}
-		return obj[ prop ];
+		return map.get( key );
 	}
 
-	function ensureMap( obj, prop ) {
-		if ( obj[ prop ] === undefined ) {
-			obj[ prop ] = Object.create( null );
+	function ensureMap( map, key ) {
+		if ( !map.has( key ) ) {
+			map.set( key, new Map() );
 		}
-		return obj[ prop ];
+		return map.get( key );
 	}
 
 	function remove( arr, item ) {
@@ -105,7 +105,7 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 			if ( insert ) {
 				ensureArray( this.handlerNamesByType, type ).unshift( constructor.static.name );
 			} else {
-				remove( this.handlerNamesByType[ type ], constructor.static.name );
+				remove( this.handlerNamesByType.get( type ), constructor.static.name );
 			}
 		} );
 	} else {
@@ -117,7 +117,7 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 						type
 					).unshift( constructor.static.name );
 				} else {
-					remove( this.handlerNamesByKindAndType[ kind ][ type ], constructor.static.name );
+					remove( this.handlerNamesByKindAndType.get( kind ).get( type ), constructor.static.name );
 				}
 			} );
 		} );
@@ -127,7 +127,7 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 			if ( insert ) {
 				ensureArray( this.handlerNamesByExtension, extension ).unshift( constructor.static.name );
 			} else {
-				remove( this.handlerNamesByExtension[ extension ], constructor.static.name );
+				remove( this.handlerNamesByExtension.get( extension ), constructor.static.name );
 			}
 		} );
 	}
@@ -142,21 +142,16 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
  * @return {string|undefined} Handler name, or undefined if not found
  */
 ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item, isPaste, isPasteSpecial ) {
-	// Fetch a given nested property, returning a zero-length array if
+	// Fetch from nested maps, returning a zero-length array if
 	// any component of the path is not present.
-	// This is similar to ve.getProp, except with a `hasOwnProperty`
-	// test to ensure we aren't fooled by __proto__ and friends.
-	function fetch( obj, ...props ) {
-		for ( const prop of props ) {
-			if (
-				typeof prop !== 'string' ||
-				!Object.prototype.hasOwnProperty.call( obj, prop )
-			) {
+	function fetch( map, ...keys ) {
+		for ( const key of keys ) {
+			if ( !map.has( key ) ) {
 				return [];
 			}
-			obj = obj[ prop ];
+			map = map.get( key );
 		}
-		return obj;
+		return map;
 	}
 
 	const names = [

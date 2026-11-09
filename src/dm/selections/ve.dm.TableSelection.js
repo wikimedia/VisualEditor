@@ -71,7 +71,7 @@ ve.dm.TableSelection.static.newFromHash = function ( hash ) {
  */
 ve.dm.TableSelection.static.getTableMatrixCells = function ( matrix, selectionOffsets, includePlaceholders ) {
 	const cells = [],
-		visited = Object.create( null );
+		visited = new Set();
 
 	for ( let row = selectionOffsets.startRow; row <= selectionOffsets.endRow; row++ ) {
 		for ( let col = selectionOffsets.startCol; col <= selectionOffsets.endCol; col++ ) {
@@ -82,9 +82,9 @@ ve.dm.TableSelection.static.getTableMatrixCells = function ( matrix, selectionOf
 			if ( !includePlaceholders && cell.isPlaceholder() ) {
 				cell = cell.owner;
 			}
-			if ( !visited[ cell.key ] ) {
+			if ( !visited.has( cell.key ) ) {
 				cells.push( cell );
-				visited[ cell.key ] = true;
+				visited.add( cell.key );
 			}
 		}
 	}

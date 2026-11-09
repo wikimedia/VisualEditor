@@ -53,9 +53,9 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 
 	/**
 	 * @private Please use {@link #getKeyIndex} instead
-	 * @property {Object.<string,number>} keyIndexes Internal item index, keyed by "listGroup/listKey"
+	 * @property {Map.<string,number>} keyIndexes Internal item index, keyed by "listGroup/listKey"
 	 */
-	this.keyIndexes = Object.create( null );
+	this.keyIndexes = new Map();
 
 	// Event handlers
 	doc.connect( this, { transact: 'onTransact' } );
@@ -96,7 +96,7 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( listGroup, listKey, html
 		// document is loaded. Node creation is delayed, which is why this uses a different,
 		// temporary data structure as source.
 		index = this.itemHtmlQueue.length;
-		this.keyIndexes[ listGroup + '/' + listKey ] = index;
+		this.keyIndexes.set( listGroup + '/' + listKey, index );
 		this.itemHtmlQueue.push( html );
 		isNew = true;
 	} else if ( this.itemHtmlQueue[ index ] === '' ) {
@@ -249,7 +249,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( listGroup, listKey, d
 	// This assumes the itemHtmlQueue is fully processed and obsolete by now, and instead uses the
 	// actual nodes to continue the sequence.
 	index = this.getItemNodeCount();
-	this.keyIndexes[ listGroup + '/' + listKey ] = index;
+	this.keyIndexes.set( listGroup + '/' + listKey, index );
 	return {
 		transaction: ve.dm.TransactionBuilder.static.newFromInsertion(
 			this.getDocument(),
@@ -269,7 +269,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( listGroup, listKey, d
  * @return {number|undefined} The index of the group key, or undefined if it doesn't exist yet
  */
 ve.dm.InternalList.prototype.getKeyIndex = function ( listGroup, listKey ) {
-	return this.keyIndexes[ listGroup + '/' + listKey ];
+	return this.keyIndexes.get( listGroup + '/' + listKey );
 };
 
 /**
@@ -377,7 +377,7 @@ ve.dm.InternalList.prototype.merge = function ( otherList, commonLength ) {
 		newItemRanges = [];
 	let nextListIndex = this.getItemNodeCount();
 
-	if ( otherList.keyIndexes && otherList.keyIndexes.length ) {
+	if ( otherList.keyIndexes && otherList.keyIndexes.size ) {
 		// Looking for potentially dead code here T416558
 		ve.error( 'T416558 ve.dm.InternalList.merge() list.keyIndexes not empty' );
 	}
@@ -391,10 +391,10 @@ ve.dm.InternalList.prototype.merge = function ( otherList, commonLength ) {
 	for ( let i = commonLength; i < otherLength; i++ ) {
 		// Map each listIndex back to the string key from the other keyIndexes map
 		// FIXME: It appears like the other keyIndexes map is always empty because it's not cloned
-		const otherKey = Object.keys( otherList.keyIndexes )
-			.find( ( key ) => otherList.keyIndexes[ key ] === i );
+		const otherKey = Array.from( otherList.keyIndexes.keys() )
+			.find( ( key ) => otherList.keyIndexes.get( key ) === i );
 
-		const existingListIndex = otherKey && this.keyIndexes[ otherKey ];
+		const existingListIndex = otherKey && this.keyIndexes.get( otherKey );
 		if ( existingListIndex !== undefined ) {
 			// We already have this key in this internal list. Ignore the duplicate that the other
 			// list is trying to merge in.
@@ -408,7 +408,7 @@ ve.dm.InternalList.prototype.merge = function ( otherList, commonLength ) {
 
 			if ( otherKey ) {
 				// Remember the new listIndex we just assigned for deduplication purposes
-				this.keyIndexes[ otherKey ] = listIndexMap[ i ];
+				this.keyIndexes.set( otherKey, listIndexMap[ i ] );
 			}
 		}
 	}

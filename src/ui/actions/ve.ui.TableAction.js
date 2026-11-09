@@ -634,7 +634,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 	const matrix = tableNode.matrix,
 		insertCells = [],
 		txBuilders = [],
-		updated = Object.create( null ),
+		updated = new Set(),
 		inserts = [],
 		surfaceModel = this.surface.getModel();
 
@@ -679,10 +679,10 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		if ( refCell && ( cell.isPlaceholder() || refCell.isPlaceholder() ) ) {
 			if ( cell.node === refCell.node ) {
 				cell = cell.owner || cell;
-				if ( !updated[ cell.key ] ) {
+				if ( !updated.has( cell.key ) ) {
 					// Note: we can safely record span modifications as they do not affect range offsets.
 					txBuilders.push( this.incrementSpan( cell, mode ) );
-					updated[ cell.key ] = true;
+					updated.add( cell.key );
 				}
 				// Resolve merged cell conflicts when moving
 				if ( dataMatrixLine && dataMatrixLine.cells[ i ].owner.data && !dataMatrixLine.cells[ i ].owner.conflicted ) {
@@ -855,7 +855,7 @@ ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, max
 ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIndex, maxIndex ) {
 	const removedMatrix = [],
 		txBuilders = [],
-		adapted = Object.create( null ),
+		adapted = new Set(),
 		actions = [],
 		cells = [],
 		surfaceModel = this.surface.getModel(),
@@ -887,11 +887,11 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		}
 		if ( cell.isPlaceholder() ) {
 			const key = cell.owner.key;
-			if ( !adapted[ key ] ) {
+			if ( !adapted.has( key ) ) {
 				// Note: we can record this transaction immediately, as it does not have an effect on the
 				// node range
 				txBuilders.push( this.decrementSpan( cell.owner, mode, minIndex, maxIndex ) );
-				adapted[ key ] = true;
+				adapted.add( key );
 			}
 			continue;
 		}

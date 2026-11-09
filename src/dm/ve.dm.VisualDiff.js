@@ -928,34 +928,38 @@ ve.dm.VisualDiff.prototype.underDiffThreshold = function ( changeRecord ) {
  * @return {Object.<string,ve.dm.VisualDiff.ListDiff>}
  */
 ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList ) {
-	/** @type {Object.<string,ve.dm.MetaItem[]>} */
-	const oldItemsByGroup = Object.create( null );
+	/** @type {Map.<string,ve.dm.MetaItem[]>} */
+	const oldItemsByGroup = new Map();
 	oldMetaList.items.forEach( ( metaItem ) => {
 		const group = metaItem.getGroup();
-		oldItemsByGroup[ group ] = oldItemsByGroup[ group ] || [];
-		oldItemsByGroup[ group ].push( metaItem );
+		if ( !oldItemsByGroup.has( group ) ) {
+			oldItemsByGroup.set( group, [] );
+		}
+		oldItemsByGroup.get( group ).push( metaItem );
 	} );
 
-	/** @type {Object.<string,ve.dm.MetaItem[]>} */
-	const newItemsByGroup = Object.create( null );
+	/** @type {Map.<string,ve.dm.MetaItem[]>} */
+	const newItemsByGroup = new Map();
 	newMetaList.items.forEach( ( metaItem ) => {
 		const group = metaItem.getGroup();
-		newItemsByGroup[ group ] = newItemsByGroup[ group ] || [];
-		newItemsByGroup[ group ].push( metaItem );
+		if ( !newItemsByGroup.has( group ) ) {
+			newItemsByGroup.set( group, [] );
+		}
+		newItemsByGroup.get( group ).push( metaItem );
 	} );
 
 	/** @type {string[]} */
 	const groups = OO.simpleArrayUnion(
-		Object.keys( oldItemsByGroup ),
-		Object.keys( newItemsByGroup )
+		Array.from( oldItemsByGroup.keys() ),
+		Array.from( newItemsByGroup.keys() )
 	);
 
 	/** @type {Object.<string,ve.dm.VisualDiff.ListDiff>} */
 	const groupDiffs = Object.create( null );
 	groups.forEach( ( group ) => {
 		groupDiffs[ group ] = this.diffList(
-			oldItemsByGroup[ group ] || [],
-			newItemsByGroup[ group ] || []
+			oldItemsByGroup.get( group ) || [],
+			newItemsByGroup.get( group ) || []
 		);
 	} );
 	return groupDiffs;

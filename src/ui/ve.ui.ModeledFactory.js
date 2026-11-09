@@ -78,7 +78,7 @@ ve.ui.ModeledFactory.prototype.getRelatedItems = function ( models ) {
 		return candidates;
 	}
 
-	const names = Object.create( null );
+	const names = new Set();
 	const matches = [];
 	// Collect compatible classes and the models they are specifically compatible with,
 	// discarding class's with duplicate symbolic names
@@ -86,10 +86,10 @@ ve.ui.ModeledFactory.prototype.getRelatedItems = function ( models ) {
 		const classes = collect( model );
 		classes.forEach( ( clss ) => {
 			const name = clss.static.name;
-			if ( !names[ name ] ) {
+			if ( !names.has( name ) ) {
 				matches.push( { name, model } );
 			}
-			names[ name ] = true;
+			names.add( name );
 		} );
 	} );
 

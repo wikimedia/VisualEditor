@@ -74,10 +74,10 @@ ve.dm.TransactionSquasher = function VeDmTransactionSquasher( transaction ) {
 	this.globalOffset = 0;
 
 	/**
-	 * @property {Object} attributeOperations During squashIn, live references to attribute
+	 * @property {Map.<string,Object>} attributeOperations During squashIn, live references to attribute
 	 * operations at current offset, keyed by attribute name, or null if at an open element
 	 */
-	this.attributeOperations = Object.create( null );
+	this.attributeOperations = new Map();
 };
 
 /* Inheritance */
@@ -193,7 +193,7 @@ ve.dm.TransactionSquasher.prototype.processRetain = function ( maxLength ) {
 		const len = Math.min( maxLength, this.op.length - this.offset );
 		this.offset += len;
 		this.globalOffset += len;
-		this.attributeOperations = Object.create( null );
+		this.attributeOperations = new Map();
 		return len;
 	}
 	if ( this.op.type === 'replace' ) {
@@ -213,7 +213,7 @@ ve.dm.TransactionSquasher.prototype.processRetain = function ( maxLength ) {
 		this.index++;
 		this.op = this.operations[ this.index ];
 		// By assumption, this.offset is already 0
-		this.attributeOperations[ this.op.key ] = this.op;
+		this.attributeOperations.set( this.op.key, this.op );
 		return 0;
 	}
 	throw new Error( 'Unknown op type: ' + this.op.type );
@@ -351,7 +351,7 @@ ve.dm.TransactionSquasher.prototype.processInsert = function ( items ) {
 			items
 		);
 		this.globalOffset += items.length;
-		this.attributeOperations = Object.create( null );
+		this.attributeOperations = new Map();
 		return items.length;
 	}
 	if ( this.op.type === 'replace' ) {
@@ -362,7 +362,7 @@ ve.dm.TransactionSquasher.prototype.processInsert = function ( items ) {
 		ve.batchSplice( this.op.insert, this.offset, 0, items );
 		this.offset += items.length;
 		this.globalOffset += items.length;
-		this.attributeOperations = Object.create( null );
+		this.attributeOperations = new Map();
 		return items.length;
 	}
 	throw new Error( 'Unknown operation type ' + this.op.type );
@@ -389,7 +389,7 @@ ve.dm.TransactionSquasher.prototype.processAttribute = function ( key, from, to 
 		}
 		this.changeElement( this.op.insert[ this.offset ], key, from, to );
 	} else {
-		let op = this.attributeOperations[ key ];
+		let op = this.attributeOperations.get( key );
 		if ( op ) {
 			if ( !this.constructor.static.equalItems( op.to, from ) ) {
 				throw new Error( 'Unexpected prior attribute value' );
@@ -400,7 +400,7 @@ ve.dm.TransactionSquasher.prototype.processAttribute = function ( key, from, to 
 			op = { type: 'attribute', key, from, to };
 			this.splitIfInterior();
 			this.operations.splice( this.index, 0, op );
-			this.attributeOperations[ key ] = op;
+			this.attributeOperations.set( key, op );
 			this.index++;
 		}
 	}
@@ -466,7 +466,7 @@ ve.dm.TransactionSquasher.prototype.readAttributes = function () {
 		op = this.operations[ index ],
 		offset = this.offset;
 
-	this.attributeOperations = Object.create( null );
+	this.attributeOperations = new Map();
 	while ( true ) {
 		if ( !op ) {
 			return;
@@ -477,7 +477,7 @@ ve.dm.TransactionSquasher.prototype.readAttributes = function () {
 				return;
 			}
 		} else if ( op.type === 'attribute' ) {
-			this.attributeOperations[ op.key ] = op;
+			this.attributeOperations.set( op.key, op );
 		} else if ( op.type === 'retain' && offset < op.length ) {
 			return;
 		}

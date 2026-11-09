@@ -29,7 +29,7 @@ ve.init.sa.Platform = function VeInitSaPlatform( messagePaths = [] ) {
 	this.externalLinkUrlProtocolsRegExp = /^https?:\/\//i;
 	this.unanchoredExternalLinkUrlProtocolsRegExp = /https?:\/\//i;
 	this.messagePaths = messagePaths;
-	this.parsedMessages = Object.create( null );
+	this.parsedMessages = new Map();
 	this.userLanguages = [ 'en' ];
 };
 
@@ -234,7 +234,7 @@ ve.init.Platform.prototype.createSessionStorage = function () {
  */
 ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
 	for ( const key in messages ) {
-		this.parsedMessages[ key ] = messages[ key ];
+		this.parsedMessages.set( key, messages[ key ] );
 	}
 };
 
@@ -242,8 +242,8 @@ ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
  * @inheritdoc
  */
 ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
-	if ( Object.prototype.hasOwnProperty.call( this.parsedMessages, key ) ) {
-		return this.parsedMessages[ key ];
+	if ( this.parsedMessages.has( key ) ) {
+		return this.parsedMessages.get( key );
 	}
 	// Fallback to regular messages, html escaping applied.
 	return this.getMessage( key ).replace( /['"<>&]/g, ( char ) => ( {
@@ -294,7 +294,7 @@ ve.init.sa.Platform.prototype.initialize = function () {
 	const messagePaths = this.getMessagePaths(),
 		locale = $.i18n().locale,
 		languages = [ locale, 'en' ], // Always use 'en' as the final fallback
-		languagesCovered = Object.create( null ),
+		languagesCovered = new Set(),
 		promises = [];
 	let fallbacks = $.i18n.fallbacks[ locale ];
 
@@ -323,10 +323,10 @@ ve.init.sa.Platform.prototype.initialize = function () {
 	this.userLanguages = languages;
 
 	languages.forEach( ( lang ) => {
-		if ( languagesCovered[ lang ] ) {
+		if ( languagesCovered.has( lang ) ) {
 			return;
 		}
-		languagesCovered[ lang ] = true;
+		languagesCovered.add( lang );
 
 		// Lower-case the language code for the filename. jQuery.i18n does not case-fold
 		// language codes, so we should not case-fold the second argument in #load.

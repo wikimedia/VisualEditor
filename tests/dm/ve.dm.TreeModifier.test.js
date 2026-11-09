@@ -51,11 +51,11 @@ ve.dm.TreeModifier.prototype.dump = function () {
 };
 
 ve.test.utils.nodesByTypeSummary = function ( doc ) {
-	const nodesByType = ve.copy( doc.nodesByType );
-	for ( const type in nodesByType ) {
-		nodesByType[ type ] = nodesByType[ type ].length;
-	}
-	return nodesByType;
+	const summary = {};
+	doc.nodesByType.forEach( ( nodes, type ) => {
+		summary[ type ] = nodes.length;
+	} );
+	return summary;
 };
 
 QUnit.module( 've.dm.TreeModifier' );

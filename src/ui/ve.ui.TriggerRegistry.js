@@ -15,7 +15,7 @@ ve.ui.TriggerRegistry = function VeUiTriggerRegistry() {
 	// Parent constructor
 	ve.ui.TriggerRegistry.super.call( this );
 
-	this.triggersByString = Object.create( null );
+	this.triggersByString = new Map();
 };
 
 /* Inheritance */
@@ -60,7 +60,7 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 		if ( !trigger.isComplete() ) {
 			throw new Error( 'Incomplete trigger' );
 		}
-		this.triggersByString[ trigger.toString() ] = name;
+		this.triggersByString.set( trigger.toString(), name );
 	} );
 
 	ve.ui.TriggerRegistry.super.prototype.register.call( this, name, triggerList );
@@ -73,7 +73,7 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
  * @return {string|undefined} Trigger name, if found
  */
 ve.ui.TriggerRegistry.prototype.getNameByTrigger = function ( triggerString ) {
-	return this.triggersByString[ triggerString ];
+	return this.triggersByString.get( triggerString );
 };
 
 /**

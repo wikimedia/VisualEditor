@@ -70,24 +70,24 @@ ve.EventSequencer = function VeEventSequencer( eventNames ) {
 	this.pendingCalls = [];
 
 	/**
-	 * @property {Object.<string,Function[]>}
+	 * @property {Map.<string,Function[]>}
 	 */
-	this.onListenersForEvent = Object.create( null );
+	this.onListenersForEvent = new Map();
 
 	/**
-	 * @property {Object.<string,Function[]>}
+	 * @property {Map.<string,Function[]>}
 	 */
-	this.afterListenersForEvent = Object.create( null );
+	this.afterListenersForEvent = new Map();
 
 	/**
-	 * @property {Object.<string,Function[]>}
+	 * @property {Map.<string,Function[]>}
 	 */
-	this.afterOneListenersForEvent = Object.create( null );
+	this.afterOneListenersForEvent = new Map();
 
 	eventNames.forEach( ( eventName ) => {
-		this.onListenersForEvent[ eventName ] = [];
-		this.afterListenersForEvent[ eventName ] = [];
-		this.afterOneListenersForEvent[ eventName ] = [];
+		this.onListenersForEvent.set( eventName, [] );
+		this.afterListenersForEvent.set( eventName, [] );
+		this.afterOneListenersForEvent.set( eventName, [] );
 		this.eventHandlers[ eventName ] = makeEventHandler( eventName );
 	} );
 
@@ -171,7 +171,7 @@ ve.EventSequencer.prototype.onLoop = function ( listeners ) {
  */
 ve.EventSequencer.prototype.on = function ( listeners ) {
 	Object.entries( listeners ).forEach( ( [ eventName, fn ] ) => {
-		this.onListenersForEvent[ eventName ].push( fn );
+		this.onListenersForEvent.get( eventName ).push( fn );
 	} );
 	return this;
 };
@@ -185,7 +185,7 @@ ve.EventSequencer.prototype.on = function ( listeners ) {
  */
 ve.EventSequencer.prototype.after = function ( listeners ) {
 	Object.entries( listeners ).forEach( ( [ eventName, fn ] ) => {
-		this.afterListenersForEvent[ eventName ].push( fn );
+		this.afterListenersForEvent.get( eventName ).push( fn );
 	} );
 	return this;
 };
@@ -199,7 +199,7 @@ ve.EventSequencer.prototype.after = function ( listeners ) {
  */
 ve.EventSequencer.prototype.afterOne = function ( listeners ) {
 	Object.entries( listeners ).forEach( ( [ eventName, fn ] ) => {
-		this.afterOneListenersForEvent[ eventName ].push( fn );
+		this.afterOneListenersForEvent.get( eventName ).push( fn );
 	} );
 	return this;
 };
@@ -249,7 +249,7 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	}
 
 	// Listener list: take snapshot (for immutability if a listener adds another listener)
-	const onListeners = ( this.onListenersForEvent[ eventName ] || [] ).slice();
+	const onListeners = ( this.onListenersForEvent.get( eventName ) || [] ).slice();
 
 	onListeners.forEach( ( onListener, i ) => {
 		this.callListener( 'on', eventName, i, onListener, ev );
@@ -282,9 +282,9 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
  */
 ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
 	// Listener list: take snapshot (for immutability if a listener adds another listener)
-	const afterListeners = ( this.afterListenersForEvent[ eventName ] || [] ).slice();
+	const afterListeners = ( this.afterListenersForEvent.get( eventName ) || [] ).slice();
 	// One-time listener list: take snapshot (for immutability) and blank the list
-	const afterOneListeners = ( this.afterOneListenersForEvent[ eventName ] || [] ).splice( 0 );
+	const afterOneListeners = ( this.afterOneListenersForEvent.get( eventName ) || [] ).splice( 0 );
 
 	afterListeners.forEach( ( listener, i ) => {
 		this.callListener( 'after', eventName, i, listener, ev );
