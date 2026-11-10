@@ -2203,3 +2203,32 @@ QUnit.test( 'compareAttributes/describeChanges', ( assert ) => {
 		} );
 	} );
 } );
+
+QUnit.test( 'Hover highlighting', ( assert ) => {
+	const figure = ( align ) => `<figure class="ve-align-${ align }"><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>`;
+	const oldDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( figure( 'right' ) ) );
+	const newDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( figure( 'left' ) ) );
+	newDoc.getStore().merge( oldDoc.getStore() );
+
+	const diffElement = new ve.ui.DiffElement( new ve.dm.VisualDiff( oldDoc, newDoc ) );
+
+	assert.strictEqual(
+		diffElement.descriptions.findHighlightedItem(), null,
+		'No description is highlighted at first'
+	);
+
+	diffElement.$document.find( '[data-diff-id]' ).trigger( 'mousemove' );
+	assert.strictEqual(
+		diffElement.descriptions.findHighlightedItem().getData(), 0,
+		'The description of the change below the pointer is highlighted'
+	);
+
+	// The pointer can go out of the document directly from a change. This sends
+	// no mousemove event in the document, thus mouseleave must clear the
+	// highlight. (T444387)
+	diffElement.$document.trigger( 'mouseleave' );
+	assert.strictEqual(
+		diffElement.descriptions.findHighlightedItem(), null,
+		'The highlight clears when the pointer goes out of the document'
+	);
+} );

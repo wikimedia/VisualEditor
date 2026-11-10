@@ -36,7 +36,8 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config = {} ) {
 	this.descriptionItemsStack = null;
 
 	this.$document.on( {
-		mousemove: this.onDocumentMouseMove.bind( this )
+		mousemove: this.onDocumentMouseMove.bind( this ),
+		mouseleave: this.onDocumentMouseLeave.bind( this )
 	} );
 
 	this.renderDiff( diff.docDiff, diff.internalListDiff, diff.metaListDiff, visualDiff.newDoc.getHtmlDocument() );
@@ -160,6 +161,18 @@ ve.ui.DiffElement.prototype.onDocumentMouseMove = function ( e ) {
 	} else {
 		this.descriptions.highlightItem();
 	}
+};
+
+/**
+ * Handle document mouse leave events
+ *
+ * The mousemove handler clears the highlight only when the pointer moves to a
+ * part of the document that has no change. When the pointer goes out of the
+ * document directly from a change, no mousemove event occurs in the document.
+ * Clear the highlight here.
+ */
+ve.ui.DiffElement.prototype.onDocumentMouseLeave = function () {
+	this.descriptions.highlightItem();
 };
 
 /**

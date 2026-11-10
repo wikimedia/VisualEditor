@@ -17,11 +17,17 @@
 	}
 
 	&-content {
-		overflow-x: auto;
+		/* Wide content, such as a table, scrolls horizontally. An overflow-x that
+		   is not visible makes the browser compute overflow-y as auto. Only the
+		   highlight outlines go out of the box vertically, and the padding below
+		   gives them space. Thus hide the vertical overflow to prevent a scrollbar
+		   that has nothing to scroll to. */
+		overflow: auto hidden;
 		position: relative;
-		/* Render 5px padding so highlight outlines are visible */
-		margin-left: -5px;
-		padding-left: 5px;
+		/* Render 5px padding so highlight outlines are visible. A highlight goes
+		   5px out of the content on each side: 2px of padding and a 3px outline. */
+		margin: -5px 0 -5px -5px;
+		padding: 5px 0 5px 5px;
 
 		.ve-ui-diffElement-hasDescriptions & {
 			margin-right: 16em;
