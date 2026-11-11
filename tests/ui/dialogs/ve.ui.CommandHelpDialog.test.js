@@ -28,7 +28,7 @@ QUnit.test( 'Command help dialog', ( assert ) => {
 
 	const surface = ve.test.utils.createSurfaceFromHtml( '', { allowTabFocusChange: false } );
 
-	surface.getDialogs().getWindow( 'commandHelp' ).then(
+	surface.getModalDialogs().getWindow( 'commandHelp' ).then(
 		( dialog ) => dialog.open( { surface } ).opened.then( () => {
 			assert.deepEqual(
 				dialog.$body.find( 'h3' ).map( ( i, el ) => $( el ).text() ).get(),
@@ -63,7 +63,7 @@ QUnit.test( 'Command help dialog (allowTabFocusChange=true, excluded commands)',
 		allowTabFocusChange: true
 	} );
 
-	surface.getDialogs().getWindow( 'commandHelp' ).then(
+	surface.getModalDialogs().getWindow( 'commandHelp' ).then(
 		( dialog ) => dialog.open( { surface } ).opened.then( () => {
 			assert.deepEqual(
 				dialog.$body.find( 'h3' ).map( ( i, el ) => $( el ).text() ).get(),

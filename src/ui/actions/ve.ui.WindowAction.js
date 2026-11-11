@@ -304,7 +304,7 @@ ve.ui.WindowAction.prototype.getWindowManager = function ( windowType ) {
 		case 'sidebar':
 			return this.surface.getSidebarDialogs();
 		case 'dialog':
-			return this.surface.getDialogs();
+			return this.surface.getModalDialogs();
 	}
 	return null;
 };

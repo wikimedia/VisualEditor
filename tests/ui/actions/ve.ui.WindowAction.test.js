@@ -11,7 +11,7 @@ QUnit.module( 've.ui.WindowAction' );
 QUnit.test( 'Basic open/close', ( assert ) => {
 	const surface = ve.test.utils.createSurfaceFromHtml( '' ),
 		windowAction = ve.ui.actionFactory.create( 'window', surface ),
-		dialogs = surface.getDialogs(),
+		dialogs = surface.getModalDialogs(),
 		done = assert.async( 2 );
 
 	dialogs.once( 'opening', ( win, opening ) => {

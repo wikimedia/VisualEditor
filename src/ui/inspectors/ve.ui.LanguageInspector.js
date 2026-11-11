@@ -70,7 +70,7 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 
 	// Properties
 	this.languageInput = new ve.ui.LanguageInputWidget( {
-		dialogManager: this.manager.getSurface().getDialogs()
+		dialogManager: this.manager.getSurface().getModalDialogs()
 	} );
 
 	const languageField = new OO.ui.FieldLayout( this.languageInput, {

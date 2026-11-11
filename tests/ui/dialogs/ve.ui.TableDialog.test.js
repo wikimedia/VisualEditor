@@ -56,7 +56,7 @@ QUnit.test( 'Toggle caption', ( assert ) => {
 		const data = ve.copy( surfaceModel.getDocument().getFullData() );
 		caseItem.expectedData( data );
 
-		return surface.getDialogs().getWindow( 'table' ).then(
+		return surface.getModalDialogs().getWindow( 'table' ).then(
 			( dialog ) => dialog.open( {
 				surface,
 				fragment: surface.getModel().getFragment()

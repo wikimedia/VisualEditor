@@ -144,7 +144,7 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 
 	// Events
 	this.getSurface().getModel().connect( this, { contextChange: 'onContextChange' } );
-	this.getSurface().getDialogs().connect( this, {
+	this.getSurface().getModalDialogs().connect( this, {
 		opening: 'onInspectorOrDialogOpeningOrClosing',
 		closing: 'onInspectorOrDialogOpeningOrClosing'
 	} );
@@ -264,7 +264,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 	const fragment = this.getSurface().getModel().getFragment();
 
 	const activeDialogs = [
-		this.surface.getDialogs(),
+		this.surface.getModalDialogs(),
 		this.surface.getContext().getInspectors(),
 		...ve.ui.ToolbarDialogWindowManager.static.positions.map(
 			( position ) => this.surface.getToolbarDialogs( position )

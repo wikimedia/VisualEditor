@@ -83,7 +83,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 		this.model = this.createModel( documentModel, config.attachedRoot );
 	}
 	this.view = this.createView( this.model );
-	this.dialogs = this.createDialogWindowManager();
+	this.modalDialogs = this.createModalDialogWindowManager();
 	this.sidebarDialogs = this.createSidebarWindowManager();
 	this.importRules = config.importRules || {};
 	this.multiline = config.multiline !== false;
@@ -151,12 +151,23 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config = {} ) 
 	this.view.$element.after( this.localOverlaySelections.$element, this.localOverlay.$element );
 	this.localOverlay.$element.append( this.$blockers, this.$controls, this.$menus );
 	this.localOverlaySelections.$element.append( this.$selections );
-	this.globalOverlay.$element.append( this.dialogs.$element );
+	this.globalOverlay.$element.append( this.modalDialogs.$element );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
+
+/* Getters */
+
+/**
+ * @property {ve.ui.WindowManager} dialogs Modal dialogs window set
+ * @deprecated Use #getModalDialogs
+ */
+Object.defineProperty( ve.ui.Surface.prototype, 'dialogs', { get: function () {
+	OO.ui.warnDeprecation( 've.ui.Surface#dialogs is deprecated. Use #getModalDialogs instead.' );
+	return this.modalDialogs;
+}, configurable: true } );
 
 /* Events */
 
@@ -216,7 +227,7 @@ ve.ui.Surface.prototype.destroy = function () {
 	const promises = [];
 	// Destroy the ce.Surface, the ui.Context and window managers
 	promises.push( this.context.destroy() );
-	promises.push( this.dialogs.destroy() );
+	promises.push( this.modalDialogs.destroy() );
 	promises.push( this.getSidebarDialogs().destroy() );
 	for ( const side in this.toolbarDialogs ) {
 		promises.push( this.toolbarDialogs[ side ].destroy() );
@@ -229,7 +240,7 @@ ve.ui.Surface.prototype.destroy = function () {
 	}
 
 	// Disconnect events
-	this.dialogs.disconnect( this );
+	this.modalDialogs.disconnect( this );
 	this.context.getInspectors().disconnect( this );
 
 	// Remove DOM elements
@@ -318,17 +329,28 @@ ve.ui.Surface.prototype.createContext = function ( config = {} ) {
 };
 
 /**
- * Create a dialog window manager.
+ * Create a modal dialog window manager.
  *
- * @return {ve.ui.WindowManager} Dialog window manager
+ * @return {ve.ui.WindowManager} Modal dialog window manager
  */
-ve.ui.Surface.prototype.createDialogWindowManager = function () {
+ve.ui.Surface.prototype.createModalDialogWindowManager = function () {
 	return OO.ui.isMobile() ?
 		new ve.ui.MobileWindowManager( this, {
 			factory: ve.ui.windowFactory,
 			overlay: this.globalOverlay
 		} ) :
 		new ve.ui.SurfaceWindowManager( this, { factory: ve.ui.windowFactory } );
+};
+
+/**
+ * Create a modal dialog window manager.
+ *
+ * @deprecated Use #createModalDialogWindowManager
+ * @return {ve.ui.WindowManager} Modal dialog window manager
+ */
+ve.ui.Surface.prototype.createDialogWindowManager = function () {
+	OO.ui.warnDeprecation( 've.ui.Surface#createDialogWindowManager is deprecated. Use #createModalDialogWindowManager instead.' );
+	return this.createModalDialogWindowManager();
 };
 
 /**
@@ -442,12 +464,23 @@ ve.ui.Surface.prototype.getContext = function () {
 };
 
 /**
- * Get dialogs window set.
+ * Get modal dialogs window set.
  *
- * @return {ve.ui.WindowManager} Dialogs window set
+ * @return {ve.ui.WindowManager} Modal dialogs window set
+ */
+ve.ui.Surface.prototype.getModalDialogs = function () {
+	return this.modalDialogs;
+};
+
+/**
+ * Get modal dialogs window set.
+ *
+ * @deprecated Use #getModalDialogs
+ * @return {ve.ui.WindowManager} Modal dialogs window set
  */
 ve.ui.Surface.prototype.getDialogs = function () {
-	return this.dialogs;
+	OO.ui.warnDeprecation( 've.ui.Surface#getDialogs is deprecated. Use #getModalDialogs instead.' );
+	return this.modalDialogs;
 };
 
 /**
@@ -1023,7 +1056,7 @@ ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, lab
 ve.ui.Surface.prototype.showProgress = function () {
 	const progresses = this.progresses;
 
-	this.dialogs.openWindow( 'progress', { progresses, $returnFocusTo: null } );
+	this.modalDialogs.openWindow( 'progress', { progresses, $returnFocusTo: null } );
 	this.progresses = [];
 };
 

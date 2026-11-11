@@ -146,7 +146,7 @@ ve.collab.join = function () {
 ve.collab.start = function ( serverId ) {
 	if ( serverId ) {
 		// Join an existing session
-		ve.init.target.surface.dialogs.openWindow( 'joinCollabDialog' ).closing.then( ( data ) => {
+		ve.init.target.surface.getModalDialogs().openWindow( 'joinCollabDialog' ).closing.then( ( data ) => {
 			if ( !( data && data.action === 'accept' ) ) {
 				return;
 			}
@@ -155,5 +155,5 @@ ve.collab.start = function ( serverId ) {
 		return;
 	}
 	// Else host a new session
-	ve.init.target.surface.dialogs.openWindow( 'hostCollabDialog' );
+	ve.init.target.surface.getModalDialogs().openWindow( 'hostCollabDialog' );
 };
