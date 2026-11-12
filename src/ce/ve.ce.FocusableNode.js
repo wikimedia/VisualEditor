@@ -46,7 +46,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config = {} ) {
 	this.touchMoved = false;
 
 	if ( Array.isArray( config.classes ) ) {
-		// eslint-disable-next-line mediawiki/class-doc
+
 		this.$highlights.addClass( config.classes );
 	}
 
@@ -181,7 +181,7 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
  * @return {jQuery} A highlight element
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
-	// eslint-disable-next-line mediawiki/class-doc
+
 	return $( '<div>' )
 		.addClass( [ 've-ce-focusableNode-highlight', ...this.getExtraHighlightClasses() ] )
 		.prop( {

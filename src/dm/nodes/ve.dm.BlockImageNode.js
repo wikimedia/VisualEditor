@@ -108,7 +108,7 @@ ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 
 	const classAttr = this.getClassAttrFromAttributes( dataElement.attributes );
 	if ( classAttr ) {
-		// eslint-disable-next-line mediawiki/class-doc
+
 		figure.className = classAttr;
 	}
 

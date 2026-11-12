@@ -36,7 +36,7 @@ ve.ui.SymbolListPage = function VeUiSymbolListPage( name, config = {} ) {
 			DOMTokenList.prototype.add.apply( symbolNode.classList, symbol.classes );
 		}
 		if ( symbol.titleMsg ) {
-			// eslint-disable-next-line mediawiki/msg-doc
+
 			symbolNode.setAttribute( 'title', ve.msg( symbol.titleMsg ) );
 		}
 		symbolNode.textContent = Object.prototype.hasOwnProperty.call( symbol, 'label' ) ? symbol.label : symbol;

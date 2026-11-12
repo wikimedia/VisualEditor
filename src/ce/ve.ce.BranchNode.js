@@ -138,7 +138,7 @@ ve.ce.BranchNode.prototype.updateTagName = function () {
 		this.emit( 'teardown' );
 		const wrapper = document.createElement( tagName );
 		// Copy classes
-		// eslint-disable-next-line mediawiki/class-doc
+
 		wrapper.className = this.$element[ 0 ].className;
 		// Copy contentEditable
 		wrapper.contentEditable = this.$element[ 0 ].contentEditable;

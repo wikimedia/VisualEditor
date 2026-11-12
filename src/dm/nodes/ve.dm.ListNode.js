@@ -83,9 +83,9 @@ ve.dm.ListNode.static.describeChange = function ( key, change ) {
 	if ( key === 'style' && change.from in messageKeys && change.to in messageKeys ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
 			// Message keys documented above
-			// eslint-disable-next-line mediawiki/msg-doc
+
 			this.wrapText( 'del', ve.msg( messageKeys[ change.from ] ) ),
-			// eslint-disable-next-line mediawiki/msg-doc
+
 			this.wrapText( 'ins', ve.msg( messageKeys[ change.to ] ) )
 		);
 	}

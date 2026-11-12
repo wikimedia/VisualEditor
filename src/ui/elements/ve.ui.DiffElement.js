@@ -1386,7 +1386,7 @@ ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes, class
 		}
 		$label = $label.add( $change );
 	} );
-	// eslint-disable-next-line mediawiki/class-doc
+
 	const item = new OO.ui.OptionWidget( {
 		label: $label,
 		data: elementId,
