@@ -321,6 +321,24 @@ ve.ui.Toolbar.prototype.setNarrow = function ( narrow ) {
 };
 
 /**
+ * @inheritdoc
+ */
+ve.ui.Toolbar.prototype.getPromotedToolCount = function () {
+	if ( !OO.ui.isMobile() ) {
+		return ve.ui.Toolbar.super.prototype.getPromotedToolCount.apply( this, arguments );
+	}
+	// The mobile toolbar is laid out with flexbox, so it never wraps and can't be
+	// measured. Use breakpoints for the room left beside the tools always shown.
+	const width = this.$bar[ 0 ].clientWidth;
+	if ( width >= 393 ) {
+		return 2;
+	} else if ( width >= 360 ) {
+		return 1;
+	}
+	return 0;
+};
+
+/**
  * Gets the surface which the toolbar controls.
  *
  * Returns null if the toolbar hasn't been set up yet.
