@@ -210,6 +210,28 @@ QUnit.test( 'Change operations', ( assert ) => {
 		'Apply (insert1 then insert2*replace2 then underline3) reversed'
 	);
 
+	surface = newSurface();
+	change = insert1.concatRebased( insert2 );
+	const squashed = change.squash();
+	assert.strictEqual( squashed.transactions.length, 1, 'squash() gives one transaction' );
+	assert.strictEqual( squashed.start, change.start, 'squash() keeps start' );
+	assert.deepEqual(
+		Object.keys( squashed.selections ).sort(),
+		Object.keys( change.selections ).sort(),
+		'squash() keeps selections'
+	);
+	squashed.applyTo( surface );
+	assert.deepEqual(
+		surface.documentModel.data.data.slice( 1, -1 ),
+		[
+			...ve.dm.example.annotateText( 'one', bHash ),
+			' ',
+			...ve.dm.example.annotateText( 'two', iHash ),
+			...' three'
+		],
+		'Apply squashed (insert1 then insert2)'
+	);
+
 	assert.deepEqual(
 		ve.dm.Change.static.rebaseUncommittedChange( remove2, replace2 ).rebased.transactions,
 		[],
