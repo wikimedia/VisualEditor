@@ -142,10 +142,10 @@ less:
 oojs:
   type: tar
   license: MIT
-  version: 7.0.1
+  version: 7.1.0
   homepage: https://www.mediawiki.org/wiki/OOjs
-  src: https://registry.npmjs.org/oojs/-/oojs-7.0.1.tgz
-  integrity: sha512-DDN+B6PY29na74CyAB4bl0FgBM3ze31wd7LICghoWkd+SXrvn0W0GA1HurYdVESfBoIokqLuejk6yrbtq4PTTA==
+  src: https://registry.npmjs.org/oojs/-/oojs-7.1.0.tgz
+  integrity: sha512-ZBHOBlldXunfkgLSM2TX2tsYGfhsW2meuW1a7jw7tkuOCZaqIEQupR7mMq1AMPjUiRq7+vXAB1vqNhfxiJsU7w==
   dest:
     package/dist/oojs.js:
     package/{AUTHORS.txt,LICENSE-MIT,README.md}:

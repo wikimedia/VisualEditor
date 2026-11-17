@@ -1,10 +1,23 @@
+Aaron Liu <aaronliu0130@gmail.com>
+Andrew Green <andrew.green.df@gmail.com>
 Bartosz Dziewoński <matmarex@wikimedia.org>
 C. Scott Ananian <cscott@cscott.net>
+DannyS712 <dannys712.wiki@gmail.com>
 David Chan <dchan@wikimedia.org>
+David Lynch <dlynch@wikimedia.org>
 Ed Sanders <ejsanders@gmail.com>
 James D. Forrester <jforrester@wikimedia.org>
+Kosta Harlan <kharlan@wikimedia.org>
+Kunal Mehta <legoktm@debian.org>
 Moriel Schottlender <moriel@gmail.com>
+Novem Linguae <novemlinguae@gmail.com>
 Ori Livneh <ori@wikimedia.org>
+Paladox <thomasmulhall410@yahoo.com>
+Prateek Saxena <prtksxna@gmail.com>
 Roan Kattouw <roan.kattouw@gmail.com>
-Timo Tijhof <krinklemail@gmail.com>
+Rohit Pal <rohitpal00015@gmail.com>
+Thalia Chan <thalia@cantorion.org>
+Thiemo Kreuz <thiemo.kreuz@wikimedia.de>
+Timo Tijhof <krinkle@fastmail.com>
 Trevor Parscal <trevorparscal@gmail.com>
+Umherirrender <umherirrender_de.wp@web.de>
