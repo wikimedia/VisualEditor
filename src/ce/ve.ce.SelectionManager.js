@@ -36,6 +36,8 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 
 	this.selectionGroups = new Map();
 	this.selectionElementsCache = new Map();
+	// Not jQuery data, because jQuery #empty clears that from cached elements
+	this.clickableGutters = new WeakMap();
 
 	// Number of rects in a group that can be drawn before viewport clipping applies
 	this.viewportClippingLimit = 50;
@@ -60,6 +62,9 @@ ve.ce.SelectionManager = function VeCeSelectionManager( surface ) {
 
 	this.$element.addClass( 've-ce-selectionManager' );
 	this.$overlay = $( '<div>' ).addClass( 've-ce-selectionManager-overlay' );
+	this.$element.add( this.$overlay ).on(
+		'click', '.ve-ce-surface-selection-gutter-clickable', this.onGutterClick.bind( this )
+	);
 };
 
 /* Inheritance */
@@ -73,6 +78,16 @@ OO.mixinClass( ve.ce.SelectionManager, OO.EventEmitter );
 /**
  * @event ve.ce.SelectionManager#update
  * @param {boolean} hasSelections The selection manager has some non-collapsed selections
+ */
+
+/**
+ * A clickable gutter was clicked
+ *
+ * See the `clickableGutter` option of #drawSelections.
+ *
+ * @event ve.ce.SelectionManager#gutterClick
+ * @param {string} name Name of the selection group
+ * @param {ve.dm.Selection} selection Selection that the gutter belongs to
  */
 
 /* Methods */
@@ -120,6 +135,20 @@ ve.ce.SelectionManager.prototype.emitUpdate = function () {
 };
 
 /**
+ * Handle click events on clickable gutters
+ *
+ * @private
+ * @param {jQuery.Event} e Click event
+ * @fires ve.ce.SelectionManager#gutterClick
+ */
+ve.ce.SelectionManager.prototype.onGutterClick = function ( e ) {
+	const gutter = this.clickableGutters.get( e.currentTarget );
+	if ( gutter ) {
+		this.emit( 'gutterClick', gutter.name, gutter.selection );
+	}
+};
+
+/**
  * Draw selections.
  *
  * @param {string} name Unique name for the selection being drawn
@@ -131,6 +160,7 @@ ve.ce.SelectionManager.prototype.emitUpdate = function () {
  * @param {boolean} [options.showBounding=false] Show a bounding rectangle around the selection
  * @param {boolean} [options.showCursor=false] Show a separate rectangle at the cursor ('to' position in a non-collapsed selection)
  * @param {boolean} [options.showGutter=false] Show a vertical gutter bar matching the bounding rect
+ * @param {boolean} [options.clickableGutter=false] Make the gutter clickable; a click emits #gutterClick
  * @param {boolean} [options.showCustomHighlight=false] Apply a custom highlight that can be styled through the ::highlight( visualeditor-`name` ) pseudo-element
  * @param {Map} [options.customHighlightRanges] Pre-resolved native Ranges keyed by selection for `showCustomHighlight`, replacing #getNativeRange (per-selection fallback). Also skips viewport clipping (selections assumed viewport-bounded).
  * @param {boolean} [options.overlay=false] Render all of the selection above the text
@@ -241,15 +271,18 @@ ve.ce.SelectionManager.prototype.drawSelections = function ( name, selections, o
 				if ( options.showGutter ) {
 					const boundingRect = selection.getSelectionBoundingRect();
 					if ( boundingRect ) {
-						selectionElements.$selection.append(
-							$( '<div>' )
-								.addClass( 've-ce-surface-selection-gutter' )
-								.css( {
-									top: boundingRect.top,
-									height: boundingRect.height,
-									backgroundColor: options.color || undefined
-								} )
-						);
+						const $gutter = $( '<div>' )
+							.addClass( 've-ce-surface-selection-gutter' )
+							.css( {
+								top: boundingRect.top,
+								height: boundingRect.height,
+								backgroundColor: options.color || undefined
+							} );
+						if ( options.clickableGutter ) {
+							$gutter.addClass( 've-ce-surface-selection-gutter-clickable' );
+							this.clickableGutters.set( $gutter[ 0 ], { name, selection: selection.getModel() } );
+						}
+						selectionElements.$selection.append( $gutter );
 					}
 				}
 
@@ -389,6 +422,7 @@ ve.ce.SelectionManager.prototype.getSelectionElementsCacheKey = function ( name,
 		showBounding: !!options.showBounding,
 		showCursor: !!options.showCursor,
 		showGutter: !!options.showGutter,
+		clickableGutter: !!options.clickableGutter,
 		overlay: !!options.overlay,
 		label: options.label || ''
 		// Excluded: wrapperClass - this can be modified dynamically without re-rendering

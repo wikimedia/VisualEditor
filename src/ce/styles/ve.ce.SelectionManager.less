@@ -25,6 +25,22 @@
 		&-gutter {
 			left: 0;
 			width: 2px;
+
+			&-clickable {
+				pointer-events: auto;
+				cursor: pointer;
+
+				// Make the hit area wider than the bar. Extend it only to the
+				// left, so that it does not cover the text.
+				&::before {
+					content: '';
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					left: -8px;
+					right: 0;
+				}
+			}
 		}
 
 		&-label {

@@ -56,6 +56,37 @@ QUnit.test( 'drawSelections', ( assert ) => {
 	view.destroy();
 } );
 
+QUnit.test( 'clickableGutter', ( assert ) => {
+	const view = ve.test.utils.createSurfaceViewFromHtml( '<p>Foo bar baz</p>' ),
+		selectionManager = view.getSelectionManager(),
+		selection = new ve.dm.LinearSelection( new ve.Range( 1, 4 ) ),
+		clicks = [];
+	selectionManager.on( 'gutterClick', ( name, clickedSelection ) => {
+		clicks.push( [ name, clickedSelection ] );
+	} );
+	const getGutter = ( name ) => selectionManager.selectionGroups.get( name ).$selections.find( '.ve-ce-surface-selection-gutter' );
+
+	selectionManager.drawSelections( 'plain', [ view.getSelection( selection ) ], { showGutter: true } );
+	assert.false( getGutter( 'plain' ).hasClass( 've-ce-surface-selection-gutter-clickable' ), 'Gutter is not clickable by default' );
+	getGutter( 'plain' ).trigger( 'click' );
+	assert.strictEqual( clicks.length, 0, 'No event for a gutter that is not clickable' );
+
+	const options = { showGutter: true, clickableGutter: true };
+	selectionManager.drawSelections( 'clickable', [ view.getSelection( selection ) ], options );
+	getGutter( 'clickable' ).trigger( 'click' );
+	assert.strictEqual( clicks.length, 1, 'Event emitted' );
+	assert.strictEqual( clicks[ 0 ][ 0 ], 'clickable', 'Event has the group name' );
+	assert.true( clicks[ 0 ][ 1 ].equals( selection ), 'Event has the selection' );
+
+	// Drop the group, then draw it again from the cache
+	selectionManager.drawSelections( 'clickable', [] );
+	selectionManager.drawSelections( 'clickable', [ view.getSelection( selection ) ], options );
+	getGutter( 'clickable' ).trigger( 'click' );
+	assert.strictEqual( clicks.length, 2, 'Event emitted for a gutter reused from the cache' );
+
+	view.destroy();
+} );
+
 QUnit.test( 'redrawSelections, deactivated selection and options', ( assert ) => {
 	const view = ve.test.utils.createSurfaceViewFromHtml( '<p>Foo bar baz</p>' ),
 		selectionManager = view.getSelectionManager(),
