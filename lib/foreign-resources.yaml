@@ -153,10 +153,10 @@ oojs:
 oojs-ui:
   type: tar
   license: MIT
-  version: 0.54.2
+  version: 0.54.3
   homepage: https://www.mediawiki.org/wiki/OOUI
-  src: https://registry.npmjs.org/oojs-ui/-/oojs-ui-0.54.2.tgz
-  integrity: sha512-O9IlgcH4HWA9SU/REyC9AKu2rEVwFNiclRK3VqFjNIUy4I48Q9ROORztHdWyXcIDn7Es7oQqw8H1ltDAMBk5Fg==
+  src: https://registry.npmjs.org/oojs-ui/-/oojs-ui-0.54.3.tgz
+  integrity: sha512-rjbecvLwZtYNLChk/YXPkvFlp6xfU44nghG/EFqcYlRdTEsxpQPRyRjn0cff/ZHrOaDTWpiawsC0BNm/9sbdhw==
   dest:
     package/dist/*:
   # VE requires SVG support, so drops PNG fallbacks
