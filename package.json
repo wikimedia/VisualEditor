@@ -24,7 +24,7 @@
 		}
 	],
 	"devDependencies": {
-		"@wikimedia/codex-design-tokens": "2.7.0",
+		"@wikimedia/codex-design-tokens": "2.8.0",
 		"eslint-config-wikimedia": "0.33.1",
 		"eslint-plugin-html": "8.1.4",
 		"fast-glob": "3.3.3",
