@@ -370,13 +370,7 @@ module.exports = function ( grunt ) {
 				cache: true,
 				fix: grunt.option( 'fix' )
 			},
-			all: fg.globSync( [
-				'**/*.{js,json}',
-				'**/.*.{js,json}',
-				'demos/**/*.html',
-				'!lib/**',
-				'!**/{coverage,dist,docs,node_modules}/**'
-			] )
+			all: [ '.' ]
 		},
 		stylelint: {
 			options: {

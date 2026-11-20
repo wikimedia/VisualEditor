@@ -1,6 +1,6 @@
 'use strict';
 
-const { defineConfig } = require( 'eslint/config' );
+const { defineConfig, globalIgnores } = require( 'eslint/config' );
 const globals = require( 'globals' );
 const html = require( 'eslint-plugin-html' );
 const wikimedia = require( 'eslint-config-wikimedia/flat' );
@@ -55,6 +55,18 @@ const rootDirs = {
 };
 
 module.exports = defineConfig( [
+	globalIgnores( [
+		// Build
+		'lib/',
+		'**/coverage/',
+		'**/dist/',
+		'**/docs/',
+
+		// Language files written automatically by TranslateWiki
+		'**/i18n/**/*.json',
+		'!**/i18n/**/en.json',
+		'!**/i18n/**/qqq.json'
+	] ),
 	{
 		// Gruntfile.js, build scripts, etc.
 		ignores: Object.values( rootDirs ).flat(),
