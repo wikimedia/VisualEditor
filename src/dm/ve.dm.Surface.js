@@ -1153,55 +1153,6 @@ ve.dm.Surface.prototype.onDocumentPreCommit = function ( tx ) {
 };
 
 /**
- * Get a minimal set of ranges which have been modified by changes to the surface.
- *
- * @param {Object} [options] Options
- * @param {boolean} [options.includeCollapsed] Include collapsed ranges (removed content)
- * @param {boolean} [options.includeInternalList] Include changes within the internal list
- * @param {boolean} [options.excludeAnnotations] Exclude annotation-only changes
- * @param {boolean} [options.excludeAttributes] Exclude attribute changes
- * @return {ve.Range[]} Modified ranges
- */
-ve.dm.Surface.prototype.getModifiedRanges = function ( options = {} ) {
-	const doc = this.getDocument();
-	const ranges = [];
-
-	this.getHistory().forEach( ( stackItem ) => {
-		stackItem.transactions.forEach( ( tx ) => {
-			const newRange = tx.getModifiedRange( doc, options );
-			// newRange will by null for no-ops
-			if ( newRange ) {
-				// Translate previous ranges by the current transaction
-				ranges.forEach( ( range, i, arr ) => {
-					arr[ i ] = tx.translateRange( range, true );
-				} );
-				if ( options.includeCollapsed || !newRange.isCollapsed() ) {
-					ranges.push( newRange );
-				}
-			}
-		} );
-	} );
-
-	// Merge adjacent ranges
-	const compactRanges = [];
-	let lastRange = null;
-	ranges
-		.sort( ( a, b ) => a.start - b.start )
-		.forEach( ( range ) => {
-			if ( options.includeCollapsed || !range.isCollapsed() ) {
-				if ( lastRange && lastRange.touchesRange( range ) ) {
-					compactRanges.pop();
-					range = lastRange.expand( range );
-				}
-				compactRanges.push( range );
-				lastRange = range;
-			}
-		} );
-
-	return compactRanges;
-};
-
-/**
  * Get a VE source-mode surface offset from a plaintext source offset.
  *
  * @param {number} offset Source text offset
