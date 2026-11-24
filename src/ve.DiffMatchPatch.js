@@ -202,9 +202,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	 * (with no retains) to look like one continuous removal and one continuous
 	 * insert.
 	 *
-	 * Additionally clean up mistakes made by the linear differ, such as removing
-	 * and inserting identical content (instead of retaining it) and removing,
-	 * inserting or retaining an empty content array.
+	 * Additionally remove any empty content arrays left by the linear differ.
 	 *
 	 * @param {Array} diff Linear diff, as arrays of inserted, removed and retained
 	 * content
@@ -238,24 +236,6 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 			const value = Array.isArray( element ) ? element[ 0 ] : element;
 			return typeof value === 'string' && /^\s+$/.test( value );
 		}
-
-		// Where the same data is removed and inserted, replace it with a retain
-		for ( let i = 0; i < diff.length; i++ ) {
-			const [ action, data ] = diff[ i ];
-			// Should improve on JSON.stringify
-			if ( action !== DIFF_EQUAL &&
-				// When the two actions are the exact opposite, e.g. DIFF_DELETE and DIFF_INSERT
-				action === -previousAction &&
-				JSON.stringify( data ) === JSON.stringify( previousData )
-			) {
-				diff.splice( i - 1, 2, [ DIFF_EQUAL, data ] );
-				i++;
-			}
-			previousAction = action;
-			previousData = data;
-		}
-		previousData = null;
-		previousAction = null;
 
 		// Join any consecutive actions that are the same
 		for ( let i = 0; i < diff.length; i++ ) {
