@@ -381,51 +381,6 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  */
 
 /**
- * Splice data into / out of the data array, and synchronize the tree.
- *
- * For efficiency, this function modifies the splice operation objects (i.e. the elements
- * of the splices array). It also relies on these objects not being modified by others later.
- *
- * @param {Object[]} splices Array of splice operations to execute. Properties:
- *  {number} splices[].offset Offset to remove/insert at (unadjusted)
- *  {number} splices[].removeLength Number of elements to remove
- *  {ve.dm.LinearData.Item[]} splices[].insert Data to insert; for efficiency, objects are inserted without cloning
- */
-ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
-	const data = this.document.data;
-
-	let lengthDiff = 0;
-	let i;
-	// We're about to do lots of things that can go wrong, so queue an undo function now
-	// that undoes all splices that we got to
-	this.queueUndoFunction( () => {
-		for ( let i2 = splices.length - 1; i2 >= 0; i2-- ) {
-			const s2 = splices[ i ];
-			if ( s2.removedData !== undefined ) {
-				data.batchSplice( s2.offset, s2.insert.length, s2.removedData );
-			}
-		}
-	} );
-
-	// Apply splices to the linmod and record how to undo them
-	for ( i = 0; i < splices.length; i++ ) {
-		const s = splices[ i ];
-
-		// Adjust s.offset for previous modifications that have already been synced to the tree;
-		// this value is used by the tree sync code later.
-		s.treeOffset = s.offset + this.adjustment;
-		// Also adjust s.offset for previous iterations of this loop (i.e. unsynced modifications);
-		// this is the value we need for the actual array splice.
-		s.offset = s.treeOffset + lengthDiff;
-
-		// Perform the splice and put the removed data in s, for the undo function
-		s.removedData = data.batchSplice( s.offset, s.removeLength, s.insert );
-		lengthDiff += s.insert.length - s.removeLength;
-	}
-	this.adjustment += lengthDiff;
-};
-
-/**
  * Set an attribute at a given offset.
  *
  * @param {number} offset Offset in data array (unadjusted)
