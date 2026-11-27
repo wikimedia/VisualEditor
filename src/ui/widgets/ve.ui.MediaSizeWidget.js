@@ -201,7 +201,14 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
  */
 ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 	if ( +value === 0 && !this.noDefaultDimensions ) {
-		this.setSizeType( 'default' );
+		// LOREE-200: while a custom size is typed, an empty field or a height rounded
+		// down to 0 must not switch to the default size: that disables the inputs and
+		// drops the size on save. Default size is chosen with its own button.
+		if ( this.getSizeType() === 'custom' ) {
+			this.validateDimensions();
+		} else {
+			this.setSizeType( 'default' );
+		}
 	} else {
 		this.setSizeType( 'custom' );
 		if ( !isNaN( +value ) ) {
